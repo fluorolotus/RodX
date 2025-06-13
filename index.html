@@ -6,27 +6,63 @@
     <title>Графический интерфейс для расчетных моделей</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        /* Общие стили для body */
         body {
             font-family: 'Inter', sans-serif;
             margin: 0;
-            overflow: hidden;
-            display: flex; /* Используем flexbox для основной компоновки */
-            height: 100vh; /* Занимаем всю высоту viewport */
+            overflow: hidden; /* Скрывает полосы прокрутки, если содержимое выходит за границы */
+            display: flex;
+            flex-direction: column; /* Элементы (topBar, main-content-area, bottomBar) располагаются вертикально */
+            height: 100vh; /* Body занимает всю высоту viewport */
+            background-color: #f0f2f5; /* Цвет фона для всего приложения */
         }
 
+        /* Стили для верхней и нижней панелей */
+        #topBar, #bottomBar {
+            flex-shrink: 0; /* Эти панели не должны сжиматься по высоте */
+        }
+
+        /* Основная область содержимого: Flex-контейнер для левой панели и области холста */
+        .main-content-area {
+            display: flex; /* Элементы (properties-panel и canvas-container) располагаются горизонтально */
+            flex-grow: 1; /* Занимает всю оставшуюся высоту между topBar и bottomBar */
+			overflow: hidden; /* ДОБАВЬТЕ ЭТУ СТРОКУ: Скрывает переполнение, если дочерние элементы выходят за границы */
+							/* Это предотвратит растягивание .main-content-area по высоте, если его flex-элементы пытаются стать выше. */
+        }
+
+        /* Левая панель свойств */
         .properties-panel {
-            width: 25vw; /* Занимает 1/4 ширины viewport - ВСЕГДА */
+            width: 25vw; /* Занимает 1/4 ширины viewport */
             min-width: 250px; /* Минимальная ширина, чтобы контент не сжимался слишком сильно */
-            height: 100vh; /* Занимает всю высоту */
+            
             background-color: #f0f2f5;
             border-right: 1px solid #d1d5db;
             padding: 15px;
             box-sizing: border-box; /* Учитываем padding в ширине */
             overflow-y: auto; /* Прокрутка, если содержимое не помещается */
-            flex-shrink: 0; /* Не позволяет панели сжиматься */
-            display: block; /* Панель всегда блочная, не скрываем */
+            flex-shrink: 0; /* Не позволяет панели сжиматься по ширине */
         }
 
+        /* Контейнер для холста (рабочая область) */
+        .canvas-container {
+            flex-grow: 1; /* Занимает всю оставшуюся ширину (3/4) */
+            position: relative; /* Важно для позиционирования тултипа и контекстного меню */
+            overflow: hidden; /* Скрывает содержимое, выходящее за границы */
+            background-color: #fff;
+            /* width: 75vw; // Этот класс больше не нужен, flex-grow справится */
+            /* height: 100%; // Этот класс больше не нужен, flex-grow справится */
+        }
+        
+        /* Сам холст */
+        canvas { 
+            display: block; 
+            background-color: #fff; 
+            cursor: crosshair; 
+            width: 100%; /* Холст занимает 100% ширины своего родителя */
+            height: 100%; /* Холст занимает 100% высоты своего родителя */
+        }
+
+        /* Стили для элементов внутри панелей */
         .properties-panel h3 {
             font-size: 1.2em;
             margin-bottom: 15px;
@@ -145,52 +181,31 @@
             background-color: #da190b;
         }
 
-
-        .main-content {
-            flex-grow: 1; /* Занимает все оставшееся пространство */
-            display: flex;
-            flex-direction: column; /* Элементы внутри будут располагаться вертикально */
-            height: 100vh;
-        }
-
-        .canvas-container {
-            width: 100%; /* Занимает 100% ширины main-content (которая 75vw) */
-            height: calc(100vh - 60px); /* Занимает всю высоту main-content за вычетом controls */
-            position: relative;
-            overflow: hidden;
-            border-top: 1px solid #ccc;
-            background-color: #f8f9fa;
-        }
-        canvas { display: block; background-color: #fff; cursor: crosshair; }
-		.controls {
-            width: 100%; /* Занимает 100% ширины main-content */
-            padding: 10px 15px;
-            background-color: #f0f2f5;
-            border-bottom: 1px solid #d1d5db;
-            display: flex;
-            flex-wrap: wrap; /* НОВОЕ: Позволяет элементам переноситься на следующую строку */
-            align-items: flex-start; /* НОВОЕ: Выравниваем элементы по верху (полезно для нескольких строк) */
-            justify-content: flex-start; /* НОВОЕ: Выравниваем элементы по левому краю */
-            gap: 12px; /* Сохраняем отступы между элементами */
-            min-height: 60px; /* Увеличиваем минимальную высоту, чтобы вместить два ряда */
-            /* НОВОЕ: Можно добавить внутренние отступы для лучшего распределения по рядам,
-                       если gap недостаточно или если вы хотите, чтобы элементы
-                       занимали всю доступную ширину более равномерно */
-            padding-bottom: 15px; /* Добавляем небольшой отступ снизу для второго ряда */
-        }
-        .controls label, .controls input, .controls select, .controls button {
+        /* Стили для элементов управления в нижней панели */
+        #bottomBar label, #bottomBar input, #bottomBar select, #bottomBar button {
             font-size: 14px;
             padding: 6px 10px;
             border-radius: 6px;
-            border: 1px solid #b0b0b0;
-            margin-right: 5px;
+            border: 1px solid #b0b0b0; /* Светлее для темного фона */
+            color: #b0b0b0; /* Цвет текста для светлых элементов */
         }
-        .controls input[type="number"] { width: 60px; text-align: center;}
-        .controls input[type="checkbox"] { margin-right: 3px; transform: scale(1.1); }
-        .controls button { background-color: #007bff; color:white; cursor: pointer; border-color: #007bff;}
-        .controls button:hover { background-color: #0056b3; border-color: #0056b3; }
-        .controls #clearCanvasBtn { background-color: #dc3545; border-color: #dc3545;}
-        .controls #clearCanvasBtn:hover { background-color: #c82333; border-color: #bd2130;}
+        #bottomBar select, #bottomBar input {
+            /*background-color: #f0f2f5; /* Светлый фон для полей ввода/выбора */
+        }
+        #bottomBar input[type="number"] { width: 60px; text-align: center;}
+        #bottomBar input[type="checkbox"] { margin-right: 3px; transform: scale(1.1); }
+        #bottomBar button { 
+            background-color: #007bff; 
+            color:white; 
+            cursor: pointer; 
+            border-color: #007bff;
+        }
+        #bottomBar button:hover { background-color: #0056b3; border-color: #0056b3; }
+        #bottomBar #clearCanvasBtn { background-color: #dc3545; border-color: #dc3545;}
+        #bottomBar #clearCanvasBtn:hover { background-color: #c82333; border-color: #bd2130;}
+
+
+        /* Стили для тултипа и контекстного меню */
         .tooltip {
             position: absolute;
             background-color: rgba(0, 0, 0, 0.8);
@@ -221,106 +236,265 @@
         .context-menu-item:hover {
             background-color: #f0f0f0;
         }
+
+        /* Модальное окно */
+        #materialsModal {
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.6);
+            /*display: none;*/
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+        }
+        #materialsModal > div { /* Внутренний контейнер модального окна */
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 11/12; /* Tailwind-класс */
+            max-width: 600px; /* Максимальная ширина */
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
     </style>
 </head>
-<body class="bg-gray-100">
+<body>
 
-    <div id="propertiesPanel" class="properties-panel">
-        <h3>Свойства элементов</h3>
-        <div id="nodePropertiesContent">
-            <p>Выберите элемент для просмотра его свойств.</p>
+    <!-- Верхняя панель инструментов -->
+    <div id="topBar" class="bg-gray-800 text-white h-16 p-3 flex justify-between items-center z-100">
+        <h1 class="text-xl font-bold ml-2">Графический интерфейс</h1>
+        <div class="flex items-center space-x-4 mr-4">
+            <!-- Кнопка "Материалы" -->
+            <button id="openMaterialsModalBtn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-150 ease-in-out">
+                Материалы
+            </button>
         </div>
     </div>
 
-    <div class="main-content">
-	<div class="controls">
-				<label for="divisions">Делений на ед.:</label>
-				<input type="number" id="divisions" value="4" min="1" max="20">
+    <!-- Основное содержимое приложения -->
+    <!-- flex-grow: 1 позволяет этой области занять всю оставшуюся высоту -->
+    <div class="main-content-area flex flex-grow">
+        <!-- Левая панель свойств -->
+        <div id="propertiesPanel" class="properties-panel">
+            <h3>Свойства элементов</h3>
+            <div id="nodePropertiesContent">
+                <p>Выберите элемент для просмотра его свойств.</p>
+                <!-- Содержимое nodePropertiesContent будет динамически генерироваться JS -->
+            </div>
+        </div>
 
-				<input type="checkbox" id="snapToGrid" class="ml-3 mr-1">
-				<label for="snapToGrid">Магнит к сетке</label>
-
-				<label for="forceUnits" class="ml-3">Ед. силы:</label>
-				<select id="forceUnits">
-					<option value="N">N</option>
-					<option value="kN">kN</option>
-					<option value="kg">кг</option>
-					<option value="t">т</option>
-					<option value="lbf">lbf</option>
-					<option value="kips">kips</option>
-				</select>
-				
-				<label for="units" class="ml-3">Единицы:</label>
-				<select id="units">
-					<option value="m">м</option>
-					<option value="cm">см</option>
-					<option value="mm">мм</option>
-					<option value="ft">фут</option>
-					<option value="in">дюйм</option>
-				</select>				
-				
-				<label for="unitPairs" class="ml-3">Пары ед.:</label>
-				<select id="unitPairs">
-					<option value="none">Польз.</option>
-					<option value="metric_t_m">т, м</option>
-					<option value="metric_standard">кН, м</option>
-					<option value="metric_mm_N">Н, мм</option>
-					<option value="imperial_ft_lbf">lbf, фут</option>
-					<option value="imperial_in_lbf">lbf, дюйм</option>
-					<option value="imperial_in_kips">kips, дюйм</option>
-				</select>
-				
-				<button id="saveModelBtn" class="ml-auto bg-blue-500 hover:bg-blue-600">Сохранить</button> <!-- НОВОЕ -->
-				<!-- НОВОЕ: Кнопка "Загрузить" и скрытое поле для выбора файла -->
-				<button id="loadModelBtn" class="bg-gray-500 hover:bg-gray-600 text-white">Загрузить</button>
-				<input type="file" id="fileInput" accept=".json" class="hidden"> <!-- Скрытое поле ввода файла -->
-				<button id="clearCanvasBtn" class="ml-auto">Очистить все</button>
-			</div>
-
+        <!-- Область для холста (рабочая область) -->
         <div class="canvas-container" id="canvasContainer">
             <canvas id="drawingCanvas"></canvas>
         </div>
     </div>
 
+    <!-- Модальное окно для материалов -->
+    <div id="materialsModal" class="fixed inset-0 bg-gray-600 bg-opacity-75 flex items-center justify-center hidden z-50">
+        <!-- Основной контейнер модального окна, увеличена максимальная ширина -->
+        <div class="bg-white p-8 rounded-lg shadow-xl w-11/12 md:w-5/6 lg:max-w-4xl max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold">Управление материалами</h2>
+                <button id="closeMaterialsModalBtn" class="text-gray-500 hover:text-gray-700 text-3xl leading-none">&times;</button>
+            </div>
+            
+            <!-- Сетка для разделения на две колонки: выбор/пользовательский материал слева, свойства/материалы в модели справа -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- ЛЕВАЯ КОЛОНКА: Выбор материала и поля пользовательского материала -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Выбор материала</h3>
+
+                    <div class="mb-4">
+                        <label for="materialTypeSelect" class="block text-gray-700 text-sm font-bold mb-2">Тип материала:</label>
+                        <select id="materialTypeSelect" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                            <!-- Опции будут заполняться из JS (или уже есть статика) -->
+
+                        </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="materialStandardSelect" class="block text-gray-700 text-sm font-bold mb-2">Стандарт:</label>
+                        <select id="materialStandardSelect" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                            <!-- Опции будут заполняться из JS -->
+                        </select>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="materialClassSelect" class="block text-sm font-medium text-gray-700">Класс/Марка:</label>
+                        <select id="materialClassSelect" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md shadow-sm">
+                            <!-- Опции будут заполняться из JS -->
+                        </select>
+                    </div>
+
+                    <!-- Поля для пользовательского материала (скрыты по умолчанию) -->
+                    <div id="customMaterialFields" class="hidden mt-6 p-4 border rounded-md bg-gray-50">
+                        <h3 class="text-lg font-semibold mb-2">Добавить свой материал</h3>
+                        <label for="customMaterialName" class="block text-sm font-medium text-gray-700">Пользовательское имя:</label>
+                        <input type="text" id="customMaterialName" placeholder="Название материала" class="mt-1 block w-full pl-3 pr-3 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md shadow-sm mb-2">
+                        <label for="customElasticModulus" class="block text-sm font-medium text-gray-700">Модуль упругости (МПа):</label>
+                        <input type="number" id="customElasticModulus" placeholder="Например, 2.1e11" class="mt-1 block w-full pl-3 pr-3 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md shadow-sm mb-2">
+                        <label for="customDensity" class="block text-sm font-medium text-gray-700">Плотность (кг/м³):</label>
+                        <input type="number" id="customDensity" placeholder="Например, 7850" class="mt-1 block w-full pl-3 pr-3 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md shadow-sm mb-2">
+                        <label for="customPoissonRatio" class="block text-sm font-medium text-gray-700">Коэффициент Пуассона:</label>
+                        <input type="number" id="customPoissonRatio" step="0.01" placeholder="Например, 0.3" class="mt-1 block w-full pl-3 pr-3 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md shadow-sm">
+                        
+                        <button id="saveCustomMaterialBtn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">
+                            Сохранить пользовательский материал
+                        </button>
+                    </div>
+
+                    <button id="addMaterialToModelBtn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded mt-4 w-full">
+                        Добавить выбранный материал в модель
+                    </button>
+                </div>
+
+                <!-- ПРАВАЯ КОЛОНКА: Свойства выбранного материала и Список материалов в модели -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Свойства выбранного материала</h3>
+                    <div id="selectedMaterialProperties" class="bg-gray-100 p-4 rounded-md shadow-inner mb-6">
+                        <p class="font-semibold text-gray-800 mb-2">Имя: <span id="propName" class="font-normal text-gray-700 italic">Не выбрано</span></p>
+                        <p class="text-gray-700 text-sm">Тип: <span id="propType" class="font-normal"></span></p>
+                        <p class="text-gray-700 text-sm mb-4">Стандарт: <span id="propStandard" class="font-normal"></span></p>
+                        
+                        <div class="border-t border-gray-300 pt-4 mt-4">
+                            <p class="text-gray-700"><span class="font-medium">Модуль упругости (E):</span> <span id="propElasticModulus" class="font-normal"></span> <span id="unitElasticModulus" class="text-xs text-gray-500"></span></p>
+                            <p class="text-gray-700"><span class="font-medium">Плотность (ρ):</span> <span id="propDensity" class="font-normal"></span> <span id="unitDensity" class="text-xs text-gray-500"></span></p>
+                            <p class="text-gray-700"><span class="font-medium">Коэффициент Пуассона (ν):</span> <span id="propPoissonRatio" class="font-normal"></span> <span id="unitPoissonRatio" class="text-xs text-gray-500"></span></p>
+                        </div>
+                    </div>
+
+                    <!-- Существующий блок "Материалы в модели" -->
+                    <div>
+                        <h3 class="text-xl font-bold mb-2">Материалы в модели:</h3>
+                        <ul id="modelMaterialList" class="border rounded-md p-3 bg-white max-h-48 overflow-y-auto">
+                            <li id="noMaterialsMessage" class="text-gray-500 italic">Нет материалов в модели.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Кнопки Закрыть снизу, вне сетки -->
+            <div class="flex justify-end space-x-3 mt-4">
+                <button id="closeMaterialsModalBtnBottom" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded transition duration-150 ease-in-out">
+                    Закрыть
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Нижняя панель управления -->
+    <div id="bottomBar" class="bg-gray-800 text-white h-16 p-3 flex justify-center items-center space-x-8 z-100">
+        <!-- Кнопки Сохранить/Загрузить/Очистить -->
+        <div class="flex items-center space-x-4">
+            <button id="saveModelBtn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-150 ease-in-out">Сохранить</button>
+            <button id="loadModelBtn" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded transition duration-150 ease-in-out">Загрузить</button>
+            <input type="file" id="fileInput" accept=".json" class="hidden">
+            <button id="clearCanvasBtn" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded transition duration-150 ease-in-out">Очистить все</button>
+        </div>
+
+        <!-- Управление сеткой -->
+        <div class="flex items-center space-x-2 ml-8">
+            <label for="divisions">Делений на ед.:</label>
+            <input type="number" id="divisions" value="4" min="1" max="20"
+                   class="w-20 bg-gray-700 border border-gray-600 text-white text-sm rounded-md px-2 py-1 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+        </div>
+        <div class="flex items-center space-x-2">
+            <input type="checkbox" id="snapToGrid" class="form-checkbox h-4 w-4 text-blue-600 rounded">
+            <label for="snapToGrid" class="text-white text-sm">Привязка к сетке</label>
+        </div>
+        
+        <!-- Управление единицами измерения -->
+        <div class="flex items-center space-x-2 ml-8">
+            <label for="unitsSelect" class="text-white text-sm">Ед. измерения:</label>
+            <select id="unitsSelect" class="bg-gray-700 border border-gray-600 text-white text-sm rounded-md px-2 py-1 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                <option value="m">м</option>
+                <option value="cm">см</option>
+                <option value="mm">мм</option>
+                <option value="in">дюймы</option>
+                <option value="ft">фут</option>
+            </select>
+        </div>
+        <div class="flex items-center space-x-2">
+            <label for="forceUnitsSelect" class="text-white text-sm">Ед. силы:</label>
+            <select id="forceUnitsSelect" class="bg-gray-700 border border-gray-600 text-white text-sm rounded-md px-2 py-1 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                <option value="N">Н</option>
+                <option value="kN">кН</option>
+                <option value="lbf">фунт-сила</option>
+                <option value="kg">кг</option>
+                <option value="t">т</option>
+                <option value="kips">kips</option>
+            </select>
+        </div>
+        <div class="flex items-center space-x-2">
+            <label for="unitPairsSelect" class="text-white text-sm">Пары ед.:</label>
+            <select id="unitPairsSelect" class="bg-gray-700 border border-gray-600 text-white text-sm rounded-md px-2 py-1 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                <option value="none">Польз.</option>
+                <option value="metric_t_m">т, м</option>
+                <option value="metric_standard">кН, м</option>
+                <option value="metric_mm_N">Н, мм</option>
+                <option value="imperial_ft_lbf">lbf, фут</option>
+                <option value="imperial_in_lbf">lbf, дюйм</option>
+                <option value="imperial_in_kips">kips, дюйм</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Контекстное меню и тултип -->
     <div id="customContextMenu" class="context-menu hidden">
         <div id="deleteNodeItem" class="context-menu-item">Удалить узел</div>
         <div id="deleteLineItem" class="context-menu-item">Удалить линию</div>
     </div>
-
     <div id="tooltip" class="tooltip hidden"></div>
 
     <script>
-        // DOM Elements
+        // DOM Elements - ОБНОВЛЕННЫЕ ССЫЛКИ ПОСЛЕ ПЕРЕМЕЩЕНИЯ В BOTTOMBAR
         const canvas = document.getElementById('drawingCanvas');
         const ctx = canvas.getContext('2d');
         const canvasContainer = document.getElementById('canvasContainer');
+        
+        // Элементы, перемещенные в bottomBar
         const divisionsInput = document.getElementById('divisions');
         const snapToGridCheckbox = document.getElementById('snapToGrid');
         const clearCanvasBtn = document.getElementById('clearCanvasBtn');
-        const unitsSelect = document.getElementById('units');
+        const unitsSelect = document.getElementById('unitsSelect'); // ID изменен
+        const forceUnitsSelect = document.getElementById('forceUnitsSelect'); // ID изменен
+        const unitPairsSelect = document.getElementById('unitPairsSelect'); // ID изменен
+        const saveModelBtn = document.getElementById('saveModelBtn'); // Перемещен
+        const loadModelBtn = document.getElementById('loadModelBtn'); // Перемещен
+        const fileInput = document.getElementById('fileInput'); // Перемещен
+
         const tooltip = document.getElementById('tooltip');
         const customContextMenu = document.getElementById('customContextMenu');
         const deleteNodeItem = document.getElementById('deleteNodeItem');
         const deleteLineItem = document.getElementById('deleteLineItem');
         
-        // Новые DOM элементы для панели свойств
+        // Элементы propertiesPanel
         const propertiesPanel = document.getElementById('propertiesPanel');
         const nodePropertiesContent = document.getElementById('nodePropertiesContent');
-        const forceUnitsSelect = document.getElementById('forceUnits'); // Добавляем глобальное объявление
-		const unitPairsSelect = document.getElementById('unitPairs'); // НОВОЕ: DOM элемент для наборов единиц
-
+        
         // Application State
-        let nodes = []; // { node_id, x, y (ALWAYS in currentUnit, positive Y is UP) }
-        let lines = []; // { elem_id, nodeId1, nodeId2 }
-        let restrictions = []; // [{ node_id: 1, dx: 1, dy: 0, dr: 1 }, ...] - dr вместо r для ясности
+        let nodes = [];
+        let lines = [];
+        let restrictions = [];
         let nextNodeId = 1;
         let nextElemId = 1; 
-		// ИЗМЕНЕНО: Добавлено lengthUnit для моментов
-		let nodeLoads = []; // [{ load_id, type, target_id, component, value, unit, (lengthUnit для моментов) }] 
+		let nodeLoads = [];
         let nextLoadId = 1;
-		let elementLoads = []; // НОВОЕ: [{ load_id, target_elem_id, type, component, value, unit, lengthUnit }]
-        let nextElementLoadId = 1; // НОВОЕ: Счетчик для ID распределенных нагрузок
+		let elementLoads = [];
+        let nextElementLoadId = 1;
 		
+		let selectedElements = [];
+		
+		// --- Глобальные переменные для работы с материалами ---
+        let allMaterials = []; // Здесь будут храниться все загруженные материалы
+        // Эту переменную будем инициализировать в DOMContentLoaded
+        let materialListContainer = null; 
+		
+		// Глобальные флаги видимости для элементов канваса (НОВОЕ)
+		let showNodeIds = true;    // Показывать ID узлов по умолчанию
+		let showElementIds = true; // Показывать ID элементов (линий) по умолчанию
 
         let scale = 50; 
         let panX = 0;
@@ -330,45 +504,43 @@
 
         let divisionsPerUnit = parseInt(divisionsInput.value);
         let snapToGrid = true; 
-        let currentUnit = unitsSelect.value; // 'm', 'cm', 'mm', 'ft', 'in'
-        let currentForceUnit = forceUnitsSelect.value; // Текущая единица силы (например, 'kN', 'N')
-        let currentTemperatureUnit = 'F'; // НОВОЕ: Текущая единица температуры (по умолчанию Фаренгейт)
-        let currentTimeUnit = 'sec'; // НОВОЕ: Текущая единица времени (по умолчанию секунды)
-
-        // Коэффициенты конвертации единиц длины (базовая единица: миллиметры 'mm')
-        // Значение = сколько миллиметров в ОДНОЙ единице
+        let currentUnit = unitsSelect.value;
+        let currentForceUnit = forceUnitsSelect.value;
+        let currentTemperatureUnit = 'C'; 
+        let currentTimeUnit = 's'; 
+        
+        // Коэффициенты конвертации единиц длины (базовая единица: метры 'm')
         const lengthUnitConversions = { 
-            'mm': 1,    // 1 мм = 1 мм
-            'cm': 10,   // 1 см = 10 мм
-            'm': 1000,  // 1 м = 1000 мм
-            'in': 25.4, // 1 дюйм = 25.4 мм
-            'ft': 304.8 // 1 фут = 304.8 мм
+            'm': 1,    
+            'cm': 0.01,
+            'mm': 0.001,
+            'in': 0.0254,
+            'ft': 0.3048
         };
 
-        // Коэффициенты конвертации единиц силы: сколько Ньютонов в ОДНОЙ единице (т.е., 1 'N' = 1 'N', 1 'kN' = 1000 'N' и т.д.)
+        // Коэффициенты конвертации единиц силы: сколько Ньютонов в ОДНОЙ единице (базовая единица: Ньютоны 'N')
         const forceUnitConversions = {
             'N':    1,
             'kN':   1000,
-            'kg':   9.80665, // 1 кгс (килограмм-сила) = 9.80665 Ньютонов
-            't':    9806.65, // 1 тс (тонна-сила) = 9806.65 Ньютонов
+            'kg':   9.80665, 
+            't':    9806.65, 
             'lbf':  4.44822,
             'kips': 4448.22
         };
 		
-		// НОВОЕ: Определения наборов единиц
+		// Определения наборов единиц
         const unitPairConversions = {
             'metric_standard': { length: 'm', force: 'kN' },
             'metric_mm_N': { length: 'mm', force: 'N' },
             'imperial_ft_lbf': { length: 'ft', force: 'lbf' },
             'imperial_in_lbf': { length: 'in', force: 'lbf' },
 			'imperial_in_kips': { length: 'in', force: 'kips' },
-			'metric_t_m': { length: 'm', force: 't' } // НОВОЕ
+			'metric_t_m': { length: 'm', force: 't' }
         };
 		
+		let currentUnitPair = unitPairsSelect.value;
 		
-        let currentUnitPair = unitPairsSelect.value; // Инициализируем текущий набор единиц		
-		
-		// НОВОЕ: Вспомогательная функция для обновления поля "Пары ед."
+		// Вспомогательная функция для обновления поля "Пары ед."
         function updateUnitPairsSelect() {
             const currentLengthUnit = unitsSelect.value;
             const currentForceUnit = forceUnitsSelect.value;
@@ -388,10 +560,10 @@
             }
         }
         
-        let firstNodeForLine = null; // Узел, с которого начинается построение линии
-        let hoveredElement = null; // Элемент под курсором
-        let contextMenuTarget = null; // Элемент, по которому вызвано контекстное меню
-        let selectedNode = null; // Узел, выделенный для отображения свойств
+        let firstNodeForLine = null;
+        let hoveredElement = null;
+        let contextMenuTarget = null;
+        let selectedNode = null;
 		let selectedElement = null;
 
         let mouse = { x: 0, y: 0, worldX: 0, worldY: 0, snappedX: 0, snappedY: 0 }; 
@@ -409,43 +581,34 @@
 
         // Функция для сохранения модели в JSON
         function saveModel() {
-            // Собираем все текущие данные модели
             const modelData = {
                 nodes: nodes,
                 lines: lines,
                 restrictions: restrictions,
                 nodeLoads: nodeLoads,
                 elementLoads: elementLoads,
-                // Добавляем текущие единицы измерения в модель
+				materials: modelMaterials,
                 units: {
-                    length: currentUnit,        // Текущая единица длины (из global currentUnit)
-                    force: currentForceUnit,    // Текущая единица силы (из global currentForceUnit)
-                    temperature: currentTemperatureUnit, // Единица температуры (из global currentTemperatureUnit)
-                    time: currentTimeUnit       // Единица времени (из global currentTimeUnit)
+                    length: currentUnit,
+                    force: currentForceUnit,
+                    temperature: currentTemperatureUnit,
+                    time: currentTimeUnit
                 }
             };
-			
-			console.log("Модель данных перед сохранением:", modelData); // НОВОЕ: Это покажет всю модель
-            console.log("Единицы измерения в модели:", modelData.units); // НОВОЕ: Это покажет только блок units
+            
+            console.log("Модель данных перед сохранением:", modelData);
+            console.log("Единицы измерения в модели:", modelData.units);
 
-            // Преобразуем объект в строку JSON с форматированием для читаемости
-            const jsonString = JSON.stringify(modelData, null, 2); // null, 2 для красивого форматирования с отступами
-
-            // Создаем Blob (двоичный объект данных) из JSON строки
+            const jsonString = JSON.stringify(modelData, null, 2);
             const blob = new Blob([jsonString], { type: 'application/json' });
-
-            // Создаем временную ссылку для скачивания файла
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'model.json'; // Имя файла по умолчанию
-
-            // Имитируем клик по ссылке для скачивания файла
+            a.download = 'model.json';
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
-            URL.revokeObjectURL(url); // Освобождаем ресурсы
-
+            URL.revokeObjectURL(url);
             console.log("Модель сохранена в model.json");
         }
 
@@ -453,80 +616,59 @@
             try {
                 const modelData = JSON.parse(jsonFileContent);
 
-                // --- Загружаем данные модели ---
-                // Важно: Эти данные будут в тех единицах, в которых они были сохранены в файле.
-                // Конвертация произойдет ниже, при "установке" UI-селекторов.
                 nodes = modelData.nodes || [];
                 lines = modelData.lines || [];
                 restrictions = modelData.restrictions || [];
                 nodeLoads = modelData.nodeLoads || [];
                 elementLoads = modelData.elementLoads || [];
+				
+				// НОВОЕ: Загружаем материалы модели
+                modelMaterials = modelData.materials || []; // <-- Добавляем эту строку
+                // НОВОЕ: Отрисовываем список загруженных материалов в модальном окне
+                renderModelMaterialsList(); // <-- Добавляем эту строку
 
-                // --- Загрузка и применение единиц измерения из файла ---
                 if (modelData.units) {
                     const loadedLengthUnit = modelData.units.length;
                     const loadedForceUnit = modelData.units.force;
-                    const loadedTemperatureUnit = modelData.units.temperature || 'C'; // Дефолт 'C' на случай старых файлов
-                    const loadedTimeUnit = modelData.units.time || 's'; // Дефолт 's' на случай старых файлов
+                    const loadedTemperatureUnit = modelData.units.temperature || 'C';
+                    const loadedTimeUnit = modelData.units.time || 's';
 
-                    // Обновляем глобальные переменные состояния для температуры и времени
                     currentTemperatureUnit = loadedTemperatureUnit;
                     currentTimeUnit = loadedTimeUnit;
 
-                    // Обновляем селекторы единиц длины и силы в UI.
-                    // Принудительно вызываем событие 'change', чтобы сработала вся логика конвертации
-                    // уже загруженных данных (nodes, loads) из старых UI-единиц в новые загруженные единицы,
-                    // а также обновились все тексты в UI (панель свойств, канвас).
-
-                    // Сначала для длины
-                    // Проверяем, изменится ли значение селектора unitsSelect
                     if (unitsSelect.value !== loadedLengthUnit) {
                         unitsSelect.value = loadedLengthUnit;
-                        unitsSelect.dispatchEvent(new Event('change')); // Запускаем конвертацию данных
+                        unitsSelect.dispatchEvent(new Event('change'));
                     } else {
-                        // Если значение в селекторе уже совпадает, событие 'change' не сработает.
-                        // Нам нужно убедиться, что currentUnit обновлен и UI синхронизирован.
-                        currentUnit = loadedLengthUnit; // Убеждаемся, что переменная состояния актуальна
-                        updateUnitPairsSelect(); // Обновим пары единиц, если нужно
-                        updateForceUnitDisplay(); // Обновим отображение единиц силы/момента
+                        currentUnit = loadedLengthUnit;
+                        updateUnitPairsSelect();
+                        updateForceUnitDisplay();
                     }
 
-                    // Затем для силы
-                    // Проверяем, изменится ли значение селектора forceUnitsSelect
                     if (forceUnitsSelect.value !== loadedForceUnit) {
                         forceUnitsSelect.value = loadedForceUnit;
-                        forceUnitsSelect.dataset.previousValue = loadedForceUnit; // Обновляем data-атрибут
-                        forceUnitsSelect.dispatchEvent(new Event('change')); // Запускаем конвертацию данных
+                        forceUnitsSelect.dataset.previousValue = loadedForceUnit;
+                        forceUnitsSelect.dispatchEvent(new Event('change'));
                     } else {
-                        // Если значение в селекторе уже совпадает.
-                        currentForceUnit = loadedForceUnit; // Убеждаемся, что переменная состояния актуальна
-                        updateUnitPairsSelect(); // Обновим пары единиц, если нужно
-                        updateForceUnitDisplay(); // Обновим отображение единиц силы/момента
+                        currentForceUnit = loadedForceUnit;
+                        updateUnitPairsSelect();
+                        updateForceUnitDisplay();
                     }
 
                 } else {
-                    // Если в старом JSON нет информации о единицах, устанавливаем дефолтные для температуры и времени
-                    currentTemperatureUnit = 'C'; // Или 'F', как вы захотите для старых файлов
+                    currentTemperatureUnit = 'C';
                     currentTimeUnit = 's';
-                    // Единицы длины и силы остаются как в текущем UI, конвертаций не происходит.
-                    // updatePropertiesPanel() и draw() будут вызваны позже, чтобы отобразить данные в текущих UI-единицах.
                 }
 
-                // Обновляем счетчики ID, чтобы избежать дублирования при добавлении новых элементов
                 nextNodeId = nodes.length > 0 ? Math.max(...nodes.map(n => n.node_id)) + 1 : 1;
                 nextElemId = lines.length > 0 ? Math.max(...lines.map(l => l.elem_id)) + 1 : 1;
                 nextLoadId = nodeLoads.length > 0 ? Math.max(...nodeLoads.map(l => l.load_id)) + 1 : 1;
                 nextElementLoadId = elementLoads.length > 0 ? Math.max(...elementLoads.map(l => l.load_id)) + 1 : 1;
 
-                // Сбрасываем выделение, так как загруженная модель может не иметь выделенных элементов
                 selectedNode = null;
                 selectedElement = null;
                 firstNodeForLine = null;
 
-                // ВАЖНО: updatePropertiesPanel() и draw() уже вызываются внутри dispatchEvent('change') для
-                // unitsSelect и forceUnitsSelect. Если эти события НЕ СРАБОТАЛИ (т.е. загруженные единицы
-                // совпали с текущими UI), то нам все равно нужно обновить UI.
-                // Поэтому явно вызываем их здесь, только если загруженные единицы совпали.
                 if ((modelData.units && unitsSelect.value === modelData.units.length && forceUnitsSelect.value === modelData.units.force) || !modelData.units) {
                     updatePropertiesPanel();
                     draw();
@@ -538,38 +680,41 @@
                 console.error("Не удалось загрузить модель. Проверьте формат файла.");
             }
         }
+		
+		function toggleMaterialsModal() {
+			materialsModal.classList.toggle('hidden');
+		}
 
+		openMaterialsModalBtn.addEventListener('click', toggleMaterialsModal);
+		closeMaterialsModalBtn.addEventListener('click', toggleMaterialsModal);
+		closeMaterialsModalBtnBottom.addEventListener('click', toggleMaterialsModal);
 
-        // Initialization	
+		materialsModal.addEventListener('click', (e) => {
+			if (e.target === materialsModal) {
+				toggleMaterialsModal();
+			}
+		});		
+		
+		
 		
         function init() {
             snapToGridCheckbox.checked = snapToGrid; 
             resizeCanvas();
             addEventListeners();
             
-            // Устанавливаем значение по умолчанию для выпадающего списка Ед. силы на 'kN' (килоньютоны)
             forceUnitsSelect.value = 'kN'; 
-            forceUnitsSelect.dataset.previousValue = 'kN'; // Инициализируем предыдущее значение единицы силы
+            forceUnitsSelect.dataset.previousValue = 'kN';
             
-            // НОВОЕ: Инициализируем currentUnit и currentForceUnit из DOM-элементов
             currentUnit = unitsSelect.value;
             currentForceUnit = forceUnitsSelect.value;
             
-            // НОВОЕ: Вызываем updateUnitPairsSelect для начальной установки поля "Пары ед."
-            // Эта функция просто сопоставит текущие unitsSelect и forceUnitsSelect с парами,
-            // не вызывая лишних событий change.
             updateUnitPairsSelect(); 
-
-            // Вызываем updateForceUnitDisplay для синхронизации текстовых спанов и запуска обновления панели/отрисовки
-            // Эта функция также вызывает updatePropertiesPanel() и draw()
             updateForceUnitDisplay(); 
         }
 
         function resizeCanvas() {
-            // Размеры canvas должны соответствовать его родительскому контейнеру
             canvas.width = canvasContainer.clientWidth;
             canvas.height = canvasContainer.clientHeight;
-            // Центрируем panX/panY относительно нового размера canvas
             panX = canvas.width / 2;
             panY = canvas.height / 2; 
             draw();
@@ -616,83 +761,68 @@
         // Новая универсальная функция конвертации силы
         // Конвертирует 'value' из 'fromUnit' в 'toUnit'
         function convertForce(value, fromUnit, toUnit) {
-            // Если единицы совпадают, или одна из них не определена, возвращаем исходное значение
             if (fromUnit === toUnit || !forceUnitConversions[fromUnit] || !forceUnitConversions[toUnit]) {
                 return value;
             }
-            // Шаг 1: Сначала конвертируем исходное значение из 'fromUnit' в Ньютоны (базовую единицу для коэффициентов)
             const valueInNewtons = value * forceUnitConversions[fromUnit];
-            // Шаг 2: Затем конвертируем из Ньютонов в целевую единицу 'toUnit'
             return valueInNewtons / forceUnitConversions[toUnit];
         }
 
         // НОВАЯ ФУНКЦИЯ: Универсальная функция конвертации моментов
-        // Конвертирует 'value' из 'fromForceUnit'*'fromLengthUnit' в 'toForceUnit'*'toLengthUnit'
         function convertMoment(value, fromForceUnit, fromLengthUnit, toForceUnit, toLengthUnit) {
-            // Если единицы силы или длины не определены, или совпадают, возвращаем исходное значение
             if (!forceUnitConversions[fromForceUnit] || !forceUnitConversions[toForceUnit] ||
                 !lengthUnitConversions[fromLengthUnit] || !lengthUnitConversions[toLengthUnit]) {
                 console.warn("Неизвестные единицы для конвертации момента.");
                 return value;
             }
 
-            // Шаг 1: Конвертируем исходный момент в Ньютон-метры (базовые единицы для момента)
-            // Идея: (value в fromForceUnit*fromLengthUnit) * (Ньютоны в fromForceUnit) * (Метры в fromLengthUnit)
             const momentInNewtonMeters = value * forceUnitConversions[fromForceUnit] * lengthUnitConversions[fromLengthUnit];
-
-            // Шаг 2: Конвертируем из Ньютон-метров в целевые единицы
-            // Делим на (Ньютоны в toForceUnit) и (Метры в toLengthUnit)
             const convertedValue = momentInNewtonMeters / (forceUnitConversions[toForceUnit] * lengthUnitConversions[toLengthUnit]);
             
             return convertedValue;
         }
 		
 		// НОВАЯ ФУНКЦИЯ: Универсальная функция конвертации распределенных нагрузок (F/L)
-        // Конвертирует 'value' из 'fromForceUnit'/'fromLengthUnit' в 'toForceUnit'/'toLengthUnit'
         function convertDistributedForce(value, fromForceUnit, fromLengthUnit, toForceUnit, toLengthUnit) {
-            console.log(`convertDistributedForce: value=${value}, from=${fromForceUnit}/${fromLengthUnit}, to=${toForceUnit}/${toLengthUnit}`);
-			// Проверка на существование всех единиц
             if (!forceUnitConversions[fromForceUnit] || !forceUnitConversions[toForceUnit] ||
                 !lengthUnitConversions[fromLengthUnit] || !lengthUnitConversions[toLengthUnit]) {
                 console.warn(`Неизвестные единицы для конвертации распределенной нагрузки: ${fromForceUnit}/${fromLengthUnit} -> ${toForceUnit}/${toLengthUnit}`);
-                return value; // Возвращаем исходное значение, если единицы не найдены
+                return value;
             }
 
-            // Шаг 1: Конвертируем исходное значение в Ньютон/миллиметр (базовые единицы для распределенной нагрузки)
-            // (value в fromForceUnit/fromLengthUnit) * (Ньютоны в fromForceUnit) / (Миллиметры в fromLengthUnit)
-            const valueInNewtonsPerMillimeter = (value * forceUnitConversions[fromForceUnit]) / lengthUnitConversions[fromLengthUnit];
-
-            // Шаг 2: Конвертируем из Ньютон/миллиметр в целевые единицы
-            // Делим на (Ньютоны в toForceUnit) и умножаем на (Миллиметры в toLengthUnit)
-            const convertedValue = valueInNewtonsPerMillimeter / (forceUnitConversions[toForceUnit] / lengthUnitConversions[toLengthUnit]);
+            const valueInNewtonsPerMeter = (value * forceUnitConversions[fromForceUnit]) / lengthUnitConversions[fromLengthUnit];
+            const convertedValue = valueInNewtonsPerMeter / (forceUnitConversions[toForceUnit] / lengthUnitConversions[toLengthUnit]);
             
             return convertedValue;
         }
 
+        // Вспомогательная функция для получения текста единицы измерения
+        // Возвращает единицу измерения, если она не 'none', иначе пустую строку.
+        function getUnitText(unit) {
+            return (unit && unit !== 'none') ? unit : '';
+        }
 
         // Обновляет текстовые спаны с единицами измерения на панели свойств
-        // и вызывает перерисовку для актуализации значений нагрузок.
         function updateForceUnitDisplay() {
-            // currentForceUnit теперь не существует как глобальная переменная,
-            // мы берем текущую единицу прямо из значения выпадающего списка.
             const selectedUnit = forceUnitsSelect.value; 
-            // ИЗМЕНЕНО: momentUnit теперь будет использовать текущую единицу длины
-            const selectedMomentUnit = selectedUnit + '*' + unitsSelect.value; // Используем unitsSelect.value для текущей единицы длины
+            const selectedMomentUnit = selectedUnit + '*' + unitsSelect.value;
 
             const displayFx = document.getElementById('currentForceUnitDisplay_Fx');
             const displayFy = document.getElementById('currentForceUnitDisplay_Fy');
             const displayM = document.getElementById('currentForceUnitDisplay_M');
+            const displayqX = document.getElementById('currentDistributedForceUnitDisplay_qX'); // For distributed loads
+            const displayqY = document.getElementById('currentDistributedForceUnitDisplay_qY'); // For distributed loads
 
             if (displayFx) displayFx.textContent = selectedUnit;
             if (displayFy) displayFy.textContent = selectedUnit;
             if (displayM) displayM.textContent = selectedMomentUnit;
+            if (displayqX) displayqX.textContent = `${selectedUnit}/${unitsSelect.value}`; // For distributed loads
+            if (displayqY) displayqY.textContent = `${selectedUnit}/${unitsSelect.value}`; // For distributed loads
             
-            // После обновления единиц в UI, нужно перерисовать панель свойств и Canvas,
-            // чтобы уже добавленные нагрузки обновили свои значения.
             updatePropertiesPanel(); 
             draw();
         }
-
+		
 		// Drawing Functions
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -702,13 +832,13 @@
 
             drawGrid();
             drawAxes();
+			drawDistributedLoads();
             drawLines();
-            drawRestrictions(); // Рисуем закрепления
-            drawNodes();        // Рисуем узлы
+            drawRestrictions();
+            drawNodes();        
 
-            // НОВОЕ: Рисуем узловые нагрузки (использует уже трансформированный контекст)
             drawNodeLoads();
-			drawDistributedLoads(); // НОВОЕ: Вызываем отрисовку распределенных нагрузок			
+			
             
             ctx.restore(); // Восстанавливаем исходную матрицу трансформации
             drawCursorCircle();
@@ -720,60 +850,47 @@
 		// --- Вспомогательные функции для рисования символов нагрузок ---
 
 		// Функция для рисования стрелки (для сил)
-		// fromX, fromY: начальная точка хвоста стрелки (в модельных координатах)
-		// toX, toY: конечная точка (наконечник стрелки, в модельных координатах)
-		// color: цвет стрелки
 		function drawArrow(fromX, fromY, toX, toY, color, arrowheadLength = 10) {
 			ctx.strokeStyle = color;
-			ctx.fillStyle = color; // Для заполнения наконечника
-			ctx.lineWidth = 1 / scale; // Масштабируем толщину линии
+			ctx.fillStyle = color;
+			ctx.lineWidth = 0.7 / scale;
 
-			// Нарисуем линию стрелки
 			ctx.beginPath();
 			ctx.moveTo(fromX, fromY);
 			ctx.lineTo(toX, toY);
 			ctx.stroke();
 
-			// Нарисуем наконечник стрелки (замкнутый и острый)
-			const angle = Math.atan2(toY - fromY, toX - fromX); // Угол линии
-			const headLen = arrowheadLength / scale; // Масштабированная длина наконечника
-			const headAngle = Math.PI / 10; // Угол для остроты (меньше, чем PI/8, для еще более острой стрелки)
+			const angle = Math.atan2(toY - fromY, toX - fromX);
+			const headLen = arrowheadLength / scale;
+			const headAngle = Math.PI / 10;
 
 			ctx.beginPath();
 			ctx.moveTo(toX, toY);
 			ctx.lineTo(toX - headLen * Math.cos(angle - headAngle), toY - headLen * Math.sin(angle - headAngle));
 			ctx.lineTo(toX - headLen * Math.cos(angle + headAngle), toY - headLen * Math.sin(angle + headAngle));
-			ctx.closePath(); // Замыкаем путь для заполнения
-			ctx.fill(); // Заполняем наконечник цветом
-			// ctx.stroke(); // Можно убрать, если не нужны контуры наконечника
+			ctx.closePath();
+			ctx.fill();
 		}
 
 		// Функция для рисования дуговой стрелки (для моментов)
-		// centerX, centerY: центр дуги (координаты узла, в модельных координатах)
-		// radius: радиус дуги (в модельных единицах)
-		// startAngle, endAngle: начальный и конечный угол дуги (в радианах)
-		// counterClockwise: true для против часовой стрелки, false для по часовой стрелке
 		function drawArcArrow(centerX, centerY, radius, startAngle, endAngle, counterClockwise, color, arrowheadLength = 10) {
 			ctx.strokeStyle = color;
-			ctx.fillStyle = color; // Для заполнения наконечника
-			ctx.lineWidth = 1 / scale; // Масштабируем толщину линии
+			ctx.fillStyle = color;
+			ctx.lineWidth = 1 / scale;
 
-			// Нарисуем саму дугу
 			ctx.beginPath();
 			ctx.arc(centerX, centerY, radius, startAngle, endAngle, counterClockwise);
 			ctx.stroke();
 
-			// Нарисуем наконечник стрелки на конце дуги (замкнутый и острый)
-			const arrowAngle = endAngle; // Наконечник всегда в конце дуги
-			const headLen = arrowheadLength / scale; // Масштабированная длина наконечника
-			const headAngle = Math.PI / 10; // Угол для остроты
+			const arrowAngle = endAngle;
+			const headLen = arrowheadLength / scale;
+			const headAngle = Math.PI / 10;
 
-			// Корректируем угол для правильного направления наконечника
 			let headTangentAngle = arrowAngle;
 			if (counterClockwise) {
-				headTangentAngle -= Math.PI / 2; // Для CCW момента, наконечник смотрит "назад" по дуге (по касательной)
+				headTangentAngle -= Math.PI / 2;
 			} else {
-				headTangentAngle += Math.PI / 2; // Для CW момента, наконечник смотрит "вперед" по дуге (по касательной)
+				headTangentAngle += Math.PI / 2;
 			}
 
 			const arrowPointX = centerX + radius * Math.cos(arrowAngle);
@@ -783,23 +900,18 @@
 			ctx.moveTo(arrowPointX, arrowPointY);
 			ctx.lineTo(arrowPointX - headLen * Math.cos(headTangentAngle - headAngle), arrowPointY - headLen * Math.sin(headTangentAngle - headAngle));
 			ctx.lineTo(arrowPointX - headLen * Math.cos(headTangentAngle + headAngle), arrowPointY - headLen * Math.sin(headTangentAngle + headAngle));
-			ctx.closePath(); // Замыкаем путь для заполнения
-			ctx.fill(); // Заполняем наконечник
-			// ctx.stroke(); // Можно убрать
+			ctx.closePath();
+			ctx.fill();
 		}
 
 		function drawGrid() {
-            // Определяем базовую единицу для сетки
             let gridBaseUnit = 'm';
             if (currentUnit === 'ft' || currentUnit === 'in') {
                 gridBaseUnit = 'ft';
             }
 
-            // Вычисляем шаг сетки в текущих модельных единицах
-            // Сначала шаг в базовых единицах (1 метр или 1 фут), затем конвертируем в currentUnit
-            const baseGridStep = 1; // 1 метр или 1 фут
+            const baseGridStep = 1; 
             const gridStep_currentUnit = convertUnits(baseGridStep, gridBaseUnit, currentUnit);
-
             const subGridStep_currentUnit = gridStep_currentUnit / divisionsPerUnit;
 
             const worldView = {
@@ -851,20 +963,18 @@
             ctx.lineTo(0, visMaxY_world);
             ctx.stroke();
 
-            // Определяем базовую единицу для подписей осей
             let axisLabelBaseUnit = 'm';
             if (currentUnit === 'ft' || currentUnit === 'in') {
                 axisLabelBaseUnit = 'ft';
             }
 
-            const unitLabelIncrement = 1; // Метки будут через 1 базовую единицу
+            const unitLabelIncrement = 1; 
             const xLabelYOffsetWorld = fontSizeWorld * 0.5; 
 
             // X-axis labels
             const xLabelMinNum = Math.floor(convertUnits(visMinX, currentUnit, axisLabelBaseUnit) / unitLabelIncrement);
             const xLabelMaxNum = Math.ceil(convertUnits(visMaxX, currentUnit, axisLabelBaseUnit) / unitLabelIncrement);
             for (let num = xLabelMinNum; num <= xLabelMaxNum; num += unitLabelIncrement) {
-                // Преобразуем метку обратно в текущие модельные единицы для отрисовки
                 const worldX_currentUnit = convertUnits(num * unitLabelIncrement, axisLabelBaseUnit, currentUnit);
                 const labelText = num.toFixed(0);
                 
@@ -880,11 +990,10 @@
             // Y-axis labels
             const yLabelXOffsetWorld = -fontSizeWorld * 0.5; 
             const yLabelMinNum = Math.floor(convertUnits(Math.min(visMinY_world, visMaxY_world), currentUnit, axisLabelBaseUnit) / unitLabelIncrement);
-            const yLabelMaxNum = Math.ceil(convertUnits(Math.max(visMinY_world, visMaxY_world), currentUnit, axisLabelBaseUnit) / unitLabelIncrement);
+            const yLabelMaxNum = Math.ceil(Math.max(visMinY_world, visMaxY_world) / unitLabelIncrement);
             for (let num = yLabelMinNum; num <= yLabelMaxNum; num += unitLabelIncrement) {
                 if (Math.abs(num) < 1e-9 / scale && Math.abs(0 - xLabelYOffsetWorld) < 1e-9 / scale ) continue; 
                 if (num === 0) continue; 
-                // Преобразуем метку обратно в текущие модельные единицы для отрисовки
                 const worldY_currentUnit = convertUnits(num * unitLabelIncrement, axisLabelBaseUnit, currentUnit);
                 const labelText = num.toFixed(0);
 
@@ -898,43 +1007,45 @@
             }
         }
 
-        function drawNodes() { 
-            const nodeRadiusWorld = 4 / scale;
-            const nodeIdFontSizeWorld = 12 / scale;
-            const nodeIdOffsetYWorld = nodeRadiusWorld + nodeIdFontSizeWorld * 0.3; 
+		function drawNodes() {
+			const nodeRadiusWorld = 2 / scale;
+			const nodeIdFontSizeWorld = 12 / scale;
+			
+			nodes.forEach(node => {
+				ctx.save(); // НОВОЕ: Сохраняем состояние контекста для этого узла
+				ctx.beginPath();
+				ctx.arc(node.x, node.y, nodeRadiusWorld, 0, 2 * Math.PI);
+				
+				const isSelected = selectedElements.some(el => el.type === 'node' && el.element.node_id === node.node_id);
 
-            nodes.forEach(node => { 
-                ctx.beginPath();
-                ctx.arc(node.x, node.y, nodeRadiusWorld, 0, 2 * Math.PI);
-                
-                // Измененная логика цвета узла
-                if (selectedNode && selectedNode.node_id === node.node_id) {
-                    ctx.fillStyle = '#FF6D2D'; //Ярко оранжевый //Был Бирюзовый для выделенного узла 17a2b8
-                } else if (hoveredElement && hoveredElement.type === 'node' && hoveredElement.element.node_id === node.node_id) {
-                    ctx.fillStyle = '#dc3545'; // Красный для наведения
-                } else {
-                    ctx.fillStyle = '#007bff'; // Синий по умолчанию #007bff
-                }
+				if (isSelected) {
+					ctx.fillStyle = '#FF6D2D'; // Оранжево-красный для выделенного
+				} else if (hoveredElement && hoveredElement.type === 'node' && hoveredElement.element.node_id === node.node_id) {
+					ctx.fillStyle = '#dc3545'; // Красный для наведения
+				} else {
+					ctx.fillStyle = '#007bff'; // Синий по умолчанию
+				}
 
-                ctx.fill();
-                ctx.strokeStyle = '#343a40';
-                ctx.lineWidth = 1.5 / scale;
-                ctx.stroke();
+				ctx.fill();
+				// ctx.strokeStyle = '#343a40'; // Оставляем закомментированным, как вы просили убрать обводку
+				// ctx.lineWidth = 1.5 / scale;
+				// ctx.stroke();
 
-                // Draw node ID
-                ctx.save();
-                ctx.translate(node.x, node.y);
-                ctx.scale(1, -1); 
-                ctx.translate(nodeIdOffsetYWorld+5/scale, nodeIdOffsetYWorld-5/scale); 
-                
-                ctx.fillStyle = ctx.fillStyle; 
-                ctx.font = `${nodeIdFontSizeWorld}px Arial`;
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'bottom'; 
-                ctx.fillText(node.node_id, 0, 0); 
-                ctx.restore();
-            });
-        }
+				if (showNodeIds) {
+					ctx.save(); // Сохраняем состояние для преобразований текста
+					ctx.translate(node.x + 7/scale, node.y - 5/scale);
+					ctx.scale(1, -1);
+					
+					ctx.fillStyle = ctx.fillStyle; // Берем цвет, который был установлен для заливки узла
+					ctx.font = `${nodeIdFontSizeWorld}px Arial`;
+					ctx.textAlign = 'center';
+					ctx.textBaseline = 'middle';
+					ctx.fillText(node.node_id, 0, -(nodeRadiusWorld + (nodeIdFontSizeWorld / 2) + 2/scale));
+					ctx.restore(); // Восстанавливаем состояние после преобразований текста
+				}
+				ctx.restore(); // НОВОЕ: Восстанавливаем состояние контекста после отрисовки этого узла
+			});
+		}
 
         // ===============================================
         // Функция для рисования ВСЕХ иконок закреплений на Canvas
@@ -943,7 +1054,6 @@
             restrictions.forEach(restriction => {
                 const node = nodes.find(n => n.node_id === restriction.node_id);
                 if (node) {
-                    // Определяем, какую иконку рисовать на основе dx, dy, dr
                     let iconToDraw = null;
                     for (const typeKey in restrictionTypes) {
                         const type = restrictionTypes[typeKey];
@@ -964,38 +1074,31 @@
 		function drawNodeLoads() {
 			const LOAD_COLOR = 'black'; 
 
-			// Константы, определяющие ЖЕЛАЕМЫЙ РАЗМЕР СИМВОЛА В ПИКСЕЛЯХ НА ЭКРАНЕ
-			const FIXED_ARROW_LENGTH_PX = 70; // Желаемая длина стрелки силы в пикселях
-			const FIXED_MOMENT_RADIUS_PX = 35; // Желаемый радиус дуги момента в пикселях
-			const FIXED_TEXT_OFFSET_PX = 10; // Желаемый отступ текста от символа в пикселях
+			const FIXED_ARROW_LENGTH_PX = 70; 
+			const FIXED_MOMENT_RADIUS_PX = 35; 
+			const FIXED_TEXT_OFFSET_PX = 10; 
 
 			nodeLoads.forEach(load => {
 				const node = nodes.find(n => n.node_id === load.target_id);
 				if (!node) return;
 
-                const currentForceDisplayUnit = forceUnitsSelect.value; // Текущая выбранная единица силы
-                const currentLengthDisplayUnit = unitsSelect.value; // Текущая выбранная единица длины
+                const currentForceDisplayUnit = forceUnitsSelect.value;
+                const currentLengthDisplayUnit = unitsSelect.value;
 
                 let displayedValue;
                 let displayedUnitString;
 
                 if (load.type === 'point_force') {
-                    // Конвертируем значение силы из его сохраненной единицы (load.unit)
-                    // В текущую выбранную единицу отображения силы (currentForceDisplayUnit)
                     displayedValue = convertForce(load.value, load.unit, currentForceDisplayUnit).toFixed(2);
                     displayedUnitString = currentForceDisplayUnit;
                 } else if (load.type === 'moment') {
-                    // Конвертируем значение момента из его сохраненных единиц (load.unit, load.lengthUnit)
-                    // В текущие выбранные единицы отображения (currentForceDisplayUnit, currentLengthDisplayUnit)
                     displayedValue = convertMoment(load.value, load.unit, load.lengthUnit, currentForceDisplayUnit, currentLengthDisplayUnit).toFixed(2);
-                    displayedUnitString = `${currentForceDisplayUnit}*${currentLengthDisplayUnit}`; // ИЗМЕНЕНО
+                    displayedUnitString = `${currentForceDisplayUnit}*${currentLengthDisplayUnit}`;
                 }
 
 				const drawX = node.x;
 				const drawY = node.y;
 
-				// Вычисление текущих размеров в МОДЕЛЬНЫХ ЕДИНИЦАХ (делим на scale)
-				// Это обеспечивает, что символы будут иметь постоянный визуальный размер на экране
 				const currentArrowLength = FIXED_ARROW_LENGTH_PX / scale;
 				const currentMomentRadius = FIXED_MOMENT_RADIUS_PX / scale;
 				const currentTextOffset = FIXED_TEXT_OFFSET_PX / scale;
@@ -1008,31 +1111,31 @@
 					let fromX, fromY, toX, toY;
 					let textX, textY;
 
-					toX = drawX; // Наконечник стрелки входит в узел
+					toX = drawX;
 					toY = drawY;
 
 					if (load.component === 'x') {
 						fromX = drawX - (load.value > 0 ? currentArrowLength : -currentArrowLength);
 						fromY = drawY;
 						
-						textX = fromX + (load.value > 0 ? -currentTextOffset : currentTextOffset) * 0; // Смещение текста от стрелки
+						textX = fromX + (load.value > 0 ? -currentTextOffset : currentTextOffset) * 0;
 						textY = fromY + currentTextOffset * 0.5; 
-						ctx.textAlign = load.value > 0 ? 'left': 'right'; // Выравнивание текста относительно стрелки
-						ctx.textBaseline = 'bottom'; // Центрируем текст по вертикали
+						ctx.textAlign = load.value > 0 ? 'left': 'right';
+						ctx.textBaseline = 'bottom';
 					} else if (load.component === 'y') {
 						fromX = drawX;
 						fromY = drawY - (load.value > 0 ? currentArrowLength : -currentArrowLength);
 						
 						textX = fromX + currentTextOffset;
-						textY = fromY + (load.value > 0 ? -currentTextOffset : currentTextOffset) * 0; // Смещение текста от стрелки
-						ctx.textBaseline = load.value > 0 ? 'bottom' : 'top'; // Выравнивание текста относительно стрелки
-						ctx.textAlign = 'left'; // Центрируем текст по горизонтали
+						textY = fromY + (load.value > 0 ? -currentTextOffset : currentTextOffset) * 0; 
+						ctx.textBaseline = load.value > 0 ? 'bottom' : 'top';
+						ctx.textAlign = 'left';
 					}
 
 					drawArrow(fromX, fromY, toX, toY, LOAD_COLOR);
 					
 					ctx.save();
-					ctx.scale(1, -1); // Инвертируем Y-ось только для текста
+					ctx.scale(1, -1);
 					ctx.fillText(`${displayedValue} ${displayedUnitString}`, textX, -textY); 
 					ctx.restore();
 
@@ -1057,7 +1160,7 @@
 					const textPosY = drawY + (currentMomentRadius + currentTextOffset) * Math.sin(textArcAngle);
 					
 					ctx.save();
-					ctx.scale(1, -1); // Инвертируем Y-ось только для текста
+					ctx.scale(1, -1);
 					ctx.textAlign = load.value > 0 ? 'left' : 'right';
 					ctx.fillText(`${displayedValue} ${displayedUnitString}`, textPosX, -textPosY); 
 					ctx.restore();
@@ -1067,12 +1170,12 @@
 		
 		// НОВАЯ ФУНКЦИЯ: Отрисовка распределенных нагрузок
         function drawDistributedLoads() {
-            const LOAD_COLOR = 'green'; // Цвет для распределенных нагрузок
-            const DIST_LOAD_ARROW_LENGTH_PX = 15; // Желаемая длина индивидуальных стрелок в пикселях
-            const DIST_LOAD_OFFSET_PX = 0; // Желаемый отступ от линии элемента в пикселях
-            const DIST_LOAD_RECT_WIDTH_PX = 15; // Желаемая ширина прямоугольника нагрузки в пикселях
-            const DIST_LOAD_TEXT_OFFSET_PX = 15; // Желаемый отступ текста от символа в пикселях
-            const ARROW_HEAD_LENGTH_PX = 8; // Желаемая длина наконечника стрелки в пикселях
+            const LOAD_COLOR = 'green';
+            const DIST_LOAD_ARROW_LENGTH_PX = 15;
+            const DIST_LOAD_OFFSET_PX = 0;
+            const DIST_LOAD_RECT_WIDTH_PX = 15;
+            const DIST_LOAD_TEXT_OFFSET_PX = 15;
+            const ARROW_HEAD_LENGTH_PX = 8;
 
             elementLoads.forEach(load => {
                 const line = lines.find(l => l.elem_id === load.target_elem_id);
@@ -1082,29 +1185,24 @@
                 const node2 = nodes.find(n => n.node_id === line.nodeId2);
                 if (!node1 || !node2) return;
 
-                // Получаем текущие единицы для отображения
                 const currentForceDisplayUnit = forceUnitsSelect.value;
                 const currentLengthDisplayUnit = unitsSelect.value;
                 const currentDistributedForceUnit = `${currentForceDisplayUnit}/${currentLengthDisplayUnit}`;
 
-                // Конвертируем значение нагрузки для отображения
-                const storedForceUnit = load.unit.split('/')[0]; // Например, 'kN' из 'kN/m'
-                const storedLengthUnit = load.unit.split('/')[1]; // Например, 'm' из 'kN/m'
+                const storedForceUnit = load.unit.split('/')[0];
+                const storedLengthUnit = load.unit.split('/')[1];
 
-
-				const displayedValue = parseFloat(convertDistributedForce(load.startValue, storedForceUnit, storedLengthUnit, currentForceDisplayUnit, currentLengthDisplayUnit).toFixed(2)); // ИЗМЕНЕНО: Используем convertDistributedForce
+				const displayedValue = parseFloat(convertDistributedForce(load.startValue, storedForceUnit, storedLengthUnit, currentForceDisplayUnit, currentLengthDisplayUnit).toFixed(2));
                 const displayedUnitString = currentDistributedForceUnit;
 
                 const dx_line = node2.x - node1.x;
                 const dy_line = node2.y - node1.y;
                 const lineLength = Math.sqrt(dx_line * dx_line + dy_line * dy_line);
 
-                if (lineLength === 0) return; // Избегаем деления на ноль для нулевых линий
+                if (lineLength === 0) return;
 
-                // Вычисляем угол линии
                 const lineAngle = Math.atan2(dy_line, dx_line);
 
-                // Конвертируем пиксельные константы в мировые координаты (делим на scale)
                 const arrowLengthWorld = DIST_LOAD_ARROW_LENGTH_PX / scale;
                 const offsetWorld = DIST_LOAD_OFFSET_PX / scale;
                 const rectWidthWorld = DIST_LOAD_RECT_WIDTH_PX / scale;
@@ -1114,97 +1212,96 @@
                 ctx.save();
                 ctx.strokeStyle = LOAD_COLOR;
                 ctx.fillStyle = LOAD_COLOR;
-                ctx.lineWidth = 1 / scale; // Масштабируем толщину линии
-                ctx.font = `${12 / scale}px Arial`; // Масштабируем размер шрифта
+                ctx.lineWidth = 0.7 / scale;
+                ctx.font = `${12 / scale}px Arial`;
                 ctx.textBaseline = 'middle';
 
-                // Определяем перпендикулярный вектор для смещения нагрузки от элемента
                 let perpDx, perpDy;
-                if (load.component === 'x') { // Нагрузка параллельна оси X
+                if (load.component === 'x') {
                     perpDx = 0;
-                    // Стрелки указывают вверх для положительной нагрузки, вниз для отрицательной
                     perpDy = (load.startValue > 0) ? 1 : -1; 
-                } else { // Нагрузка параллельна оси Y
-                    // Стрелки указывают вправо для положительной нагрузки, влево для отрицательной
+                } else {
                     perpDx = (load.startValue > 0) ? -1 : 1; 
                     perpDy = 0;
                 }
 
-                // Нормализуем перпендикулярный вектор и масштабируем его по смещению
                 const perpVectorLength = Math.sqrt(perpDx * perpDx + perpDy * perpDy);
                 if (perpVectorLength > 0) {
                     perpDx = (perpDx / perpVectorLength) * offsetWorld;
                     perpDy = (perpDy / perpVectorLength) * offsetWorld;
                 }
 
-                // Отрисовка прямоугольника, представляющего распределенную нагрузку
-                ctx.beginPath();
-                const rectStartX = node1.x + perpDx;
-                const rectStartY = node1.y + perpDy;
-                const rectEndX = node2.x + perpDx;
-                const rectEndY = node2.y + perpDy;
+				// --- Определение координат четырех вершин четырехугольника ---
+				let p1_world = { x: node1.x, y: node1.y };
+				let p2_world = { x: node2.x, y: node2.y };
 
-                // Угол, перпендикулярный линии элемента
+				let p3_world = {};
+				let p4_world = {};
 
-                const normalAngle = lineAngle + ((node1.y > node2.y || node2.x > node1.x) ? Math.PI * 1.5 : Math.PI / 2); 
-                // Направление "ширины" прямоугольника (в зависимости от знака нагрузки)
-                const rectOffset = (load.startValue > 0) ? rectWidthWorld : -rectWidthWorld; 
+				if (load.component === 'y') {
+					p3_world.x = node2.x;
+					p4_world.x = node1.x;
 
-                // Координаты углов прямоугольника
-                const p1x = rectStartX;
-                const p1y = rectStartY;
-                const p2x = rectEndX;
-                const p2y = rectEndY;
-                const p3x = rectEndX + rectOffset * Math.cos(normalAngle);
-                const p3y = rectEndY + rectOffset * Math.sin(normalAngle);
-                const p4x = rectStartX + rectOffset * Math.cos(normalAngle);
-                const p4y = rectStartY + rectOffset * Math.sin(normalAngle);
+					if (load.startValue > 0) {
+						p3_world.y = node2.y - arrowLengthWorld;
+						p4_world.y = node1.y - arrowLengthWorld;
+					} else {
+						p3_world.y = node2.y + arrowLengthWorld;
+						p4_world.y = node1.y + arrowLengthWorld;
+					}
+				} else if (load.component === 'x') {
+					p3_world.y = node2.y;
+					p4_world.y = node1.y;
 
-                ctx.moveTo(p1x, p1y);
-                ctx.lineTo(p2x, p2y);
-                ctx.lineTo(p3x, p3y);
-                ctx.lineTo(p4x, p4y);
-                ctx.closePath();
-                ctx.globalAlpha = 0.2; // Делаем полупрозрачным
-                ctx.fill();
-                ctx.globalAlpha = 1.0; // Сбрасываем прозрачность
-                ctx.stroke();
+					if (load.startValue > 0) {
+						p3_world.x = node2.x - arrowLengthWorld;
+						p4_world.x = node1.x - arrowLengthWorld;
+					} else {
+						p3_world.x = node2.x + arrowLengthWorld;
+						p4_world.x = node1.x + arrowLengthWorld;
+					}
+				}
 
-                // Отрисовка индивидуальных стрелок вдоль прямоугольника нагрузки
-                // Минимум 2 стрелки, или больше, в зависимости от длины элемента
+				// --- Построение четырехугольника ---
+				ctx.beginPath();
+				ctx.moveTo(p1_world.x, p1_world.y);
+				ctx.lineTo(p2_world.x, p2_world.y);
+				ctx.lineTo(p3_world.x, p3_world.y);
+				ctx.lineTo(p4_world.x, p4_world.y);
+				ctx.closePath();
+
+				ctx.fillStyle = 'green';
+				ctx.globalAlpha = 0.2;
+				ctx.fill();
+
+				ctx.globalAlpha = 0.7;
+				ctx.strokeStyle = 'green';
+				ctx.lineWidth = 0.5 / scale;
+				ctx.stroke();
+
                 const numArrows = Math.max(2, Math.floor(lineLength / (arrowLengthWorld * 2))); 
                 for (let i = 0; i <= numArrows; i++) {
-                    const t = i / numArrows; // Параметр от 0 до 1 вдоль линии
+                    const t = i / numArrows;
                     const currentPointX = node1.x + dx_line * t;
                     const currentPointY = node1.y + dy_line * t;
 
                     let arrowFromX, arrowFromY, arrowToX, arrowToY;
 
                     if (load.component === 'x') {
-                        /*arrowFromX = currentPointX + perpDx;
-                        arrowFromY = currentPointY + perpDy;
-                        arrowToX = arrowFromX + (load.startValue > 0 ? arrowLengthWorld : -arrowLengthWorld);
-                        arrowToY = arrowFromY;*/
                         arrowToX = currentPointX + perpDx;
                         arrowToY = currentPointY + perpDy;
                         arrowFromX = arrowToX - (load.startValue > 0 ? arrowLengthWorld : -arrowLengthWorld);
                         arrowFromY = arrowToY;						
-                    } else { // 'y' компонент
-                        /*arrowFromX = currentPointX + perpDx;
-                        arrowFromY = currentPointY + perpDy;
-                        arrowToX = arrowFromX;
-                        arrowToY = arrowFromY - (load.startValue > 0 ? arrowLengthWorld : -arrowLengthWorld);*/
+                    } else {
 						arrowToX = currentPointX + perpDx;
                         arrowToY = currentPointY + perpDy;
                         arrowFromX = arrowToX;
                         arrowFromY = arrowToY - (load.startValue > 0 ? arrowLengthWorld : -arrowLengthWorld);
                     }
                     
-                    // Передаем длину наконечника в пикселях, чтобы drawArrow масштабировала ее сама
                     drawArrow(arrowFromX, arrowFromY, arrowToX, arrowToY, LOAD_COLOR, arrowHeadLengthWorld * scale); 
                 }
 
-                // Отрисовка текстовой метки нагрузки
                 const midPointX = node1.x + dx_line / 2;
                 const midPointY = node1.y + dy_line / 2;
 
@@ -1214,7 +1311,7 @@
                     textY = midPointY + perpDy;
                     ctx.textAlign = load.startValue > 0 ? 'right' : 'left';
                     ctx.textBaseline = 'middle';
-                } else { // 'y' компонент
+                } else {
                     textX = midPointX + perpDx;
                     textY = midPointY - perpDy - (load.startValue > 0 ? arrowLengthWorld + textOffsetWorld : -(arrowLengthWorld + textOffsetWorld));
                     ctx.textAlign = 'center';
@@ -1222,39 +1319,35 @@
                 }
                 
                 ctx.save();
-                ctx.scale(1, -1); // Инвертируем Y для правильного отображения текста
+                ctx.scale(1, -1);
+				ctx.globalAlpha = 1;
                 ctx.fillText(`${displayedValue} ${displayedUnitString}`, textX, -textY);
                 ctx.restore();
 
-                ctx.restore(); // Восстанавливаем контекст для следующей нагрузки
+                ctx.restore();
             });
         }
 
         // ===============================================
         // Функции для рисования КОНКРЕТНОЙ иконки закрепления на Canvas
-        // Эти функции берут SVG-данные и рисуют их с помощью методов Canvas
         // ===============================================
-        const restrictionIconSizeWorld = 15; // Базовый размер иконки в мировых координатах (без учета масштаба)
-        const restrictionIconOffsetWorld = 2; // Отступ иконки от центра узла
+        const restrictionIconSizeWorld = 15;
+        const restrictionIconOffsetWorld = 2;
 
         function drawRestrictionIcon(ctx, nodeX, nodeY, currentScale, iconType) {
             ctx.save();
             ctx.translate(nodeX, nodeY);
-            ctx.scale(1, 1); // Инвертируем Y для правильного рисования иконок
+            ctx.scale(1, 1);
 
-            // Все иконки будут рисоваться относительно центра узла
-            // и смещаться вниз (отрицательный Y)
             const iconRenderSize = restrictionIconSizeWorld / currentScale;
             const iconRenderOffset = restrictionIconOffsetWorld / currentScale;
 
-            ctx.strokeStyle = '#343a40'; // Цвет обводки
-            ctx.lineWidth = 1.1 / currentScale; // Толщина линии
-            ctx.fillStyle = '#6c757d'; // Цвет заливки
+            ctx.strokeStyle = '#343a40';
+            ctx.lineWidth = 1.1 / currentScale;
+            ctx.fillStyle = '#6c757d';
 
-            // Выбираем, какую иконку рисовать
             switch (iconType) {
                 case "pinned":
-                    // Треугольник
                     ctx.beginPath();
                     ctx.moveTo(0, -iconRenderOffset);
                     ctx.lineTo(-iconRenderSize / 1.5, -(iconRenderOffset + iconRenderSize));
@@ -1263,7 +1356,6 @@
                     ctx.fill();
                     ctx.stroke();
 
-                    // Линии "земли"
                     ctx.beginPath();
                     ctx.moveTo(-iconRenderSize * 0.8, -(iconRenderOffset + iconRenderSize + 0 / currentScale));
                     ctx.lineTo(iconRenderSize * 0.8, -(iconRenderOffset + iconRenderSize + 0 / currentScale));
@@ -1279,7 +1371,6 @@
                     }
                     break;
                 case "rolled-x":
-                    // Треугольник
                     ctx.beginPath();
                     ctx.moveTo(0, -iconRenderOffset*0.5);
                     ctx.lineTo(-iconRenderSize / 1.8, -(iconRenderOffset + iconRenderSize-4/ currentScale));
@@ -1288,16 +1379,6 @@
                     ctx.fill();
                     ctx.stroke();
 
-                    /*// Круги под треугольником (ролики)
-                    const rollerRadius = iconRenderSize * 0.15;
-                    const rollerOffsetY = iconRenderOffset + iconRenderSize + rollerRadius + 1 / currentScale;
-                    ctx.beginPath();
-                    ctx.arc(-iconRenderSize * 0.25, -rollerOffsetY, rollerRadius, 0, Math.PI * 2);
-                    ctx.arc(iconRenderSize * 0.25, -rollerOffsetY, rollerRadius, 0, Math.PI * 2);
-                    ctx.fill();
-                    ctx.stroke();*/
-
-                    // Линии "земли"
                     ctx.beginPath();
                     ctx.moveTo(-iconRenderSize * 0.8, -(iconRenderOffset + iconRenderSize + 0 / currentScale));
                     ctx.lineTo(iconRenderSize * 0.8, -(iconRenderOffset + iconRenderSize + 0 / currentScale));
@@ -1313,33 +1394,17 @@
                     }
                     break;
                 case "rolled-y":
-                    // Ролики по Y - повернутая версия rolled-x
-                    ctx.rotate(Math.PI / 1); // Поворачиваем на 90 градусов
-                    // Смещаем, чтобы центр был в правильном месте после поворота.
-                    // После поворота (0,0) остается центром, но оси x и y поменялись.
-                    // Иконка, которая обычно рисуется "вниз", теперь рисуется "вправо".
-                    // Нужно сместить ее на X. Оффсет и размер теперь по X.
+                    ctx.rotate(Math.PI / 1);
                     ctx.translate(iconRenderOffset, -iconRenderSize * 0); 
 
-                    // Треугольник (теперь он на "боку")
                     ctx.beginPath();
-                    ctx.moveTo(0, 0); // Вершина треугольника
-                    ctx.lineTo(-(iconRenderSize)*0.9, -iconRenderSize / 1.6); // Левая нижняя
-                    ctx.lineTo(-(iconRenderSize)*0.9, iconRenderSize / 1.6); // Правая нижняя
+                    ctx.moveTo(0, 0);
+                    ctx.lineTo(-(iconRenderSize)*0.9, -iconRenderSize / 1.6);
+                    ctx.lineTo(-(iconRenderSize)*0.9, iconRenderSize / 1.6);
                     ctx.closePath();
                     ctx.fill();
                     ctx.stroke();
 
-                    // Круги под треугольником (ролики)
-                    const rollerRadius_y = iconRenderSize * 0.15;
-                    const rollerOffsetX_y = iconRenderSize + rollerRadius_y + 1 / currentScale; // Смещение по X
-                    /*ctx.beginPath();
-                    ctx.arc(-rollerOffsetX_y, -iconRenderSize * 0.25, rollerRadius_y, 0, Math.PI * 2);
-                    ctx.arc(-rollerOffsetX_y, iconRenderSize * 0.25, rollerRadius_y, 0, Math.PI * 2);
-                    ctx.fill();
-                    ctx.stroke();*/
-
-                    // Линия "земли"
                     ctx.beginPath();
                     ctx.moveTo(-(rollerOffsetX_y + rollerRadius_y - 2 / currentScale), -iconRenderSize * 0.8);
                     ctx.lineTo(-(rollerOffsetX_y + rollerRadius_y - 2 / currentScale), iconRenderSize * 0.8);			
@@ -1356,7 +1421,6 @@
                 case "fixed":
                     const fixedHeight = iconRenderSize * 1.5;
 
-                    // Линии "земли"
                     ctx.beginPath();
                     ctx.moveTo(-iconRenderSize * 0.8, 0);
                     ctx.lineTo(iconRenderSize * 0.8, 0);
@@ -1365,8 +1429,7 @@
 					
                     ctx.moveTo(0, -20/ currentScale);
                     ctx.lineTo(0, 0/ currentScale);
-					//ctx.lineWidth = 3 / currentScale;
-                    ctx.stroke();
+					ctx.stroke();
 					
                     for (let i = 0; i < 3; i++) {
                         ctx.beginPath();
@@ -1381,7 +1444,6 @@
 
                     const sleeveWidth = iconRenderSize * 0.8;
                     const sleeveHeight = iconRenderSize * 1.2;
-                    // Линии "земли"
 					// Горизонт нижняя
                     ctx.beginPath();
                     ctx.moveTo(-iconRenderSize * 0.8, (iconRenderOffset - iconRenderSize + 5 / currentScale));
@@ -1414,15 +1476,10 @@
                     }
                     break;
                 case "sleeve-y":
-                    // Обойма по Y - повернутая версия sleeve-x
-                    ctx.rotate(Math.PI / 2); // Поворачиваем на 90 градусов
-                    // Смещаем, чтобы центр был в правильном месте.
-                    // Аналогично rolled-y, смещение будет по X
-                    //ctx.translate(iconRenderOffset, -iconRenderSize * 0.5); 
+                    ctx.rotate(Math.PI / 2);
 
                     const sleeveWidth_y = iconRenderSize * 0.8;
                     const sleeveHeight_y = iconRenderSize * 1.2;
-                    // Линии "земли"
 					// Горизонт нижняя
                     ctx.beginPath();
                     ctx.moveTo(-iconRenderSize * 0.8, (iconRenderOffset - iconRenderSize + 5 / currentScale));
@@ -1461,57 +1518,64 @@
             ctx.restore();
         }
 
-        function drawLines() { 
-            const lineIdFontSizeWorld = 12 / scale;
-            const lineIdOffsetWorld = 7 / scale;
+		function drawLines() {
+			const lineIdFontSizeWorld = 12 / scale;
+			const lineIdOffsetWorld = 7 / scale;
+			const normalLineWidth = 1.25;
+			const selectedLineWidth = 3;  // УВЕЛИЧЕННАЯ ТОЛЩИНА ДЛЯ ВЫДЕЛЕННОГО ЭЛЕМЕНТА
 
-            lines.forEach(line => {
-                const node1 = nodes.find(n => n.node_id === line.nodeId1); 
-                const node2 = nodes.find(n => n.node_id === line.nodeId2); 
-                if (node1 && node2) { 
-                    ctx.beginPath();
-                    ctx.moveTo(node1.x, node1.y);
-                    ctx.lineTo(node2.x, node2.y);
+			lines.forEach(line => {
+				const node1 = nodes.find(n => n.node_id === line.nodeId1);
+				const node2 = nodes.find(n => n.node_id === line.nodeId2);
+				if (node1 && node2) {
+					ctx.save(); // НОВОЕ: Сохраняем состояние контекста для этой линии
+					ctx.beginPath();
+					ctx.moveTo(node1.x, node1.y);
+					ctx.lineTo(node2.x, node2.y);
 
-					// НОВОЕ: Если линия выделена, используем оранжевый цвет; если только наведена, используем красный; иначе - стандартный.
-                    if (selectedElement && selectedElement.elem_id === line.elem_id) {
-                        ctx.strokeStyle = '#FF6D2D'; // Ярко-оранжевый, как для выделенного узла
-                    } else if (hoveredElement && hoveredElement.type === 'line' && hoveredElement.element.elem_id === line.elem_id) {
-                        ctx.strokeStyle = '#dc3545'; // Красный для наведения
-                    } else {
-                        ctx.strokeStyle = '#343a40'; // Серый по умолчанию
-                    }
+					const isSelected = selectedElements.some(el => el.type === 'line' && el.element.elem_id === line.elem_id);
 
- 
-                    ctx.lineWidth = 1.5 / scale;
-                    ctx.stroke();
+					if (isSelected) {
+						ctx.strokeStyle = '#FF6D2D'; // Оранжево-красный для выделенного
+						ctx.lineWidth = selectedLineWidth / scale;
+					} else if (hoveredElement && hoveredElement.type === 'line' && hoveredElement.element.elem_id === line.elem_id) {
+						ctx.strokeStyle = '#dc3545'; // Красный для наведения
+						ctx.lineWidth = normalLineWidth / scale;
+					} else {
+						ctx.strokeStyle = '#343a40'; // Темно-серый по умолчанию
+						ctx.lineWidth = normalLineWidth / scale;
+					}
+					ctx.stroke();
 
-                    const midX = (node1.x + node2.x) / 2;
-                    const midY = (node1.y + node2.y) / 2;
+					if (showElementIds) {
+						ctx.save(); // Сохраняем состояние для преобразований текста
+						const midX = (node1.x + node2.x) / 2;
+						const midY = (node1.y + node2.y) / 2;
 
-                    ctx.save();
-                    ctx.translate(midX, midY); 
-                    ctx.scale(1, -1); 
+						ctx.translate(midX, midY);
+						ctx.scale(1, -1);
 
-                    const angle = -Math.atan2(node2.y - node1.y, node2.x - node1.x); 
-                    
-                    if (angle > Math.PI / 2 || angle < -Math.PI / 2) {
-                        ctx.rotate(angle + Math.PI); 
-                    } else {
-                        ctx.rotate(angle);
-                    }
+						const angle = -Math.atan2(node2.y - node1.y, node2.x - node1.x); 
+						
+						if (angle > Math.PI / 2 || angle < -Math.PI / 2) {
+							ctx.rotate(angle + Math.PI);
+						} else {
+							ctx.rotate(angle);
+						}
 
-                    ctx.fillStyle = ctx.strokeStyle; 
-                    ctx.font = `${lineIdFontSizeWorld}px Arial`;
-                    ctx.textAlign = 'center';
-                    ctx.textBaseline = 'middle'; 
+						ctx.fillStyle = ctx.strokeStyle; // Берем цвет, который был установлен для обводки линии
+						ctx.font = `${lineIdFontSizeWorld}px Arial`;
+						ctx.textAlign = 'center';
+						ctx.textBaseline = 'middle';
 
-                    ctx.fillText(line.elem_id, 0, -lineIdOffsetWorld); 
-                    
-                    ctx.restore();
-                }
-            });
-        }
+						ctx.fillText(line.elem_id, 0, -lineIdOffsetWorld);
+						
+						ctx.restore(); // Восстанавливаем состояние после преобразований текста
+					}
+					ctx.restore(); // НОВОЕ: Восстанавливаем состояние контекста после отрисовки этой линии
+				}
+			});
+		}
 
         function drawCursorCircle() { 
             let drawAtX_screen, drawAtY_screen;
@@ -1558,21 +1622,20 @@
             clearCanvasBtn.addEventListener('click', clearAll);
 			
 			// НОВОЕ: Обработчик для кнопки сохранения модели
-            const saveModelBtn = document.getElementById('saveModelBtn');
             saveModelBtn.addEventListener('click', saveModel);
 			
 			            // НОВОЕ: DOM элементы для загрузки модели
-            const loadModelBtn = document.getElementById('loadModelBtn');
-            const fileInput = document.getElementById('fileInput');
+            // const loadModelBtn = document.getElementById('loadModelBtn'); // Уже объявлен
+            // const fileInput = document.getElementById('fileInput'); // Уже объявлен
 
             // Обработчик для кнопки "Загрузить"
             loadModelBtn.addEventListener('click', () => {
-                fileInput.click(); // Программно кликаем по скрытому полю ввода файла
+                fileInput.click();
             });
 
             // Обработчик для изменения (выбора) файла в поле ввода
             fileInput.addEventListener('change', (e) => {
-                const file = e.target.files[0]; // Получаем выбранный файл
+                const file = e.target.files[0];
                 if (!file) {
                     console.log("Файл не выбран.");
                     return;
@@ -1580,40 +1643,33 @@
 
                 const reader = new FileReader();
 
-                // Что делать, когда файл будет успешно прочитан
                 reader.onload = async (event) => {
-                    const fileContent = event.target.result; // Содержимое файла (строка JSON)
-                    await loadModel(fileContent); // Передаем содержимое в нашу функцию loadModel
-                    // Сбросить значение input, чтобы можно было загрузить тот же файл снова
+                    const fileContent = event.target.result;
+                    await loadModel(fileContent);
                     fileInput.value = ''; 
                 };
 
-                // Что делать, если произошла ошибка при чтении файла
                 reader.onerror = (error) => {
                     console.error("Ошибка чтения файла:", error);
-                    // Заменяем alert на console.error для Canvas/Immersive Document
                     console.error("Не удалось прочитать файл.");
                 };
 
-                // Читаем файл как текстовую строку
                 reader.readAsText(file);
             });
             
             unitsSelect.addEventListener('change', (e) => {
-                const oldUnit = currentUnit; // Старая единица длины
-                const newUnit = e.target.value; // Новая единица длины
+                const oldUnit = currentUnit;
+                const newUnit = e.target.value;
                 if (oldUnit === newUnit) return;
 
-				// Конвертируем координаты узлов и округляем до 5 знаков после запятой
                 nodes.forEach(node => { 
-                    node.x = convertUnits(node.x, oldUnit, newUnit); // НОВОЕ: Сохраняем полную точность
-                    node.y = convertUnits(node.y, oldUnit, newUnit); // НОВОЕ: Сохраняем полную точность
+                    node.x = convertUnits(node.x, oldUnit, newUnit);
+                    node.y = convertUnits(node.y, oldUnit, newUnit);
                 });
 
-                // НОВОЕ: Конвертируем ЗНАЧЕНИЯ МОМЕНТОВ при смене единиц длины
 				nodeLoads.forEach(load => {
                     if (load.type === 'moment') {
-                        load.value = convertMoment(load.value, load.unit, oldUnit, load.unit, newUnit); // НОВОЕ: Сохраняем полную точность
+                        load.value = convertMoment(load.value, load.unit, oldUnit, load.unit, newUnit);
                         load.lengthUnit = newUnit; 
                     }
                 });
@@ -1622,25 +1678,21 @@
                     const storedForceUnit = load.unit.split('/')[0];
                     const storedLengthUnit = load.unit.split('/')[1];
 
-                    load.startValue = convertDistributedForce(load.startValue, storedForceUnit, storedLengthUnit, storedForceUnit, newUnit); // НОВОЕ: Сохраняем полную точность
-                    load.endValue = convertDistributedForce(load.endValue, storedForceUnit, storedLengthUnit, storedForceUnit, newUnit);   // НОВОЕ: Сохраняем полную точность
+                    load.startValue = convertDistributedForce(load.startValue, storedForceUnit, storedLengthUnit, storedForceUnit, newUnit);
+                    load.endValue = convertDistributedForce(load.endValue, storedForceUnit, storedLengthUnit, storedForceUnit, newUnit);
                     
                     load.unit = `${storedForceUnit}/${newUnit}`;
                 });
 
-                // Масштабируем
-                // ИЗМЕНЕНО: Универсальное масштабирование
                 scale = scale * (lengthUnitConversions[newUnit] / lengthUnitConversions[oldUnit]);
-                currentUnit = newUnit; // Обновляем текущую единицу длины
+                currentUnit = newUnit;
 				
-				// НОВОЕ: Автоматическая отмена "магнита к сетке" для мелких единиц
                 if (newUnit === 'mm' || newUnit === 'cm' || newUnit === 'in') {
                     snapToGrid = false;
-                    snapToGridCheckbox.checked = false; // Обновляем состояние чекбокса в UI
+                    snapToGridCheckbox.checked = false;
                 } else {
-                    // НОВОЕ: Если переключились на 'м' или 'фут', автоматически включаем "магнит к сетке"
                     snapToGrid = true;
-                    snapToGridCheckbox.checked = true; // Обновляем состояние чекбокса в UI
+                    snapToGridCheckbox.checked = true;
                 }
                 
                 const worldCoordsNow = screenToWorld(mouse.x, mouse.y); 
@@ -1653,24 +1705,23 @@
                 updatePropertiesPanel();
                 draw();
 				
-				updateForceUnitDisplay(); // Эта функция вызывает updatePropertiesPanel() и draw()
-                updateUnitPairsSelect(); // НОВОЕ: Обновляем выпадающий список пар единиц
+				updateForceUnitDisplay();
+                updateUnitPairsSelect();
             });
 
 			// НОВОЕ: Слушатель событий для изменения единиц силы
             forceUnitsSelect.addEventListener('change', (e) => {
                 const newForceUnit = e.target.value;
-                const oldForceUnit = forceUnitsSelect.dataset.previousValue; // Получаем предыдущую единицу силы
+                const oldForceUnit = forceUnitsSelect.dataset.previousValue;
 
-                // Обновляем предыдущее значение для следующего изменения
                 forceUnitsSelect.dataset.previousValue = newForceUnit;
 
 				nodeLoads.forEach(load => {
                     if (load.type === 'point_force') {
-                        load.value = convertForce(load.value, load.unit, newForceUnit); // НОВОЕ: Сохраняем полную точность
+                        load.value = convertForce(load.value, load.unit, newForceUnit);
                         load.unit = newForceUnit; 
                     } else if (load.type === 'moment') {
-                        load.value = convertMoment(load.value, load.unit, load.lengthUnit, newForceUnit, load.lengthUnit); // НОВОЕ: Сохраняем полную точность
+                        load.value = convertMoment(load.value, load.unit, load.lengthUnit, newForceUnit, load.lengthUnit);
                         load.unit = newForceUnit; 
                     }
                 });
@@ -1679,142 +1730,177 @@
                     const storedForceUnit = load.unit.split('/')[0];
                     const storedLengthUnit = load.unit.split('/')[1];
 
-                    load.startValue = convertDistributedForce(load.startValue, storedForceUnit, storedLengthUnit, newForceUnit, storedLengthUnit); // НОВОЕ: Сохраняем полную точность
-                    load.endValue = convertDistributedForce(load.endValue, storedForceUnit, storedLengthUnit, newForceUnit, storedLengthUnit);   // НОВОЕ: Сохраняем полную точность
+                    load.startValue = convertDistributedForce(load.startValue, storedForceUnit, storedLengthUnit, newForceUnit, storedLengthUnit);
+                    load.endValue = convertDistributedForce(load.endValue, storedForceUnit, storedLengthUnit, newForceUnit, storedLengthUnit);
                     
                     load.unit = `${newForceUnit}/${storedLengthUnit}`;
                 });
 
-                // Обновляем UI и перерисовываем
                 updateForceUnitDisplay(); 
-				
-				updateForceUnitDisplay(); // Эта функция вызывает updatePropertiesPanel() и draw()
-                updateUnitPairsSelect(); // НОВОЕ: Обновляем выпадающий список пар единиц
+				updateUnitPairsSelect();
             });
 
 			// НОВОЕ: Слушатель событий для изменения наборов единиц
             unitPairsSelect.addEventListener('change', (e) => {
                 const selectedPairKey = e.target.value;
-                currentUnitPair = selectedPairKey; // Обновляем текущий набор
+                currentUnitPair = selectedPairKey;
 
                 if (selectedPairKey !== 'none') {
                     const targetUnits = unitPairConversions[selectedPairKey];
                     
-                    // Устанавливаем единицы длины
                     unitsSelect.value = targetUnits.length;
-                    // Принудительно вызываем событие change для unitsSelect
                     unitsSelect.dispatchEvent(new Event('change')); 
 
-                    // Устанавливаем единицы силы
                     forceUnitsSelect.value = targetUnits.force;
-                    // Обновляем previousValue для forceUnitsSelect перед вызовом события
                     forceUnitsSelect.dataset.previousValue = targetUnits.force; 
-                    // Принудительно вызываем событие change для forceUnitsSelect
                     forceUnitsSelect.dispatchEvent(new Event('change')); 
                 }
-                // Если выбран "Пользовательский", ничего не делаем,
-                // предполагается, что пользователь будет вручную настраивать другие списки.
             });
 
             deleteNodeItem.addEventListener('click', handleDeleteNode);
             deleteLineItem.addEventListener('click', handleDeleteLine);
+
+            // --- Логика открытия/закрытия модального окна материалов ---
+            const openMaterialsModalBtn = document.getElementById('openMaterialsModalBtn');
+            const materialsModal = document.getElementById('materialsModal');
+            const closeMaterialsModalBtn = document.getElementById('closeMaterialsModalBtn');
+            const closeMaterialsModalBtnBottom = document.getElementById('closeMaterialsModalBtnBottom');
+
+
         }
 
 		function handleMouseDown(e) {
-            e.preventDefault();
-            hideContextMenu(); // Скрываем контекстное меню при любом клике
-            const rect = canvas.getBoundingClientRect();
-            mouse.x = e.clientX - rect.left;
-            mouse.y = e.clientY - rect.top; // Это корректно, rect.top
+			e.preventDefault();
+			hideContextMenu(); // Убедитесь, что эта функция существует, или закомментируйте её
 
-            const worldCoords = screenToWorld(mouse.x, mouse.y); 
-            mouse.worldX = worldCoords.x;
-            mouse.worldY = worldCoords.y; 
-            const snapped = getSnappedCoordinates(mouse.worldX, mouse.worldY); 
-            mouse.snappedX = snapped.x;
-            mouse.snappedY = snapped.y; 
+			const rect = canvas.getBoundingClientRect();
+			mouse.x = e.clientX - rect.left;
+			mouse.y = e.clientY - rect.top; // Используем rect.top для консистентности, если в вашем коде это так
 
-            // Находим элемент, на который произошел клик
-            const clickedNode = findNodeAt(mouse.worldX, mouse.worldY); 
-            const clickedLine = findLineAt(mouse.worldX, mouse.worldY); 
+			// Получаем мировые координаты
+			const worldCoords = screenToWorld(mouse.x, mouse.y); 
+			mouse.worldX = worldCoords.x;
+			mouse.worldY = worldCoords.y; 
+			const snapped = getSnappedCoordinates(mouse.worldX, mouse.worldY); 
+			mouse.snappedX = snapped.x;
+			mouse.snappedY = snapped.y; 
 
-            if (e.button === 0) { // Левый клик
+			const clickedNode = findNodeAt(mouse.worldX, mouse.worldY); 
+			const clickedLine = findLineAt(mouse.worldX, mouse.worldY); 
+			
+			// --- НОВОЕ: Проверяем нажата ли клавиша Ctrl/Cmd ---
+			const isCtrlPressed = e.ctrlKey || e.metaKey; // Для Windows/Linux (Ctrl) и macOS (Cmd)
 
-                // --- СЦЕНАРИЙ: Активен режим построения стержней (firstNodeForLine не null) ---
-                if (firstNodeForLine) {
-                    if (clickedNode && firstNodeForLine.node_id !== clickedNode.node_id) {
-                        // Кликнули на ДРУГОЙ узел: строим новый стержень
-                        const exists = lines.some(line =>
-                            (line.nodeId1 === firstNodeForLine.node_id && line.nodeId2 === clickedNode.node_id) || 
-                            (line.nodeId1 === clickedNode.node_id && line.nodeId2 === firstNodeForLine.node_id)    
-                        );
+			if (e.button === 0) { // Левый клик
+				// --- СЦЕНАРИЙ 1: Попытка завершить линию (firstNodeForLine активен) ---
+				if (firstNodeForLine) {
+					if (clickedNode && firstNodeForLine.node_id !== clickedNode.node_id) {
+						// Второй клик по другому узлу: пытаемся создать линию
+						const exists = lines.some(line =>
+							(line.nodeId1 === firstNodeForLine.node_id && line.nodeId2 === clickedNode.node_id) || 
+							(line.nodeId1 === clickedNode.node_id && line.nodeId2 === firstNodeForLine.node_id)    
+						);
+						if (!exists) {
+							lines.push({ elem_id: nextElemId++, nodeId1: firstNodeForLine.node_id, nodeId2: clickedNode.node_id, structural_type: 'beam', materialId: null, loads: [] }); 
+							console.log(`Линия ${nextElemId - 1} создана между узлами ${firstNodeForLine.node_id} и ${clickedNode.node_id}.`);
+						} else {
+							console.log(`Линия между узлами ${firstNodeForLine.node_id} и ${clickedNode.node_id} уже существует.`); 
+						}
+						
+						// --- ИЗМЕНЕНИЕ ДЛЯ СКВОЗНОГО ПОСТРОЕНИЯ ЛИНИЙ ---
+						// Если линия успешно создана, новый узел становится первым для следующей линии
+						firstNodeForLine = clickedNode; // Теперь clickedNode (второй узел) становится новым firstNodeForLine
+						selectedNode = clickedNode; // Выделяем новый активный узел
+						selectedElement = null; // Сбрасываем выделение линии
+						selectedElements = [{ type: 'node', element: clickedNode }]; // Выделяем только этот узел
+						// --- КОНЕЦ ИЗМЕНЕНИЯ ---
 
-                        if (!exists) {
-                            lines.push({ elem_id: nextElemId++, nodeId1: firstNodeForLine.node_id, nodeId2: clickedNode.node_id, structural_type: 'beam' }); 
-                            console.log(`Линия ${lines[lines.length - 1].elem_id} построена между узлами ${firstNodeForLine.node_id} и ${clickedNode.node_id}.`);
-                        } else {
-                            console.log(`Линия между узлами ${firstNodeForLine.node_id} и ${clickedNode.node_id} уже существует.`); 
-                        }
-                        firstNodeForLine = clickedNode; // Этот узел становится началом для следующего стержня
-                        selectedNode = clickedNode;     // Выделяем этот узел, чтобы показать продолжение построения
-                        selectedElement = null; 
-                    } else {
-                        // Кликнули на ТОТ ЖЕ узел, на ЛИНИЮ, или в ПУСТОЕ МЕСТО: завершаем режим построения стержней
-                        firstNodeForLine = null;
-                        selectedNode = null; // Снимаем любое выделение узла
-                        selectedElement = null; // Снимаем любое выделение линии
-                    }
-                } 
-                // --- СЦЕНАРИЙ: Режим построения стержней НЕ активен (firstNodeForLine null) ---
-                else { 
-                    if (clickedNode) {
-                        // Кликнули на УЗЕЛ: СРАЗУ инициируем режим построения стержней с него
-                        firstNodeForLine = clickedNode; 
-                        selectedNode = clickedNode;     // Выделяем этот узел
-                        selectedElement = null;         // Снимаем выделение линии, если была
-                    } else if (clickedLine) {
-                        // Кликнули на ЛИНИЮ: выделяем ее для редактирования
-                        selectedElement = clickedLine;
-                        selectedNode = null; // Снимаем выделение узла, если было
-                        firstNodeForLine = null; // Убеждаемся, что режим построения стержней не активен
-                    } else {
-                        // Кликнули в ПУСТОЕ МЕСТО:
-                        // Снимаем все выделения и отменяем режим построения стержней, если что-то было активно.
-                        if (selectedNode || selectedElement || firstNodeForLine) { 
-                            selectedNode = null;
-                            selectedElement = null;
-                            firstNodeForLine = null; 
-                        } else {
-                            // Если ничего не было активно, создаем новый узел
-                            const placeX = snapToGrid ? mouse.snappedX : mouse.worldX; 
-                            const placeY = snapToGrid ? mouse.snappedY : mouse.worldY;
-                            const newNode = { node_id: nextNodeId++, x: placeX, y: placeY }; 
-                            nodes.push(newNode); 
-                            console.log(`Узел ${newNode.node_id} создан по координатам (${newNode.x.toFixed(3)}, ${newNode.y.toFixed(3)}).`);
-                            selectedNode = null; 
-                            selectedElement = null;
-                            firstNodeForLine = null; 
-                        }
-                    }
-                }
-            } else if (e.button === 1) { // Средний клик для панорамирования
-                isPanning = true;
-                lastPanX = e.clientX;
-                lastPanY = e.clientY;
-                canvas.style.cursor = 'grabbing';
-            }
-            // Обновляем панель свойств и перерисовываем канвас в конце обработчика
-            updatePropertiesPanel(); 
-            draw();
-        }
-
-
-
-
+					} else {
+						// Клик по тому же узлу или пустому месту, когда линия ожидала второй узел
+						firstNodeForLine = null; // Отменяем построение линии
+						selectedNode = null; 
+						selectedElement = null;
+						selectedElements = []; // Сбрасываем все выделения
+					}
+				} 
+				// --- СЦЕНАРИЙ 2: Клавиша Ctrl/Cmd нажата (множественный выбор) ---
+				// Этот блок выполняется, если firstNodeForLine НЕ активен, но Ctrl/Cmd нажат
+				else if (isCtrlPressed) { 
+					if (clickedNode) {
+						// Если клик по узлу с Ctrl: добавить/удалить узел из множественного выделения
+						const existingIndex = selectedElements.findIndex(el => el.type === 'node' && el.element.node_id === clickedNode.node_id);
+						if (existingIndex > -1) {
+							selectedElements.splice(existingIndex, 1); // Удалить, если уже выделен
+						} else {
+							selectedElements.push({ type: 'node', element: clickedNode }); // Добавить, если не выделен
+						}
+					} else if (clickedLine) {
+						// Если клик по линии с Ctrl: добавить/удалить линию из множественного выделения
+						const existingIndex = selectedElements.findIndex(el => el.type === 'line' && el.element.elem_id === clickedLine.elem_id);
+						if (existingIndex > -1) {
+							selectedElements.splice(existingIndex, 1); // Удалить, если уже выделен
+						} else {
+							selectedElements.push({ type: 'line', element: clickedLine }); // Добавить, если не выделен
+						}
+					} else {
+						// Клик по пустому месту с Ctrl/Cmd: не меняем текущее множественное выделение
+					}
+					// В режиме CTRL-выбора, одиночные переменные selectedNode/selectedElement всегда будут null
+					selectedNode = null;
+					selectedElement = null;
+					firstNodeForLine = null; // Всегда очищаем firstNodeForLine в режиме выбора
+				}
+				// --- СЦЕНАРИЙ 3: Обычный левый клик (одиночный выбор или создание узла) ---
+				// Этот блок выполняется, если firstNodeForLine НЕ активен И Ctrl/Cmd НЕ нажат
+				else { 
+					if (clickedNode) {
+						// Обычный клик по узлу: выделяем его И устанавливаем как первый для линии
+						// ЭТО ПОВЕДЕНИЕ ВАШЕГО ИСХОДНОГО КОДА, КОТОРОЕ АВТОМАТИЧЕСКИ НАЧИНАЕТ ПОСТРОЕНИЕ ЛИНИИ
+						firstNodeForLine = clickedNode; 
+						selectedNode = clickedNode; // Одиночное выделение узла
+						selectedElement = null;
+						selectedElements = [{ type: 'node', element: clickedNode }]; // Обновляем множественное выделение для одиночного выбора
+					} else if (clickedLine) {
+						// Обычный клик по линии: выделяем только эту линию
+						selectedElement = clickedLine; // Одиночное выделение линии
+						selectedNode = null;
+						firstNodeForLine = null; // Сбрасываем firstNodeForLine
+						selectedElements = [{ type: 'line', element: clickedLine }]; // Обновляем множественное выделение для одиночного выбора
+					} else { // Клик по пустому месту
+						if (selectedNode || selectedElement || firstNodeForLine || selectedElements.length > 0) { 
+							// Если что-то было выделено (одиночно или множественно) или линия была наполовину, сбрасываем все
+							selectedNode = null;
+							selectedElement = null;
+							firstNodeForLine = null;
+							selectedElements = []; // Очищаем множественное выделение
+						} else {
+							// Ничего не выделено/не наполовину, клик по пустому месту: создаем новый узел (ВАША ИСХОДНАЯ ЛОГИКА)
+							const placeX = snapToGrid ? mouse.snappedX : mouse.worldX; 
+							const placeY = snapToGrid ? mouse.snappedY : mouse.worldY;
+							const newNode = { node_id: nextNodeId++, x: placeX, y: placeY }; 
+							nodes.push(newNode); 
+							console.log(`Узел ${newNode.node_id} создан по координатам (${newNode.x.toFixed(3)}, ${newNode.y.toFixed(3)}).`);
+							
+							// После создания узла, выделения быть не должно
+							selectedNode = null; 
+							selectedElement = null;
+							firstNodeForLine = null; 
+							selectedElements = [];
+						}
+					}
+				}
+			} else if (e.button === 1) { // Средний клик для панорамирования
+				isPanning = true;
+				lastPanX = e.clientX;
+				lastPanY = e.clientY;
+				canvas.style.cursor = 'grabbing';
+			}
+			updatePropertiesPanel(); // В конце всегда обновляем панель свойств
+			draw(); // В конце всегда перерисовываем холст
+		}
 
         function handleMouseMove(e) {
             const rect = canvas.getBoundingClientRect();
-            // mouse.x теперь нужно корректировать с учетом левой границы canvas относительно viewport
             mouse.x = e.clientX - rect.left;
             mouse.y = e.clientY - rect.top;
             
@@ -1848,7 +1934,6 @@
         function handleWheelZoom(e) {
             e.preventDefault();
             const rect = canvas.getBoundingClientRect();
-            // mouseX_screen корректируется относительно левого края canvas
             const mouseX_screen = e.clientX - rect.left;
             const mouseY_screen = e.clientY - rect.top;
 
@@ -1878,14 +1963,12 @@
         function handleContextMenu(e) {
             e.preventDefault();
             const rect = canvas.getBoundingClientRect();
-            // e.clientX - rect.left уже дает координату относительно canvas
             const worldCoords = screenToWorld(e.clientX - rect.left, e.clientY - rect.top); 
             contextMenuTarget = findElementAt(worldCoords.x, worldCoords.y); 
 
             if (contextMenuTarget) {
                 deleteNodeItem.style.display = contextMenuTarget.type === 'node' ? 'block' : 'none';
                 deleteLineItem.style.display = contextMenuTarget.type === 'line' ? 'block' : 'none';
-                // Позиционирование контекстного меню относительно всего документа
                 customContextMenu.style.left = `${e.clientX}px`;
                 customContextMenu.style.top = `${e.clientY}px`;
                 customContextMenu.classList.remove('hidden');
@@ -1949,7 +2032,6 @@
                 const nodeIdToDelete = contextMenuTarget.element.node_id; 
                 nodes = nodes.filter(node => node.node_id !== nodeIdToDelete); 
                 lines = lines.filter(line => line.nodeId1 !== nodeIdToDelete && line.nodeId2 !== nodeIdToDelete);
-                // Удаляем закрепление, если оно было
                 restrictions = restrictions.filter(res => res.node_id !== nodeIdToDelete);
 				nodeLoads = nodeLoads.filter(load => load.target_id !== nodeIdToDelete);
 
@@ -1973,15 +2055,14 @@
             nodes = [];
             lines = [];
             restrictions = [];
-            nodeLoads = []; // Очищаем нагрузки
-			elementLoads = []; // НОВОЕ: Очищаем распределенные нагрузки
+            nodeLoads = [];
+			elementLoads = [];
             nextNodeId = 1;
             nextElemId = 1;
-            nextLoadId = 1; // Сбрасываем счетчик ID нагрузок
-			nextElementLoadId = 1; // НОВОЕ: Сбрасываем счетчик ID распределенных нагрузок
+            nextLoadId = 1;
+			nextElementLoadId = 1;
             selectedNode = null;
             firstNodeForLine = null;
-			// НОВОЕ: Сбрасываем также selectedElement
             selectedElement = null;
             updatePropertiesPanel();
             draw();
@@ -1995,7 +2076,6 @@
             if (selectedNode) {
                 propertiesPanel.style.display = 'block';
 
-                // Получаем текущую выбранную единицу отображения силы и длины
                 const currentForceDisplayUnit = forceUnitsSelect.value; 
                 const currentLengthDisplayUnit = unitsSelect.value;
                 const currentMomentDisplayUnit = currentForceDisplayUnit + '*' + currentLengthDisplayUnit;
@@ -2014,7 +2094,6 @@
                             displayedValue = convertForce(load.value, load.unit, currentForceDisplayUnit).toFixed(2);
                             displayedUnitString = currentForceDisplayUnit;
                         } else if (load.type === 'moment') {
-                            // Конвертируем значение момента
                             displayedValue = convertMoment(load.value, load.unit, load.lengthUnit, currentForceDisplayUnit, currentLengthDisplayUnit).toFixed(2);
                             displayedUnitString = currentMomentDisplayUnit;
                         }
@@ -2029,14 +2108,11 @@
                     loadsHtml += '</div>';
                 }
 
-                // Получаем текущие закрепления для выбранного узла
                 let currentRestriction = restrictions.find(r => r.node_id === selectedNode.node_id);
-                // Если закреплений нет, создаем "пустой" объект для удобства
                 if (!currentRestriction) {
                     currentRestriction = { dx: 0, dy: 0, dr: 0, type: "none" };
                 }
 
-                // HTML-разметка для свойств узла
                 nodePropertiesContent.innerHTML = `
                     <h4 class="font-bold text-gray-700 mb-2">Свойства узла ${selectedNode.node_id}</h4>
                     <div class="property-group">
@@ -2087,22 +2163,14 @@
                     </div>
                 `;
 
-                // =========================================================================
-                // ПЕРЕМЕЩЕННЫЕ DOM ЭЛЕМЕНТЫ и их ОБРАБОТЧИКИ СОБЫТИЙ:
-                // Эти элементы теперь существуют в DOM, можно их получить и работать с ними.
-                // =========================================================================
-
-                // DOM элементы для узлов
                 const nodeXInput = document.getElementById('nodeX');
                 const nodeYInput = document.getElementById('nodeY');
 
-                // DOM элементы для закреплений
                 const restrictXCheckbox = document.getElementById('restrictX');
                 const restrictYCheckbox = document.getElementById('restrictY');
                 const restrictRCheckbox = document.getElementById('restrictR');
                 const restrictionIconsContainer = document.getElementById('restrictionIconsContainer');
 
-                // DOM элементы для нагрузок
                 const nodeLoadsList = document.getElementById('nodeLoadsList');
                 const addForceXInput = document.getElementById('addForceX');
                 const addForceXBtn = document.getElementById('addForceXBtn');
@@ -2111,11 +2179,9 @@
                 const addMomentInput = document.getElementById('addMoment');
                 const addMomentBtn = document.getElementById('addMomentBtn');
 
-                // Обновляем значения полей X и Y для выбранного узла
                 nodeXInput.value = selectedNode.x.toFixed(3);
                 nodeYInput.value = selectedNode.y.toFixed(3);
 
-                // Обработчики ввода координат узла
                 nodeXInput.addEventListener('change', (e) => {
                     const newValue = parseFloat(e.target.value);
                     if (!isNaN(newValue)) {
@@ -2132,15 +2198,6 @@
                     }
                 });
 
-                // =========================================================================
-                // ЛОГИКА ДЛЯ ЗАКРЕПЛЕНИЙ (ОСТАВЛЕНО БЕЗ ИЗМЕНЕНИЙ)
-                // =========================================================================
-                // Получаем текущие закрепления для выбранного узла (перенесено выше, но здесь используется)
-                // let currentRestriction = restrictions.find(r => r.node_id === selectedNode.node_id);
-                // if (!currentRestriction) { currentRestriction = { dx: 0, dy: 0, dr: 0, type: "none" }; }
-
-
-                // Вспомогательная функция для обновления закрепления
                 const updateRestriction = () => {
                     let updated = false;
                     restrictions = restrictions.filter(r => {
@@ -2149,15 +2206,13 @@
                             r.dy = restrictYCheckbox.checked ? 1 : 0;
                             r.dr = restrictRCheckbox.checked ? 1 : 0;
                             updated = true;
-                            // Если все ограничения сняты, удаляем закрепление
                             if (r.dx === 0 && r.dy === 0 && r.dr === 0) {
-                                return false; // Удаляем элемент из массива
+                                return false;
                             }
                         }
-                        return true; // Сохраняем элемент
+                        return true;
                     });
 
-                    // Если закрепления не было, и сейчас есть хотя бы одно, добавляем его
                     if (!updated && (restrictXCheckbox.checked || restrictYCheckbox.checked || restrictRCheckbox.checked)) {
                         restrictions.push({
                             node_id: selectedNode.node_id,
@@ -2166,27 +2221,22 @@
                             dr: restrictRCheckbox.checked ? 1 : 0
                         });
                     }
-                    draw(); // Перерисовать, чтобы показать изменения закреплений
-                    renderRestrictionIcons(); // Обновляем иконки закреплений
+                    draw();
+                    renderRestrictionIcons();
                 };
 
-                // Обработчики чекбоксов
                 restrictXCheckbox.addEventListener('change', updateRestriction);
                 restrictYCheckbox.addEventListener('change', updateRestriction);
                 restrictRCheckbox.addEventListener('change', updateRestriction);
 
-
-                // Логика для кнопок закреплений
                 const renderRestrictionIcons = () => {
-                    restrictionIconsContainer.innerHTML = ''; // Очищаем контейнер
+                    restrictionIconsContainer.innerHTML = '';
 
-                    // Обновляем currentRestriction здесь, чтобы он был актуален для иконок
                     currentRestriction = restrictions.find(r => r.node_id === selectedNode.node_id);
                     if (!currentRestriction) {
                         currentRestriction = { dx: 0, dy: 0, dr: 0, type: "none" };
                     }
 
-                    // Добавляем иконку "Нет закрепления"
                     const noRestrictionBtn = document.createElement('button');
                     noRestrictionBtn.className = `restriction-icon-btn ${currentRestriction.dx === 0 && currentRestriction.dy === 0 && currentRestriction.dr === 0 ? 'active' : ''}`;
                     noRestrictionBtn.innerHTML = '<span class="no-restriction-text">Ø</span>';
@@ -2196,7 +2246,7 @@
                         restrictXCheckbox.checked = false;
                         restrictYCheckbox.checked = false;
                         restrictRCheckbox.checked = false;
-                        updateRestriction(); // Чтобы обновить состояние иконок
+                        updateRestriction();
                     });
                     restrictionIconsContainer.appendChild(noRestrictionBtn);
 
@@ -2208,7 +2258,7 @@
                             btn.innerHTML = `<img src="icons/${type.icon}" alt="${type.label}" title="${type.label}">`;
                             btn.title = type.label;
                             btn.addEventListener('click', () => {
-                                restrictions = restrictions.filter(r => r.node_id !== selectedNode.node_id); // Удаляем старое
+                                restrictions = restrictions.filter(r => r.node_id !== selectedNode.node_id);
                                 restrictions.push({
                                     node_id: selectedNode.node_id,
                                     dx: type.dx,
@@ -2218,32 +2268,27 @@
                                 restrictXCheckbox.checked = type.dx === 1;
                                 restrictYCheckbox.checked = type.dy === 1;
                                 restrictRCheckbox.checked = type.dr === 1;
-                                updateRestriction(); // Обновляем иконки и перерисовываем
+                                updateRestriction();
                             });
                             restrictionIconsContainer.appendChild(btn);
                         }
                     }
                 };
 
-                renderRestrictionIcons(); // Вызываем для первой отрисовки иконок
+                renderRestrictionIcons();
 
-                // =========================================================================
-                // ЛОГИКА ДЛЯ НАГРУЗОК (ВАЖНЫЕ ИЗМЕНЕНИЯ СЮДА)
-                // =========================================================================
-                // Функция для отображения текущих нагрузок на узле
                 const renderNodeLoads = () => {
-                    nodeLoadsList.innerHTML = ''; // Очищаем список
+                    nodeLoadsList.innerHTML = '';
                     const loadsForSelectedNode = nodeLoads.filter(load => load.target_id === selectedNode.node_id);
 
                     if (loadsForSelectedNode.length === 0) {
                         nodeLoadsList.innerHTML = '<p class="text-gray-500 text-sm">Нагрузок нет</p>';
                     } else {
-                        // Получаем текущую выбранную единицу отображения силы и длины
                         const currentForceDisplayUnit = forceUnitsSelect.value; 
                         const currentLengthDisplayUnit = unitsSelect.value;
                         const currentMomentDisplayUnit = currentForceDisplayUnit + '*' + currentLengthDisplayUnit;
 
-                        nodeLoadsList.innerHTML = ''; // Очищаем список перед добавлением элементов
+                        nodeLoadsList.innerHTML = '';
                         nodeSpecificLoads.forEach(load => { 
                             let displayedValue;
                             let displayedUnitString;
@@ -2252,7 +2297,6 @@
                                 displayedValue = convertForce(load.value, load.unit, currentForceDisplayUnit).toFixed(2);
                                 displayedUnitString = currentForceDisplayUnit;
                             } else if (load.type === 'moment') {
-                                // Конвертируем значение момента
                                 displayedValue = convertMoment(load.value, load.unit, load.lengthUnit, currentForceDisplayUnit, currentLengthDisplayUnit).toFixed(2);
                                 displayedUnitString = currentMomentDisplayUnit;
                             }
@@ -2276,23 +2320,19 @@
                             nodeLoadsList.appendChild(loadItemDiv);
                         });
 
-                        // Добавляем обработчики для кнопок удаления нагрузок
                         nodeLoadsList.querySelectorAll('.load-item button').forEach(button => {
                             button.addEventListener('click', (e) => {
                                 const loadIdToDelete = parseInt(e.target.dataset.loadId);
                                 nodeLoads = nodeLoads.filter(load => load.load_id !== loadIdToDelete);
-                                renderNodeLoads(); // Обновляем только список нагрузок
-                                draw(); // Перерисовываем канвас
+                                renderNodeLoads();
+                                draw();
                             });
                         });
                     }
                 };
 
-                // Вызываем при первой загрузке панели для узла
                 renderNodeLoads();
 
-                // Обработчики добавления нагрузок
-                // При добавлении нагрузки, сохраняем ее значение и ТЕКУЩУЮ ЕДИНИЦУ
                 addForceXBtn.addEventListener('click', () => {
                     const value = parseFloat(addForceXInput.value);
                     if (!isNaN(value)) {
@@ -2302,11 +2342,11 @@
                             target_id: selectedNode.node_id,
                             component: 'x',
                             value: value,
-                            unit: forceUnitsSelect.value // <-- СОХРАНЯЕМ ЕДИНИЦУ СИЛЫ ВВОДА
+                            unit: forceUnitsSelect.value
                         });
-                        addForceXInput.value = ''; // Очищаем поле
-                        renderNodeLoads(); // Обновляем только список нагрузок
-                        draw(); // Перерисовываем канвас
+                        addForceXInput.value = '';
+                        renderNodeLoads();
+                        draw();
                     }
                 });
 
@@ -2319,9 +2359,9 @@
                             target_id: selectedNode.node_id,
                             component: 'y',
                             value: value,
-                            unit: forceUnitsSelect.value // <-- СОХРАНЯЕМ ЕДИНИЦУ СИЛЫ ВВОДА
+                            unit: forceUnitsSelect.value
                         });
-                        addForceYInput.value = ''; // Очищаем поле
+                        addForceYInput.value = '';
                         renderNodeLoads();
                         draw();
                     }
@@ -2334,24 +2374,41 @@
                             load_id: nextLoadId++,
                             type: 'moment',
                             target_id: selectedNode.node_id,
-                            component: 'r', // 'r' для момента (rotation)
+                            component: 'r',
                             value: value,
-                            unit: forceUnitsSelect.value, // <-- СОХРАНЯЕМ ЕДИНИЦУ СИЛЫ ВВОДА
-                            lengthUnit: unitsSelect.value // <-- НОВОЕ: СОХРАНЯЕМ ЕДИНИЦУ ДЛИНЫ ВВОДА
+                            unit: forceUnitsSelect.value,
+                            lengthUnit: unitsSelect.value
                         });
-                        addMomentInput.value = ''; // Очищаем поле
+                        addMomentInput.value = '';
                         renderNodeLoads();
                         draw();
                     }
                 });
 
-			} else if (selectedElement) { // НОВОЕ: Если выбрана линия
+			} else if (selectedElement) {
                 propertiesPanel.style.display = 'block';
 
                 const currentForceDisplayUnit = forceUnitsSelect.value;
                 const currentLengthDisplayUnit = unitsSelect.value;
                 const currentMomentDisplayUnit = `${currentForceDisplayUnit}*${currentLengthDisplayUnit}`;
-                const currentDistributedForceUnit = `${currentForceDisplayUnit}/${currentLengthDisplayUnit}`; // НОВОЕ: Единица для распределенной нагрузки
+                const currentDistributedForceUnit = `${currentForceDisplayUnit}/${currentLengthDisplayUnit}`;
+				
+                // --- Формирование опций для выпадающего списка материалов ---
+                let materialOptionsHtml = '<option value="">Не выбрано</option>'; // Опция по умолчанию
+                modelMaterials.forEach(mat => {
+                    // Проверяем, назначен ли этот материал текущему элементу
+                    const isSelected = selectedElement.materialId === mat.id ? 'selected' : '';
+                    materialOptionsHtml += `<option value="${mat.id}" ${isSelected}>${mat.name} (${mat.standard})</option>`;
+                });
+
+                // --- Получаем имя назначенного материала для отображения ---
+                let assignedMaterialName = 'Нет';
+                if (selectedElement.materialId) {
+                    const assignedMat = modelMaterials.find(m => m.id === selectedElement.materialId);
+                    if (assignedMat) {
+                        assignedMaterialName = `${assignedMat.name} (${assignedMat.standard})`;
+                    }
+                }				
 
                 let loadsHtml = '';
                 const elementSpecificLoads = elementLoads.filter(load => load.target_elem_id === selectedElement.elem_id);
@@ -2363,51 +2420,18 @@
                         let displayedValue;
                         let displayedUnitString;
 						
-						// НОВОЕ: Отладочные сообщения перед конвертацией
-						console.log("Processing elementLoad:", load);
-                        console.log("Load unit string:", load.unit); // Посмотрим, что хранится в load.unit
-
-                        // Для распределенных нагрузок, unit - это уже N/m, kN/m и т.д.
-                        // Нам нужно конвертировать только числовое значение
-                        // из сохраненной единицы (load.unit) в текущую отображаемую (currentDistributedForceUnit)
-                        // Это потребует новой функции convertDistributedForce, которую мы добавим позже.
-                        // Пока что будем отображать как есть, или упростим.
-                        // Для простоты, пока что, будем считать, что load.unit уже в kN/m или N/mm и т.д.
-                        // и конвертировать только числовую часть.
-                        // TODO: Реализовать convertDistributedForce
-                        
-                        // Временно, для отображения, будем использовать convertForce,
-                        // но нужно будет уточнить логику, так как это N/m, а не N
-                        // Для отображения, можем просто взять load.value и load.unit
-                        // и добавить логику конвертации, когда будут все коэффициенты.
-                        // Сейчас load.unit будет строкой типа "kN/m", поэтому просто отображаем ее.
-                        
-                        // Для корректной конвертации распределенных нагрузок:
-                        // Нужно конвертировать (value * force_conversion_factor) / (length_conversion_factor)
-                        const storedForceUnit = load.unit.split('/')[0]; // Например, 'kN' из 'kN/m'
-                        const storedLengthUnit = load.unit.split('/')[1]; // Например, 'm' из 'kN/m'
+                        const storedForceUnit = load.unit.split('/')[0];
+                        const storedLengthUnit = load.unit.split('/')[1];
 						
-						console.log("Parsed stored units: Force=", storedForceUnit, "Length=", storedLengthUnit);
-
                         const targetForceUnit = currentDistributedForceUnit.split('/')[0];
                         const targetLengthUnit = currentDistributedForceUnit.split('/')[1];
 						
-						console.log("Target display units: Force=", targetForceUnit, "Length=", targetLengthUnit);
-						
-						// Убедимся, что load.startValue - это число
                         if (isNaN(load.startValue)) {
-                            console.error("load.startValue is NaN:", load.startValue);
                             displayedValue = "NaN";
                         } else {
                             displayedValue = convertDistributedForce(load.startValue, storedForceUnit, storedLengthUnit, targetForceUnit, targetLengthUnit).toFixed(5);
-                            // НОВОЕ: Отладочное сообщение после конвертации
-                            console.log("Displayed value after conversion:", displayedValue);
                         }
                         displayedUnitString = currentDistributedForceUnit;
-
-						displayedValue = convertDistributedForce(load.startvalue, storedForceUnit, storedLengthUnit, targetForceUnit, targetLengthUnit).toFixed(5); // ИЗМЕНЕНО: Используем convertDistributedForce
-                        displayedUnitString = currentDistributedForceUnit;
-
 
                         loadsHtml += `
                             <div class="load-item">
@@ -2419,12 +2443,29 @@
                     loadsHtml += '</div>';
                 }
 
+                // НОВЫЙ ВНУТРЕННИЙ HTML ДЛЯ ПАНЕЛИ СВОЙСТВ ЭЛЕМЕНТА
                 nodePropertiesContent.innerHTML = `
                     <h4 class="font-bold text-gray-700 mb-2">Свойства элемента ${selectedElement.elem_id}</h4>
                     <div class="property-group">
                         <p>Начальный узел: ${selectedElement.nodeId1}</p>
                         <p>Конечный узел: ${selectedElement.nodeId2}</p>
                     </div>
+
+                    <!-- НОВАЯ СЕКЦИЯ: Назначение материала -->
+                    <div class="property-group">
+                        <h4 class="font-bold text-gray-700 mb-2">Назначение материала</h4>
+                        <div class="flex items-center gap-2 mb-2">
+                            <select id="materialAssignmentSelect" class="flex-grow form-select block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md shadow-sm">
+                                ${materialOptionsHtml}
+                            </select>
+                            <button id="assignMaterialBtn" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                                Выбрать
+                            </button>
+                        </div>
+                        <p class="text-sm text-gray-700">Назначенный материал: <span id="assignedMaterialDisplay" class="font-semibold italic">${assignedMaterialName}</span></p>
+                    </div>
+
+                    <!-- Существующий блок: Распределенные нагрузки -->
                     <div class="property-group">
                         <h4 class="font-bold text-gray-700 mb-2">Распределенные нагрузки</h4>
                         <div id="elementLoadsList" class="mb-4">
@@ -2442,7 +2483,6 @@
                             <span id="currentDistributedForceUnitDisplay_qY" class="ml-2 font-semibold text-gray-700">${currentDistributedForceUnit}</span>
                             <button id="addDistributedForceYBtn">Добавить qY</button>
                         </div>
-						<!-- НОВОЕ: Раздел для разбиения элемента -->
 						<div class="property-group">
 							<h4 class="font-bold text-gray-700 mb-2">Разбить стержень</h4>
 							<div class="flex items-center space-x-2 mb-2">
@@ -2453,14 +2493,12 @@
                     </div>
                 `;
 
-                // НОВОЕ: Получаем DOM элементы для распределенных нагрузок
                 const elementLoadsList = document.getElementById('elementLoadsList');
                 const addDistributedForceXInput = document.getElementById('addDistributedForceX');
                 const addDistributedForceXBtn = document.getElementById('addDistributedForceXBtn');
                 const addDistributedForceYInput = document.getElementById('addDistributedForceY');
                 const addDistributedForceYBtn = document.getElementById('addDistributedForceYBtn');
 
-                // НОВОЕ: Функция для отображения текущих распределенных нагрузок на элементе
                 const renderElementLoads = () => {
                     elementLoadsList.innerHTML = '';
                     const loadsForSelectedElement = elementLoads.filter(load => load.target_elem_id === selectedElement.elem_id);
@@ -2478,7 +2516,7 @@
                             const targetForceUnit = currentDistributedForceUnit.split('/')[0];
                             const targetLengthUnit = currentDistributedForceUnit.split('/')[1];
 
-                            const displayedValue = parseFloat(convertDistributedForce(load.startValue, storedForceUnit, storedLengthUnit, targetForceUnit, targetLengthUnit).toFixed(3)); // ИЗМЕНЕНО: Используем convertDistributedForce
+                            const displayedValue = parseFloat(convertDistributedForce(load.startValue, storedForceUnit, storedLengthUnit, targetForceUnit, targetLengthUnit).toFixed(3));
                             const displayedUnitString = currentDistributedForceUnit;
                             
                             const loadItemDiv = document.createElement('div');
@@ -2501,9 +2539,8 @@
                     }
                 };
 
-                renderElementLoads(); // Вызываем при первой загрузке панели для элемента
+                renderElementLoads();
 
-                // НОВОЕ: Обработчики добавления распределенных нагрузок
                 addDistributedForceXBtn.addEventListener('click', () => {
                     const value = parseFloat(addDistributedForceXInput.value);
                     if (!isNaN(value)) {
@@ -2512,15 +2549,15 @@
                             target_elem_id: selectedElement.elem_id,
                             type: 'uniform', 
                             component: 'x',
-                            startValue: value, // НОВОЕ: Сохраняем полную точность
-                            endValue: value,   // НОВОЕ: Сохраняем полную точность
-                            unit: `${forceUnitsSelect.value}/${unitsSelect.value}`, // Сохраняем текущую единицу
+                            startValue: value,
+                            endValue: value,
+                            unit: `${forceUnitsSelect.value}/${unitsSelect.value}`,
                             startPosition: 0, 
                             endPosition: 1 
                         });
                         addDistributedForceXInput.value = '';
-                        renderElementLoads(); // Обновляем список нагрузок на панели
-                        draw(); // Перерисовываем канвас
+                        renderElementLoads();
+                        draw();
                     }
                 });
 
@@ -2532,8 +2569,8 @@
                             target_elem_id: selectedElement.elem_id,
                             type: 'uniform',
                             component: 'y',
-                            startValue: value, // НОВОЕ: Сохраняем полную точность
-                            endValue: value,   // НОВОЕ: Сохраняем полную точность
+                            startValue: value,
+                            endValue: value,
                             unit: `${forceUnitsSelect.value}/${unitsSelect.value}`,
                             startPosition: 0, 
                             endPosition: 1 
@@ -2544,12 +2581,52 @@
                     }
                 });
 				
-				// НОВОЕ: Логика для разбиения элемента
                 const splitSegmentsInput = document.getElementById('splitSegmentsInput');
                 const splitElementBtn = document.getElementById('splitElementBtn');
+				
+                // НОВЫЕ: Получаем ссылки на элементы для назначения материала
+                const materialAssignmentSelect = document.getElementById('materialAssignmentSelect');
+                const assignMaterialBtn = document.getElementById('assignMaterialBtn');
+                const assignedMaterialDisplay = document.getElementById('assignedMaterialDisplay');
+
+                // НОВОЕ: Добавляем слушатель для кнопки "Выбрать"
+                if (assignMaterialBtn && selectedElement) { // Проверяем, что кнопка и элемент существуют
+                    // Удаляем старый слушатель, чтобы избежать дублирования при перерисовке панели
+                    // Создаем анонимную функцию-обертку для слушателя
+                    // Это позволяет нам иметь уникальный слушатель для каждого рендера панели
+                    // и при этом безопасно его добавлять без риска дублирования.
+                    // Для более сложных сценариев можно использовать .removeEventListener
+                    // с именованной функцией, но для динамически генерируемых элементов
+                    // это подходит.
+                    assignMaterialBtn.onclick = () => { // Используем onclick вместо addEventListener для простоты перезаписи
+                        const newMaterialId = materialAssignmentSelect.value;
+
+                        if (selectedElement) {
+                            // Если пользователь выбрал пустую опцию "Не выбрано"
+                            if (newMaterialId === "") {
+                                selectedElement.materialId = null; // Сброс назначенного материала
+                                console.log(`Материал для элемента ${selectedElement.elem_id} сброшен.`);
+                            } else {
+                                // Назначаем новый материал
+                                selectedElement.materialId = newMaterialId;
+                                const assignedMat = modelMaterials.find(m => m.id === newMaterialId);
+                                if (assignedMat) {
+                                    console.log(`Материал "${assignedMat.name}" назначен элементу ${selectedElement.elem_id}.`);
+                                } else {
+                                    console.warn(`Выбранный материал ID "${newMaterialId}" не найден в modelMaterials.`);
+                                }
+                            }
+                            
+                            // Обновляем панель свойств, чтобы отобразить изменения
+                            updatePropertiesPanel();
+                            // Перерисовываем канвас, если есть какая-либо визуализация материала
+                            draw(); 
+                        }
+                    };
+                }			
 
                 splitElementBtn.addEventListener('click', () => {
-                    if (!selectedElement) return; // Убедимся, что элемент выбран
+                    if (!selectedElement) return;
 
                     const numSegments = parseInt(splitSegmentsInput.value, 10);
                     if (isNaN(numSegments) || numSegments < 2) {
@@ -2566,28 +2643,23 @@
                         return;
                     }
 
-                    // 1. Удаляем текущий стержень
                     lines = lines.filter(line => line.elem_id !== originalLine.elem_id);
                     console.log(`Удален стержень с ID: ${originalLine.elem_id}`);
 
-                    // 2. Удаляем равномерно-распределенные нагрузки, связанные с удаленным стержнем
                     elementLoads = elementLoads.filter(load => load.target_elem_id === originalLine.elem_id);
                     console.log(`Удалены равномерно-распределенные нагрузки для стержня ${originalLine.elem_id}`);
 
                     const newNodes = [];
                     const newLines = [];
                     
-                    // Вычисляем вектор элемента
                     const dx = node2.x - node1.x;
                     const dy = node2.y - node1.y;
 
-                    // Создаем промежуточные узлы
                     for (let i = 1; i < numSegments; i++) {
                         const ratio = i / numSegments;
                         const newNodeX = node1.x + dx * ratio;
                         const newNodeY = node1.y + dy * ratio;
 
-                        // Координаты новых узлов хранятся с полной точностью
                         const newNode = { 
                             node_id: nextNodeId++, 
                             x: newNodeX, 
@@ -2597,8 +2669,6 @@
                         console.log(`Добавлен новый узел ${newNode.node_id} по координатам (${newNode.x.toFixed(3)}, ${newNode.y.toFixed(3)})`);
                     }
 
-                    // Соединяем узлы, формируя новые стержни
-                    // Все узлы в правильном порядке: начальный, новые промежуточные, конечный
                     const allSegmentNodes = [node1, ...newNodes, node2]; 
 
                     for (let i = 0; i < allSegmentNodes.length - 1; i++) {
@@ -2609,70 +2679,387 @@
                             elem_id: nextElemId++, 
                             nodeId1: startNode.node_id, 
                             nodeId2: endNode.node_id, 
-                            // Наследуем structural_type от оригинального элемента. 
-                            // Если его нет (старые данные), по умолчанию 'beam'.
                             structural_type: originalLine.structural_type || 'beam' 
                         };
                         newLines.push(newLine);
                         console.log(`Добавлен новый стержень ${newLine.elem_id} между узлами ${startNode.node_id} и ${endNode.node_id}`);
                     }
 
-                    // Добавляем новые узлы и стержни в глобальные массивы
                     nodes.push(...newNodes);
                     lines.push(...newLines);
 
-                    // Сбрасываем выделение после операции разбиения
                     selectedElement = null;
                     selectedNode = null;
                     firstNodeForLine = null;
 
-                    // Обновляем UI
-                    updatePropertiesPanel(); // Перерисует панель без выделенного элемента
-                    draw(); // Перерисует канвас с новыми элементами
+                    updatePropertiesPanel();
+                    draw();
                 });
 
-            } else { // НОВОЕ: Если ничего не выбрано
+            } else {
                 propertiesPanel.style.display = 'block'; 
-                nodePropertiesContent.innerHTML = '<p>Выберите узел или элемент для просмотра его свойств.</p>'; // Обновленный текст
+                nodePropertiesContent.innerHTML = '<p>Выберите узел или элемент для просмотра его свойств.</p>';
+            }
+        }
+		
+        // ====================================================================
+        // Материалы: Функции загрузки, отображения и выбора
+        // ====================================================================
+
+		let allMaterialsData = {}; // Объект для хранения всех загруженных данных материалов
+        let standardsData = []; // Массив для хранения данных стандартов
+        let userMaterials = []; // Глобальная переменная для пользовательских материалов
+		
+		// НОВОЕ: Массив для хранения материалов, добавленных в текущую модель
+        let modelMaterials = []; 
+
+        // Основная функция для загрузки всех данных материалов
+        async function loadAllMaterials() {
+            try {
+                // Сначала загружаем файл стандартов (standards.json)
+                const standardsResponse = await fetch('data/standards.json');
+                if (!standardsResponse.ok) {
+                    throw new Error(`HTTP error! status: ${standardsResponse.status}`);
+                }
+                standardsData = await standardsResponse.json();
+                console.log("Loaded standards.json:", standardsData);
+
+                // Теперь загружаем материалы для каждого стандарта
+                for (const standard of standardsData) {
+                    // ЕСЛИ materialFile равен "localStorage", используем локальное хранилище
+                    if (standard.materialFile === "localStorage") {
+                        userMaterials = loadUserMaterialsFromLocalStorage();
+                        allMaterialsData[standard.id] = userMaterials;
+                        console.log(`Loaded user materials from localStorage for standard ${standard.id}:`, userMaterials);
+                    } else {
+                        // В противном случае, загружаем файл JSON по указанному пути
+                        const filePath = standard.materialFile; 
+                        if (!filePath) {
+                            console.warn(`Warning: 'materialFile' property not found for standard '${standard.id}'. Skipping this standard.`);
+                            continue; // Пропускаем, если путь к файлу не указан
+                        }
+
+                        const response = await fetch(filePath); 
+                        if (!response.ok) {
+                            // Если файл не найден, выводим предупреждение, но не останавливаем загрузку других стандартов
+                            console.warn(`Warning: Material file ${filePath} not found or could not be loaded. Skipping this standard.`);
+                            continue; 
+                        }
+                        const data = await response.json();
+                        allMaterialsData[standard.id] = data; 
+                        console.log(`Loaded ${filePath}:`, data);
+                    }
+                }
+
+            } catch (error) {
+                console.error("Error during initial loading of materials or standards data:", error);
             }
         }
 
-        function applyRestrictionToSelectedNode(dxValue, dyValue, drValue) { // Corrected to drValue
+        // Функция для загрузки пользовательских материалов из localStorage
+        function loadUserMaterialsFromLocalStorage() {
+            try {
+                const storedMaterials = localStorage.getItem('userMaterials');
+                // Возвращаем распарсенный JSON, или пустой массив, если ничего нет
+                return storedMaterials ? JSON.parse(storedMaterials) : [];
+            } catch (error) {
+                console.error("Error loading user materials from localStorage:", error);
+                return []; // Возвращаем пустой массив в случае ошибки
+            }
+        }
+
+        // Функция для сохранения пользовательских материалов в localStorage
+        function saveUserMaterialsToLocalStorage(materials) {
+            try {
+                localStorage.setItem('userMaterials', JSON.stringify(materials));
+                console.log("User materials saved to localStorage:", materials);
+            } catch (error) {
+                console.error("Error saving user materials to localStorage:", error);
+            }
+        }
+
+        // НОВАЯ ФУНКЦИЯ: Заполняет выпадающий список "Тип материала"
+        // Убедитесь, что эта функция существует как отдельный блок кода!
+        function populateMaterialTypeSelect() {
+            if (!materialTypeSelect) { // materialTypeSelect должен быть глобально объявлен
+                console.error("materialTypeSelect not found. Cannot populate material types.");
+                return;
+            }
+
+            materialTypeSelect.innerHTML = ''; // Очищаем текущие опции
+
+            // Добавляем опцию "Выберите тип"
+            let defaultOption = document.createElement('option');
+            defaultOption.value = "";
+            defaultOption.textContent = "Выберите тип";
+            defaultOption.disabled = true; // Сделать невыбираемым
+            defaultOption.selected = true; // Сделать выбранным по умолчанию
+            materialTypeSelect.appendChild(defaultOption);
+
+            // Собираем уникальные типы материалов из всех загруженных данных
+            const uniqueTypes = new Set();
+            for (const standardId in allMaterialsData) {
+                if (allMaterialsData.hasOwnProperty(standardId)) {
+                    allMaterialsData[standardId].forEach(material => {
+                        if (material.type) {
+                            uniqueTypes.add(material.type);
+                        }
+                    });
+                }
+            }
+            
+            // Сортируем типы, чтобы они всегда были в одном порядке
+            const sortedTypes = Array.from(uniqueTypes).sort();
+
+            // Добавляем уникальные типы в селектор
+            sortedTypes.forEach(type => {
+                const option = document.createElement('option');
+                option.value = type;
+                // Более понятное отображение (например, "steel" -> "Сталь")
+                option.textContent = type === 'steel' ? 'Сталь' : (type === 'concrete' ? 'Бетон' : type); 
+                materialTypeSelect.appendChild(option);
+            });
+        }
+
+
+        // Функция для заполнения выпадающего списка "Стандарт"
+        function populateStandardSelect() {
+            const materialStandardSelect = document.getElementById('materialStandardSelect');
+            if (materialStandardSelect) {
+                materialStandardSelect.innerHTML = ''; // Очищаем текущие опции
+                standardsData.forEach(standard => {
+                    const option = document.createElement('option');
+                    option.value = standard.id;
+                    option.textContent = standard.id; // Или standard.name, если хотите более читаемое название
+                    materialStandardSelect.appendChild(option);
+                });
+            }
+        }
+
+        // Функция для заполнения выпадающего списка "Класс/Марка"
+        function populateMaterialClassSelect() {
+            const materialTypeSelect = document.getElementById('materialTypeSelect');
+            const materialStandardSelect = document.getElementById('materialStandardSelect');
+            const materialClassSelect = document.getElementById('materialClassSelect');
+
+            if (!materialTypeSelect || !materialStandardSelect || !materialClassSelect) {
+                console.error("One or more material select elements not found. Cannot populate material class.");
+                return;
+            }
+
+            const selectedType = materialTypeSelect.value; // 'steel' or 'concrete'
+            const selectedStandard = materialStandardSelect.value; // 'GOST_SP', 'EN', etc.
+            materialClassSelect.innerHTML = ''; // Очищаем текущие опции
+
+            // Получаем данные для выбранного стандарта
+            const materialsFromSelectedStandard = allMaterialsData[selectedStandard];
+
+            if (materialsFromSelectedStandard && materialsFromSelectedStandard.length > 0) {
+                // Фильтруем по типу материала
+                const filteredMaterials = materialsFromSelectedStandard.filter(
+                    mat => mat.type === selectedType // Теперь фильтруем по полю 'type' внутри объектов материала
+                );
+
+                if (filteredMaterials.length > 0) {
+                    filteredMaterials.forEach(material => {
+                        const option = document.createElement('option');
+                        option.value = material.id;
+                        option.textContent = material.name;
+                        materialClassSelect.appendChild(option);
+                    });
+                } else {
+                    const option = document.createElement('option');
+                    option.value = "";
+                    option.textContent = "Нет доступных материалов";
+                    materialClassSelect.appendChild(option);
+                }
+            } else {
+                const option = document.createElement('option');
+                option.value = "";
+                option.textContent = "Нет данных для выбранного стандарта";
+                materialClassSelect.appendChild(option);
+            }
+        }
+
+        // Инициализация при открытии модального окна или загрузке страницы
+        async function initializeMaterialSelectors() {
+            await loadAllMaterials(); // Сначала загружаем все данные
+			
+			if (Object.keys(allMaterialsData).length > 0 && standardsData.length > 0) {
+				populateStandardSelect(); 
+				populateMaterialTypeSelect();
+				populateMaterialClassSelect();
+				displaySelectedMaterialProperties(); // <-- НОВОЕ: Вызываем при инициализации
+			} else {
+				console.warn("No material data or standards data loaded. Material selectors will not be populated.");
+				displaySelectedMaterialProperties(); // Все равно вызовите, чтобы очистить отображение
+			}
+        }
+
+        // Функция для отображения материалов в модальном окне
+        function renderMaterialsList() {
+            if (!materialListContainer) return; // Защита от вызова до инициализации
+
+            materialListContainer.innerHTML = ''; // Очищаем контейнер перед заполнением
+            
+            if (allMaterials.length === 0) {
+                materialListContainer.innerHTML = '<p>Материалы не найдены в данных.</p>';
+                return;
+            }
+
+            // Создаем группы для бетона и стали для лучшей организации
+            const concreteGroup = document.createElement('div');
+            concreteGroup.className = 'mb-4 border-b pb-2'; 
+            concreteGroup.innerHTML = '<h3 class="text-lg font-semibold text-gray-700 mb-2">Бетон</h3>';
+            materialListContainer.appendChild(concreteGroup);
+
+            const steelGroup = document.createElement('div');
+            steelGroup.className = 'mb-4';
+            steelGroup.innerHTML = '<h3 class="text-lg font-semibold text-gray-700 mb-2">Сталь</h3>';
+            materialListContainer.appendChild(steelGroup);
+
+            allMaterials.forEach(material => {
+                const materialDiv = document.createElement('div');
+                materialDiv.className = 'bg-gray-100 p-3 rounded-md flex justify-between items-center shadow-sm mb-2'; 
+                materialDiv.innerHTML = `
+                    <div>
+                        <p class="font-medium text-gray-800">${material.name} (${material.type === 'concrete' ? 'Бетон' : 'Сталь'})</p>
+                        <p class="text-sm text-gray-600">Модуль упругости (E): ${material.properties.elasticModulus.value} ${material.properties.elasticModulus.unit}</p>
+                        <p class="text-sm text-gray-600">Плотность: ${material.properties.density.value} ${material.properties.density.unit}</p>
+                    </div>
+                    <!-- Кнопка "Выбрать" пока ничего не делает, но HTML для нее есть -->
+                    <button class="select-material-btn bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm transition-colors duration-200" data-material-id="${material.id}">Выбрать</button>
+                `;
+                
+                if (material.type === 'concrete') {
+                    concreteGroup.appendChild(materialDiv);
+                } else if (material.type === 'steel') {
+                    steelGroup.appendChild(materialDiv);
+                }
+            });
+            // Мы пока не добавляем обработчик для кнопки "Выбрать" здесь. Это будет на следующем шаге.
+        }		
+		
+		// Функция для добавления материала в модель
+        function addSelectedMaterialToModel() {
+            const selectedMaterialId = materialClassSelect.value;
+            const selectedStandardId = materialStandardSelect.value;
+
+            if (!selectedMaterialId || !selectedStandardId) {
+                alert('Пожалуйста, выберите стандарт и класс/марку материала.');
+                return;
+            }
+
+            // Находим выбранный материал в allMaterialsData
+            const materialsForStandard = allMaterialsData[selectedStandardId];
+            const materialToAdd = materialsForStandard ? materialsForStandard.find(m => m.id === selectedMaterialId) : null;
+
+            if (materialToAdd) {
+                // Проверяем, не добавлен ли этот материал уже в модель
+                if (modelMaterials.some(m => m.id === materialToAdd.id)) {
+                    alert(`Материал "${materialToAdd.name}" (${materialToAdd.standard}) уже добавлен в модель.`);
+                    return;
+                }
+
+                modelMaterials.push(materialToAdd);
+                console.log("Material added to model:", materialToAdd);
+                // Обновляем список материалов в модальном окне
+                renderModelMaterialsList();
+            } else {
+                console.error("Selected material not found:", selectedMaterialId, selectedStandardId);
+                alert("Не удалось найти выбранный материал. Пожалуйста, попробуйте еще раз.");
+            }
+        }
+		
+		// Функция для отрисовки списка материалов, добавленных в модель
+        function renderModelMaterialsList() {
+            const modelMaterialList = document.getElementById('modelMaterialList');
+            if (!modelMaterialList) {
+                console.error("Element #modelMaterialList not found.");
+                return;
+            }
+
+            modelMaterialList.innerHTML = ''; // Очищаем список
+
+            const noMaterialsMessage = document.getElementById('noMaterialsMessage');
+            if (noMaterialsMessage) { // Удаляем сообщение "Нет материалов" если оно есть
+                noMaterialsMessage.remove();
+            }
+
+            if (modelMaterials.length === 0) {
+                // Если материалов нет, добавляем сообщение
+                const message = document.createElement('li');
+                message.id = 'noMaterialsMessage';
+                message.classList.add('text-gray-500', 'italic');
+                message.textContent = 'Нет материалов в модели.';
+                modelMaterialList.appendChild(message);
+            } else {
+                modelMaterials.forEach(material => {
+                    const listItem = document.createElement('li');
+                    listItem.id = `model-material-${material.id}`; // Уникальный ID для элемента списка
+                    listItem.classList.add('flex', 'justify-between', 'items-center', 'p-2', 'border-b', 'last:border-b-0');
+                    listItem.innerHTML = `
+                        <span>${material.name} (${material.standard}) - ${material.type}</span>
+                        <button class="remove-material-btn bg-red-500 hover:bg-red-700 text-white text-xs font-bold py-1 px-2 rounded" data-material-id="${material.id}">
+                            Удалить
+                        </button>
+                    `;
+                    modelMaterialList.appendChild(listItem);
+                });
+
+                // Добавляем слушатели событий для кнопок удаления после их создания
+                modelMaterialList.querySelectorAll('.remove-material-btn').forEach(button => {
+                    button.addEventListener('click', (event) => {
+                        const materialIdToRemove = event.target.dataset.materialId;
+                        removeMaterialFromModel(materialIdToRemove);
+                    });
+                });
+            }
+        }
+		
+		// Функция для удаления материала из модели
+        function removeMaterialFromModel(materialId) {
+            const initialLength = modelMaterials.length;
+            modelMaterials = modelMaterials.filter(m => m.id !== materialId);
+
+            if (modelMaterials.length < initialLength) {
+                console.log("Material removed from model:", materialId);
+                renderModelMaterialsList(); // Перерисовываем список
+            } else {
+                console.warn("Attempted to remove non-existent material:", materialId);
+            }
+        }
+		
+
+        function applyRestrictionToSelectedNode(dxValue, dyValue, drValue) {
             if (!selectedNode) return;
 
             let existingRestrictionIndex = restrictions.findIndex(res => res.node_id === selectedNode.node_id);
 
-            // Создаем объект закрепления на основе значений dx, dy, dr
             const newRestriction = {
                 node_id: selectedNode.node_id,
                 dx: dxValue,
                 dy: dyValue,
-                dr: drValue // Corrected to drValue
+                dr: drValue
             };
 
-            // Если все флаги равны 0 (т.е. "нет закрепления"), удаляем запись
-            if (dxValue === 0 && dyValue === 0 && drValue === 0) { // Corrected to drValue
+            if (dxValue === 0 && dyValue === 0 && drValue === 0) {
                 if (existingRestrictionIndex !== -1) {
-                    restrictions.splice(existingRestrictionIndex, 1); // Удаляем запись
+                    restrictions.splice(existingRestrictionIndex, 1);
                 }
             } else {
                 if (existingRestrictionIndex !== -1) {
-                    // Обновляем существующую запись
                     restrictions[existingRestrictionIndex] = newRestriction;
                 } else {
-                    // Добавляем новую запись
                     restrictions.push(newRestriction);
                 }
             }
-            draw(); // Перерисовываем холст, чтобы отобразить изменения
-            // После применения, обновляем панель, чтобы состояние кнопок обновилось
+            draw();
             updatePropertiesPanel(); 
         }
 
-
         // Tooltip
         function updateTooltip() { 
-            // Получаем ширину панели свойств (она всегда видима)
             const panelWidth = propertiesPanel.offsetWidth;
 
             if (hoveredElement && !isPanning && customContextMenu.classList.contains('hidden')) { 
@@ -2685,12 +3072,12 @@
                         const typeKey = Object.keys(restrictionTypes).find(key => 
                             restrictionTypes[key].dx === restriction.dx &&
                             restrictionTypes[key].dy === restriction.dy &&
-                            restrictionTypes[key].dr === restriction.dr // Corrected to dr
+                            restrictionTypes[key].dr === restriction.dr
                         );
                         if (typeKey && restrictionTypes[typeKey].label) {
                             restrictionInfo = `\nЗакрепление: ${restrictionTypes[typeKey].label}`;
                         } else {
-                             restrictionInfo = `\nЗакрепление: dx=${restriction.dx}, dy=${restriction.dy}, dr=${restriction.dr}`; // Corrected to dr
+                             restrictionInfo = `\nЗакрепление: dx=${restriction.dx}, dy=${restriction.dy}, dr=${restriction.dr}`;
                         }
                     }
 
@@ -2728,13 +3115,12 @@
                         finalTop = mouse.y + canvas.getBoundingClientRect().top - offsetY - tooltipRect.height;
                     }
                     
-                    const panelWidth = propertiesPanel.offsetWidth; // Получаем ширину панели здесь
+                    const panelWidth = propertiesPanel.offsetWidth;
                     if (finalLeft < panelWidth) {
-                         // Если тултип слишком близко к левой панели, но курсор правее, попробуем разместить справа от курсора
                          if (mouse.x + canvas.getBoundingClientRect().left < panelWidth + tooltipRect.width + offsetX) { 
-                             finalLeft = panelWidth + offsetX; // Размещаем справа от панели
+                             finalLeft = panelWidth + offsetX;
                          } else {
-                             finalLeft = mouse.x + canvas.getBoundingClientRect().left - offsetX - tooltipRect.width; // Размещаем слева от курсора
+                             finalLeft = mouse.x + canvas.getBoundingClientRect().left - offsetX - tooltipRect.width;
                          }
                     }
 
@@ -2747,9 +3133,250 @@
                 tooltip.classList.add('hidden');
             }
         }
+		
+		
+		// Функция для показа/скрытия полей ввода пользовательского материала
+        function toggleCustomMaterialFields(show) {
+            const customMaterialFields = document.getElementById('customMaterialFields');
+            if (customMaterialFields) {
+                if (show) {
+                    customMaterialFields.classList.remove('hidden');
+                } else {
+                    customMaterialFields.classList.add('hidden');
+                }
+            } else {
+                console.warn("Custom material fields container not found.");
+            }
+        }
+
+        // Функция для добавления нового пользовательского материала
+        function addCustomMaterial(name, type, elasticModulus, density, poissonRatio) {
+            if (!name || isNaN(elasticModulus) || isNaN(density) || isNaN(poissonRatio)) {
+                alert("Пожалуйста, заполните все поля для пользовательского материала (Имя, Модуль упругости, Плотность, Коэффициент Пуассона).");
+                return;
+            }
+
+            const newMaterial = {
+                id: `user_material_${Date.now()}`, // Уникальный ID на основе метки времени
+                name: name,
+                type: type, // Тип материала (steel, concrete)
+                standard: "USER", 
+                properties: {
+                    elasticModulus: { value: elasticModulus, unit: "MPa" }, // Убедитесь, что unit соответствует вашим ожиданиям
+                    density: { value: density, unit: "kg/m^3" },
+                    poissonRatio: { value: poissonRatio, unit: "none" },
+                }
+            };
+
+            userMaterials.push(newMaterial); // Добавляем в глобальный массив пользовательских материалов
+            allMaterialsData['USER'] = userMaterials; // Обновляем данные для USER стандарта в общем объекте
+            saveUserMaterialsToLocalStorage(userMaterials); // Сохраняем в localStorage
+
+            populateMaterialClassSelect(); // Обновляем выпадающий список "Класс/Марка"
+
+            // Можно выбрать только что добавленный материал в списке
+            // if (materialClassSelect) {
+            //     materialClassSelect.value = newMaterial.id;
+            // }
+            alert(`Материал "${name}" успешно добавлен.`);
+        }
+		
+		// Функция для отображения свойств выбранного материала
+        function displaySelectedMaterialProperties() {
+            const selectedMaterialId = materialClassSelect.value;
+            const selectedStandardId = materialStandardSelect.value;
+
+            let selectedMaterial = null;
+
+            // Если оба селектора имеют выбранное значение
+            if (selectedMaterialId && selectedStandardId) {
+                const materialsForStandard = allMaterialsData[selectedStandardId];
+                if (materialsForStandard) {
+                    selectedMaterial = materialsForStandard.find(m => m.id === selectedMaterialId);
+                }
+            }
+
+            // Обновляем UI с свойствами материала
+            if (selectedMaterial) {
+                propName.textContent = selectedMaterial.name || 'N/A';
+                propType.textContent = (selectedMaterial.type === 'steel' ? 'Сталь' : selectedMaterial.type === 'concrete' ? 'Бетон' : selectedMaterial.type || 'N/A');
+                
+                const standardDisplayName = standardsData.find(s => s.id === selectedMaterial.standard)?.name || selectedMaterial.standard || 'N/A';
+                propStandard.textContent = standardDisplayName;
+                
+                // Модуль упругости
+                propElasticModulus.textContent = selectedMaterial.properties && selectedMaterial.properties.elasticModulus ? selectedMaterial.properties.elasticModulus.value.toLocaleString(undefined, { maximumFractionDigits: 2 }) : 'N/A';
+                unitElasticModulus.textContent = selectedMaterial.properties && selectedMaterial.properties.elasticModulus ? getUnitText(selectedMaterial.properties.elasticModulus.unit) : ''; // ИСПОЛЬЗУЕМ getUnitText()
+
+                // Плотность
+                propDensity.textContent = selectedMaterial.properties && selectedMaterial.properties.density ? selectedMaterial.properties.density.value.toLocaleString(undefined, { maximumFractionDigits: 2 }) : 'N/A';
+                unitDensity.textContent = selectedMaterial.properties && selectedMaterial.properties.density ? getUnitText(selectedMaterial.properties.density.unit) : ''; // ИСПОЛЬЗУЕМ getUnitText()
+
+                // Коэффициент Пуассона
+                propPoissonRatio.textContent = selectedMaterial.properties && selectedMaterial.properties.poissonRatio ? selectedMaterial.properties.poissonRatio.value.toFixed(3) : 'N/A';
+                unitPoissonRatio.textContent = selectedMaterial.properties && selectedMaterial.properties.poissonRatio ? getUnitText(selectedMaterial.properties.poissonRatio.unit) : ''; // ИСПОЛЬЗУЕМ getUnitText()
+
+                // Пример для коэффициента демпфирования (если он будет):
+                // propDampingCoefficient.textContent = selectedMaterial.properties && selectedMaterial.properties.dampingCoefficient ? selectedMaterial.properties.dampingCoefficient.value.toFixed(3) : 'N/A';
+                // unitDampingCoefficient.textContent = selectedMaterial.properties && selectedMaterial.properties.dampingCoefficient ? getUnitText(selectedMaterial.properties.dampingCoefficient.unit) : '';
+            } else {
+                // Если материал не выбран или не найден, очищаем поля
+                propName.textContent = 'Не выбрано';
+                propType.textContent = '';
+                propStandard.textContent = '';
+                propElasticModulus.textContent = '';
+                unitElasticModulus.textContent = '';
+                propDensity.textContent = '';
+                unitDensity.textContent = '';
+                propPoissonRatio.textContent = '';
+                unitPoissonRatio.textContent = '';
+            }
+        }
+		
+		
+        let materialTypeSelect;
+        let materialStandardSelect;
+        let materialClassSelect;		
+		
+		document.addEventListener('DOMContentLoaded', async () => {
+            console.log('DOMContentLoaded fired. Starting initialization...'); 
+            // --- 1. Получаем ссылки на ВСЕ DOM-элементы здесь, когда они гарантированно существуют ---
+            // ... (все ваши существующие document.getElementById(...) для propertiesPanel, canvas, и т.д.) ...
+
+            // --- ДОБАВЬТЕ ЭТУ СТРОКУ, ЕСЛИ ЕЕ НЕТ ---
+            // Если materialListContainer нужен глобально, объявите его с 'let' в глобальной области видимости
+            // Если он нужен только здесь, то:
+            const materialListContainer = document.getElementById('materialListContainer'); 
+            console.log('materialListContainer:', materialListContainer); // DEBUG: Проверить, что элемент найден
+			
+            // Объявляем переменные для кнопок и модального окна ОДИН РАЗ с 'const'
+            const openMaterialsModalBtn = document.getElementById('openMaterialsModalBtn'); // Кнопка в topBar
+            console.log('openMaterialsModalBtn (topBar):', openMaterialsModalBtn); // DEBUG
+            const openMaterialsModalBtnFromPanel = document.getElementById('openMaterialsModalBtnFromPanel'); // Кнопка в propertiesPanel
+            console.log('openMaterialsModalBtnFromPanel (panel):', openMaterialsModalBtnFromPanel); // DEBUG
+            
+            const materialsModal = document.getElementById('materialsModal');
+            const closeMaterialsModalBtn = document.getElementById('closeMaterialsModalBtn');
+            const closeMaterialsModalBtnBottom = document.getElementById('closeMaterialsModalBtnBottom');
+			
+			// Получаем ссылки на новые DOM-элементы
+            const addMaterialToModelBtn = document.getElementById('addMaterialToModelBtn');
+            const modelMaterialList = document.getElementById('modelMaterialList'); // Получите ссылку здесь, если она не глобальная
+			
+            // Получаем ссылки на элементы селекторов материалов
+            materialTypeSelect = document.getElementById('materialTypeSelect');
+            materialStandardSelect = document.getElementById('materialStandardSelect');
+            materialClassSelect = document.getElementById('materialClassSelect');			
+			
+			// НОВЫЕ: Получаем ссылки на элементы для пользовательского материала
+            const customMaterialFields = document.getElementById('customMaterialFields');
+            const customMaterialName = document.getElementById('customMaterialName');
+            const customElasticModulus = document.getElementById('customElasticModulus');
+            const customDensity = document.getElementById('customDensity');
+            const customPoissonRatio = document.getElementById('customPoissonRatio');
+			const saveCustomMaterialBtn = document.getElementById('saveCustomMaterialBtn'); // Кнопка "Сохранить"
+			
+			// НОВЫЕ: Получаем ссылки на элементы для отображения свойств материала
+            // Обратите внимание: для propName, propType, propStandard мы берем span внутри p
+            const propName = document.getElementById('propName');
+            const propType = document.getElementById('propType');
+            const propStandard = document.getElementById('propStandard');
+            const propElasticModulus = document.getElementById('propElasticModulus');
+            const unitElasticModulus = document.getElementById('unitElasticModulus');
+            const propDensity = document.getElementById('propDensity');
+            const unitDensity = document.getElementById('unitDensity');
+            const propPoissonRatio = document.getElementById('propPoissonRatio');
+            const unitPoissonRatio = document.getElementById('unitPoissonRatio');
+            
+            // Вам потребуется кнопка для сохранения нового материала. 
+            // Предположим, у вас есть <button id="saveCustomMaterialBtn">Сохранить</button> в HTML
+            //const saveCustomMaterialBtn = document.getElementById('saveCustomMaterialBtn');
+
+            // ... (ваши существующие addEventListener для канваса, кнопок режимов, и т.д.) ...
+			
+            // Устанавливаем слушатели для модального окна материалов
+            if (openMaterialsModalBtn) {
+                openMaterialsModalBtn.addEventListener('click', toggleMaterialsModal);
+                console.log('Listener added to topBar openMaterialsModalBtn'); // DEBUG
+            }
+            if (openMaterialsModalBtnFromPanel) {
+                openMaterialsModalBtnFromPanel.addEventListener('click', toggleMaterialsModal);
+                console.log('Listener added to panel openMaterialsModalBtnFromPanel'); // DEBUG
+            }
+            if (materialsModal) { // Добавьте проверку на существование модального окна
+                if (closeMaterialsModalBtn) {
+                    closeMaterialsModalBtn.addEventListener('click', toggleMaterialsModal);
+                }
+                if (closeMaterialsModalBtnBottom) {
+                    closeMaterialsModalBtnBottom.addEventListener('click', toggleMaterialsModal);
+                }
+                materialsModal.addEventListener('click', (e) => {
+                    if (e.target === materialsModal) { // Закрытие по клику вне модального окна
+                        toggleMaterialsModal();
+                    }
+                });
+            }
+			
+            // Получаем ссылки на селекторы материалов и добавляем слушатели
+			//const materialTypeSelect = document.getElementById('materialTypeSelect');
+			//const materialStandardSelect = document.getElementById('materialStandardSelect');
+
+			if (materialTypeSelect) {
+				materialTypeSelect.addEventListener('change', () => {
+					populateMaterialClassSelect(); // Сначала обновляем список класса/марки
+					displaySelectedMaterialProperties(); // <-- НОВОЕ: Затем обновляем свойства
+				});
+			}
+			if (materialStandardSelect) {
+				materialStandardSelect.addEventListener('change', () => {
+					populateMaterialClassSelect(); // Сначала обновляем список класса/марки
+					toggleCustomMaterialFields(materialStandardSelect.value === 'USER'); // Показать/скрыть поля пользовательского материала
+					displaySelectedMaterialProperties(); // <-- НОВОЕ: Затем обновляем свойства
+				});
+			}
+			
+            if (materialClassSelect) {
+                materialClassSelect.addEventListener('change', displaySelectedMaterialProperties); // <-- Это строка, которая должна вызывать функцию
+            }		
+			
+			
+			// НОВОЕ: Слушатель для кнопки сохранения пользовательского материала
+            if (saveCustomMaterialBtn) {
+                saveCustomMaterialBtn.addEventListener('click', () => {
+                    // Вызываем функцию для добавления пользовательского материала
+                    addCustomMaterial(
+                        customMaterialName.value,
+                        materialTypeSelect.value, // Берем тип из общего селектора типа материала
+                        parseFloat(customElasticModulus.value),
+                        parseFloat(customDensity.value),
+                        parseFloat(customPoissonRatio.value)
+                    );
+                    // Очищаем поля формы после сохранения
+                    customMaterialName.value = '';
+                    customElasticModulus.value = '';
+                    customDensity.value = '';
+                    customPoissonRatio.value = '';
+                });
+            }
+			
+			// НОВОЕ: Слушатель для кнопки "Добавить в модель"
+            if (addMaterialToModelBtn) {
+                addMaterialToModelBtn.addEventListener('click', addSelectedMaterialToModel);
+            }
+            
+			// --- Инициализируем селекторы материалов и загружаем данные ---\
+			await initializeMaterialSelectors(); 
+            
+            // --- 3. Запускаем основную инициализацию приложения ---\
+            init(); 
+            console.log('Initialization complete.'); 
+        });	
+		
+		
+		
 
         // Start the application
-        init();
+        //init();
     </script>
 </body>
 </html>
