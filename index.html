@@ -2696,8 +2696,41 @@
                     draw();
                 });
 
+            } else if (selectedElements.length > 1 && selectedElements.every(el => el.type === 'line')) {
+                propertiesPanel.style.display = 'block';
+                let materialOptionsHtml = '<option value="">Не выбрано</option>';
+                modelMaterials.forEach(mat => {
+                    materialOptionsHtml += `<option value="${mat.id}">${mat.name} (${mat.standard})</option>`;
+                });
+                nodePropertiesContent.innerHTML = `
+                    <h4 class="font-bold text-gray-700 mb-2">Выбрано стержней: ${selectedElements.length}</h4>
+                    <div class="property-group">
+                        <div class="flex items-center gap-2 mb-2">
+                            <select id="multiMaterialSelect" class="flex-grow form-select block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md shadow-sm">
+                                ${materialOptionsHtml}
+                            </select>
+                            <button id="applyMaterialToSelectedBtn" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Применить</button>
+                        </div>
+                    </div>
+                `;
+
+                const applyBtn = document.getElementById('applyMaterialToSelectedBtn');
+                const selectEl = document.getElementById('multiMaterialSelect');
+                if (applyBtn && selectEl) {
+                    applyBtn.addEventListener('click', () => {
+                        const matId = selectEl.value;
+                        selectedElements.forEach(sel => {
+                            if (sel.type === 'line') {
+                                sel.element.materialId = matId || null;
+                            }
+                        });
+                        updatePropertiesPanel();
+                        draw();
+                    });
+                }
+
             } else {
-                propertiesPanel.style.display = 'block'; 
+                propertiesPanel.style.display = 'block';
                 nodePropertiesContent.innerHTML = '<p>Выберите узел или элемент для просмотра его свойств.</p>';
             }
         }
