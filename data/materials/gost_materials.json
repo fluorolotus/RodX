@@ -1,0 +1,674 @@
+[
+  {
+    "id": "gost_concrete_B3.5",
+    "name": "B3.5",
+    "type": "concrete",
+    "standard": "GOST_SP",
+    "properties": {
+      "elasticModulus": {
+        "value": 9500,
+        "unit": "MPa"
+      },
+      "density": {
+        "value": 2500,
+        "unit": "kg/m^3"
+      },
+      "thermalExpansionCoefficient": {
+        "value": 1e-05,
+        "unit": "1/С"
+      },
+      "poissonRatio": {
+        "value": 0.2,
+        "unit": "none"
+      },
+      "dampingRatio": {
+        "value": 0.05,
+        "unit": "none"
+      }
+    }
+  },
+  {
+    "id": "gost_concrete_B5",
+    "name": "B5",
+    "type": "concrete",
+    "standard": "GOST_SP",
+    "properties": {
+      "elasticModulus": {
+        "value": 13000,
+        "unit": "MPa"
+      },
+      "density": {
+        "value": 2500,
+        "unit": "kg/m^3"
+      },
+      "thermalExpansionCoefficient": {
+        "value": 1e-05,
+        "unit": "1/С"
+      },
+      "poissonRatio": {
+        "value": 0.2,
+        "unit": "none"
+      },
+      "dampingRatio": {
+        "value": 0.05,
+        "unit": "none"
+      }
+    }
+  },
+  {
+    "id": "gost_concrete_B7.5",
+    "name": "B7.5",
+    "type": "concrete",
+    "standard": "GOST_SP",
+    "properties": {
+      "elasticModulus": {
+        "value": 16000,
+        "unit": "MPa"
+      },
+      "density": {
+        "value": 2500,
+        "unit": "kg/m^3"
+      },
+      "thermalExpansionCoefficient": {
+        "value": 1e-05,
+        "unit": "1/С"
+      },
+      "poissonRatio": {
+        "value": 0.2,
+        "unit": "none"
+      },
+      "dampingRatio": {
+        "value": 0.05,
+        "unit": "none"
+      }
+    }
+  },
+  {
+    "id": "gost_concrete_B10",
+    "name": "B10",
+    "type": "concrete",
+    "standard": "GOST_SP",
+    "properties": {
+      "elasticModulus": {
+        "value": 18000,
+        "unit": "MPa"
+      },
+      "density": {
+        "value": 2500,
+        "unit": "kg/m^3"
+      },
+      "thermalExpansionCoefficient": {
+        "value": 1e-05,
+        "unit": "1/С"
+      },
+      "poissonRatio": {
+        "value": 0.2,
+        "unit": "none"
+      },
+      "dampingRatio": {
+        "value": 0.05,
+        "unit": "none"
+      }
+    }
+  },
+  {
+    "id": "gost_concrete_B12.5",
+    "name": "B12.5",
+    "type": "concrete",
+    "standard": "GOST_SP",
+    "properties": {
+      "elasticModulus": {
+        "value": 21000,
+        "unit": "MPa"
+      },
+      "density": {
+        "value": 2500,
+        "unit": "kg/m^3"
+      },
+      "thermalExpansionCoefficient": {
+        "value": 1e-05,
+        "unit": "1/С"
+      },
+      "poissonRatio": {
+        "value": 0.2,
+        "unit": "none"
+      },
+      "dampingRatio": {
+        "value": 0.05,
+        "unit": "none"
+      }
+    }
+  },
+  {
+    "id": "gost_concrete_B15",
+    "name": "B15",
+    "type": "concrete",
+    "standard": "GOST_SP",
+    "properties": {
+      "elasticModulus": {
+        "value": 23000,
+        "unit": "MPa"
+      },
+      "density": {
+        "value": 2500,
+        "unit": "kg/m^3"
+      },
+      "thermalExpansionCoefficient": {
+        "value": 1e-05,
+        "unit": "1/С"
+      },
+      "poissonRatio": {
+        "value": 0.2,
+        "unit": "none"
+      },
+      "dampingRatio": {
+        "value": 0.05,
+        "unit": "none"
+      }
+    }
+  },
+  {
+    "id": "gost_concrete_B20",
+    "name": "B20",
+    "type": "concrete",
+    "standard": "GOST_SP",
+    "properties": {
+      "elasticModulus": {
+        "value": 27000,
+        "unit": "MPa"
+      },
+      "density": {
+        "value": 2500,
+        "unit": "kg/m^3"
+      },
+      "thermalExpansionCoefficient": {
+        "value": 1e-05,
+        "unit": "1/С"
+      },
+      "poissonRatio": {
+        "value": 0.2,
+        "unit": "none"
+      },
+      "dampingRatio": {
+        "value": 0.05,
+        "unit": "none"
+      }
+    }
+  },
+  {
+    "id": "gost_concrete_B25",
+    "name": "B25",
+    "type": "concrete",
+    "standard": "GOST_SP",
+    "properties": {
+      "elasticModulus": {
+        "value": 30000,
+        "unit": "MPa"
+      },
+      "density": {
+        "value": 2500,
+        "unit": "kg/m^3"
+      },
+      "thermalExpansionCoefficient": {
+        "value": 1e-05,
+        "unit": "1/С"
+      },
+      "poissonRatio": {
+        "value": 0.2,
+        "unit": "none"
+      },
+      "dampingRatio": {
+        "value": 0.05,
+        "unit": "none"
+      }
+    }
+  },
+  {
+    "id": "gost_concrete_B30",
+    "name": "B30",
+    "type": "concrete",
+    "standard": "GOST_SP",
+    "properties": {
+      "elasticModulus": {
+        "value": 32500,
+        "unit": "MPa"
+      },
+      "density": {
+        "value": 2500,
+        "unit": "kg/m^3"
+      },
+      "thermalExpansionCoefficient": {
+        "value": 1e-05,
+        "unit": "1/С"
+      },
+      "poissonRatio": {
+        "value": 0.2,
+        "unit": "none"
+      },
+      "dampingRatio": {
+        "value": 0.05,
+        "unit": "none"
+      }
+    }
+  },
+  {
+    "id": "gost_concrete_B35",
+    "name": "B35",
+    "type": "concrete",
+    "standard": "GOST_SP",
+    "properties": {
+      "elasticModulus": {
+        "value": 34500,
+        "unit": "MPa"
+      },
+      "density": {
+        "value": 2500,
+        "unit": "kg/m^3"
+      },
+      "thermalExpansionCoefficient": {
+        "value": 1e-05,
+        "unit": "1/С"
+      },
+      "poissonRatio": {
+        "value": 0.2,
+        "unit": "none"
+      },
+      "dampingRatio": {
+        "value": 0.05,
+        "unit": "none"
+      }
+    }
+  },
+  {
+    "id": "gost_concrete_B40",
+    "name": "B40",
+    "type": "concrete",
+    "standard": "GOST_SP",
+    "properties": {
+      "elasticModulus": {
+        "value": 36000,
+        "unit": "MPa"
+      },
+      "density": {
+        "value": 2500,
+        "unit": "kg/m^3"
+      },
+      "thermalExpansionCoefficient": {
+        "value": 1e-05,
+        "unit": "1/С"
+      },
+      "poissonRatio": {
+        "value": 0.2,
+        "unit": "none"
+      },
+      "dampingRatio": {
+        "value": 0.05,
+        "unit": "none"
+      }
+    }
+  },
+  {
+    "id": "gost_concrete_B45",
+    "name": "B45",
+    "type": "concrete",
+    "standard": "GOST_SP",
+    "properties": {
+      "elasticModulus": {
+        "value": 37500,
+        "unit": "MPa"
+      },
+      "density": {
+        "value": 2500,
+        "unit": "kg/m^3"
+      },
+      "thermalExpansionCoefficient": {
+        "value": 1e-05,
+        "unit": "1/С"
+      },
+      "poissonRatio": {
+        "value": 0.2,
+        "unit": "none"
+      },
+      "dampingRatio": {
+        "value": 0.05,
+        "unit": "none"
+      }
+    }
+  },
+  {
+    "id": "gost_concrete_B50",
+    "name": "B50",
+    "type": "concrete",
+    "standard": "GOST_SP",
+    "properties": {
+      "elasticModulus": {
+        "value": 39000,
+        "unit": "MPa"
+      },
+      "density": {
+        "value": 2500,
+        "unit": "kg/m^3"
+      },
+      "thermalExpansionCoefficient": {
+        "value": 1e-05,
+        "unit": "1/С"
+      },
+      "poissonRatio": {
+        "value": 0.2,
+        "unit": "none"
+      },
+      "dampingRatio": {
+        "value": 0.05,
+        "unit": "none"
+      }
+    }
+  },
+  {
+    "id": "gost_concrete_B55",
+    "name": "B55",
+    "type": "concrete",
+    "standard": "GOST_SP",
+    "properties": {
+      "elasticModulus": {
+        "value": 39500,
+        "unit": "MPa"
+      },
+      "density": {
+        "value": 2500,
+        "unit": "kg/m^3"
+      },
+      "thermalExpansionCoefficient": {
+        "value": 1e-05,
+        "unit": "1/С"
+      },
+      "poissonRatio": {
+        "value": 0.2,
+        "unit": "none"
+      },
+      "dampingRatio": {
+        "value": 0.05,
+        "unit": "none"
+      }
+    }
+  },
+  {
+    "id": "gost_concrete_B60",
+    "name": "B60",
+    "type": "concrete",
+    "standard": "GOST_SP",
+    "properties": {
+      "elasticModulus": {
+        "value": 40000,
+        "unit": "MPa"
+      },
+      "density": {
+        "value": 2500,
+        "unit": "kg/m^3"
+      },
+      "thermalExpansionCoefficient": {
+        "value": 1e-05,
+        "unit": "1/С"
+      },
+      "poissonRatio": {
+        "value": 0.2,
+        "unit": "none"
+      },
+      "dampingRatio": {
+        "value": 0.05,
+        "unit": "none"
+      }
+    }
+  },
+  {
+    "id": "gost_steel_C235",
+    "name": "C235",
+    "type": "steel",
+    "standard": "GOST_SP",
+    "properties": {
+      "elasticModulus": {
+        "value": 206000,
+        "unit": "MPa"
+      },
+      "density": {
+        "value": 7850,
+        "unit": "kg/m^3"
+      },
+      "thermalExpansionCoefficient": {
+        "value": 1.2e-05,
+        "unit": "1/С"
+      },
+      "poissonRatio": {
+        "value": 0.3,
+        "unit": "none"
+      },
+      "dampingRatio": {
+        "value": 0.02,
+        "unit": "none"
+      }
+    }
+  },
+  {
+    "id": "gost_steel_C245",
+    "name": "C245",
+    "type": "steel",
+    "standard": "GOST_SP",
+    "properties": {
+      "elasticModulus": {
+        "value": 206000,
+        "unit": "MPa"
+      },
+      "density": {
+        "value": 7850,
+        "unit": "kg/m^3"
+      },
+      "thermalExpansionCoefficient": {
+        "value": 1.2e-05,
+        "unit": "1/С"
+      },
+      "poissonRatio": {
+        "value": 0.3,
+        "unit": "none"
+      },
+      "dampingRatio": {
+        "value": 0.02,
+        "unit": "none"
+      }
+    }
+  },
+  {
+    "id": "gost_steel_C255",
+    "name": "C255",
+    "type": "steel",
+    "standard": "GOST_SP",
+    "properties": {
+      "elasticModulus": {
+        "value": 206000,
+        "unit": "MPa"
+      },
+      "density": {
+        "value": 7850,
+        "unit": "kg/m^3"
+      },
+      "thermalExpansionCoefficient": {
+        "value": 1.2e-05,
+        "unit": "1/С"
+      },
+      "poissonRatio": {
+        "value": 0.3,
+        "unit": "none"
+      },
+      "dampingRatio": {
+        "value": 0.02,
+        "unit": "none"
+      }
+    }
+  },
+  {
+    "id": "gost_steel_C295",
+    "name": "C295",
+    "type": "steel",
+    "standard": "GOST_SP",
+    "properties": {
+      "elasticModulus": {
+        "value": 206000,
+        "unit": "MPa"
+      },
+      "density": {
+        "value": 7850,
+        "unit": "kg/m^3"
+      },
+      "thermalExpansionCoefficient": {
+        "value": 1.2e-05,
+        "unit": "1/С"
+      },
+      "poissonRatio": {
+        "value": 0.3,
+        "unit": "none"
+      },
+      "dampingRatio": {
+        "value": 0.02,
+        "unit": "none"
+      }
+    }
+  },
+  {
+    "id": "gost_steel_C345",
+    "name": "C345",
+    "type": "steel",
+    "standard": "GOST_SP",
+    "properties": {
+      "elasticModulus": {
+        "value": 206000,
+        "unit": "MPa"
+      },
+      "density": {
+        "value": 7850,
+        "unit": "kg/m^3"
+      },
+      "thermalExpansionCoefficient": {
+        "value": 1.2e-05,
+        "unit": "1/С"
+      },
+      "poissonRatio": {
+        "value": 0.3,
+        "unit": "none"
+      },
+      "dampingRatio": {
+        "value": 0.02,
+        "unit": "none"
+      }
+    }
+  },
+  {
+    "id": "gost_steel_09G2S",
+    "name": "09G2S",
+    "type": "steel",
+    "standard": "GOST_SP",
+    "properties": {
+      "elasticModulus": {
+        "value": 206000,
+        "unit": "MPa"
+      },
+      "density": {
+        "value": 7850,
+        "unit": "kg/m^3"
+      },
+      "thermalExpansionCoefficient": {
+        "value": 1.2e-05,
+        "unit": "1/С"
+      },
+      "poissonRatio": {
+        "value": 0.3,
+        "unit": "none"
+      },
+      "dampingRatio": {
+        "value": 0.02,
+        "unit": "none"
+      }
+    }
+  },
+  {
+    "id": "gost_steel_15HSND",
+    "name": "15HSND",
+    "type": "steel",
+    "standard": "GOST_SP",
+    "properties": {
+      "elasticModulus": {
+        "value": 206000,
+        "unit": "MPa"
+      },
+      "density": {
+        "value": 7850,
+        "unit": "kg/m^3"
+      },
+      "thermalExpansionCoefficient": {
+        "value": 1.2e-05,
+        "unit": "1/С"
+      },
+      "poissonRatio": {
+        "value": 0.3,
+        "unit": "none"
+      },
+      "dampingRatio": {
+        "value": 0.02,
+        "unit": "none"
+      }
+    }
+  },
+  {
+    "id": "gost_steel_St3ps",
+    "name": "St3ps",
+    "type": "steel",
+    "standard": "GOST_SP",
+    "properties": {
+      "elasticModulus": {
+        "value": 206000,
+        "unit": "MPa"
+      },
+      "density": {
+        "value": 7850,
+        "unit": "kg/m^3"
+      },
+      "thermalExpansionCoefficient": {
+        "value": 1.2e-05,
+        "unit": "1/С"
+      },
+      "poissonRatio": {
+        "value": 0.3,
+        "unit": "none"
+      },
+      "dampingRatio": {
+        "value": 0.02,
+        "unit": "none"
+      }
+    }
+  },
+  {
+    "id": "gost_steel_St3sp",
+    "name": "St3sp",
+    "type": "steel",
+    "standard": "GOST_SP",
+    "properties": {
+      "elasticModulus": {
+        "value": 206000,
+        "unit": "MPa"
+      },
+      "density": {
+        "value": 7850,
+        "unit": "kg/m^3"
+      },
+      "thermalExpansionCoefficient": {
+        "value": 1.2e-05,
+        "unit": "1/С"
+      },
+      "poissonRatio": {
+        "value": 0.3,
+        "unit": "none"
+      },
+      "dampingRatio": {
+        "value": 0.02,
+        "unit": "none"
+      }
+    }
+  }
+]
