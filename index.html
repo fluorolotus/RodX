@@ -2702,6 +2702,9 @@
                 modelMaterials.forEach(mat => {
                     materialOptionsHtml += `<option value="${mat.id}">${mat.name} (${mat.standard})</option>`;
                 });
+                const currentForceDisplayUnit = forceUnitsSelect.value;
+                const currentLengthDisplayUnit = unitsSelect.value;
+                const currentDistributedForceUnit = `${currentForceDisplayUnit}/${currentLengthDisplayUnit}`;
                 nodePropertiesContent.innerHTML = `
                     <h4 class="font-bold text-gray-700 mb-2">Выбрано стержней: ${selectedElements.length}</h4>
                     <div class="property-group">
@@ -2710,6 +2713,21 @@
                                 ${materialOptionsHtml}
                             </select>
                             <button id="applyMaterialToSelectedBtn" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Применить</button>
+                        </div>
+                    </div>
+                    <div class="property-group">
+                        <h4 class="font-bold text-gray-700 mb-2">Распределенные нагрузки</h4>
+                        <div class="load-input-group">
+                            <label for="multiDistributedForceX" class="sr-only">Равномерная нагрузка X</label>
+                            <input type="number" id="multiDistributedForceX" placeholder="qX">
+                            <span id="currentDistributedForceUnitDisplay_multi_qX" class="ml-2 font-semibold text-gray-700">${currentDistributedForceUnit}</span>
+                            <button id="multiDistributedForceXBtn">Добавить qX</button>
+                        </div>
+                        <div class="load-input-group">
+                            <label for="multiDistributedForceY" class="sr-only">Равномерная нагрузка Y</label>
+                            <input type="number" id="multiDistributedForceY" placeholder="qY">
+                            <span id="currentDistributedForceUnitDisplay_multi_qY" class="ml-2 font-semibold text-gray-700">${currentDistributedForceUnit}</span>
+                            <button id="multiDistributedForceYBtn">Добавить qY</button>
                         </div>
                     </div>
                 `;
@@ -2726,6 +2744,63 @@
                         });
                         updatePropertiesPanel();
                         draw();
+                    });
+                }
+
+                const multiLoadXInput = document.getElementById('multiDistributedForceX');
+                const multiLoadXBtn = document.getElementById('multiDistributedForceXBtn');
+                const multiLoadYInput = document.getElementById('multiDistributedForceY');
+                const multiLoadYBtn = document.getElementById('multiDistributedForceYBtn');
+
+                if (multiLoadXBtn && multiLoadXInput) {
+                    multiLoadXBtn.addEventListener('click', () => {
+                        const value = parseFloat(multiLoadXInput.value);
+                        if (!isNaN(value)) {
+                            selectedElements.forEach(sel => {
+                                if (sel.type === 'line') {
+                                    elementLoads.push({
+                                        load_id: nextElementLoadId++,
+                                        target_elem_id: sel.element.elem_id,
+                                        type: 'uniform',
+                                        component: 'x',
+                                        startValue: value,
+                                        endValue: value,
+                                        unit: `${forceUnitsSelect.value}/${unitsSelect.value}`,
+                                        startPosition: 0,
+                                        endPosition: 1
+                                    });
+                                }
+                            });
+                            multiLoadXInput.value = '';
+                            updatePropertiesPanel();
+                            draw();
+                        }
+                    });
+                }
+
+                if (multiLoadYBtn && multiLoadYInput) {
+                    multiLoadYBtn.addEventListener('click', () => {
+                        const value = parseFloat(multiLoadYInput.value);
+                        if (!isNaN(value)) {
+                            selectedElements.forEach(sel => {
+                                if (sel.type === 'line') {
+                                    elementLoads.push({
+                                        load_id: nextElementLoadId++,
+                                        target_elem_id: sel.element.elem_id,
+                                        type: 'uniform',
+                                        component: 'y',
+                                        startValue: value,
+                                        endValue: value,
+                                        unit: `${forceUnitsSelect.value}/${unitsSelect.value}`,
+                                        startPosition: 0,
+                                        endPosition: 1
+                                    });
+                                }
+                            });
+                            multiLoadYInput.value = '';
+                            updatePropertiesPanel();
+                            draw();
+                        }
                     });
                 }
 
