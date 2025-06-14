@@ -6,6 +6,7 @@
     "country": "Россия",
     "description": "Действующие строительные нормы и правила Российской Федерации",
     "materialFile": "data/materials/gost_materials.json"
+    "sectionFile": "data/sections/gost_sections.json"
   },
   {
     "id": "EU",
@@ -14,6 +15,7 @@
     "country": "Евросоюз",
     "description": "Еврокоды и другие европейские стандарты",
     "materialFile": "data/materials/en_materials.json"
+    "sectionFile": "data/sections/en_sections.json"
   },
   {
     "id": "US",
@@ -22,6 +24,7 @@
     "country": "США",
     "description": "Стандарты Американского общества по испытанию материалов",
     "materialFile": "data/materials/astm_materials.json"
+    "sectionFile": "data/sections/us_sections.json"
   },
   {
     "id": "USER",
@@ -30,5 +33,6 @@
     "country": "Локальные",
     "description": "Материалы, созданные и сохраненные пользователем",
     "materialFile": "localStorage"
+    "sectionFile": "localStorage"
   }
 ]
