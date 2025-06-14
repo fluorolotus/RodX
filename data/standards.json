@@ -5,7 +5,7 @@
     "shortName": "ГОСТ СП",
     "country": "Россия",
     "description": "Действующие строительные нормы и правила Российской Федерации",
-    "materialFile": "data/materials/gost_materials.json"
+    "materialFile": "data/materials/gost_materials.json",
     "sectionFile": "data/sections/gost_sections.json"
   },
   {
@@ -14,7 +14,7 @@
     "shortName": "EN",
     "country": "Евросоюз",
     "description": "Еврокоды и другие европейские стандарты",
-    "materialFile": "data/materials/en_materials.json"
+    "materialFile": "data/materials/en_materials.json",
     "sectionFile": "data/sections/en_sections.json"
   },
   {
@@ -23,7 +23,7 @@
     "shortName": "ASTM",
     "country": "США",
     "description": "Стандарты Американского общества по испытанию материалов",
-    "materialFile": "data/materials/astm_materials.json"
+    "materialFile": "data/materials/astm_materials.json",
     "sectionFile": "data/sections/us_sections.json"
   },
   {
@@ -32,7 +32,7 @@
     "shortName": "Польз.",
     "country": "Локальные",
     "description": "Материалы, созданные и сохраненные пользователем",
-    "materialFile": "localStorage"
+    "materialFile": "localStorage",
     "sectionFile": "localStorage"
   }
 ]
