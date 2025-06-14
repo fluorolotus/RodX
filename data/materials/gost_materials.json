@@ -3,7 +3,7 @@
     "id": "gost_concrete_B3.5",
     "name": "B3.5",
     "type": "concrete",
-    "standard": "GOST_SP",
+    "standard": "RU",
     "properties": {
       "elasticModulus": {
         "value": 9500,
