@@ -286,6 +286,21 @@
             overflow-y: auto;
         }
 
+        #sectionsModal {
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.6);
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+        }
+        #sectionsModal > div {
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
     </style>
 </head>
 <body>
@@ -297,6 +312,10 @@
             <!-- Кнопка "Материалы" -->
             <button id="openMaterialsModalBtn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-150 ease-in-out">
                 Материалы
+            </button>
+            <!-- Кнопка "Сечения" -->
+            <button id="openSectionsModalBtn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-150 ease-in-out">
+                Сечения
             </button>
             <button id="toggleNodeNumbersBtn" class="visibility-toggle-btn active" title="Переключить номера узлов">
                 <img src="icons/icon_nodeNumberVisibility.svg" alt="Node numbers">
@@ -415,6 +434,15 @@
                     Закрыть
                 </button>
             </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно для сечений -->
+    <div id="sectionsModal" class="fixed inset-0 bg-gray-600 bg-opacity-75 flex items-center justify-center hidden z-50">
+        <div class="bg-white p-8 rounded-lg shadow-xl">
+            <button id="closeSectionsModalBtn" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded">
+                Закрыть
+            </button>
         </div>
     </div>
 
@@ -3400,6 +3428,11 @@
             const materialsModal = document.getElementById('materialsModal');
             const closeMaterialsModalBtn = document.getElementById('closeMaterialsModalBtn');
             const closeMaterialsModalBtnBottom = document.getElementById('closeMaterialsModalBtnBottom');
+
+            const openSectionsModalBtn = document.getElementById('openSectionsModalBtn');
+            const sectionsModal = document.getElementById('sectionsModal');
+            const closeSectionsModalBtn = document.getElementById('closeSectionsModalBtn');
+
             const toggleNodeNumbersBtn = document.getElementById("toggleNodeNumbersBtn");
             const toggleLineNumbersBtn = document.getElementById("toggleLineNumbersBtn");
 			
@@ -3471,6 +3504,24 @@
                 materialsModal.addEventListener('click', (e) => {
                     if (e.target === materialsModal) { // Закрытие по клику вне модального окна
                         toggleMaterialsModal();
+                    }
+                });
+            }
+
+            function toggleSectionsModal() {
+                sectionsModal.classList.toggle('hidden');
+            }
+
+            if (openSectionsModalBtn) {
+                openSectionsModalBtn.addEventListener('click', toggleSectionsModal);
+            }
+            if (closeSectionsModalBtn) {
+                closeSectionsModalBtn.addEventListener('click', toggleSectionsModal);
+            }
+            if (sectionsModal) {
+                sectionsModal.addEventListener('click', (e) => {
+                    if (e.target === sectionsModal) {
+                        toggleSectionsModal();
                     }
                 });
             }
