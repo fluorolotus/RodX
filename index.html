@@ -2537,6 +2537,7 @@
                         assignedSectionName = `${assignedSec.name} (${assignedSec.standard})`;
                     }
                 }
+                const betaAngleValue = selectedElement.betaAngle !== undefined ? selectedElement.betaAngle : 0;
 
                 let loadsHtml = '';
                 const elementSpecificLoads = elementLoads.filter(load => load.target_elem_id === selectedElement.elem_id);
@@ -2611,6 +2612,7 @@
                             <button id="changeBetaAngleBtn" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Поменять угол сечения</button>
                         </div>
                         <p class="text-sm text-gray-700">Назначенное сечение: <span id="assignedSectionDisplay" class="font-semibold italic">${assignedSectionName}</span></p>
+                        <p class="text-sm text-gray-700 mt-1">Угол сечения: <span id="betaAngleDisplay" class="font-semibold italic">${betaAngleValue}</span></p>
                     </div>
 
                     <!-- Существующий блок: Распределенные нагрузки -->
