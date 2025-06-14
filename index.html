@@ -460,6 +460,17 @@
                 <p class="text-gray-700"><span class="font-medium">Толщина пояса (t):</span> <span id="flangeThickness" class="font-normal"></span></p>
             </div>
 
+            <button id="addSectionToModelBtn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded mb-4 w-full">
+                Добавить сечение в модель
+            </button>
+
+            <div class="mb-4">
+                <h3 class="text-xl font-bold mb-2">Сечения в модели:</h3>
+                <ul id="modelSectionList" class="border rounded-md p-3 bg-white max-h-48 overflow-y-auto">
+                    <li id="noSectionsMessage" class="text-gray-500 italic">Нет сечений в модели.</li>
+                </ul>
+            </div>
+
             <div class="flex justify-between">
                 <button id="showSectionPropsBtn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">
                     Показать характеристики сечения
@@ -682,7 +693,8 @@
                 restrictions: restrictions,
                 nodeLoads: nodeLoads,
                 elementLoads: elementLoads,
-				materials: modelMaterials,
+                materials: modelMaterials,
+                sections: modelSections,
                 units: {
                     length: currentUnit,
                     force: currentForceUnit,
@@ -718,9 +730,10 @@
                 elementLoads = modelData.elementLoads || [];
 				
 				// НОВОЕ: Загружаем материалы модели
-                modelMaterials = modelData.materials || []; // <-- Добавляем эту строку
-                // НОВОЕ: Отрисовываем список загруженных материалов в модальном окне
-                renderModelMaterialsList(); // <-- Добавляем эту строку
+                modelMaterials = modelData.materials || [];
+                renderModelMaterialsList();
+                modelSections = modelData.sections || [];
+                renderModelSectionsList();
 
                 if (modelData.units) {
                     const loadedLengthUnit = modelData.units.length;
@@ -2917,7 +2930,8 @@
         let allSectionsData = {}; // Объект для хранения всех загруженных данных сечений
 		
 		// НОВОЕ: Массив для хранения материалов, добавленных в текущую модель
-        let modelMaterials = []; 
+        let modelMaterials = [];
+        let modelSections = [];
 
         // Основная функция для загрузки всех данных материалов
         async function loadAllMaterials() {
@@ -3233,6 +3247,90 @@
                 renderModelMaterialsList(); // Перерисовываем список
             } else {
                 console.warn("Attempted to remove non-existent material:", materialId);
+            }
+        }
+
+        // Функция для добавления сечения в модель
+        function addSelectedSectionToModel() {
+            const selectedSectionId = sectionNameSelect.value;
+            const selectedStandardId = sectionStandardSelect.value;
+
+            if (!selectedSectionId || !selectedStandardId) {
+                alert('Пожалуйста, выберите стандарт и сечение.');
+                return;
+            }
+
+            const sectionsForStandard = allSectionsData[selectedStandardId] || [];
+            const sectionToAdd = sectionsForStandard.find(sec => sec.id === selectedSectionId);
+
+            if (sectionToAdd) {
+                if (modelSections.some(s => s.id === sectionToAdd.id)) {
+                    alert(`Сечение "${sectionToAdd.name}" (${sectionToAdd.standard}) уже добавлено в модель.`);
+                    return;
+                }
+
+                modelSections.push(sectionToAdd);
+                console.log('Section added to model:', sectionToAdd);
+                renderModelSectionsList();
+            } else {
+                console.error('Selected section not found:', selectedSectionId, selectedStandardId);
+                alert('Не удалось найти выбранное сечение. Пожалуйста, попробуйте еще раз.');
+            }
+        }
+
+        // Функция для отрисовки списка сечений модели
+        function renderModelSectionsList() {
+            const modelSectionList = document.getElementById('modelSectionList');
+            if (!modelSectionList) {
+                console.error('Element #modelSectionList not found.');
+                return;
+            }
+
+            modelSectionList.innerHTML = '';
+
+            const noSectionsMessage = document.getElementById('noSectionsMessage');
+            if (noSectionsMessage) {
+                noSectionsMessage.remove();
+            }
+
+            if (modelSections.length === 0) {
+                const message = document.createElement('li');
+                message.id = 'noSectionsMessage';
+                message.classList.add('text-gray-500', 'italic');
+                message.textContent = 'Нет сечений в модели.';
+                modelSectionList.appendChild(message);
+            } else {
+                modelSections.forEach(section => {
+                    const listItem = document.createElement('li');
+                    listItem.id = `model-section-${section.id}`;
+                    listItem.classList.add('flex', 'justify-between', 'items-center', 'p-2', 'border-b', 'last:border-b-0');
+                    listItem.innerHTML = `
+                        <span>${section.name} (${section.standard}) - ${section.type}</span>
+                        <button class="remove-section-btn bg-red-500 hover:bg-red-700 text-white text-xs font-bold py-1 px-2 rounded" data-section-id="${section.id}">
+                            Удалить
+                        </button>`;
+                    modelSectionList.appendChild(listItem);
+                });
+
+                modelSectionList.querySelectorAll('.remove-section-btn').forEach(button => {
+                    button.addEventListener('click', (event) => {
+                        const sectionIdToRemove = event.target.dataset.sectionId;
+                        removeSectionFromModel(sectionIdToRemove);
+                    });
+                });
+            }
+        }
+
+        // Функция для удаления сечения из модели
+        function removeSectionFromModel(sectionId) {
+            const initialLength = modelSections.length;
+            modelSections = modelSections.filter(s => s.id !== sectionId);
+
+            if (modelSections.length < initialLength) {
+                console.log('Section removed from model:', sectionId);
+                renderModelSectionsList();
+            } else {
+                console.warn('Attempted to remove non-existent section:', sectionId);
             }
         }
 
@@ -3626,6 +3724,8 @@ let sectionDetailsContent;
 			// Получаем ссылки на новые DOM-элементы
             const addMaterialToModelBtn = document.getElementById('addMaterialToModelBtn');
             const modelMaterialList = document.getElementById('modelMaterialList'); // Получите ссылку здесь, если она не глобальная
+            const addSectionToModelBtn = document.getElementById('addSectionToModelBtn');
+            const modelSectionList = document.getElementById('modelSectionList');
 			
             // Получаем ссылки на элементы селекторов материалов
             materialTypeSelect = document.getElementById('materialTypeSelect');
@@ -3804,6 +3904,9 @@ let sectionDetailsContent;
 			// НОВОЕ: Слушатель для кнопки "Добавить в модель"
             if (addMaterialToModelBtn) {
                 addMaterialToModelBtn.addEventListener('click', addSelectedMaterialToModel);
+            }
+            if (addSectionToModelBtn) {
+                addSectionToModelBtn.addEventListener('click', addSelectedSectionToModel);
             }
             
 			// --- Инициализируем селекторы материалов и загружаем данные ---\
