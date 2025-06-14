@@ -3,7 +3,7 @@
     "id": "I-beam_en_IPE-80",
     "name": "IPE-80",
     "type": "I-beam",
-    "standard": "EN",
+    "standard": "EU",
     "comments": "Двутавровый профиль IPE-80 по Европейским нормам",
     "properties": {
       "height": {
@@ -96,7 +96,7 @@
     "id": "I-beam_en_IPE-100",
     "name": "IPE-100",
     "type": "I-beam",
-    "standard": "EN",
+    "standard": "EU",
     "comments": "Двутавровый профиль IPE-100 по Европейским нормам",
     "properties": {
       "height": {
@@ -189,7 +189,7 @@
     "id": "I-beam_en_IPE-120",
     "name": "IPE-120",
     "type": "I-beam",
-    "standard": "EN",
+    "standard": "EU",
     "comments": "Двутавровый профиль IPE-120 по Европейским нормам",
     "properties": {
       "height": {
@@ -282,7 +282,7 @@
     "id": "I-beam_en_IPE-140",
     "name": "IPE-140",
     "type": "I-beam",
-    "standard": "EN",
+    "standard": "EU",
     "comments": "Двутавровый профиль IPE-140 по Европейским нормам",
     "properties": {
       "height": {
@@ -375,7 +375,7 @@
     "id": "I-beam_en_IPE-160",
     "name": "IPE-160",
     "type": "I-beam",
-    "standard": "EN",
+    "standard": "EU",
     "comments": "Двутавровый профиль IPE-160 по Европейским нормам",
     "properties": {
       "height": {
@@ -468,7 +468,7 @@
     "id": "I-beam_en_IPE-180",
     "name": "IPE-180",
     "type": "I-beam",
-    "standard": "EN",
+    "standard": "EU",
     "comments": "Двутавровый профиль IPE-180 по Европейским нормам",
     "properties": {
       "height": {
@@ -561,7 +561,7 @@
     "id": "I-beam_en_IPE-200",
     "name": "IPE-200",
     "type": "I-beam",
-    "standard": "EN",
+    "standard": "EU",
     "comments": "Двутавровый профиль IPE-200 по Европейским нормам",
     "properties": {
       "height": {
@@ -654,7 +654,7 @@
     "id": "I-beam_en_IPE-220",
     "name": "IPE-220",
     "type": "I-beam",
-    "standard": "EN",
+    "standard": "EU",
     "comments": "Двутавровый профиль IPE-220 по Европейским нормам",
     "properties": {
       "height": {
@@ -747,7 +747,7 @@
     "id": "I-beam_en_IPE-240",
     "name": "IPE-240",
     "type": "I-beam",
-    "standard": "EN",
+    "standard": "EU",
     "comments": "Двутавровый профиль IPE-240 по Европейским нормам",
     "properties": {
       "height": {
@@ -840,7 +840,7 @@
     "id": "I-beam_en_IPE-270",
     "name": "IPE-270",
     "type": "I-beam",
-    "standard": "EN",
+    "standard": "EU",
     "comments": "Двутавровый профиль IPE-270 по Европейским нормам",
     "properties": {
       "height": {
@@ -933,7 +933,7 @@
     "id": "I-beam_en_IPE-300",
     "name": "IPE-300",
     "type": "I-beam",
-    "standard": "EN",
+    "standard": "EU",
     "comments": "Двутавровый профиль IPE-300 по Европейским нормам",
     "properties": {
       "height": {
@@ -1026,7 +1026,7 @@
     "id": "I-beam_en_IPE-330",
     "name": "IPE-330",
     "type": "I-beam",
-    "standard": "EN",
+    "standard": "EU",
     "comments": "Двутавровый профиль IPE-330 по Европейским нормам",
     "properties": {
       "height": {
@@ -1119,7 +1119,7 @@
     "id": "I-beam_en_IPE-360",
     "name": "IPE-360",
     "type": "I-beam",
-    "standard": "EN",
+    "standard": "EU",
     "comments": "Двутавровый профиль IPE-360 по Европейским нормам",
     "properties": {
       "height": {
@@ -1212,7 +1212,7 @@
     "id": "I-beam_en_IPE-400",
     "name": "IPE-400",
     "type": "I-beam",
-    "standard": "EN",
+    "standard": "EU",
     "comments": "Двутавровый профиль IPE-400 по Европейским нормам",
     "properties": {
       "height": {
@@ -1305,7 +1305,7 @@
     "id": "I-beam_en_IPE-450",
     "name": "IPE-450",
     "type": "I-beam",
-    "standard": "EN",
+    "standard": "EU",
     "comments": "Двутавровый профиль IPE-450 по Европейским нормам",
     "properties": {
       "height": {
@@ -1398,7 +1398,7 @@
     "id": "I-beam_en_IPE-500",
     "name": "IPE-500",
     "type": "I-beam",
-    "standard": "EN",
+    "standard": "EU",
     "comments": "Двутавровый профиль IPE-500 по Европейским нормам",
     "properties": {
       "height": {
@@ -1491,7 +1491,7 @@
     "id": "I-beam_en_IPE-550",
     "name": "IPE-550",
     "type": "I-beam",
-    "standard": "EN",
+    "standard": "EU",
     "comments": "Двутавровый профиль IPE-550 по Европейским нормам",
     "properties": {
       "height": {
@@ -1584,7 +1584,7 @@
     "id": "I-beam_en_IPE-600",
     "name": "IPE-600",
     "type": "I-beam",
-    "standard": "EN",
+    "standard": "EU",
     "comments": "Двутавровый профиль IPE-600 по Европейским нормам",
     "properties": {
       "height": {

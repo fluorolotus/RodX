@@ -3,7 +3,7 @@
     "id": "C-channel_gost_5U",
     "name": "5U",
     "type": "C-channel",
-    "standard": "GOST",
+    "standard": "RU",
     "comments": "Профиль швеллера 5U по Российским нормам",
     "properties": {
       "height": {
@@ -100,7 +100,7 @@
     "id": "C-channel_gost_6.5U",
     "name": "6.5U",
     "type": "C-channel",
-    "standard": "GOST",
+    "standard": "RU",
     "comments": "Профиль швеллера 6.5U по Российским нормам",
     "properties": {
       "height": {
@@ -197,7 +197,7 @@
     "id": "C-channel_gost_8U",
     "name": "8U",
     "type": "C-channel",
-    "standard": "GOST",
+    "standard": "RU",
     "comments": "Профиль швеллера 8U по Российским нормам",
     "properties": {
       "height": {
@@ -294,7 +294,7 @@
     "id": "C-channel_gost_10U",
     "name": "10U",
     "type": "C-channel",
-    "standard": "GOST",
+    "standard": "RU",
     "comments": "Профиль швеллера 10U по Российским нормам",
     "properties": {
       "height": {
@@ -391,7 +391,7 @@
     "id": "C-channel_gost_12U",
     "name": "12U",
     "type": "C-channel",
-    "standard": "GOST",
+    "standard": "RU",
     "comments": "Профиль швеллера 12U по Российским нормам",
     "properties": {
       "height": {
@@ -488,7 +488,7 @@
     "id": "C-channel_gost_14U",
     "name": "14U",
     "type": "C-channel",
-    "standard": "GOST",
+    "standard": "RU",
     "comments": "Профиль швеллера 14U по Российским нормам",
     "properties": {
       "height": {
@@ -585,7 +585,7 @@
     "id": "C-channel_gost_16U",
     "name": "16U",
     "type": "C-channel",
-    "standard": "GOST",
+    "standard": "RU",
     "comments": "Профиль швеллера 16U по Российским нормам",
     "properties": {
       "height": {
@@ -682,7 +682,7 @@
     "id": "C-channel_gost_16aU",
     "name": "16aU",
     "type": "C-channel",
-    "standard": "GOST",
+    "standard": "RU",
     "comments": "Профиль швеллера 16aU по Российским нормам",
     "properties": {
       "height": {
@@ -779,7 +779,7 @@
     "id": "C-channel_gost_18U",
     "name": "18U",
     "type": "C-channel",
-    "standard": "GOST",
+    "standard": "RU",
     "comments": "Профиль швеллера 18U по Российским нормам",
     "properties": {
       "height": {
@@ -876,7 +876,7 @@
     "id": "C-channel_gost_18aU",
     "name": "18aU",
     "type": "C-channel",
-    "standard": "GOST",
+    "standard": "RU",
     "comments": "Профиль швеллера 18aU по Российским нормам",
     "properties": {
       "height": {
@@ -973,7 +973,7 @@
     "id": "C-channel_gost_20U",
     "name": "20U",
     "type": "C-channel",
-    "standard": "GOST",
+    "standard": "RU",
     "comments": "Профиль швеллера 20U по Российским нормам",
     "properties": {
       "height": {
@@ -1070,7 +1070,7 @@
     "id": "C-channel_gost_22U",
     "name": "22U",
     "type": "C-channel",
-    "standard": "GOST",
+    "standard": "RU",
     "comments": "Профиль швеллера 22U по Российским нормам",
     "properties": {
       "height": {
@@ -1167,7 +1167,7 @@
     "id": "C-channel_gost_24U",
     "name": "24U",
     "type": "C-channel",
-    "standard": "GOST",
+    "standard": "RU",
     "comments": "Профиль швеллера 24U по Российским нормам",
     "properties": {
       "height": {
@@ -1264,7 +1264,7 @@
     "id": "C-channel_gost_27U",
     "name": "27U",
     "type": "C-channel",
-    "standard": "GOST",
+    "standard": "RU",
     "comments": "Профиль швеллера 27U по Российским нормам",
     "properties": {
       "height": {
@@ -1361,7 +1361,7 @@
     "id": "C-channel_gost_30U",
     "name": "30U",
     "type": "C-channel",
-    "standard": "GOST",
+    "standard": "RU",
     "comments": "Профиль швеллера 30U по Российским нормам",
     "properties": {
       "height": {
@@ -1458,7 +1458,7 @@
     "id": "C-channel_gost_33U",
     "name": "33U",
     "type": "C-channel",
-    "standard": "GOST",
+    "standard": "RU",
     "comments": "Профиль швеллера 33U по Российским нормам",
     "properties": {
       "height": {
@@ -1555,7 +1555,7 @@
     "id": "C-channel_gost_36U",
     "name": "36U",
     "type": "C-channel",
-    "standard": "GOST",
+    "standard": "RU",
     "comments": "Профиль швеллера 36U по Российским нормам",
     "properties": {
       "height": {
@@ -1652,7 +1652,7 @@
     "id": "C-channel_gost_40U",
     "name": "40U",
     "type": "C-channel",
-    "standard": "GOST",
+    "standard": "RU",
     "comments": "Профиль швеллера 40U по Российским нормам",
     "properties": {
       "height": {
