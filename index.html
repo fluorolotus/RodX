@@ -724,7 +724,11 @@
                 const modelData = JSON.parse(jsonFileContent);
 
                 nodes = modelData.nodes || [];
-                lines = modelData.lines || [];
+                lines = (modelData.lines || []).map(l => ({
+                    ...l,
+                    sectionId: l.sectionId !== undefined ? l.sectionId : null,
+                    betaAngle: l.betaAngle !== undefined ? l.betaAngle : 0
+                }));
                 restrictions = modelData.restrictions || [];
                 nodeLoads = modelData.nodeLoads || [];
                 elementLoads = modelData.elementLoads || [];
@@ -1908,10 +1912,10 @@
 							(line.nodeId1 === firstNodeForLine.node_id && line.nodeId2 === clickedNode.node_id) || 
 							(line.nodeId1 === clickedNode.node_id && line.nodeId2 === firstNodeForLine.node_id)    
 						);
-						if (!exists) {
-							lines.push({ elem_id: nextElemId++, nodeId1: firstNodeForLine.node_id, nodeId2: clickedNode.node_id, structural_type: 'beam', materialId: null, loads: [] }); 
-							console.log(`Линия ${nextElemId - 1} создана между узлами ${firstNodeForLine.node_id} и ${clickedNode.node_id}.`);
-						} else {
+                                                if (!exists) {
+                                                        lines.push({ elem_id: nextElemId++, nodeId1: firstNodeForLine.node_id, nodeId2: clickedNode.node_id, structural_type: 'beam', materialId: null, sectionId: null, betaAngle: 0, loads: [] });
+                                                        console.log(`Линия ${nextElemId - 1} создана между узлами ${firstNodeForLine.node_id} и ${clickedNode.node_id}.`);
+                                                } else {
 							console.log(`Линия между узлами ${firstNodeForLine.node_id} и ${clickedNode.node_id} уже существует.`); 
 						}
 						
@@ -2516,7 +2520,23 @@
                     if (assignedMat) {
                         assignedMaterialName = `${assignedMat.name} (${assignedMat.standard})`;
                     }
-                }				
+                }
+
+                // --- Формирование опций для выпадающего списка сечений ---
+                let sectionOptionsHtml = '<option value="">Не выбрано</option>';
+                modelSections.forEach(sec => {
+                    const isSelected = selectedElement.sectionId === sec.id ? 'selected' : '';
+                    sectionOptionsHtml += `<option value="${sec.id}" ${isSelected}>${sec.name} (${sec.standard})</option>`;
+                });
+
+                // --- Имя назначенного сечения ---
+                let assignedSectionName = 'Нет';
+                if (selectedElement.sectionId) {
+                    const assignedSec = modelSections.find(s => s.id === selectedElement.sectionId);
+                    if (assignedSec) {
+                        assignedSectionName = `${assignedSec.name} (${assignedSec.standard})`;
+                    }
+                }
 
                 let loadsHtml = '';
                 const elementSpecificLoads = elementLoads.filter(load => load.target_elem_id === selectedElement.elem_id);
@@ -2571,6 +2591,26 @@
                             </button>
                         </div>
                         <p class="text-sm text-gray-700">Назначенный материал: <span id="assignedMaterialDisplay" class="font-semibold italic">${assignedMaterialName}</span></p>
+                    </div>
+
+                    <div class="property-group">
+                        <h4 class="font-bold text-gray-700 mb-2">Назначение сечения</h4>
+                        <div class="flex items-center gap-2 mb-2">
+                            <select id="sectionAssignmentSelect" class="flex-grow form-select block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md shadow-sm">
+                                ${sectionOptionsHtml}
+                            </select>
+                            <button id="assignSectionBtn" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Выбрать сечение</button>
+                        </div>
+                        <div class="flex items-center gap-2 mb-2">
+                            <select id="betaAngleSelect" class="form-select block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md shadow-sm">
+                                <option value="0">0</option>
+                                <option value="90">90</option>
+                                <option value="180">180</option>
+                                <option value="270">270</option>
+                            </select>
+                            <button id="changeBetaAngleBtn" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Поменять угол сечения</button>
+                        </div>
+                        <p class="text-sm text-gray-700">Назначенное сечение: <span id="assignedSectionDisplay" class="font-semibold italic">${assignedSectionName}</span></p>
                     </div>
 
                     <!-- Существующий блок: Распределенные нагрузки -->
@@ -2696,6 +2736,11 @@
                 const materialAssignmentSelect = document.getElementById('materialAssignmentSelect');
                 const assignMaterialBtn = document.getElementById('assignMaterialBtn');
                 const assignedMaterialDisplay = document.getElementById('assignedMaterialDisplay');
+                const sectionAssignmentSelect = document.getElementById('sectionAssignmentSelect');
+                const assignSectionBtn = document.getElementById('assignSectionBtn');
+                const betaAngleSelect = document.getElementById('betaAngleSelect');
+                const changeBetaAngleBtn = document.getElementById('changeBetaAngleBtn');
+                const assignedSectionDisplay = document.getElementById('assignedSectionDisplay');
 
                 // НОВОЕ: Добавляем слушатель для кнопки "Выбрать"
                 if (assignMaterialBtn && selectedElement) { // Проверяем, что кнопка и элемент существуют
@@ -2728,10 +2773,43 @@
                             // Обновляем панель свойств, чтобы отобразить изменения
                             updatePropertiesPanel();
                             // Перерисовываем канвас, если есть какая-либо визуализация материала
-                            draw(); 
+                            draw();
                         }
                     };
-                }			
+                }
+
+                if (assignSectionBtn && selectedElement) {
+                    assignSectionBtn.onclick = () => {
+                        const newSectionId = sectionAssignmentSelect.value;
+                        if (selectedElement) {
+                            if (newSectionId === "") {
+                                selectedElement.sectionId = null;
+                                console.log(`Сечение для элемента ${selectedElement.elem_id} сброшено.`);
+                            } else {
+                                selectedElement.sectionId = newSectionId;
+                                const assignedSec = modelSections.find(s => s.id === newSectionId);
+                                if (assignedSec) {
+                                    console.log(`Сечение "${assignedSec.name}" назначено элементу ${selectedElement.elem_id}.`);
+                                } else {
+                                    console.warn(`Выбранное сечение ID "${newSectionId}" не найдено в modelSections.`);
+                                }
+                            }
+                            updatePropertiesPanel();
+                            draw();
+                        }
+                    };
+                }
+
+                if (changeBetaAngleBtn && selectedElement) {
+                    changeBetaAngleBtn.onclick = () => {
+                        const angle = parseInt(betaAngleSelect.value, 10);
+                        if (!isNaN(angle)) {
+                            selectedElement.betaAngle = angle;
+                            updatePropertiesPanel();
+                            draw();
+                        }
+                    };
+                }
 
                 splitElementBtn.addEventListener('click', () => {
                     if (!selectedElement) return;
@@ -2783,11 +2861,14 @@
                         const startNode = allSegmentNodes[i];
                         const endNode = allSegmentNodes[i + 1];
 
-                        const newLine = { 
-                            elem_id: nextElemId++, 
-                            nodeId1: startNode.node_id, 
-                            nodeId2: endNode.node_id, 
-                            structural_type: originalLine.structural_type || 'beam' 
+                        const newLine = {
+                            elem_id: nextElemId++,
+                            nodeId1: startNode.node_id,
+                            nodeId2: endNode.node_id,
+                            structural_type: originalLine.structural_type || 'beam',
+                            materialId: originalLine.materialId || null,
+                            sectionId: originalLine.sectionId || null,
+                            betaAngle: originalLine.betaAngle || 0
                         };
                         newLines.push(newLine);
                         console.log(`Добавлен новый стержень ${newLine.elem_id} между узлами ${startNode.node_id} и ${endNode.node_id}`);
