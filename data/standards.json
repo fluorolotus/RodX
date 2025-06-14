@@ -1,6 +1,6 @@
 [
   {
-    "id": "GOST_SP",
+    "id": "RU",
     "name": "Российские нормы (ГОСТ СП)",
     "shortName": "ГОСТ СП",
     "country": "Россия",
@@ -8,7 +8,7 @@
     "materialFile": "data/materials/gost_materials.json"
   },
   {
-    "id": "EN",
+    "id": "EU",
     "name": "Европейские нормы (EN)",
     "shortName": "EN",
     "country": "Евросоюз",
@@ -16,7 +16,7 @@
     "materialFile": "data/materials/en_materials.json"
   },
   {
-    "id": "ASTM",
+    "id": "US",
     "name": "Американские нормы (ASTM)",
     "shortName": "ASTM",
     "country": "США",
