@@ -440,6 +440,18 @@
     <!-- Модальное окно для сечений -->
     <div id="sectionsModal" class="fixed inset-0 bg-gray-600 bg-opacity-75 flex items-center justify-center hidden z-50">
         <div class="bg-white p-8 rounded-lg shadow-xl">
+            <div class="mb-4">
+                <label for="sectionTypeSelect" class="block text-gray-700 text-sm font-bold mb-2">Тип сечения:</label>
+                <select id="sectionTypeSelect" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></select>
+            </div>
+            <div class="mb-4">
+                <label for="sectionStandardSelect" class="block text-gray-700 text-sm font-bold mb-2">Стандарт:</label>
+                <select id="sectionStandardSelect" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></select>
+            </div>
+            <div class="mb-4">
+                <label for="sectionNameSelect" class="block text-gray-700 text-sm font-bold mb-2">Сечение:</label>
+                <select id="sectionNameSelect" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></select>
+            </div>
             <button id="closeSectionsModalBtn" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded">
                 Закрыть
             </button>
@@ -2876,9 +2888,12 @@
         // Материалы: Функции загрузки, отображения и выбора
         // ====================================================================
 
-		let allMaterialsData = {}; // Объект для хранения всех загруженных данных материалов
+        let allMaterialsData = {}; // Объект для хранения всех загруженных данных материалов
         let standardsData = []; // Массив для хранения данных стандартов
         let userMaterials = []; // Глобальная переменная для пользовательских материалов
+
+        // --- Сечения ---
+        let allSectionsData = {}; // Объект для хранения всех загруженных данных сечений
 		
 		// НОВОЕ: Массив для хранения материалов, добавленных в текущую модель
         let modelMaterials = []; 
@@ -3199,6 +3214,100 @@
                 console.warn("Attempted to remove non-existent material:", materialId);
             }
         }
+
+        // ====================================================================
+        // Сечения: Функции загрузки и заполнения списков
+        // ====================================================================
+
+        async function loadAllSections() {
+            try {
+                if (standardsData.length === 0) {
+                    const standardsResponse = await fetch('data/standards.json');
+                    if (!standardsResponse.ok) {
+                        throw new Error(`HTTP error! status: ${standardsResponse.status}`);
+                    }
+                    standardsData = await standardsResponse.json();
+                }
+
+                for (const standard of standardsData) {
+                    const filePath = standard.sectionFile;
+                    if (!filePath || filePath === 'localStorage') continue;
+
+                    const response = await fetch(filePath);
+                    if (!response.ok) {
+                        console.warn(`Warning: Section file ${filePath} not found or could not be loaded. Skipping.`);
+                        continue;
+                    }
+                    const data = await response.json();
+                    allSectionsData[standard.id] = data;
+                }
+            } catch (error) {
+                console.error('Error loading sections data:', error);
+            }
+        }
+
+        function populateSectionTypeSelect() {
+            if (!sectionTypeSelect) return;
+            sectionTypeSelect.innerHTML = '';
+
+            const defaultOption = document.createElement('option');
+            defaultOption.value = '';
+            defaultOption.textContent = 'Выберите тип';
+            defaultOption.disabled = true;
+            defaultOption.selected = true;
+            sectionTypeSelect.appendChild(defaultOption);
+
+            const uniqueTypes = new Set();
+            for (const standardId in allSectionsData) {
+                allSectionsData[standardId].forEach(sec => {
+                    if (sec.type) uniqueTypes.add(sec.type);
+                });
+            }
+
+            Array.from(uniqueTypes).sort().forEach(type => {
+                const opt = document.createElement('option');
+                opt.value = type;
+                opt.textContent = type;
+                sectionTypeSelect.appendChild(opt);
+            });
+        }
+
+        function populateSectionStandardSelect() {
+            if (!sectionStandardSelect) return;
+            sectionStandardSelect.innerHTML = '';
+            standardsData.forEach(std => {
+                if (!std.sectionFile) return;
+                const opt = document.createElement('option');
+                opt.value = std.id;
+                opt.textContent = std.id;
+                sectionStandardSelect.appendChild(opt);
+            });
+        }
+
+        function populateSectionNameSelect() {
+            if (!sectionNameSelect) return;
+            sectionNameSelect.innerHTML = '';
+
+            const selectedStandard = sectionStandardSelect.value;
+            const selectedType = sectionTypeSelect.value;
+            const sections = allSectionsData[selectedStandard] || [];
+
+            const filtered = sections.filter(sec => (!selectedType || sec.type === selectedType));
+
+            filtered.forEach(sec => {
+                const opt = document.createElement('option');
+                opt.value = sec.id;
+                opt.textContent = sec.name;
+                sectionNameSelect.appendChild(opt);
+            });
+        }
+
+        async function initializeSectionSelectors() {
+            await loadAllSections();
+            populateSectionStandardSelect();
+            populateSectionTypeSelect();
+            populateSectionNameSelect();
+        }
 		
 
         function applyRestrictionToSelectedNode(dxValue, dyValue, drValue) {
@@ -3404,9 +3513,12 @@
         }
 		
 		
-        let materialTypeSelect;
-        let materialStandardSelect;
-        let materialClassSelect;		
+let materialTypeSelect;
+let materialStandardSelect;
+let materialClassSelect;
+let sectionTypeSelect;
+let sectionStandardSelect;
+let sectionNameSelect;
 		
 		document.addEventListener('DOMContentLoaded', async () => {
             console.log('DOMContentLoaded fired. Starting initialization...'); 
@@ -3443,7 +3555,10 @@
             // Получаем ссылки на элементы селекторов материалов
             materialTypeSelect = document.getElementById('materialTypeSelect');
             materialStandardSelect = document.getElementById('materialStandardSelect');
-            materialClassSelect = document.getElementById('materialClassSelect');			
+            materialClassSelect = document.getElementById('materialClassSelect');
+            sectionTypeSelect = document.getElementById('sectionTypeSelect');
+            sectionStandardSelect = document.getElementById('sectionStandardSelect');
+            sectionNameSelect = document.getElementById('sectionNameSelect');
 			
 			// НОВЫЕ: Получаем ссылки на элементы для пользовательского материала
             const customMaterialFields = document.getElementById('customMaterialFields');
@@ -3546,7 +3661,14 @@
 			
             if (materialClassSelect) {
                 materialClassSelect.addEventListener('change', displaySelectedMaterialProperties); // <-- Это строка, которая должна вызывать функцию
-            }		
+            }
+
+            if (sectionTypeSelect) {
+                sectionTypeSelect.addEventListener('change', populateSectionNameSelect);
+            }
+            if (sectionStandardSelect) {
+                sectionStandardSelect.addEventListener('change', populateSectionNameSelect);
+            }
 			
 			
 			// НОВОЕ: Слушатель для кнопки сохранения пользовательского материала
@@ -3574,7 +3696,8 @@
             }
             
 			// --- Инициализируем селекторы материалов и загружаем данные ---\
-			await initializeMaterialSelectors(); 
+            await initializeMaterialSelectors();
+            await initializeSectionSelectors();
             
             // --- 3. Запускаем основную инициализацию приложения ---\
             init(); 
