@@ -633,6 +633,9 @@
         betaAngleIcons['C-channel'].src = 'icons/icon_betaAngle_C-channel.svg';
         betaAngleIcons['I-beam'].src = 'icons/icon_betaAngle_I-beam.svg';
         betaAngleIcons['unknown'].src = 'icons/icon_betaAngle_unknownSection.svg';
+
+        const betaIconPositions = {};
+        let hoveredBetaIconLine = null;
         
         // Коэффициенты конвертации единиц длины (базовая единица: метры 'm')
         const lengthUnitConversions = { 
@@ -1705,7 +1708,6 @@
                                        }
 
                                         if (showBetaAngleIcons) {
-                                            // --- Draw beta angle icon ---
                                             const midX_icon = (node1.x + node2.x) / 2;
                                             const midY_icon = (node1.y + node2.y) / 2;
                                             const iconSize = betaAngleIconSizeWorld / scale;
@@ -1722,15 +1724,29 @@
                                                 const dx = node2.x - node1.x;
                                                 const dy = node2.y - node1.y;
                                                 const theta = Math.atan2(dy, dx);
-                                                // Place the icon on the side opposite to the line label
                                                 const offsetX = -Math.sin(theta) * iconOffset + Math.cos(theta) * iconOffsetAlong;
                                                 const offsetY = -Math.cos(theta) * iconOffset + Math.sin(theta) * iconOffsetAlong;
-                                                    ctx.save();
-                                                    ctx.translate(midX_icon + offsetX, midY_icon + offsetY);
-                                                    ctx.rotate(Math.atan2(dy, dx));
-                                                    ctx.drawImage(img, -iconSize / 2, -iconSize / 2, iconSize, iconSize);
-                                                    ctx.restore();
+                                                const centerX = midX_icon + offsetX;
+                                                const centerY = midY_icon + offsetY;
+
+                                                betaIconPositions[line.elem_id] = { x: centerX, y: centerY, size: iconSize };
+
+                                                ctx.save();
+                                                ctx.translate(centerX, centerY);
+                                                ctx.rotate(theta + (line.betaAngle || 0) * Math.PI / 180);
+                                                if (hoveredBetaIconLine && hoveredBetaIconLine.elem_id === line.elem_id) {
+                                                    ctx.beginPath();
+                                                    ctx.arc(0, 0, iconSize * 0.6, 0, 2 * Math.PI);
+                                                    ctx.fillStyle = '#dc3545';
+                                                    ctx.globalAlpha = 0.3;
+                                                    ctx.fill();
+                                                    ctx.globalAlpha = 1.0;
+                                                }
+                                                ctx.drawImage(img, -iconSize / 2, -iconSize / 2, iconSize, iconSize);
+                                                ctx.restore();
                                             }
+                                        } else {
+                                            delete betaIconPositions[line.elem_id];
                                         }
                                        ctx.restore(); // НОВОЕ: Восстанавливаем состояние контекста после отрисовки этой линии
                                }
@@ -1945,8 +1961,16 @@
 			mouse.snappedX = snapped.x;
 			mouse.snappedY = snapped.y; 
 
-			const clickedNode = findNodeAt(mouse.worldX, mouse.worldY); 
-			const clickedLine = findLineAt(mouse.worldX, mouse.worldY); 
+                        const clickedNode = findNodeAt(mouse.worldX, mouse.worldY);
+                        const clickedLine = findLineAt(mouse.worldX, mouse.worldY);
+                        const clickedBetaIconLine = findBetaIconAt(mouse.worldX, mouse.worldY);
+
+                        if (clickedBetaIconLine && e.button === 0) {
+                            clickedBetaIconLine.betaAngle = ((clickedBetaIconLine.betaAngle || 0) + 90) % 360;
+                            updatePropertiesPanel();
+                            draw();
+                            return;
+                        }
 			
 			// --- НОВОЕ: Проверяем нажата ли клавиша Ctrl/Cmd ---
 			const isCtrlPressed = e.ctrlKey || e.metaKey; // Для Windows/Linux (Ctrl) и macOS (Cmd)
@@ -2075,11 +2099,16 @@
                 const dx = e.clientX - lastPanX;
                 const dy = e.clientY - lastPanY;
                 panX += dx;
-                panY += dy; 
+                panY += dy;
                 lastPanX = e.clientX;
                 lastPanY = e.clientY;
             } else {
-                hoveredElement = findElementAt(mouse.worldX, mouse.worldY); 
+                hoveredBetaIconLine = findBetaIconAt(mouse.worldX, mouse.worldY);
+                if (hoveredBetaIconLine) {
+                    hoveredElement = { type: 'line', element: hoveredBetaIconLine };
+                } else {
+                    hoveredElement = findElementAt(mouse.worldX, mouse.worldY);
+                }
             }
             draw();
         }
@@ -2160,7 +2189,7 @@
         }
 
         function findLineAt(worldX_currentUnit, worldY_currentUnit) {
-            const clickRadiusWorld = 6 / scale; 
+            const clickRadiusWorld = 6 / scale;
             for (let i = lines.length - 1; i >= 0; i--) {
                 const line = lines[i];
                 const n1 = nodes.find(n => n.node_id === line.nodeId1); 
@@ -2174,6 +2203,19 @@
                     const projY = n1.y + t * (n2.y - n1.y); 
                     const dist = Math.sqrt((worldX_currentUnit - projX)**2 + (worldY_currentUnit - projY)**2); 
                     if (dist < clickRadiusWorld) return line;
+                }
+            }
+            return null;
+        }
+
+        function findBetaIconAt(worldX_currentUnit, worldY_currentUnit) {
+            if (!showBetaAngleIcons) return null;
+            for (const id in betaIconPositions) {
+                const info = betaIconPositions[id];
+                const half = info.size / 2;
+                if (worldX_currentUnit >= info.x - half && worldX_currentUnit <= info.x + half &&
+                    worldY_currentUnit >= info.y - half && worldY_currentUnit <= info.y + half) {
+                    return lines.find(l => l.elem_id === parseInt(id));
                 }
             }
             return null;
