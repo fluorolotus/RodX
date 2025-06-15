@@ -323,6 +323,9 @@
             <button id="toggleLineNumbersBtn" class="visibility-toggle-btn active" title="Переключить номера элементов">
                 <img src="icons/icon_lineNumberVisibility.svg" alt="Line numbers">
             </button>
+            <button id="toggleBetaAngleIconsBtn" class="visibility-toggle-btn active" title="Переключить иконки сечения">
+                <img src="icons/icon_betaAngleVisibility.svg" alt="Beta angle icons">
+            </button>
         </div>
     </div>
 
@@ -599,8 +602,9 @@
         let materialListContainer = null; 
 		
 		// Глобальные флаги видимости для элементов канваса (НОВОЕ)
-		let showNodeIds = true;    // Показывать ID узлов по умолчанию
-		let showElementIds = true; // Показывать ID элементов (линий) по умолчанию
+                let showNodeIds = true;    // Показывать ID узлов по умолчанию
+                let showElementIds = true; // Показывать ID элементов (линий) по умолчанию
+                let showBetaAngleIcons = true; // Показывать иконки угла сечения по умолчанию
 
         let scale = 50; 
         let panX = 0;
@@ -1698,30 +1702,32 @@
                                                ctx.restore(); // Восстанавливаем состояние после преобразований текста
                                        }
 
-                                        // --- Draw beta angle icon ---
-                                        const midX_icon = (node1.x + node2.x) / 2;
-                                        const midY_icon = (node1.y + node2.y) / 2;
-                                        const iconSize = betaAngleIconSizeWorld / scale;
-                                        const iconOffset = betaAngleIconOffsetWorld / scale;
+                                        if (showBetaAngleIcons) {
+                                            // --- Draw beta angle icon ---
+                                            const midX_icon = (node1.x + node2.x) / 2;
+                                            const midY_icon = (node1.y + node2.y) / 2;
+                                            const iconSize = betaAngleIconSizeWorld / scale;
+                                            const iconOffset = betaAngleIconOffsetWorld / scale;
 
-                                        let sectionType = null;
-                                        if (line.sectionId) {
-                                                const sec = modelSections.find(s => s.id === line.sectionId);
-                                                if (sec && sec.type) sectionType = sec.type;
-                                        }
-                                        const img = betaAngleIcons[sectionType] || betaAngleIcons['unknown'];
-                                        if (img.complete) {
-                                            const dx = node2.x - node1.x;
-                                            const dy = node2.y - node1.y;
-                                            const theta = Math.atan2(dy, dx);
-                                            // Place the icon on the side opposite to the line label
-                                            const offsetX = -Math.sin(theta) * iconOffset;
-                                            const offsetY = -Math.cos(theta) * iconOffset;
-                                                ctx.save();
-                                                ctx.translate(midX_icon + offsetX, midY_icon + offsetY);
-                                                ctx.rotate(Math.atan2(dy, dx));
-                                                ctx.drawImage(img, -iconSize / 2, -iconSize / 2, iconSize, iconSize);
-                                                ctx.restore();
+                                            let sectionType = null;
+                                            if (line.sectionId) {
+                                                    const sec = modelSections.find(s => s.id === line.sectionId);
+                                                    if (sec && sec.type) sectionType = sec.type;
+                                            }
+                                            const img = betaAngleIcons[sectionType] || betaAngleIcons['unknown'];
+                                            if (img.complete) {
+                                                const dx = node2.x - node1.x;
+                                                const dy = node2.y - node1.y;
+                                                const theta = Math.atan2(dy, dx);
+                                                // Place the icon on the side opposite to the line label
+                                                const offsetX = -Math.sin(theta) * iconOffset;
+                                                const offsetY = -Math.cos(theta) * iconOffset;
+                                                    ctx.save();
+                                                    ctx.translate(midX_icon + offsetX, midY_icon + offsetY);
+                                                    ctx.rotate(Math.atan2(dy, dx));
+                                                    ctx.drawImage(img, -iconSize / 2, -iconSize / 2, iconSize, iconSize);
+                                                    ctx.restore();
+                                            }
                                         }
                                        ctx.restore(); // НОВОЕ: Восстанавливаем состояние контекста после отрисовки этой линии
                                }
@@ -3946,6 +3952,7 @@ let sectionDetailsContent;
 
             const toggleNodeNumbersBtn = document.getElementById("toggleNodeNumbersBtn");
             const toggleLineNumbersBtn = document.getElementById("toggleLineNumbersBtn");
+            const toggleBetaAngleIconsBtn = document.getElementById("toggleBetaAngleIconsBtn");
 			
 			// Получаем ссылки на новые DOM-элементы
             const addMaterialToModelBtn = document.getElementById('addMaterialToModelBtn');
@@ -3995,6 +4002,13 @@ let sectionDetailsContent;
                 toggleLineNumbersBtn.addEventListener("click", () => {
                     showElementIds = !showElementIds;
                     toggleLineNumbersBtn.classList.toggle("active", showElementIds);
+                    draw();
+                });
+            }
+            if (toggleBetaAngleIconsBtn) {
+                toggleBetaAngleIconsBtn.addEventListener("click", () => {
+                    showBetaAngleIcons = !showBetaAngleIcons;
+                    toggleBetaAngleIconsBtn.classList.toggle("active", showBetaAngleIcons);
                     draw();
                 });
             }
