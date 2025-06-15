@@ -2899,14 +2899,17 @@
                     sectionOptionsHtml += `<option value="${sec.id}">${sec.name} (${sec.standard})</option>`;
                 });
 
-                const uniqueSectionIds = new Set(selectedElements.map(sel => sel.element.sectionId).filter(id => id));
+                const sectionIds = selectedElements.map(sel => sel.element.sectionId !== undefined ? sel.element.sectionId : null);
+                const uniqueSectionIds = new Set(sectionIds);
                 let assignedSectionName;
                 if (uniqueSectionIds.size === 1) {
-                    const secId = Array.from(uniqueSectionIds)[0];
-                    const sec = modelSections.find(s => s.id === secId);
-                    assignedSectionName = sec ? `${sec.name} (${sec.standard})` : 'Нет';
-                } else if (uniqueSectionIds.size === 0) {
-                    assignedSectionName = 'Нет';
+                    const soleId = Array.from(uniqueSectionIds)[0];
+                    if (soleId === null) {
+                        assignedSectionName = 'Нет';
+                    } else {
+                        const sec = modelSections.find(s => s.id === soleId);
+                        assignedSectionName = sec ? `${sec.name} (${sec.standard})` : 'Нет';
+                    }
                 } else {
                     assignedSectionName = 'разные';
                 }
@@ -2944,7 +2947,7 @@
                             </select>
                             <button id="applyBetaAngleToSelectedBtn" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Поменять угол сечения</button>
                         </div>
-                        <p class="text-sm text-gray-700">Назначенное сечение: <span id="multiAssignedSectionDisplay" class="font-semibold italic">${assignedSectionName}</span></p>
+                        <p class="text-sm text-gray-700">Назначенные сечения: <span id="multiAssignedSectionDisplay" class="font-semibold italic">${assignedSectionName}</span></p>
                         <p class="text-sm text-gray-700 mt-1">Угол сечения: <span id="multiBetaAngleDisplay" class="font-semibold italic">${betaAngleDisplay}</span></p>
                     </div>
                     <div class="property-group">
