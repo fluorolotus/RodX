@@ -2894,6 +2894,21 @@
                     materialOptionsHtml += `<option value="${mat.id}">${mat.name} (${mat.standard})</option>`;
                 });
 
+                const materialIds = selectedElements.map(sel => sel.element.materialId !== undefined ? sel.element.materialId : null);
+                const uniqueMaterialIds = new Set(materialIds);
+                let assignedMaterialName;
+                if (uniqueMaterialIds.size === 1) {
+                    const soleId = Array.from(uniqueMaterialIds)[0];
+                    if (soleId === null) {
+                        assignedMaterialName = 'Нет';
+                    } else {
+                        const mat = modelMaterials.find(m => m.id === soleId);
+                        assignedMaterialName = mat ? `${mat.name} (${mat.standard})` : 'Нет';
+                    }
+                } else {
+                    assignedMaterialName = 'разные';
+                }
+
                 let sectionOptionsHtml = '<option value="">Не выбрано</option>';
                 modelSections.forEach(sec => {
                     sectionOptionsHtml += `<option value="${sec.id}">${sec.name} (${sec.standard})</option>`;
@@ -2923,12 +2938,14 @@
                 nodePropertiesContent.innerHTML = `
                     <h4 class="font-bold text-gray-700 mb-2">Выбрано стержней: ${selectedElements.length}</h4>
                     <div class="property-group">
+                        <h4 class="font-bold text-gray-700 mb-2">Назначение материала</h4>
                         <div class="flex items-center gap-2 mb-2">
                             <select id="multiMaterialSelect" class="flex-grow form-select block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md shadow-sm">
                                 ${materialOptionsHtml}
                             </select>
                             <button id="applyMaterialToSelectedBtn" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Применить</button>
                         </div>
+                        <p class="text-sm text-gray-700">Назначенный материал: <span id="multiAssignedMaterialDisplay" class="font-semibold italic">${assignedMaterialName}</span></p>
                     </div>
                     <div class="property-group">
                         <h4 class="font-bold text-gray-700 mb-2">Назначение сечения</h4>
