@@ -612,8 +612,20 @@
         let snapToGrid = true; 
         let currentUnit = unitsSelect.value;
         let currentForceUnit = forceUnitsSelect.value;
-        let currentTemperatureUnit = 'C'; 
-        let currentTimeUnit = 's'; 
+        let currentTemperatureUnit = 'C';
+        let currentTimeUnit = 's';
+
+        // === Beta Angle Icons ===
+        const betaAngleIconSizeWorld = 20; // icon size in pixels
+        const betaAngleIconOffsetWorld = 5; // offset from line in pixels
+        const betaAngleIcons = {
+            'C-channel': new Image(),
+            'I-beam': new Image(),
+            'unknown': new Image()
+        };
+        betaAngleIcons['C-channel'].src = 'icons/icon_betaAngle_C-channel.svg';
+        betaAngleIcons['I-beam'].src = 'icons/icon_betaAngle_I-beam.svg';
+        betaAngleIcons['unknown'].src = 'icons/icon_betaAngle_unknownSection.svg';
         
         // Коэффициенты конвертации единиц длины (базовая единица: метры 'm')
         const lengthUnitConversions = { 
@@ -1680,14 +1692,39 @@
 						ctx.textAlign = 'center';
 						ctx.textBaseline = 'middle';
 
-						ctx.fillText(line.elem_id, 0, -lineIdOffsetWorld);
-						
-						ctx.restore(); // Восстанавливаем состояние после преобразований текста
-					}
-					ctx.restore(); // НОВОЕ: Восстанавливаем состояние контекста после отрисовки этой линии
-				}
-			});
-		}
+                                               ctx.fillText(line.elem_id, 0, -lineIdOffsetWorld);
+
+                                               ctx.restore(); // Восстанавливаем состояние после преобразований текста
+                                       }
+
+                                        // --- Draw beta angle icon ---
+                                        const midX_icon = (node1.x + node2.x) / 2;
+                                        const midY_icon = (node1.y + node2.y) / 2;
+                                        const iconSize = betaAngleIconSizeWorld / scale;
+                                        const iconOffset = betaAngleIconOffsetWorld / scale;
+
+                                        let sectionType = null;
+                                        if (line.sectionId) {
+                                                const sec = modelSections.find(s => s.id === line.sectionId);
+                                                if (sec && sec.type) sectionType = sec.type;
+                                        }
+                                        const img = betaAngleIcons[sectionType] || betaAngleIcons['unknown'];
+                                        if (img.complete) {
+                                                const dx = node2.x - node1.x;
+                                                const dy = node2.y - node1.y;
+                                                const len = Math.hypot(dx, dy) || 1;
+                                                const offsetX = (dy / len) * iconOffset;
+                                                const offsetY = (-dx / len) * iconOffset;
+                                                ctx.save();
+                                                ctx.translate(midX_icon + offsetX, midY_icon + offsetY);
+                                                ctx.rotate(Math.atan2(dy, dx));
+                                                ctx.drawImage(img, -iconSize / 2, -iconSize / 2, iconSize, iconSize);
+                                                ctx.restore();
+                                        }
+                                       ctx.restore(); // НОВОЕ: Восстанавливаем состояние контекста после отрисовки этой линии
+                               }
+                       });
+               }
 
         function drawCursorCircle() { 
             let drawAtX_screen, drawAtY_screen;
