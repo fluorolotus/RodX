@@ -2742,6 +2742,10 @@
                 const assignSectionBtn = document.getElementById('assignSectionBtn');
                 const betaAngleSelect = document.getElementById('betaAngleSelect');
                 const changeBetaAngleBtn = document.getElementById('changeBetaAngleBtn');
+
+                if (betaAngleSelect) {
+                    betaAngleSelect.value = String(betaAngleValue);
+                }
                 const assignedSectionDisplay = document.getElementById('assignedSectionDisplay');
 
                 // НОВОЕ: Добавляем слушатель для кнопки "Выбрать"
@@ -3016,6 +3020,13 @@
 
                 const applyBetaBtn = document.getElementById('applyBetaAngleToSelectedBtn');
                 const betaSelectEl = document.getElementById('multiBetaAngleSelect');
+
+                if (betaSelectEl) {
+                    if (uniqueAngles.size === 1) {
+                        betaSelectEl.value = String(Array.from(uniqueAngles)[0]);
+                    }
+                }
+
                 if (applyBetaBtn && betaSelectEl) {
                     applyBetaBtn.addEventListener('click', () => {
                         const angle = parseInt(betaSelectEl.value, 10);
