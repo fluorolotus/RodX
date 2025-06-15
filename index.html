@@ -317,6 +317,10 @@
             <button id="openSectionsModalBtn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-150 ease-in-out">
                 Сечения
             </button>
+            <!-- Кнопка "Выделить все элементы" -->
+            <button id="selectAllBtn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-150 ease-in-out">
+                All
+            </button>
             <button id="toggleNodeNumbersBtn" class="visibility-toggle-btn active" title="Переключить номера узлов">
                 <img src="icons/icon_nodeNumberVisibility.svg" alt="Node numbers">
             </button>
@@ -2247,13 +2251,22 @@
 
         function handleDeleteLine() {
              if (contextMenuTarget && contextMenuTarget.type === 'line') {
-                lines = lines.filter(line => line.elem_id !== contextMenuTarget.element.elem_id); 
+                lines = lines.filter(line => line.elem_id !== contextMenuTarget.element.elem_id);
                 hideContextMenu();
                 draw();
             }
         }
 
-		function clearAll() {
+        function selectAllElements() {
+            selectedElements = lines.map(line => ({ type: 'line', element: line }));
+            selectedNode = null;
+            firstNodeForLine = null;
+            selectedElement = null;
+            updatePropertiesPanel();
+            draw();
+        }
+
+                function clearAll() {
             nodes = [];
             lines = [];
             restrictions = [];
@@ -3998,6 +4011,7 @@ let sectionDetailsContent;
             const toggleNodeNumbersBtn = document.getElementById("toggleNodeNumbersBtn");
             const toggleLineNumbersBtn = document.getElementById("toggleLineNumbersBtn");
             const toggleBetaAngleIconsBtn = document.getElementById("toggleBetaAngleIconsBtn");
+            const selectAllBtn = document.getElementById('selectAllBtn');
 			
 			// Получаем ссылки на новые DOM-элементы
             const addMaterialToModelBtn = document.getElementById('addMaterialToModelBtn');
@@ -4056,6 +4070,9 @@ let sectionDetailsContent;
                     toggleBetaAngleIconsBtn.classList.toggle("active", showBetaAngleIcons);
                     draw();
                 });
+            }
+            if (selectAllBtn) {
+                selectAllBtn.addEventListener('click', selectAllElements);
             }
             
             // Вам потребуется кнопка для сохранения нового материала. 
