@@ -617,7 +617,8 @@
 
         // === Beta Angle Icons ===
         const betaAngleIconSizeWorld = 20; // icon size in pixels
-        const betaAngleIconOffsetWorld = 5; // offset from line in pixels
+        // Increased offset so the icon does not overlap the line
+        const betaAngleIconOffsetWorld = 10; // offset from line in pixels
         const betaAngleIcons = {
             'C-channel': new Image(),
             'I-beam': new Image(),
@@ -1710,11 +1711,12 @@
                                         }
                                         const img = betaAngleIcons[sectionType] || betaAngleIcons['unknown'];
                                         if (img.complete) {
-                                                const dx = node2.x - node1.x;
-                                                const dy = node2.y - node1.y;
-                                                const len = Math.hypot(dx, dy) || 1;
-                                                const offsetX = (dy / len) * iconOffset;
-                                                const offsetY = (-dx / len) * iconOffset;
+                                            const dx = node2.x - node1.x;
+                                            const dy = node2.y - node1.y;
+                                            const theta = Math.atan2(dy, dx);
+                                            // Place the icon on the side opposite to the line label
+                                            const offsetX = -Math.sin(theta) * iconOffset;
+                                            const offsetY = -Math.cos(theta) * iconOffset;
                                                 ctx.save();
                                                 ctx.translate(midX_icon + offsetX, midY_icon + offsetY);
                                                 ctx.rotate(Math.atan2(dy, dx));
