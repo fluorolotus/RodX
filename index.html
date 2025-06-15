@@ -621,8 +621,10 @@
 
         // === Beta Angle Icons ===
         const betaAngleIconSizeWorld = 20; // icon size in pixels
-        // Increased offset so the icon does not overlap the line
-        const betaAngleIconOffsetWorld = -25; // offset from line in pixels
+        // Increased offset so the icon does not overlap the line (perpendicular)
+        const betaAngleIconOffsetWorld = -25; // perpendicular offset from line in pixels
+        // Optional offset along the axis of the line/element
+        const betaAngleIconOffsetAlongWorld = 0; // along-axis offset in pixels
         const betaAngleIcons = {
             'C-channel': new Image(),
             'I-beam': new Image(),
@@ -1708,6 +1710,7 @@
                                             const midY_icon = (node1.y + node2.y) / 2;
                                             const iconSize = betaAngleIconSizeWorld / scale;
                                             const iconOffset = betaAngleIconOffsetWorld / scale;
+                                            const iconOffsetAlong = betaAngleIconOffsetAlongWorld / scale;
 
                                             let sectionType = null;
                                             if (line.sectionId) {
@@ -1720,8 +1723,8 @@
                                                 const dy = node2.y - node1.y;
                                                 const theta = Math.atan2(dy, dx);
                                                 // Place the icon on the side opposite to the line label
-                                                const offsetX = -Math.sin(theta) * iconOffset;
-                                                const offsetY = -Math.cos(theta) * iconOffset;
+                                                const offsetX = -Math.sin(theta) * iconOffset + Math.cos(theta) * iconOffsetAlong;
+                                                const offsetY = -Math.cos(theta) * iconOffset + Math.sin(theta) * iconOffsetAlong;
                                                     ctx.save();
                                                     ctx.translate(midX_icon + offsetX, midY_icon + offsetY);
                                                     ctx.rotate(Math.atan2(dy, dx));
