@@ -497,6 +497,29 @@
         </div>
     </div>
 
+    <div id="copyNodeModal" class="fixed inset-0 bg-gray-600 bg-opacity-75 flex items-center justify-center hidden z-50">
+        <div class="bg-white p-6 rounded-lg shadow-xl">
+            <div class="mb-4">
+                <label for="copyAxisSelect" class="block text-gray-700 text-sm font-bold mb-2">Ось копирования:</label>
+                <select id="copyAxisSelect" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    <option value="x">X</option>
+                    <option value="y">Y</option>
+                </select>
+            </div>
+            <div class="mb-4">
+                <label for="copyCountInput" class="block text-gray-700 text-sm font-bold mb-2">Количество копий:</label>
+                <input type="number" id="copyCountInput" min="2" max="99" value="2" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            </div>
+            <div class="mb-4">
+                <label for="copyDistanceInput" class="block text-gray-700 text-sm font-bold mb-2">Расстояние между узлами:</label>
+                <input type="number" id="copyDistanceInput" value="1" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            </div>
+            <div class="flex justify-end">
+                <button id="applyCopyNodeBtn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Применить</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Нижняя панель управления -->
     <div id="bottomBar" class="bg-gray-800 text-white h-16 p-3 flex justify-center items-center space-x-8 z-100">
         <!-- Кнопки Сохранить/Загрузить/Очистить -->
@@ -558,6 +581,7 @@
     <div id="customContextMenu" class="context-menu hidden">
         <div id="deleteNodeItem" class="context-menu-item">Удалить узел</div>
         <div id="deleteLineItem" class="context-menu-item">Удалить линию</div>
+        <div id="copyNodeItem" class="context-menu-item">Копировать узел</div>
     </div>
     <div id="tooltip" class="tooltip hidden"></div>
 
@@ -582,6 +606,12 @@
         const customContextMenu = document.getElementById('customContextMenu');
         const deleteNodeItem = document.getElementById('deleteNodeItem');
         const deleteLineItem = document.getElementById('deleteLineItem');
+        const copyNodeItem = document.getElementById('copyNodeItem');
+        const copyNodeModal = document.getElementById('copyNodeModal');
+        const copyAxisSelect = document.getElementById('copyAxisSelect');
+        const copyCountInput = document.getElementById('copyCountInput');
+        const copyDistanceInput = document.getElementById('copyDistanceInput');
+        const applyCopyNodeBtn = document.getElementById('applyCopyNodeBtn');
         
         // Элементы propertiesPanel
         const propertiesPanel = document.getElementById('propertiesPanel');
@@ -695,8 +725,9 @@
         let firstNodeForLine = null;
         let hoveredElement = null;
         let contextMenuTarget = null;
+        let nodeToCopy = null;
         let selectedNode = null;
-		let selectedElement = null;
+                let selectedElement = null;
 
         let mouse = { x: 0, y: 0, worldX: 0, worldY: 0, snappedX: 0, snappedY: 0 }; 
 
@@ -1939,6 +1970,13 @@
 
             deleteNodeItem.addEventListener('click', handleDeleteNode);
             deleteLineItem.addEventListener('click', handleDeleteLine);
+            copyNodeItem.addEventListener('click', openCopyNodeModal);
+            applyCopyNodeBtn.addEventListener('click', applyCopyNode);
+            copyNodeModal.addEventListener('click', (e) => {
+                if (e.target === copyNodeModal) {
+                    closeCopyNodeModal();
+                }
+            });
 
             // --- Логика открытия/закрытия модального окна материалов ---
             const openMaterialsModalBtn = document.getElementById('openMaterialsModalBtn');
@@ -2162,6 +2200,7 @@
             if (contextMenuTarget) {
                 deleteNodeItem.style.display = contextMenuTarget.type === 'node' ? 'block' : 'none';
                 deleteLineItem.style.display = contextMenuTarget.type === 'line' ? 'block' : 'none';
+                copyNodeItem.style.display = contextMenuTarget.type === 'node' ? 'block' : 'none';
                 customContextMenu.style.left = `${e.clientX}px`;
                 customContextMenu.style.top = `${e.clientY}px`;
                 customContextMenu.classList.remove('hidden');
@@ -2255,6 +2294,38 @@
                 hideContextMenu();
                 draw();
             }
+        }
+
+        function openCopyNodeModal() {
+            if (contextMenuTarget && contextMenuTarget.type === 'node') {
+                nodeToCopy = contextMenuTarget.element;
+                copyNodeModal.classList.remove('hidden');
+                hideContextMenu();
+            }
+        }
+
+        function closeCopyNodeModal() {
+            copyNodeModal.classList.add('hidden');
+        }
+
+        function applyCopyNode() {
+            if (!nodeToCopy) { closeCopyNodeModal(); return; }
+            let count = parseInt(copyCountInput.value, 10);
+            if (isNaN(count) || count < 2) count = 2;
+            if (count > 99) count = 99;
+            const dist = parseFloat(copyDistanceInput.value) || 0;
+            const axis = copyAxisSelect.value;
+            for (let i = 1; i <= count; i++) {
+                const newNode = {
+                    node_id: nextNodeId++,
+                    x: nodeToCopy.x + (axis === 'x' ? dist * i : 0),
+                    y: nodeToCopy.y + (axis === 'y' ? dist * i : 0)
+                };
+                nodes.push(newNode);
+            }
+            closeCopyNodeModal();
+            updatePropertiesPanel();
+            draw();
         }
 
         function selectAllElements() {
