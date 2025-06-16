@@ -508,7 +508,7 @@
             </div>
             <div class="mb-4">
                 <label for="copyCountInput" class="block text-gray-700 text-sm font-bold mb-2">Количество копий:</label>
-                <input type="number" id="copyCountInput" min="2" max="99" value="2" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                <input type="number" id="copyCountInput" min="1" max="99" value="2" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
             </div>
             <div class="mb-4">
                 <label for="copyDistanceInput" class="block text-gray-700 text-sm font-bold mb-2">Расстояние между узлами:</label>
@@ -2313,7 +2313,7 @@
         function applyCopyNode() {
             if (!nodeToCopy) { closeCopyNodeModal(); return; }
             let count = parseInt(copyCountInput.value, 10);
-            if (isNaN(count) || count < 2) count = 2;
+            if (isNaN(count) || count < 1) count = 1;
             if (count > 99) count = 99;
             const dist = parseFloat(copyDistanceInput.value) || 0;
             const axis = copyAxisSelect.value;
