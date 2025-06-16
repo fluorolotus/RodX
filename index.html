@@ -2194,8 +2194,8 @@
         function handleContextMenu(e) {
             e.preventDefault();
             const rect = canvas.getBoundingClientRect();
-            const worldCoords = screenToWorld(e.clientX - rect.left, e.clientY - rect.top); 
-            contextMenuTarget = findElementAt(worldCoords.x, worldCoords.y); 
+            const worldCoords = screenToWorld(e.clientX - rect.left, e.clientY - rect.top);
+            contextMenuTarget = findElementAt(worldCoords.x, worldCoords.y);
 
             if (contextMenuTarget) {
                 deleteNodeItem.style.display = contextMenuTarget.type === 'node' ? 'block' : 'none';
@@ -2204,6 +2204,7 @@
                 customContextMenu.style.left = `${e.clientX}px`;
                 customContextMenu.style.top = `${e.clientY}px`;
                 customContextMenu.classList.remove('hidden');
+                tooltip.classList.add('hidden');
             } else {
                 hideContextMenu();
             }
@@ -2301,6 +2302,7 @@
                 nodeToCopy = contextMenuTarget.element;
                 copyNodeModal.classList.remove('hidden');
                 hideContextMenu();
+                tooltip.classList.add('hidden');
             }
         }
 
