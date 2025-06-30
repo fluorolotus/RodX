@@ -446,25 +446,35 @@
 
     <!-- Модальное окно для сечений -->
     <div id="sectionsModal" class="fixed inset-0 bg-gray-600 bg-opacity-75 flex items-center justify-center hidden z-50">
-        <div class="bg-white p-8 rounded-lg shadow-xl">
-            <div class="mb-4">
-                <label for="sectionTypeSelect" class="block text-gray-700 text-sm font-bold mb-2">Тип сечения:</label>
-                <select id="sectionTypeSelect" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></select>
-            </div>
-            <div class="mb-4">
-                <label for="sectionStandardSelect" class="block text-gray-700 text-sm font-bold mb-2">Стандарт:</label>
-                <select id="sectionStandardSelect" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></select>
-            </div>
-            <div class="mb-4">
-                <label for="sectionNameSelect" class="block text-gray-700 text-sm font-bold mb-2">Сечение:</label>
-                <select id="sectionNameSelect" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></select>
-            </div>
-
-            <div id="selectedSectionProperties" class="bg-gray-100 p-4 rounded-md shadow-inner mb-4">
-                <p class="text-gray-700"><span class="font-medium">Высота (h):</span> <span id="height" class="font-normal"></span></p>
-                <p class="text-gray-700"><span class="font-medium">Ширина (b):</span> <span id="width" class="font-normal"></span></p>
-                <p class="text-gray-700"><span class="font-medium">Толщина стенки (s):</span> <span id="webThickness" class="font-normal"></span></p>
-                <p class="text-gray-700"><span class="font-medium">Толщина пояса (t):</span> <span id="flangeThickness" class="font-normal"></span></p>
+        <div class="bg-white p-8 rounded-lg shadow-xl max-w-2xl w-11/12">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <div class="mb-4">
+                        <label for="sectionTypeSelect" class="block text-gray-700 text-sm font-bold mb-2">Тип сечения:</label>
+                        <select id="sectionTypeSelect" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></select>
+                    </div>
+                    <div class="mb-4">
+                        <label for="sectionStandardSelect" class="block text-gray-700 text-sm font-bold mb-2">Стандарт:</label>
+                        <select id="sectionStandardSelect" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></select>
+                    </div>
+                    <div class="mb-4">
+                        <label for="sectionNameSelect" class="block text-gray-700 text-sm font-bold mb-2">Сечение:</label>
+                        <select id="sectionNameSelect" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></select>
+                    </div>
+                </div>
+                <div class="flex flex-col items-center">
+                    <img id="sectionImage" src="images/sec_I-beam.svg" alt="section image" class="w-32 h-32 mb-4">
+                    <div class="grid grid-cols-2 gap-2 w-full">
+                        <label for="height" class="text-sm font-bold text-gray-700">H:</label>
+                        <input type="number" id="height" class="shadow appearance-none border rounded w-full py-1 px-2" disabled>
+                        <label for="width" class="text-sm font-bold text-gray-700">B:</label>
+                        <input type="number" id="width" class="shadow appearance-none border rounded w-full py-1 px-2" disabled>
+                        <label for="flangeThickness" class="text-sm font-bold text-gray-700">tf:</label>
+                        <input type="number" id="flangeThickness" class="shadow appearance-none border rounded w-full py-1 px-2" disabled>
+                        <label for="webThickness" class="text-sm font-bold text-gray-700">tw:</label>
+                        <input type="number" id="webThickness" class="shadow appearance-none border rounded w-full py-1 px-2" disabled>
+                    </div>
+                </div>
             </div>
 
             <button id="addSectionToModelBtn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded mb-4 w-full">
@@ -3752,6 +3762,10 @@
                 opt.textContent = type;
                 sectionTypeSelect.appendChild(opt);
             });
+
+            if (uniqueTypes.has('I-beam')) {
+                sectionTypeSelect.value = 'I-beam';
+            }
         }
 
         function populateSectionStandardSelect() {
@@ -3789,6 +3803,7 @@
             populateSectionStandardSelect();
             populateSectionTypeSelect();
             populateSectionNameSelect();
+            updateSectionImage();
             displaySelectedSectionProperties();
         }
 
@@ -3801,18 +3816,24 @@
                 selectedSection = sectionsForStandard.find(sec => sec.id === selectedSectionId);
             }
 
+            const isUser = selectedStandardId === 'USER';
             if (selectedSection && selectedSection.properties) {
                 const props = selectedSection.properties;
-                sectionHeightSpan.textContent = props.height ? `${props.height.value} ${getUnitText(props.height.unit)}` : '';
-                sectionWidthSpan.textContent = props.width ? `${props.width.value} ${getUnitText(props.width.unit)}` : '';
-                sectionWebThicknessSpan.textContent = props.webThickness ? `${props.webThickness.value} ${getUnitText(props.webThickness.unit)}` : '';
-                sectionFlangeThicknessSpan.textContent = props.flangeThickness ? `${props.flangeThickness.value} ${getUnitText(props.flangeThickness.unit)}` : '';
+                sectionHeightSpan.value = props.height ? props.height.value : '';
+                sectionWidthSpan.value = props.width ? props.width.value : '';
+                sectionWebThicknessSpan.value = props.webThickness ? props.webThickness.value : '';
+                sectionFlangeThicknessSpan.value = props.flangeThickness ? props.flangeThickness.value : '';
             } else {
-                sectionHeightSpan.textContent = '';
-                sectionWidthSpan.textContent = '';
-                sectionWebThicknessSpan.textContent = '';
-                sectionFlangeThicknessSpan.textContent = '';
+                sectionHeightSpan.value = '';
+                sectionWidthSpan.value = '';
+                sectionWebThicknessSpan.value = '';
+                sectionFlangeThicknessSpan.value = '';
             }
+
+            sectionHeightSpan.disabled = !isUser;
+            sectionWidthSpan.disabled = !isUser;
+            sectionWebThicknessSpan.disabled = !isUser;
+            sectionFlangeThicknessSpan.disabled = !isUser;
         }
 
         function displaySectionCharacteristics() {
@@ -3834,6 +3855,18 @@
                     sectionDetailsContent.appendChild(p);
                 }
             }
+        }
+
+        function updateSectionImage() {
+            if (!sectionImage) return;
+            const type = sectionTypeSelect.value;
+            let src = '';
+            if (type === 'I-beam') {
+                src = 'images/sec_I-beam.svg';
+            } else if (type === 'C-channel') {
+                src = 'images/sec_C-channel.svg';
+            }
+            sectionImage.src = src;
         }
 		
 
@@ -4050,6 +4083,7 @@ let sectionHeightSpan;
 let sectionWidthSpan;
 let sectionWebThicknessSpan;
 let sectionFlangeThicknessSpan;
+let sectionImage;
 let sectionDetailsContent;
 		
 		document.addEventListener('DOMContentLoaded', async () => {
@@ -4103,6 +4137,7 @@ let sectionDetailsContent;
             sectionWidthSpan = document.getElementById('width');
             sectionWebThicknessSpan = document.getElementById('webThickness');
             sectionFlangeThicknessSpan = document.getElementById('flangeThickness');
+            sectionImage = document.getElementById('sectionImage');
 			
 			// НОВЫЕ: Получаем ссылки на элементы для пользовательского материала
             const customMaterialFields = document.getElementById('customMaterialFields');
@@ -4243,6 +4278,7 @@ let sectionDetailsContent;
             if (sectionTypeSelect) {
                 sectionTypeSelect.addEventListener('change', () => {
                     populateSectionNameSelect();
+                    updateSectionImage();
                     displaySelectedSectionProperties();
                 });
             }
