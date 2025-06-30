@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 23.0.2, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 250 250" style="enable-background:new 0 0 250 250;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill-rule:evenodd;clip-rule:evenodd;fill:#9AB8C1;}
+	.st1{fill:none;stroke:#939393;stroke-width:0.5;stroke-linejoin:round;stroke-miterlimit:10;}
+	.st2{fill:#FFFFFF;}
+	.st3{font-family:'Roboto-Regular';}
+	.st4{font-size:13.7557px;}
+	.st5{fill:none;stroke:#939393;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+	.st6{fill:#007F00;}
+	.st7{fill:#004C99;}
+	.st8{fill:none;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+	.st9{fill:#939393;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+	.st10{fill:none;stroke:#939393;stroke-miterlimit:10;}
+	
+		.st11{fill:none;stroke:#004C99;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:15.875,3.175,3.175,3.175;}
+	
+		.st12{fill:none;stroke:#007F00;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:15.875,3.175,3.175,3.175;}
+</style>
+<g id="МТЛ.ЗАЛИВКА">
+	<g id="HATCH">
+		<polygon class="st0" points="80.8,64.8 121.8,64.8 121.8,203.7 80.8,203.7 80.8,215.4 170.1,215.4 170.1,203.7 129.1,203.7 
+			129.1,64.8 170.1,64.8 170.1,53.1 80.8,53.1 80.8,64.8 		"/>
+	</g>
+</g>
+<g id="СТЛ.РАЗМЕРЫ">
+	<g id="LINE">
+		<line class="st1" x1="75.9" y1="215.4" x2="43.2" y2="215.4"/>
+	</g>
+	<g id="LINE_1_">
+		<line class="st1" x1="75.9" y1="53.1" x2="43.2" y2="53.1"/>
+	</g>
+	<g id="LINE_2_">
+		<line class="st1" x1="47.3" y1="219.4" x2="47.3" y2="49"/>
+	</g>
+	<g id="MTEXT">
+		<rect x="34.3" y="129.5" class="st2" width="11.7" height="9.4"/>
+		<text transform="matrix(1.000000e-16 -1 1 1.000000e-16 44.9911 139.0972)" class="st3 st4">H</text>
+	</g>
+	<g id="LINE_3_">
+		<line class="st1" x1="80.8" y1="48.2" x2="80.8" y2="18.4"/>
+	</g>
+	<g id="LINE_4_">
+		<line class="st1" x1="170.1" y1="48.2" x2="170.1" y2="18.4"/>
+	</g>
+	<g id="LINE_5_">
+		<line class="st1" x1="76.7" y1="22.4" x2="174.1" y2="22.4"/>
+	</g>
+	<g id="MTEXT_1_">
+		<rect x="123.2" y="9.4" class="st2" width="8.6" height="11.7"/>
+		<text transform="matrix(1 0 0 1 122.998 20.1592)" class="st3 st4">B</text>
+	</g>
+	<g id="LINE_6_">
+		<line class="st5" x1="174.9" y1="53.1" x2="201.5" y2="53.1"/>
+	</g>
+	<g id="LINE_7_">
+		<line class="st1" x1="174.9" y1="64.8" x2="201.5" y2="64.8"/>
+	</g>
+	<g id="LINE_8_">
+		<line class="st1" x1="197.5" y1="49" x2="197.5" y2="69.3"/>
+	</g>
+	<g id="MTEXT_2_">
+		<rect x="202.5" y="51.3" class="st2" width="11.1" height="12.5"/>
+		<text transform="matrix(1 0 0 1 203.4384 62.669)" class="st3 st4">tf</text>
+	</g>
+	<g id="LINE_9_">
+		<line class="st1" x1="96.9" y1="170.8" x2="134.3" y2="170.8"/>
+	</g>
+	<g id="MTEXT_3_">
+		<rect x="98.5" y="157.7" class="st2" width="16.3" height="11.8"/>
+		<text transform="matrix(1 0 0 1 99.3935 168.4253)" class="st3 st4">tw</text>
+	</g>
+	<g id="MTEXT_4_">
+		<rect x="163.2" y="128.4" class="st2" width="9.9" height="11.7"/>
+		<text transform="matrix(1 0 0 1 164.0849 139.1011)" class="st6 st3 st4">Y</text>
+	</g>
+	<g id="MTEXT_5_">
+		<rect x="120.9" y="26.8" class="st2" width="9" height="11.7"/>
+		<text transform="matrix(1 0 0 1 121.3144 37.4737)" class="st7 st3 st4">Z</text>
+	</g>
+	<g id="MTEXT_6_">
+		<rect x="79.2" y="128.4" class="st2" width="9.9" height="11.7"/>
+		<text transform="matrix(1 0 0 1 80.039 139.1011)" class="st6 st3 st4">Y</text>
+	</g>
+	<g id="MTEXT_7_">
+		<rect x="120.9" y="228.9" class="st2" width="9" height="11.7"/>
+		<text transform="matrix(1 0 0 1 121.3144 239.5796)" class="st7 st3 st4">Z</text>
+	</g>
+</g>
+<g id="_x30_">
+	<g id="LWPOLYLINE_17_">
+		<polygon class="st8" points="80.8,64.8 121.8,64.8 121.8,203.7 80.8,203.7 80.8,215.4 170.1,215.4 170.1,203.7 129.1,203.7 
+			129.1,64.8 170.1,64.8 170.1,53.1 80.8,53.1 		"/>
+	</g>
+	<g id="LWPOLYLINE_16_">
+		<circle class="st9" cx="47.3" cy="215.4" r="2.4"/>
+	</g>
+	<g id="LWPOLYLINE_15_">
+		<circle class="st9" cx="47.3" cy="53.1" r="2.4"/>
+	</g>
+	<g id="LWPOLYLINE_14_">
+		<circle class="st9" cx="80.8" cy="22.4" r="2.4"/>
+	</g>
+	<g id="LWPOLYLINE_13_">
+		<circle class="st9" cx="170.1" cy="22.4" r="2.4"/>
+	</g>
+	<g id="LWPOLYLINE_12_">
+		<circle class="st9" cx="197.5" cy="53.1" r="2.4"/>
+	</g>
+	<g id="LWPOLYLINE_11_">
+		<circle class="st9" cx="197.5" cy="64.8" r="2.4"/>
+	</g>
+	<g id="LWPOLYLINE_10_">
+		<circle class="st9" cx="121.7" cy="170.8" r="2.4"/>
+	</g>
+	<g id="LWPOLYLINE_9_">
+		<circle class="st9" cx="129.1" cy="170.8" r="2.4"/>
+	</g>
+	<path class="st10" d="M239,247H10.9c-4.3,0-7.9-3.5-7.9-7.9V10.9C3,6.5,6.5,3,10.9,3H239c4.4,0,8,3.6,8,8v228
+		C247,243.4,243.4,247,239,247z"/>
+</g>
+<g id="СТЛ.ОСИ">
+	<g id="LINE_13_">
+		<line class="st11" x1="125.4" y1="41.7" x2="125.4" y2="226.7"/>
+	</g>
+	<g id="LINE_12_">
+		<line class="st12" x1="90.6" y1="134.2" x2="160.3" y2="134.2"/>
+	</g>
+</g>
+</svg>
