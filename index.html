@@ -446,7 +446,7 @@
 
     <!-- Модальное окно для сечений -->
     <div id="sectionsModal" class="fixed inset-0 bg-gray-600 bg-opacity-75 flex items-center justify-center hidden z-50">
-        <div class="bg-white p-8 rounded-lg shadow-xl max-w-2xl w-11/12">
+        <div class="bg-white p-8 rounded-lg shadow-xl max-w-xl w-7/12 max-h-[95vh] overflow-y-auto">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                     <div class="mb-4">
@@ -461,9 +461,13 @@
                         <label for="sectionNameSelect" class="block text-gray-700 text-sm font-bold mb-2">Сечение:</label>
                         <select id="sectionNameSelect" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></select>
                     </div>
+                    <div id="userSectionNameContainer" class="mb-4 hidden">
+                        <label for="userSectionNameInput" class="block text-gray-700 text-sm font-bold mb-2">Имя:</label>
+                        <input type="text" id="userSectionNameInput" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+                    </div>
                 </div>
                 <div class="flex flex-col items-center">
-                    <img id="sectionImage" src="images/sec_I-beam.svg" alt="section image" class="w-32 h-32 mb-4">
+                    <img id="sectionImage" src="images/sec_I-beam.svg" alt="section image" class="w-[13.6rem] h-[13.6rem] mb-4">
                     <div class="grid grid-cols-2 gap-2 w-full">
                         <label for="height" class="text-sm font-bold text-gray-700">H:</label>
                         <input type="number" id="height" class="shadow appearance-none border rounded w-full py-1 px-2" disabled>
@@ -3817,6 +3821,14 @@
             }
 
             const isUser = selectedStandardId === 'USER';
+            sectionNameSelect.disabled = isUser;
+            if (userSectionNameContainer) {
+                if (isUser) {
+                    userSectionNameContainer.classList.remove('hidden');
+                } else {
+                    userSectionNameContainer.classList.add('hidden');
+                }
+            }
             if (selectedSection && selectedSection.properties) {
                 const props = selectedSection.properties;
                 sectionHeightSpan.value = props.height ? props.height.value : '';
@@ -4084,6 +4096,8 @@ let sectionWidthSpan;
 let sectionWebThicknessSpan;
 let sectionFlangeThicknessSpan;
 let sectionImage;
+let userSectionNameContainer;
+let userSectionNameInput;
 let sectionDetailsContent;
 		
 		document.addEventListener('DOMContentLoaded', async () => {
@@ -4138,6 +4152,8 @@ let sectionDetailsContent;
             sectionWebThicknessSpan = document.getElementById('webThickness');
             sectionFlangeThicknessSpan = document.getElementById('flangeThickness');
             sectionImage = document.getElementById('sectionImage');
+            userSectionNameContainer = document.getElementById('userSectionNameContainer');
+            userSectionNameInput = document.getElementById('userSectionNameInput');
 			
 			// НОВЫЕ: Получаем ссылки на элементы для пользовательского материала
             const customMaterialFields = document.getElementById('customMaterialFields');
