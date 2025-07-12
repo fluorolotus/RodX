@@ -1360,7 +1360,26 @@
             const DIST_LOAD_TEXT_OFFSET_PX = 15;
             const ARROW_HEAD_LENGTH_PX = 8;
 
-            elementLoads.forEach(load => {
+            const currentForceDisplayUnit = forceUnitsSelect.value;
+            const currentLengthDisplayUnit = unitsSelect.value;
+
+            // --- Determine scaling for arrow lengths and rectangle heights ---
+            const loadMagnitudes = elementLoads.map(ld => {
+                const sf = ld.unit.split('/')[0];
+                const sl = ld.unit.split('/')[1];
+                return Math.abs(convertDistributedForce(ld.startValue, sf, sl, currentForceDisplayUnit, currentLengthDisplayUnit));
+            });
+
+            const maxMagnitude = loadMagnitudes.length > 0 ? Math.max(...loadMagnitudes) : 0;
+            const minMagnitude = loadMagnitudes.length > 0 ? Math.min(...loadMagnitudes) : 0;
+            const useScaling = elementLoads.length > 1 && Math.abs(maxMagnitude - minMagnitude) > 1e-8;
+
+            const canvasHeightWorld = canvas.height / scale;
+            const maxArrowLengthWorldLimit = canvasHeightWorld / 8;
+            const minArrowLengthWorldLimit = canvasHeightWorld / 25;
+            const defaultArrowLengthWorld = DIST_LOAD_ARROW_LENGTH_PX / scale;
+
+            elementLoads.forEach((load, idx) => {
                 const line = lines.find(l => l.elem_id === load.target_elem_id);
                 if (!line) return;
 
@@ -1368,15 +1387,14 @@
                 const node2 = nodes.find(n => n.node_id === line.nodeId2);
                 if (!node1 || !node2) return;
 
-                const currentForceDisplayUnit = forceUnitsSelect.value;
-                const currentLengthDisplayUnit = unitsSelect.value;
                 const currentDistributedForceUnit = `${currentForceDisplayUnit}/${currentLengthDisplayUnit}`;
 
                 const storedForceUnit = load.unit.split('/')[0];
                 const storedLengthUnit = load.unit.split('/')[1];
 
-				const displayedValue = parseFloat(convertDistributedForce(load.startValue, storedForceUnit, storedLengthUnit, currentForceDisplayUnit, currentLengthDisplayUnit).toFixed(2));
+                const displayedValue = parseFloat(convertDistributedForce(load.startValue, storedForceUnit, storedLengthUnit, currentForceDisplayUnit, currentLengthDisplayUnit).toFixed(2));
                 const displayedUnitString = currentDistributedForceUnit;
+                const magnitude = loadMagnitudes[idx];
 
                 const dx_line = node2.x - node1.x;
                 const dy_line = node2.y - node1.y;
@@ -1386,7 +1404,17 @@
 
                 const lineAngle = Math.atan2(dy_line, dx_line);
 
-                const arrowLengthWorld = DIST_LOAD_ARROW_LENGTH_PX / scale;
+                let arrowLengthWorld = defaultArrowLengthWorld;
+                if (useScaling) {
+                    if (maxMagnitude === minMagnitude) {
+                        arrowLengthWorld = maxArrowLengthWorldLimit;
+                    } else {
+                        const norm = (magnitude - minMagnitude) / (maxMagnitude - minMagnitude);
+                        arrowLengthWorld = minArrowLengthWorldLimit + norm * (maxArrowLengthWorldLimit - minArrowLengthWorldLimit);
+                        arrowLengthWorld = Math.max(minArrowLengthWorldLimit, Math.min(maxArrowLengthWorldLimit, arrowLengthWorld));
+                    }
+                }
+
                 const offsetWorld = DIST_LOAD_OFFSET_PX / scale;
                 const rectWidthWorld = DIST_LOAD_RECT_WIDTH_PX / scale;
                 const textOffsetWorld = DIST_LOAD_TEXT_OFFSET_PX / scale;
