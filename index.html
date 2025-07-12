@@ -1379,6 +1379,10 @@
             const minArrowLengthWorldLimit = canvasHeightWorld / 25;
             const defaultArrowLengthWorld = DIST_LOAD_ARROW_LENGTH_PX / scale;
 
+            const uniqueLoadElements = new Set(elementLoads.map(ld => ld.target_elem_id));
+            const useRelativeMaxScaling = uniqueLoadElements.size > 2 && maxMagnitude > 0;
+            const maxRelativeArrowWorld = canvasHeightWorld / 16;
+
             elementLoads.forEach((load, idx) => {
                 const line = lines.find(l => l.elem_id === load.target_elem_id);
                 if (!line) return;
@@ -1405,7 +1409,10 @@
                 const lineAngle = Math.atan2(dy_line, dx_line);
 
                 let arrowLengthWorld = defaultArrowLengthWorld;
-                if (useScaling) {
+
+                if (useRelativeMaxScaling) {
+                    arrowLengthWorld = (magnitude / maxMagnitude) * maxRelativeArrowWorld;
+                } else if (useScaling) {
                     if (maxMagnitude === minMagnitude) {
                         arrowLengthWorld = maxArrowLengthWorldLimit;
                     } else {
