@@ -22,35 +22,36 @@
             flex-shrink: 0; /* Эти панели не должны сжиматься по высоте */
         }
 
-        /* Основная область содержимого: Flex-контейнер для левой панели и области холста */
+        /* Основная область содержимого */
         .main-content-area {
-            display: flex; /* Элементы (properties-panel и canvas-container) располагаются горизонтально */
+            display: flex;
             flex-grow: 1; /* Занимает всю оставшуюся высоту между topBar и bottomBar */
-			overflow: hidden; /* ДОБАВЬТЕ ЭТУ СТРОКУ: Скрывает переполнение, если дочерние элементы выходят за границы */
-							/* Это предотвратит растягивание .main-content-area по высоте, если его flex-элементы пытаются стать выше. */
+            overflow: hidden; /* Скрывает переполнение */
         }
 
-        /* Левая панель свойств */
+        /* Панель свойств как плавающее окно */
         .properties-panel {
-            width: 25vw; /* Занимает 1/4 ширины viewport */
-            min-width: 250px; /* Минимальная ширина, чтобы контент не сжимался слишком сильно */
-            
+            position: absolute;
+            top: 15px;
+            bottom: 15px;
+            left: 15px;
+            width: 300px;
             background-color: #f0f2f5;
-            border-right: 1px solid #d1d5db;
             padding: 15px;
-            box-sizing: border-box; /* Учитываем padding в ширине */
-            overflow-y: auto; /* Прокрутка, если содержимое не помещается */
-            flex-shrink: 0; /* Не позволяет панели сжиматься по ширине */
+            box-sizing: border-box;
+            overflow-y: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            z-index: 10;
         }
 
         /* Контейнер для холста (рабочая область) */
         .canvas-container {
-            flex-grow: 1; /* Занимает всю оставшуюся ширину (3/4) */
-            position: relative; /* Важно для позиционирования тултипа и контекстного меню */
-            overflow: hidden; /* Скрывает содержимое, выходящее за границы */
+            flex-grow: 1;
+            position: relative; /* Для позиционирования тултипа и контекстного меню */
+            overflow: hidden;
             background-color: #fff;
-            /* width: 75vw; // Этот класс больше не нужен, flex-grow справится */
-            /* height: 100%; // Этот класс больше не нужен, flex-grow справится */
+            width: 100%;
         }
         
         /* Сам холст */
@@ -336,7 +337,7 @@
     <!-- Основное содержимое приложения -->
     <!-- flex-grow: 1 позволяет этой области занять всю оставшуюся высоту -->
     <div class="main-content-area flex flex-grow">
-        <!-- Левая панель свойств -->
+        <!-- Панель свойств -->
         <div id="propertiesPanel" class="properties-panel">
             <h3>Свойства элементов</h3>
             <div id="nodePropertiesContent">
