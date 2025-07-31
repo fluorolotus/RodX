@@ -366,6 +366,10 @@
     font-size: 16px;
     box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.25);
     padding: 10px;
+    box-sizing: border-box;
+    height: 50px;
+    display: flex;
+    align-items: center;
     z-index: 101;
 }
 .floating-panel.left {
@@ -380,4 +384,25 @@
 .floating-panel.right {
     width: 200px;
     right: 10px;
+}
+
+.left-panel-logo {
+    height: 100%;
+    width: auto;
+}
+
+.left-panel-separator {
+    margin-left: 20px;
+    width: 1px;
+    height: 35px;
+    background-color: #000;
+}
+
+.left-panel-input {
+    margin-left: 10px;
+    width: 150px;
+    background-color: #FFFFFF;
+    border: none;
+    font-size: 16px;
+    outline: none;
 }
