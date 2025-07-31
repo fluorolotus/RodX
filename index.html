@@ -50,15 +50,15 @@
             flex-grow: 1;
             position: relative; /* Для позиционирования тултипа и контекстного меню */
             overflow: hidden;
-            background-color: #fff;
+            background: linear-gradient(to bottom, #FFFFFF, #BABCBB);
             width: 100%;
         }
         
         /* Сам холст */
-        canvas { 
-            display: block; 
-            background-color: #fff; 
-            cursor: crosshair; 
+        canvas {
+            display: block;
+            background-color: transparent;
+            cursor: crosshair;
             width: 100%; /* Холст занимает 100% ширины своего родителя */
             height: 100%; /* Холст занимает 100% высоты своего родителя */
         }
@@ -1105,24 +1105,18 @@
                 maxY: screenToWorld(0, 0).y             
             };
             
-            ctx.beginPath();
-            ctx.strokeStyle = '#e0e0e0'; 
-            ctx.lineWidth = 1 / scale; 
-
+            ctx.fillStyle = '#e0e0e0';
+            const dotSize = 2 / scale; // точка 2x2 пикселя в мировых координатах
             const startX_currentUnit = Math.floor(worldView.minX / subGridStep_currentUnit) * subGridStep_currentUnit;
             const endX_currentUnit = Math.ceil(worldView.maxX / subGridStep_currentUnit) * subGridStep_currentUnit;
-            for (let x = startX_currentUnit; x <= endX_currentUnit; x += subGridStep_currentUnit) {
-                ctx.moveTo(x, Math.min(worldView.minY, worldView.maxY));
-                ctx.lineTo(x, Math.max(worldView.minY, worldView.maxY));
-            }
-
             const startY_currentUnit = Math.floor(Math.min(worldView.minY, worldView.maxY) / subGridStep_currentUnit) * subGridStep_currentUnit;
             const endY_currentUnit = Math.ceil(Math.max(worldView.minY, worldView.maxY) / subGridStep_currentUnit) * subGridStep_currentUnit;
-            for (let y = startY_currentUnit; y <= endY_currentUnit; y += subGridStep_currentUnit) {
-                ctx.moveTo(worldView.minX, y);
-                ctx.lineTo(worldView.maxX, y);
+
+            for (let x = startX_currentUnit; x <= endX_currentUnit; x += subGridStep_currentUnit) {
+                for (let y = startY_currentUnit; y <= endY_currentUnit; y += subGridStep_currentUnit) {
+                    ctx.fillRect(x - dotSize / 2, y - dotSize / 2, dotSize, dotSize);
+                }
             }
-            ctx.stroke();
         }
 
 		function drawAxes() {
