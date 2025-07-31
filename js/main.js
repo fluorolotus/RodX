@@ -142,8 +142,21 @@
             canvas.width = canvasContainer.clientWidth;
             canvas.height = canvasContainer.clientHeight;
             panX = canvas.width / 2;
-            panY = canvas.height / 2; 
+            panY = canvas.height / 2;
             draw();
+            adjustPropertiesPanelHeight();
+        }
+
+        function adjustPropertiesPanelHeight() {
+            const H = window.innerHeight;
+            const T = 50; // высота верхней панели инструментов
+            const B = 33; // высота нижней панели
+            const panelHeight = (H - T - B - 30) / 2;
+            const panel = document.getElementById('propertiesPanel');
+            if (panelHeight > 0 && panel) {
+                panel.style.height = `${panelHeight}px`;
+                panel.style.bottom = '10px';
+            }
         }
 
         // Coordinate Transformations (world coords are in currentUnit, positive Y is UP)
