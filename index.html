@@ -566,32 +566,22 @@
     </div>
 
     <!-- Нижняя панель управления -->
-    <div id="bottomBar" class="p-1 flex justify-center items-center space-x-8 z-100" style="height:40px;background-color:#BABCBB;">
+    <div id="bottomBar" class="relative p-1 flex justify-center items-center z-100" style="height:40px;background-color:#BABCBB;">
 
-        <!-- Управление сеткой -->
-        <div class="flex items-center space-x-2 ml-8">
-            <label for="divisions">Делений на ед.:</label>
-            <input type="number" id="divisions" value="4" min="1" max="20">
-        </div>
-        <div class="flex items-center space-x-2">
-            <input type="checkbox" id="snapToGrid">
-            <label for="snapToGrid">Привязка к сетке</label>
-        </div>
-        
-        <!-- Управление единицами измерения -->
-        <div class="flex items-center space-x-2 ml-8">
-            <label for="unitsSelect">Ед. измерения:</label>
-            <select id="unitsSelect">
-                <option value="m">м</option>
-                <option value="cm">см</option>
-                <option value="mm">мм</option>
-                <option value="in">дюймы</option>
-                <option value="ft">фут</option>
-            </select>
-        </div>
-        <div class="flex items-center space-x-2">
-            <label for="forceUnitsSelect">Ед. силы:</label>
-            <select id="forceUnitsSelect">
+        <!-- Поле выбора пары единиц -->
+        <select id="unitPairsSelect" style="position:absolute; left:calc(50% - 70px);">
+            <option value="none">Польз.</option>
+            <option value="metric_t_m">т, м</option>
+            <option value="metric_standard">кН, м</option>
+            <option value="metric_mm_N">Н, мм</option>
+            <option value="imperial_ft_lbf">lbf, фут</option>
+            <option value="imperial_in_lbf">lbf, дюйм</option>
+            <option value="imperial_in_kips">kips, дюйм</option>
+        </select>
+
+        <!-- Остальные элементы -->
+        <div class="flex items-center" style="margin-left:calc(50% + 10px);">
+            <select id="forceUnitsSelect" style="margin-right:5px;">
                 <option value="N">Н</option>
                 <option value="kN">кН</option>
                 <option value="lbf">фунт-сила</option>
@@ -599,18 +589,20 @@
                 <option value="t">т</option>
                 <option value="kips">kips</option>
             </select>
-        </div>
-        <div class="flex items-center space-x-2">
-            <label for="unitPairsSelect">Пары ед.:</label>
-            <select id="unitPairsSelect">
-                <option value="none">Польз.</option>
-                <option value="metric_t_m">т, м</option>
-                <option value="metric_standard">кН, м</option>
-                <option value="metric_mm_N">Н, мм</option>
-                <option value="imperial_ft_lbf">lbf, фут</option>
-                <option value="imperial_in_lbf">lbf, дюйм</option>
-                <option value="imperial_in_kips">kips, дюйм</option>
+            <select id="unitsSelect" style="margin-right:10px;">
+                <option value="m">м</option>
+                <option value="cm">см</option>
+                <option value="mm">мм</option>
+                <option value="in">дюймы</option>
+                <option value="ft">фут</option>
             </select>
+            <svg width="1" height="25" style="margin-right:10px;">
+                <line x1="0" y1="0" x2="0" y2="25" stroke="black" stroke-width="1" stroke-linecap="round" />
+            </svg>
+            <label for="divisions" style="margin-right:5px;">Делений на ед.:</label>
+            <input type="number" id="divisions" value="4" min="1" max="20" style="margin-right:10px;">
+            <label for="snapToGrid" style="margin-right:5px;">Привязка к сетке</label>
+            <input type="checkbox" id="snapToGrid">
         </div>
     </div>
 
