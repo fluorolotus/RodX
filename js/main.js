@@ -126,9 +126,11 @@
             resizeCanvas();
             addEventListeners();
             
-            forceUnitsSelect.value = 'kN'; 
+            forceUnitsSelect.value = 'kN';
             forceUnitsSelect.dataset.previousValue = 'kN';
-            
+            unitsSelect.value = 'm';
+            unitsSelect.dispatchEvent(new Event('change'));
+
             currentUnit = unitsSelect.value;
             currentForceUnit = forceUnitsSelect.value;
             
