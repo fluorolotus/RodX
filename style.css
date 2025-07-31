@@ -355,3 +355,29 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
+.floating-panel {
+    position: fixed;
+    top: 60px;
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    border: none;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    font-size: 16px;
+    box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.25);
+    padding: 10px;
+    z-index: 101;
+}
+.floating-panel.left {
+    width: 400px;
+    left: 10px;
+}
+.floating-panel.center {
+    width: 400px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.floating-panel.right {
+    width: 200px;
+    right: 10px;
+}
