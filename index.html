@@ -1105,18 +1105,24 @@
                 maxY: screenToWorld(0, 0).y             
             };
             
-            ctx.fillStyle = '#000000';
-            const dotSize = 1 / scale; // точка 1x1 пикселя в мировых координатах
+            ctx.strokeStyle = 'rgba(186, 188, 187, 0.5)';
+            ctx.lineWidth = 1 / scale; // 1px толщиной независимо от масштаба
             const startX_currentUnit = Math.floor(worldView.minX / subGridStep_currentUnit) * subGridStep_currentUnit;
             const endX_currentUnit = Math.ceil(worldView.maxX / subGridStep_currentUnit) * subGridStep_currentUnit;
             const startY_currentUnit = Math.floor(Math.min(worldView.minY, worldView.maxY) / subGridStep_currentUnit) * subGridStep_currentUnit;
             const endY_currentUnit = Math.ceil(Math.max(worldView.minY, worldView.maxY) / subGridStep_currentUnit) * subGridStep_currentUnit;
 
+            ctx.beginPath();
             for (let x = startX_currentUnit; x <= endX_currentUnit; x += subGridStep_currentUnit) {
-                for (let y = startY_currentUnit; y <= endY_currentUnit; y += subGridStep_currentUnit) {
-                    ctx.fillRect(x - dotSize / 2, y - dotSize / 2, dotSize, dotSize);
-                }
+                ctx.moveTo(x, startY_currentUnit);
+                ctx.lineTo(x, endY_currentUnit);
             }
+
+            for (let y = startY_currentUnit; y <= endY_currentUnit; y += subGridStep_currentUnit) {
+                ctx.moveTo(startX_currentUnit, y);
+                ctx.lineTo(endX_currentUnit, y);
+            }
+            ctx.stroke();
         }
 
 		function drawAxes() {
