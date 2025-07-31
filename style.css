@@ -215,27 +215,36 @@
 
         #bottomBar input,
         #bottomBar select {
-            width: 60px;
-            height: 23px;
-            padding: 0 8px;
-            border-radius: 6px;
+            width: 40px;
+            height: 15px;
+            padding-left: 3px;
+            padding-right: 3px;
+            border-radius: 4px;
             background-color: #FFFFFF;
             border: 0.5px solid #000000;
             font-size: 14px;
-            line-height: 23px;
+            line-height: 15px;
         }
 
         #bottomBar select {
-            padding: 7px;
-            border-radius: 10px;
-            box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
             appearance: none;
             -moz-appearance: none;
             -webkit-appearance: none;
             background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 6'><path d='M0 0 L4 6 L8 0 Z' fill='%23529774'/></svg>");
             background-repeat: no-repeat;
-            background-position: right 10px center;
+            background-position: right 3px center;
             background-size: 8px 6px;
+        }
+
+        #bottomBar select option {
+            padding: 7px;
+            border: 0;
+            font-size: 14px;
+            color: #000000;
+        }
+
+        #bottomBar select:focus {
+            box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
         }
 
         #bottomBar input[type="checkbox"] {
