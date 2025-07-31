@@ -211,18 +211,42 @@
         }
 
         /* Стили для элементов управления в нижней панели */
-        #bottomBar label, #bottomBar input, #bottomBar select, #bottomBar button {
-            font-size: 14px;
-            padding: 6px 10px;
-            border-radius: 6px;
-            border: 1px solid #b0b0b0; /* Светлее для темного фона */
-            color: #b0b0b0; /* Цвет текста для светлых элементов */
+        #bottomBar label,
+        #bottomBar input,
+        #bottomBar select,
+        #bottomBar button {
+            font-family: 'Roboto', sans-serif;
+            font-weight: 300; /* Roboto Light */
+            font-size: 10px;
+            color: #000000;
         }
-        #bottomBar select, #bottomBar input {
-            /*background-color: #f0f2f5; /* Светлый фон для полей ввода/выбора */
+
+        #bottomBar input,
+        #bottomBar select {
+            width: 40px;
+            height: 15px;
+            padding: 0 2px;
+            border-radius: 4px;
+            background-color: #FFFFFF;
+            border: 0.5px solid #000000;
         }
-        #bottomBar input[type="number"] { width: 60px; text-align: center;}
-        #bottomBar input[type="checkbox"] { margin-right: 3px; transform: scale(1.1); }
+
+        #bottomBar select {
+            appearance: none;
+            -moz-appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 6'><path d='M0 0 L4 6 L8 0 Z' fill='%23529774'/></svg>");
+            background-repeat: no-repeat;
+            background-position: right 2px center;
+            background-size: 8px 6px;
+        }
+
+        #bottomBar input[type="checkbox"] {
+            width: 15px;
+            height: 15px;
+            margin-right: 3px;
+        }
+
         #bottomBar button { 
             background-color: #007bff; 
             color:white; 
@@ -536,7 +560,7 @@
     </div>
 
     <!-- Нижняя панель управления -->
-    <div id="bottomBar" class="bg-gray-800 text-white h-16 p-3 flex justify-center items-center space-x-8 z-100">
+    <div id="bottomBar" class="p-1 flex justify-center items-center space-x-8 z-100" style="height:25px;background-color:#BABCBB;">
         <!-- Кнопки Сохранить/Загрузить/Очистить -->
         <div class="flex items-center space-x-4">
             <button id="saveModelBtn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-150 ease-in-out">Сохранить</button>
@@ -548,18 +572,17 @@
         <!-- Управление сеткой -->
         <div class="flex items-center space-x-2 ml-8">
             <label for="divisions">Делений на ед.:</label>
-            <input type="number" id="divisions" value="4" min="1" max="20"
-                   class="w-20 bg-gray-700 border border-gray-600 text-white text-sm rounded-md px-2 py-1 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+            <input type="number" id="divisions" value="4" min="1" max="20">
         </div>
         <div class="flex items-center space-x-2">
-            <input type="checkbox" id="snapToGrid" class="form-checkbox h-4 w-4 text-blue-600 rounded">
-            <label for="snapToGrid" class="text-white text-sm">Привязка к сетке</label>
+            <input type="checkbox" id="snapToGrid">
+            <label for="snapToGrid">Привязка к сетке</label>
         </div>
         
         <!-- Управление единицами измерения -->
         <div class="flex items-center space-x-2 ml-8">
-            <label for="unitsSelect" class="text-white text-sm">Ед. измерения:</label>
-            <select id="unitsSelect" class="bg-gray-700 border border-gray-600 text-white text-sm rounded-md px-2 py-1 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+            <label for="unitsSelect">Ед. измерения:</label>
+            <select id="unitsSelect">
                 <option value="m">м</option>
                 <option value="cm">см</option>
                 <option value="mm">мм</option>
@@ -568,8 +591,8 @@
             </select>
         </div>
         <div class="flex items-center space-x-2">
-            <label for="forceUnitsSelect" class="text-white text-sm">Ед. силы:</label>
-            <select id="forceUnitsSelect" class="bg-gray-700 border border-gray-600 text-white text-sm rounded-md px-2 py-1 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+            <label for="forceUnitsSelect">Ед. силы:</label>
+            <select id="forceUnitsSelect">
                 <option value="N">Н</option>
                 <option value="kN">кН</option>
                 <option value="lbf">фунт-сила</option>
@@ -579,8 +602,8 @@
             </select>
         </div>
         <div class="flex items-center space-x-2">
-            <label for="unitPairsSelect" class="text-white text-sm">Пары ед.:</label>
-            <select id="unitPairsSelect" class="bg-gray-700 border border-gray-600 text-white text-sm rounded-md px-2 py-1 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+            <label for="unitPairsSelect">Пары ед.:</label>
+            <select id="unitPairsSelect">
                 <option value="none">Польз.</option>
                 <option value="metric_t_m">т, м</option>
                 <option value="metric_standard">кН, м</option>
