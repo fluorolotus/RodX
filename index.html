@@ -1105,8 +1105,8 @@
                 maxY: screenToWorld(0, 0).y             
             };
             
-            ctx.fillStyle = '#e0e0e0';
-            const dotSize = 2 / scale; // точка 2x2 пикселя в мировых координатах
+            ctx.fillStyle = '#000000';
+            const dotSize = 1 / scale; // точка 1x1 пикселя в мировых координатах
             const startX_currentUnit = Math.floor(worldView.minX / subGridStep_currentUnit) * subGridStep_currentUnit;
             const endX_currentUnit = Math.ceil(worldView.maxX / subGridStep_currentUnit) * subGridStep_currentUnit;
             const startY_currentUnit = Math.floor(Math.min(worldView.minY, worldView.maxY) / subGridStep_currentUnit) * subGridStep_currentUnit;
