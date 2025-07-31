@@ -77,8 +77,9 @@
             'metric_mm_N': { length: 'mm', force: 'N' },
             'imperial_ft_lbf': { length: 'ft', force: 'lbf' },
             'imperial_in_lbf': { length: 'in', force: 'lbf' },
-			'imperial_in_kips': { length: 'in', force: 'kips' },
-			'metric_t_m': { length: 'm', force: 't' }
+            'imperial_in_kips': { length: 'in', force: 'kips' },
+            'metric_kg_m': { length: 'm', force: 'kg' },
+            'metric_t_m': { length: 'm', force: 't' }
         };
 		
 		let currentUnitPair = unitPairsSelect.value;
