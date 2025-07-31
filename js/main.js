@@ -128,11 +128,11 @@
             
             forceUnitsSelect.value = 'kN';
             forceUnitsSelect.dataset.previousValue = 'kN';
-            unitsSelect.value = 'm';
-            unitsSelect.dispatchEvent(new Event('change'));
 
+            unitsSelect.value = 'm';
             currentUnit = unitsSelect.value;
             currentForceUnit = forceUnitsSelect.value;
+            unitsSelect.dispatchEvent(new Event('change'));
             
             updateUnitPairsSelect(); 
             updateForceUnitDisplay(); 
