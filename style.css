@@ -24,9 +24,8 @@
         /* Панель свойств как плавающее окно */
         .properties-panel {
             position: absolute;
-            top: 15px;
-            bottom: 15px;
-            left: 15px;
+            left: 10px;
+            bottom: 10px;
             width: 300px;
             background-color: #f0f2f5;
             padding: 15px;
