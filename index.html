@@ -50,7 +50,7 @@
             flex-grow: 1;
             position: relative; /* Для позиционирования тултипа и контекстного меню */
             overflow: hidden;
-            background: linear-gradient(to bottom, #FFFFFF, #BABCBB);
+            background: #EFEFEF;
             width: 100%;
         }
         
@@ -357,6 +357,10 @@
             <button id="toggleBetaAngleIconsBtn" class="visibility-toggle-btn" title="Переключить иконки сечения">
                 <img src="icons/icon_betaAngleVisibility.svg" alt="Beta angle icons">
             </button>
+            <button id="saveModelBtn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-150 ease-in-out">Скачать</button>
+            <button id="loadModelBtn" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded transition duration-150 ease-in-out">Загрузить</button>
+            <input type="file" id="fileInput" accept=".json" class="hidden">
+            <button id="clearCanvasBtn" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded transition duration-150 ease-in-out">Очистить все</button>
         </div>
     </div>
 
@@ -563,13 +567,6 @@
 
     <!-- Нижняя панель управления -->
     <div id="bottomBar" class="p-1 flex justify-center items-center space-x-8 z-100" style="height:40px;background-color:#BABCBB;">
-        <!-- Кнопки Сохранить/Загрузить/Очистить -->
-        <div class="flex items-center space-x-4">
-            <button id="saveModelBtn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-150 ease-in-out">Сохранить</button>
-            <button id="loadModelBtn" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded transition duration-150 ease-in-out">Загрузить</button>
-            <input type="file" id="fileInput" accept=".json" class="hidden">
-            <button id="clearCanvasBtn" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded transition duration-150 ease-in-out">Очистить все</button>
-        </div>
 
         <!-- Управление сеткой -->
         <div class="flex items-center space-x-2 ml-8">
@@ -626,21 +623,21 @@
     <div id="tooltip" class="tooltip hidden"></div>
 
     <script>
-        // DOM Elements - ОБНОВЛЕННЫЕ ССЫЛКИ ПОСЛЕ ПЕРЕМЕЩЕНИЯ В BOTTOMBAR
+        // DOM Elements
         const canvas = document.getElementById('drawingCanvas');
         const ctx = canvas.getContext('2d');
         const canvasContainer = document.getElementById('canvasContainer');
         
-        // Элементы, перемещенные в bottomBar
+        // Элементы панелей управления
         const divisionsInput = document.getElementById('divisions');
         const snapToGridCheckbox = document.getElementById('snapToGrid');
         const clearCanvasBtn = document.getElementById('clearCanvasBtn');
         const unitsSelect = document.getElementById('unitsSelect'); // ID изменен
         const forceUnitsSelect = document.getElementById('forceUnitsSelect'); // ID изменен
         const unitPairsSelect = document.getElementById('unitPairsSelect'); // ID изменен
-        const saveModelBtn = document.getElementById('saveModelBtn'); // Перемещен
-        const loadModelBtn = document.getElementById('loadModelBtn'); // Перемещен
-        const fileInput = document.getElementById('fileInput'); // Перемещен
+        const saveModelBtn = document.getElementById('saveModelBtn');
+        const loadModelBtn = document.getElementById('loadModelBtn');
+        const fileInput = document.getElementById('fileInput');
 
         const tooltip = document.getElementById('tooltip');
         const customContextMenu = document.getElementById('customContextMenu');
