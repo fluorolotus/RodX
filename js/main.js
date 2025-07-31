@@ -155,7 +155,7 @@
             const panel = document.getElementById('propertiesPanel');
             if (panelHeight > 0 && panel) {
                 panel.style.height = `${panelHeight}px`;
-                panel.style.bottom = '10px';
+                panel.style.bottom = '43px';
             }
         }
 
