@@ -251,6 +251,13 @@
         #bottomBar #clearCanvasBtn { background-color: #dc3545; border-color: #dc3545;}
         #bottomBar #clearCanvasBtn:hover { background-color: #c82333; border-color: #bd2130;}
 
+        /* Контейнер элементов нижней панели */
+        #bottomBarContent {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
 
         /* Стили для тултипа и контекстного меню */
         .tooltip {
