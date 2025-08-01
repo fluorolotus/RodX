@@ -13,6 +13,8 @@
         const saveModelBtn = document.getElementById('saveModelBtn');
         const loadModelBtn = document.getElementById('loadModelBtn');
         const fileInput = document.getElementById('fileInput');
+        const importMenuItem = document.getElementById('importMenuItem');
+        const exportMenuItem = document.getElementById('exportMenuItem');
 
         const tooltip = document.getElementById('tooltip');
         const customContextMenu = document.getElementById('customContextMenu');

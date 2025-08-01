@@ -407,3 +407,47 @@
     font-size: 16px;
     outline: none;
 }
+
+.file-menu {
+    position: relative;
+    margin-left: 10px;
+    cursor: pointer;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.file-menu .menu-title {
+    color: #000000;
+}
+
+.file-menu:hover .menu-title {
+    color: #529774;
+    font-weight: bold;
+}
+
+.file-menu .dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #FFFFFF;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    min-width: 100px;
+    z-index: 102;
+}
+
+.file-menu:hover .dropdown-menu {
+    display: block;
+}
+
+.file-menu .dropdown-menu div {
+    padding: 5px 10px;
+    white-space: nowrap;
+}
+
+.file-menu .dropdown-menu div:hover {
+    background-color: #f0f0f0;
+}
