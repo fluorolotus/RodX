@@ -1150,6 +1150,12 @@
                 fileInput.click();
             });
 
+            importMenuItem.addEventListener('click', () => {
+                fileInput.click();
+            });
+
+            exportMenuItem.addEventListener('click', saveModel);
+
             // Обработчик для изменения (выбора) файла в поле ввода
             fileInput.addEventListener('change', (e) => {
                 const file = e.target.files[0];
