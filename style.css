@@ -386,7 +386,7 @@
     transform: translateX(-50%);
 }
 .floating-panel.right {
-    width: 200px;
+    width: 220px;
     right: 10px;
 }
 
@@ -502,6 +502,72 @@
 
 .share-menu:hover {
     background-color: #E1F6EF;
+}
+
+.account-menu {
+    position: relative;
+    margin-left: 0px;
+    padding: 0 10px;
+    cursor: pointer;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.account-menu:hover {
+    background-color: #E1F6EF;
+}
+
+.account-logo {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #E1F6EF;
+    border: 0.5px solid #529774;
+    color: #529774;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.account-menu:hover .account-logo {
+    border-width: 1.5px;
+}
+
+.account-menu .dropdown-menu {
+    display: none;
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.25);
+    padding: 10px 5px 10px 5px;
+    width: max-content;
+    white-space: nowrap;
+    z-index: 102;
+}
+
+.account-menu:hover .dropdown-menu {
+    display: block;
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+
+.account-menu .dropdown-menu div {
+    padding: 5px 0;
+    white-space: nowrap;
+    text-align: center;
+}
+
+.account-menu .dropdown-menu div:hover {
+    background-color: #E1F6EF;
+    color: #529774;
+    text-decoration: underline;
+    text-decoration-thickness: 9%;
 }
 
 
