@@ -3433,6 +3433,15 @@ let sectionDetailsContent;
             const toggleLineNumbersBtn = document.getElementById("toggleLineNumbersBtn");
             const toggleBetaAngleIconsBtn = document.getElementById("toggleBetaAngleIconsBtn");
             const selectAllBtn = document.getElementById('selectAllBtn');
+            const clearCanvasBtnTop = document.getElementById('clearCanvasBtn');
+
+            const materialsMenuItem = document.getElementById('materialsMenuItem');
+            const sectionsMenuItem = document.getElementById('sectionsMenuItem');
+            const selectAllMenu = document.getElementById('selectAllMenu');
+            const clearAllMenu = document.getElementById('clearAllMenu');
+            const visibilityNodesMenuItem = document.getElementById('visibilityNodesMenuItem');
+            const visibilityElementsMenuItem = document.getElementById('visibilityElementsMenuItem');
+            const visibilitySectionsMenuItem = document.getElementById('visibilitySectionsMenuItem');
 			
 			// Получаем ссылки на новые DOM-элементы
             const addMaterialToModelBtn = document.getElementById('addMaterialToModelBtn');
@@ -3497,6 +3506,28 @@ let sectionDetailsContent;
             }
             if (selectAllBtn) {
                 selectAllBtn.addEventListener('click', selectAllElements);
+            }
+
+            if (materialsMenuItem) {
+                materialsMenuItem.addEventListener('click', () => openMaterialsModalBtn && openMaterialsModalBtn.click());
+            }
+            if (sectionsMenuItem) {
+                sectionsMenuItem.addEventListener('click', () => openSectionsModalBtn && openSectionsModalBtn.click());
+            }
+            if (selectAllMenu) {
+                selectAllMenu.addEventListener('click', () => selectAllBtn && selectAllBtn.click());
+            }
+            if (clearAllMenu) {
+                clearAllMenu.addEventListener('click', () => clearCanvasBtnTop && clearCanvasBtnTop.click());
+            }
+            if (visibilityNodesMenuItem) {
+                visibilityNodesMenuItem.addEventListener('click', () => toggleNodeNumbersBtn && toggleNodeNumbersBtn.click());
+            }
+            if (visibilityElementsMenuItem) {
+                visibilityElementsMenuItem.addEventListener('click', () => toggleLineNumbersBtn && toggleLineNumbersBtn.click());
+            }
+            if (visibilitySectionsMenuItem) {
+                visibilitySectionsMenuItem.addEventListener('click', () => toggleBetaAngleIconsBtn && toggleBetaAngleIconsBtn.click());
             }
             
             // Вам потребуется кнопка для сохранения нового материала. 
