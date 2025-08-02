@@ -1094,8 +1094,8 @@
             }
 
             ctx.save();
-            ctx.strokeStyle = '#E1F6EF';
-            ctx.lineWidth = 1;
+            ctx.strokeStyle = '#529774';
+            ctx.lineWidth = 2;
             ctx.setLineDash([5, 5]);
 
             ctx.beginPath();
@@ -3691,4 +3691,5 @@ let sectionsModal;
 
         // Start the application
         //init();
+
 
