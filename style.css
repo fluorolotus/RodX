@@ -377,12 +377,12 @@
     z-index: 101;
 }
 .floating-panel.left {
-    width: 440px;
+    width: 450px;
     left: 10px;
 }
 .floating-panel.center {
     width: 400px;
-    left: 50%;
+    left: 60%;
     transform: translateX(-50%);
 }
 .floating-panel.right {
@@ -391,7 +391,7 @@
 }
 
 .left-panel-logo {
-    height: 80%;
+    height: 90%;
     width: auto;
 }
 
@@ -399,13 +399,13 @@
     margin-left: 10px;
     margin-right: 10px;
     width: 1px;
-    height: 80%;
+    height: 100%;
     background-color: #BABCBB;
 }
 
 .left-panel-input {
     margin-left: 10px;
-    width: 150px;
+    width: 180px;
     background-color: #FFFFFF;
     border: none;
     font-size: 16px;
@@ -490,6 +490,7 @@
 .share-menu:hover {
     background-color: #E1F6EF;
 }
+
 
 
 
