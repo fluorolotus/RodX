@@ -270,6 +270,7 @@
             ctx.restore(); // Восстанавливаем исходную матрицу трансформации
             // Crosshair is drawn last so it stays above fill, grid and axes
             drawCrosshair();
+            updateCursorTooltip();
             updateTooltip();
         }
 		
@@ -1109,7 +1110,7 @@
 
             ctx.save();
             ctx.strokeStyle = '#529774';
-            ctx.lineWidth = 2;
+            ctx.lineWidth = 1;
             ctx.setLineDash([5, 5]);
 
             ctx.beginPath();
@@ -1127,6 +1128,7 @@
             window.addEventListener('resize', resizeCanvas);
             canvas.addEventListener('mousedown', handleMouseDown);
             canvas.addEventListener('mousemove', handleMouseMove);
+            canvas.addEventListener('mouseleave', handleMouseLeave);
             canvas.addEventListener('mouseup', handleMouseUp);
             canvas.addEventListener('wheel', handleWheelZoom, { passive: false });
             canvas.addEventListener('contextmenu', handleContextMenu);
@@ -1483,8 +1485,12 @@
             draw();
         }
 
+        function handleMouseLeave() {
+            cursorTooltip.classList.add('hidden');
+        }
+
         function handleMouseUp(e) {
-            if (e.button === 1 && isPanning) { 
+            if (e.button === 1 && isPanning) {
                 isPanning = false;
                 canvas.style.cursor = 'default';
             }
@@ -1513,7 +1519,16 @@
             };
 
             panX += (worldAfterZoom_if_pan_did_not_change.x - worldBeforeZoom.x) * scale;
-            panY += (worldAfterZoom_if_pan_did_not_change.y - worldBeforeZoom.y) * (-scale); 
+            panY += (worldAfterZoom_if_pan_did_not_change.y - worldBeforeZoom.y) * (-scale);
+
+            mouse.x = mouseX_screen;
+            mouse.y = mouseY_screen;
+            const worldCoords = screenToWorld(mouse.x, mouse.y);
+            mouse.worldX = worldCoords.x;
+            mouse.worldY = worldCoords.y;
+            const snapped = getSnappedCoordinates(worldCoords.x, worldCoords.y);
+            mouse.snappedX = snapped.x;
+            mouse.snappedY = snapped.y;
 
             draw();
         }
@@ -3223,8 +3238,19 @@
             updatePropertiesPanel(); 
         }
 
+        function updateCursorTooltip() {
+            const rect = canvas.getBoundingClientRect();
+            const offsetX = 15;
+            const offsetY = 15;
+            const world = screenToWorld(mouse.x, mouse.y);
+            cursorTooltip.innerHTML = `X: ${world.x.toFixed(2)} ${currentUnit}<br>Y: ${world.y.toFixed(2)} ${currentUnit}`;
+            cursorTooltip.style.left = `${rect.left + mouse.x + offsetX}px`;
+            cursorTooltip.style.top = `${rect.top + mouse.y + offsetY}px`;
+            cursorTooltip.classList.remove('hidden');
+        }
+
         // Tooltip
-        function updateTooltip() { 
+        function updateTooltip() {
             const panelWidth = propertiesPanel.offsetWidth;
 
             if (hoveredElement && !isPanning && customContextMenu.classList.contains('hidden')) { 

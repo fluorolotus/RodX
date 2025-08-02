@@ -18,6 +18,7 @@
         const shareMenu = document.getElementById('shareMenu');
 
         const tooltip = document.getElementById('tooltip');
+        const cursorTooltip = document.getElementById('cursorTooltip');
         const customContextMenu = document.getElementById('customContextMenu');
         const deleteNodeItem = document.getElementById('deleteNodeItem');
         const deleteLineItem = document.getElementById('deleteLineItem');
