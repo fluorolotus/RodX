@@ -348,7 +348,7 @@
                 maxY: screenToWorld(0, 0).y             
             };
             
-            ctx.strokeStyle = '#EEEEEE';
+            ctx.strokeStyle = '#E8E8E8';
             ctx.lineWidth = 0.5 / scale; // 0.5px толщиной независимо от масштаба
             const startX_currentUnit = Math.floor(worldView.minX / subGridStep_currentUnit) * subGridStep_currentUnit;
             const endX_currentUnit = Math.ceil(worldView.maxX / subGridStep_currentUnit) * subGridStep_currentUnit;
@@ -369,9 +369,9 @@
         }
 
 		function drawAxes() {
-            ctx.strokeStyle = '#E8E8E8';
+            ctx.strokeStyle = '#DEDEDE';
             ctx.lineWidth = 1 / scale;
-            ctx.fillStyle = '#555';
+            ctx.fillStyle = '#DEDEDE';
             const fontSizeWorld = 12 / scale; 
             ctx.font = `${fontSizeWorld}px Arial`;
 
@@ -3691,3 +3691,4 @@ let sectionsModal;
 
         // Start the application
         //init();
+
