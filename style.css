@@ -415,6 +415,8 @@
 .file-menu {
     position: relative;
     margin-left: 0px;
+    padding-left: 10px;
+    padding-right: 10px;
     cursor: pointer;
     height: 100%;
     display: flex;
@@ -460,3 +462,4 @@
 .file-menu .dropdown-menu div:hover {
     background-color: #f0f0f0;
 }
+
