@@ -446,6 +446,8 @@
     border-radius: 10px;
     box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.25);
     padding: 10px 5px 10px 5px;
+    width: max-content;   /* ширина равна самой широкой строке */
+    white-space: nowrap;  /* чтобы элементы не переносились */
     z-index: 102;
 }
 
@@ -488,6 +490,7 @@
 .share-menu:hover {
     background-color: #E1F6EF;
 }
+
 
 
 
