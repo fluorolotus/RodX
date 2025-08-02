@@ -423,7 +423,12 @@
 
 .file-menu:hover .menu-title {
     color: #529774;
-    font-weight: bold;
+    text-decoration: underline;
+    text-decoration-thickness: 9%;
+}
+
+.file-menu:hover {
+    background-color: #E1F6EF;
 }
 
 .file-menu .dropdown-menu {
