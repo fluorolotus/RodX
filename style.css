@@ -404,7 +404,7 @@
 }
 
 .left-panel-input {
-    margin-left: 10px;
+    margin-left: 0px;
     width: 180px;
     background-color: #FFFFFF;
     border: none;
@@ -490,6 +490,7 @@
 .share-menu:hover {
     background-color: #E1F6EF;
 }
+
 
 
 
