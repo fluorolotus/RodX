@@ -268,6 +268,7 @@
 
 
             ctx.restore(); // Восстанавливаем исходную матрицу трансформации
+            // Crosshair is drawn last so it stays above fill, grid and axes
             drawCrosshair();
             updateTooltip();
         }
@@ -348,7 +349,7 @@
                 maxY: screenToWorld(0, 0).y             
             };
             
-            ctx.strokeStyle = '#E8E8E8';
+            ctx.strokeStyle = '#D0D0D0';
             ctx.lineWidth = 0.5 / scale; // 0.5px толщиной независимо от масштаба
             const startX_currentUnit = Math.floor(worldView.minX / subGridStep_currentUnit) * subGridStep_currentUnit;
             const endX_currentUnit = Math.ceil(worldView.maxX / subGridStep_currentUnit) * subGridStep_currentUnit;
@@ -369,9 +370,9 @@
         }
 
 		function drawAxes() {
-            ctx.strokeStyle = '#DEDEDE';
+            ctx.strokeStyle = '#B0B0B0';
             ctx.lineWidth = 1 / scale;
-            ctx.fillStyle = '#DEDEDE';
+            ctx.fillStyle = '#B0B0B0';
             const fontSizeWorld = 12 / scale; 
             ctx.font = `${fontSizeWorld}px Arial`;
 
@@ -1472,7 +1473,7 @@
         function handleMouseUp(e) {
             if (e.button === 1 && isPanning) { 
                 isPanning = false;
-                canvas.style.cursor = 'crosshair';
+                canvas.style.cursor = 'default';
             }
         }
 

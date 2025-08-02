@@ -49,7 +49,7 @@
         canvas {
             display: block;
             background-color: #F7F7F7;
-            cursor: crosshair;
+            cursor: default;
             width: 100%; /* Холст занимает 100% ширины своего родителя */
             height: 100%; /* Холст занимает 100% высоты своего родителя */
         }
