@@ -1156,6 +1156,8 @@
 
             exportMenuItem.addEventListener('click', saveModel);
 
+            shareMenu.addEventListener('click', () => {});
+
             // Обработчик для изменения (выбора) файла в поле ввода
             fileInput.addEventListener('change', (e) => {
                 const file = e.target.files[0];

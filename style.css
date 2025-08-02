@@ -415,7 +415,7 @@
 .file-menu {
     position: relative;
     margin-left: 0px;
-    padding: 0px 10px 0px 10px;
+    padding: 0;
     cursor: pointer;
     height: 100%;
     display: flex;
@@ -424,6 +424,7 @@
 
 .file-menu .menu-title {
     color: #000000;
+    padding: 0 10px;
 }
 
 .file-menu:hover .menu-title {
@@ -439,13 +440,13 @@
 .file-menu .dropdown-menu {
     display: none;
     position: absolute;
-    top: 100%;
+    top: calc(100% + 10px);
     left: 0;
     background-color: #FFFFFF;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    min-width: 100px;
+    border-radius: 10px;
+    box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.25);
+    width: 65px;
+    padding: 10px 0;
     z-index: 102;
 }
 
@@ -454,12 +455,39 @@
 }
 
 .file-menu .dropdown-menu div {
-    padding: 5px 10px;
+    padding: 5px 0;
     white-space: nowrap;
+    text-align: center;
 }
 
 .file-menu .dropdown-menu div:hover {
-    background-color: #f0f0f0;
+    background-color: #E1F6EF;
+    color: #529774;
+    text-decoration: underline;
+    text-decoration-thickness: 9%;
+}
+
+.share-menu {
+    margin-left: 0px;
+    cursor: pointer;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.share-menu .menu-title {
+    color: #000000;
+    padding: 0 10px;
+}
+
+.share-menu:hover .menu-title {
+    color: #529774;
+    text-decoration: underline;
+    text-decoration-thickness: 9%;
+}
+
+.share-menu:hover {
+    background-color: #E1F6EF;
 }
 
 
