@@ -437,6 +437,16 @@
     background-color: #E1F6EF;
 }
 
+.file-menu::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    height: 10px;
+    pointer-events: none;
+}
+
 .file-menu .dropdown-menu {
     display: none;
     position: absolute;
