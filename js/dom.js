@@ -15,6 +15,7 @@
         const fileInput = document.getElementById('fileInput');
         const importMenuItem = document.getElementById('importMenuItem');
         const exportMenuItem = document.getElementById('exportMenuItem');
+        const shareMenu = document.getElementById('shareMenu');
 
         const tooltip = document.getElementById('tooltip');
         const customContextMenu = document.getElementById('customContextMenu');
