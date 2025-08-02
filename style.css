@@ -41,14 +41,14 @@
             flex-grow: 1;
             position: relative; /* Для позиционирования тултипа и контекстного меню */
             overflow: hidden;
-            background: #EFEFEF;
+            background: #F7F7F7;
             width: 100%;
         }
         
         /* Сам холст */
         canvas {
             display: block;
-            background-color: transparent;
+            background-color: #F7F7F7;
             cursor: crosshair;
             width: 100%; /* Холст занимает 100% ширины своего родителя */
             height: 100%; /* Холст занимает 100% высоты своего родителя */
