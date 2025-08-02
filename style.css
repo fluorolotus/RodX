@@ -440,7 +440,7 @@
 .file-menu .dropdown-menu {
     display: none;
     position: absolute;
-    top: calc(100% + 2px);
+    top: calc(100% + 10px);
     left: 0;
     background-color: #FFFFFF;
     border-radius: 10px;
@@ -490,6 +490,7 @@
 .share-menu:hover {
     background-color: #E1F6EF;
 }
+
 
 
 
