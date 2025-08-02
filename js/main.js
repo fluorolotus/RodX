@@ -395,16 +395,28 @@
             if (currentUnit === 'ft' || currentUnit === 'in') {
                 axisLabelBaseUnit = 'ft';
             }
+            const minLabelSpacingPx = 50;
+            const stepSequence = [1, 2, 5];
+            let stepIndex = 0;
+            let magnitude = 1;
+            let unitLabelIncrement = stepSequence[stepIndex];
+            while (convertUnits(unitLabelIncrement, axisLabelBaseUnit, currentUnit) * scale < minLabelSpacingPx) {
+                stepIndex++;
+                if (stepIndex >= stepSequence.length) {
+                    stepIndex = 0;
+                    magnitude *= 10;
+                }
+                unitLabelIncrement = stepSequence[stepIndex] * magnitude;
+            }
 
-            const unitLabelIncrement = 1; 
-            const xLabelYOffsetWorld = fontSizeWorld * 0.5; 
+            const xLabelYOffsetWorld = fontSizeWorld * 0.5;
 
             // X-axis labels
-            const xLabelMinNum = Math.floor(convertUnits(visMinX, currentUnit, axisLabelBaseUnit) / unitLabelIncrement);
-            const xLabelMaxNum = Math.ceil(convertUnits(visMaxX, currentUnit, axisLabelBaseUnit) / unitLabelIncrement);
-            for (let num = xLabelMinNum; num <= xLabelMaxNum; num += unitLabelIncrement) {
-                const worldX_currentUnit = convertUnits(num * unitLabelIncrement, axisLabelBaseUnit, currentUnit);
-                const labelText = num.toFixed(0);
+            const xLabelMinVal = Math.floor(convertUnits(visMinX, currentUnit, axisLabelBaseUnit) / unitLabelIncrement) * unitLabelIncrement;
+            const xLabelMaxVal = Math.ceil(convertUnits(visMaxX, currentUnit, axisLabelBaseUnit) / unitLabelIncrement) * unitLabelIncrement;
+            for (let val = xLabelMinVal; val <= xLabelMaxVal; val += unitLabelIncrement) {
+                const worldX_currentUnit = convertUnits(val, axisLabelBaseUnit, currentUnit);
+                const labelText = val.toFixed(0);
                 
                 ctx.save();
                 ctx.translate(worldX_currentUnit, xLabelYOffsetWorld); 
@@ -416,18 +428,19 @@
             }
             
             // Y-axis labels
-            const yLabelXOffsetWorld = -fontSizeWorld * 0.5; 
-            const yLabelMinNum = Math.floor(convertUnits(Math.min(visMinY_world, visMaxY_world), currentUnit, axisLabelBaseUnit) / unitLabelIncrement);
-            const yLabelMaxNum = Math.ceil(Math.max(visMinY_world, visMaxY_world) / unitLabelIncrement);
-            for (let num = yLabelMinNum; num <= yLabelMaxNum; num += unitLabelIncrement) {
-                if (Math.abs(num) < 1e-9 / scale && Math.abs(0 - xLabelYOffsetWorld) < 1e-9 / scale ) continue; 
-                if (num === 0) continue; 
-                const worldY_currentUnit = convertUnits(num * unitLabelIncrement, axisLabelBaseUnit, currentUnit);
-                const labelText = num.toFixed(0);
-
+            const yLabelXOffsetWorld = -fontSizeWorld * 0.5;
+            const visMinY_base = convertUnits(Math.min(visMinY_world, visMaxY_world), currentUnit, axisLabelBaseUnit);
+            const visMaxY_base = convertUnits(Math.max(visMinY_world, visMaxY_world), currentUnit, axisLabelBaseUnit);
+            const yLabelMinVal = Math.floor(visMinY_base / unitLabelIncrement) * unitLabelIncrement;
+            const yLabelMaxVal = Math.ceil(visMaxY_base / unitLabelIncrement) * unitLabelIncrement;
+            for (let val = yLabelMinVal; val <= yLabelMaxVal; val += unitLabelIncrement) {
+                if (val === 0) continue;
+                const worldY_currentUnit = convertUnits(val, axisLabelBaseUnit, currentUnit);
+                const labelText = val.toFixed(0);
+                
                 ctx.save();
-                ctx.translate(yLabelXOffsetWorld, worldY_currentUnit); 
-                ctx.scale(1, -1); 
+                ctx.translate(yLabelXOffsetWorld, worldY_currentUnit);
+                ctx.scale(1, -1);
                 ctx.textAlign = 'right';
                 ctx.textBaseline = 'middle';
                 ctx.fillText(labelText, 0, 0);
