@@ -478,8 +478,8 @@
 					ctx.translate(node.x + 7/scale, node.y - 5/scale);
 					ctx.scale(1, -1);
 					
-					ctx.fillStyle = ctx.fillStyle; // Берем цвет, который был установлен для заливки узла
-					ctx.font = `${nodeIdFontSizeWorld}px Arial`;
+                                        ctx.fillStyle = '#6279B8';
+                                        ctx.font = `${nodeIdFontSizeWorld}px Roboto`;
 					ctx.textAlign = 'center';
 					ctx.textBaseline = 'middle';
 					ctx.fillText(node.node_id, 0, -(nodeRadiusWorld + (nodeIdFontSizeWorld / 2) + 2/scale));
@@ -545,7 +545,7 @@
 				const currentMomentRadius = FIXED_MOMENT_RADIUS_PX / scale;
 				const currentTextOffset = FIXED_TEXT_OFFSET_PX / scale;
 
-				ctx.font = `${12 / scale}px Arial`; 
+                                ctx.font = `${12 / scale}px Roboto`;
 				ctx.fillStyle = LOAD_COLOR;
 				ctx.textBaseline = 'middle'; 
 
@@ -691,7 +691,7 @@
                 ctx.strokeStyle = LOAD_COLOR;
                 ctx.fillStyle = LOAD_COLOR;
                 ctx.lineWidth = 0.7 / scale;
-                ctx.font = `${12 / scale}px Arial`;
+                ctx.font = `${12 / scale}px Roboto`;
                 ctx.textBaseline = 'middle';
 
                 let perpDx, perpDy;
@@ -1042,7 +1042,7 @@
 						}
 
 						ctx.fillStyle = ctx.strokeStyle; // Берем цвет, который был установлен для обводки линии
-						ctx.font = `${lineIdFontSizeWorld}px Arial`;
+                                                ctx.font = `${lineIdFontSizeWorld}px Roboto`;
 						ctx.textAlign = 'center';
 						ctx.textBaseline = 'middle';
 
@@ -3242,8 +3242,9 @@
             const rect = canvas.getBoundingClientRect();
             const offsetX = 15;
             const offsetY = 15;
-            const world = screenToWorld(mouse.x, mouse.y);
-            cursorTooltip.innerHTML = `X: ${world.x.toFixed(2)} ${currentUnit}<br>Y: ${world.y.toFixed(2)} ${currentUnit}`;
+            const worldX = snapToGrid ? mouse.snappedX : mouse.worldX;
+            const worldY = snapToGrid ? mouse.snappedY : mouse.worldY;
+            cursorTooltip.innerHTML = `X: ${worldX.toFixed(2)} ${currentUnit}<br>Y: ${worldY.toFixed(2)} ${currentUnit}`;
             cursorTooltip.style.left = `${rect.left + mouse.x + offsetX}px`;
             cursorTooltip.style.top = `${rect.top + mouse.y + offsetY}px`;
             cursorTooltip.classList.remove('hidden');
