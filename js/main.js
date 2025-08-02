@@ -109,18 +109,6 @@
 			materialsModal.classList.toggle('hidden');
 		}
 
-		openMaterialsModalBtn.addEventListener('click', toggleMaterialsModal);
-		closeMaterialsModalBtn.addEventListener('click', toggleMaterialsModal);
-		closeMaterialsModalBtnBottom.addEventListener('click', toggleMaterialsModal);
-
-		materialsModal.addEventListener('click', (e) => {
-			if (e.target === materialsModal) {
-				toggleMaterialsModal();
-			}
-		});		
-		
-		
-		
         function init() {
             snapToGridCheckbox.checked = snapToGrid; 
             resizeCanvas();
@@ -1136,30 +1124,39 @@
                 mouse.snappedY = snapped.y; 
                 draw();
             });
-            clearCanvasBtn.addEventListener('click', clearAll);
-			
-			// НОВОЕ: Обработчик для кнопки сохранения модели
-            saveModelBtn.addEventListener('click', saveModel);
-			
-			            // НОВОЕ: DOM элементы для загрузки модели
-            // const loadModelBtn = document.getElementById('loadModelBtn'); // Уже объявлен
-            // const fileInput = document.getElementById('fileInput'); // Уже объявлен
+            if (clearCanvasBtn) {
+                clearCanvasBtn.addEventListener('click', clearAll);
+            }
+
+            // НОВОЕ: Обработчик для кнопки сохранения модели
+            if (saveModelBtn) {
+                saveModelBtn.addEventListener('click', saveModel);
+            }
 
             // Обработчик для кнопки "Загрузить"
-            loadModelBtn.addEventListener('click', () => {
-                fileInput.click();
-            });
+            if (loadModelBtn && fileInput) {
+                loadModelBtn.addEventListener('click', () => {
+                    fileInput.click();
+                });
+            }
 
-            importMenuItem.addEventListener('click', () => {
-                fileInput.click();
-            });
+            if (importMenuItem && fileInput) {
+                importMenuItem.addEventListener('click', () => {
+                    fileInput.click();
+                });
+            }
 
-            exportMenuItem.addEventListener('click', saveModel);
+            if (exportMenuItem) {
+                exportMenuItem.addEventListener('click', saveModel);
+            }
 
-            shareMenu.addEventListener('click', () => {});
+            if (shareMenu) {
+                shareMenu.addEventListener('click', () => {});
+            }
 
             // Обработчик для изменения (выбора) файла в поле ввода
-            fileInput.addEventListener('change', (e) => {
+            if (fileInput) {
+                fileInput.addEventListener('change', (e) => {
                 const file = e.target.files[0];
                 if (!file) {
                     console.log("Файл не выбран.");
@@ -1181,6 +1178,7 @@
 
                 reader.readAsText(file);
             });
+            }
             
             unitsSelect.addEventListener('change', (e) => {
                 const oldUnit = currentUnit;
@@ -1291,13 +1289,6 @@
                     closeCopyNodeModal();
                 }
             });
-
-            // --- Логика открытия/закрытия модального окна материалов ---
-            const openMaterialsModalBtn = document.getElementById('openMaterialsModalBtn');
-            const materialsModal = document.getElementById('materialsModal');
-            const closeMaterialsModalBtn = document.getElementById('closeMaterialsModalBtn');
-            const closeMaterialsModalBtnBottom = document.getElementById('closeMaterialsModalBtnBottom');
-
 
         }
 
@@ -3399,6 +3390,8 @@ let sectionImage;
 let userSectionNameContainer;
 let userSectionNameInput;
 let sectionDetailsContent;
+let materialsModal;
+let sectionsModal;
 		
 		document.addEventListener('DOMContentLoaded', async () => {
             console.log('DOMContentLoaded fired. Starting initialization...'); 
@@ -3413,16 +3406,14 @@ let sectionDetailsContent;
 			
             // Объявляем переменные для кнопок и модального окна ОДИН РАЗ с 'const'
             const openMaterialsModalBtn = document.getElementById('openMaterialsModalBtn'); // Кнопка в topBar
-            console.log('openMaterialsModalBtn (topBar):', openMaterialsModalBtn); // DEBUG
             const openMaterialsModalBtnFromPanel = document.getElementById('openMaterialsModalBtnFromPanel'); // Кнопка в propertiesPanel
-            console.log('openMaterialsModalBtnFromPanel (panel):', openMaterialsModalBtnFromPanel); // DEBUG
             
-            const materialsModal = document.getElementById('materialsModal');
+            materialsModal = document.getElementById('materialsModal');
             const closeMaterialsModalBtn = document.getElementById('closeMaterialsModalBtn');
             const closeMaterialsModalBtnBottom = document.getElementById('closeMaterialsModalBtnBottom');
 
             const openSectionsModalBtn = document.getElementById('openSectionsModalBtn');
-            const sectionsModal = document.getElementById('sectionsModal');
+            sectionsModal = document.getElementById('sectionsModal');
             const closeSectionsModalBtn = document.getElementById('closeSectionsModalBtn');
             const showSectionPropsBtn = document.getElementById('showSectionPropsBtn');
             const sectionDetailsModal = document.getElementById('sectionDetailsModal');
@@ -3432,8 +3423,6 @@ let sectionDetailsContent;
             const toggleNodeNumbersBtn = document.getElementById("toggleNodeNumbersBtn");
             const toggleLineNumbersBtn = document.getElementById("toggleLineNumbersBtn");
             const toggleBetaAngleIconsBtn = document.getElementById("toggleBetaAngleIconsBtn");
-            const selectAllBtn = document.getElementById('selectAllBtn');
-            const clearCanvasBtnTop = document.getElementById('clearCanvasBtn');
 
             const materialsMenuItem = document.getElementById('materialsMenuItem');
             const sectionsMenuItem = document.getElementById('sectionsMenuItem');
@@ -3504,30 +3493,44 @@ let sectionDetailsContent;
                     draw();
                 });
             }
-            if (selectAllBtn) {
-                selectAllBtn.addEventListener('click', selectAllElements);
-            }
-
             if (materialsMenuItem) {
-                materialsMenuItem.addEventListener('click', () => openMaterialsModalBtn && openMaterialsModalBtn.click());
+                materialsMenuItem.addEventListener('click', toggleMaterialsModal);
             }
             if (sectionsMenuItem) {
-                sectionsMenuItem.addEventListener('click', () => openSectionsModalBtn && openSectionsModalBtn.click());
+                sectionsMenuItem.addEventListener('click', toggleSectionsModal);
             }
             if (selectAllMenu) {
-                selectAllMenu.addEventListener('click', () => selectAllBtn && selectAllBtn.click());
+                selectAllMenu.addEventListener('click', selectAllElements);
             }
             if (clearAllMenu) {
-                clearAllMenu.addEventListener('click', () => clearCanvasBtnTop && clearCanvasBtnTop.click());
+                clearAllMenu.addEventListener('click', clearAll);
             }
             if (visibilityNodesMenuItem) {
-                visibilityNodesMenuItem.addEventListener('click', () => toggleNodeNumbersBtn && toggleNodeNumbersBtn.click());
+                visibilityNodesMenuItem.addEventListener('click', () => {
+                    showNodeIds = !showNodeIds;
+                    if (toggleNodeNumbersBtn) {
+                        toggleNodeNumbersBtn.classList.toggle('active', showNodeIds);
+                    }
+                    draw();
+                });
             }
             if (visibilityElementsMenuItem) {
-                visibilityElementsMenuItem.addEventListener('click', () => toggleLineNumbersBtn && toggleLineNumbersBtn.click());
+                visibilityElementsMenuItem.addEventListener('click', () => {
+                    showElementIds = !showElementIds;
+                    if (toggleLineNumbersBtn) {
+                        toggleLineNumbersBtn.classList.toggle('active', showElementIds);
+                    }
+                    draw();
+                });
             }
             if (visibilitySectionsMenuItem) {
-                visibilitySectionsMenuItem.addEventListener('click', () => toggleBetaAngleIconsBtn && toggleBetaAngleIconsBtn.click());
+                visibilitySectionsMenuItem.addEventListener('click', () => {
+                    showBetaAngleIcons = !showBetaAngleIcons;
+                    if (toggleBetaAngleIconsBtn) {
+                        toggleBetaAngleIconsBtn.classList.toggle('active', showBetaAngleIcons);
+                    }
+                    draw();
+                });
             }
             
             // Вам потребуется кнопка для сохранения нового материала. 
@@ -3539,11 +3542,9 @@ let sectionDetailsContent;
             // Устанавливаем слушатели для модального окна материалов
             if (openMaterialsModalBtn) {
                 openMaterialsModalBtn.addEventListener('click', toggleMaterialsModal);
-                console.log('Listener added to topBar openMaterialsModalBtn'); // DEBUG
             }
             if (openMaterialsModalBtnFromPanel) {
                 openMaterialsModalBtnFromPanel.addEventListener('click', toggleMaterialsModal);
-                console.log('Listener added to panel openMaterialsModalBtnFromPanel'); // DEBUG
             }
             if (materialsModal) { // Добавьте проверку на существование модального окна
                 if (closeMaterialsModalBtn) {
