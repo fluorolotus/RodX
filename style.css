@@ -4,20 +4,20 @@
             margin: 0;
             overflow: hidden; /* Скрывает полосы прокрутки, если содержимое выходит за границы */
             display: flex;
-            flex-direction: column; /* Элементы (topBar, main-content-area, bottomBar) располагаются вертикально */
+            flex-direction: column; /* Элементы (main-content-area и bottomBar) располагаются вертикально */
             height: 100vh; /* Body занимает всю высоту viewport */
             background-color: #f0f2f5; /* Цвет фона для всего приложения */
         }
 
-        /* Стили для верхней и нижней панелей */
-        #topBar, #bottomBar {
-            flex-shrink: 0; /* Эти панели не должны сжиматься по высоте */
+        /* Стиль нижней панели */
+        #bottomBar {
+            flex-shrink: 0; /* Панель не должна сжиматься по высоте */
         }
 
         /* Основная область содержимого */
         .main-content-area {
             display: flex;
-            flex-grow: 1; /* Занимает всю оставшуюся высоту между topBar и bottomBar */
+            flex-grow: 1; /* Занимает всю оставшуюся высоту до нижней панели */
             overflow: hidden; /* Скрывает переполнение */
         }
 
@@ -358,7 +358,7 @@
 
 .floating-panel {
     position: fixed;
-    top: 60px;
+    top: 10px;
     background-color: #FFFFFF;
     border-radius: 10px;
     border: none;
