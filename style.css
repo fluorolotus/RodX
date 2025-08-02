@@ -368,8 +368,8 @@
     box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.25);
     padding-left: 5px;
     padding-right: 5px;
-	padding-top: 0px;
-	padding-bottom: 0px;
+    padding-top: 5px;
+    padding-bottom: 5px;
     box-sizing: border-box;
     height: 50px;
     display: flex;
@@ -377,7 +377,7 @@
     z-index: 101;
 }
 .floating-panel.left {
-    width: 400px;
+    width: 440px;
     left: 10px;
 }
 .floating-panel.center {
@@ -440,13 +440,13 @@
 .file-menu .dropdown-menu {
     display: none;
     position: absolute;
-    top: calc(100% + 10px);
+    top: calc(100% + 2px);
     left: 0;
     background-color: #FFFFFF;
     border-radius: 10px;
     box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.25);
     width: 65px;
-    padding: 10px 0;
+    padding: 10px 5px 10px 5px;
     z-index: 102;
 }
 
@@ -489,5 +489,6 @@
 .share-menu:hover {
     background-color: #E1F6EF;
 }
+
 
 
