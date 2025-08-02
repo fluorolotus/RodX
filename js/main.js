@@ -265,10 +265,10 @@
             drawNodes();        
 
             drawNodeLoads();
-			
-            
+
+
             ctx.restore(); // Восстанавливаем исходную матрицу трансформации
-            drawCursorCircle();
+            drawCrosshair();
             updateTooltip();
         }
 		
@@ -348,8 +348,8 @@
                 maxY: screenToWorld(0, 0).y             
             };
             
-            ctx.strokeStyle = 'rgba(186, 188, 187, 0.5)';
-            ctx.lineWidth = 1 / scale; // 1px толщиной независимо от масштаба
+            ctx.strokeStyle = '#EEEEEE';
+            ctx.lineWidth = 0.5 / scale; // 0.5px толщиной независимо от масштаба
             const startX_currentUnit = Math.floor(worldView.minX / subGridStep_currentUnit) * subGridStep_currentUnit;
             const endX_currentUnit = Math.ceil(worldView.maxX / subGridStep_currentUnit) * subGridStep_currentUnit;
             const startY_currentUnit = Math.floor(Math.min(worldView.minY, worldView.maxY) / subGridStep_currentUnit) * subGridStep_currentUnit;
@@ -369,8 +369,8 @@
         }
 
 		function drawAxes() {
-            ctx.strokeStyle = '#888';
-            ctx.lineWidth = 2 / scale;
+            ctx.strokeStyle = '#E8E8E8';
+            ctx.lineWidth = 1 / scale;
             ctx.fillStyle = '#555';
             const fontSizeWorld = 12 / scale; 
             ctx.font = `${fontSizeWorld}px Arial`;
@@ -1082,21 +1082,30 @@
                        });
                }
 
-        function drawCursorCircle() { 
+        function drawCrosshair() {
             let drawAtX_screen, drawAtY_screen;
             if (snapToGrid) {
                 const screenSnappedPos = worldToScreen(mouse.snappedX, mouse.snappedY);
                 drawAtX_screen = screenSnappedPos.x;
                 drawAtY_screen = screenSnappedPos.y;
             } else {
-                drawAtX_screen = mouse.x; 
+                drawAtX_screen = mouse.x;
                 drawAtY_screen = mouse.y;
             }
+
+            ctx.save();
+            ctx.strokeStyle = '#E1F6EF';
+            ctx.lineWidth = 1;
+            ctx.setLineDash([5, 5]);
+
             ctx.beginPath();
-            ctx.arc(drawAtX_screen, drawAtY_screen, 5, 0, 2 * Math.PI);
-            ctx.strokeStyle = 'rgba(255, 0, 0, 0.9)';
-            ctx.lineWidth = 1.5;
+            ctx.moveTo(drawAtX_screen, 0);
+            ctx.lineTo(drawAtX_screen, canvas.height);
+            ctx.moveTo(0, drawAtY_screen);
+            ctx.lineTo(canvas.width, drawAtY_screen);
             ctx.stroke();
+
+            ctx.restore();
         }
         
         // Event Handlers
