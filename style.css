@@ -386,7 +386,7 @@
     transform: translateX(-50%);
 }
 .floating-panel.right {
-    width: 220px;
+    width: 180px;
     right: 10px;
 }
 
@@ -574,10 +574,10 @@
     content: '';
     position: absolute;
     top: 100%;
-    left: 0;
+    right: 0;
     width: 100%;
     height: 10px;
-    
+    background-color: transparent;
 }
 
 
