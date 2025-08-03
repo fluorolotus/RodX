@@ -3239,6 +3239,10 @@
         }
 
         function updateCursorTooltip() {
+            if (hoveredElement && !isPanning && customContextMenu.classList.contains('hidden')) {
+                cursorTooltip.classList.add('hidden');
+                return;
+            }
             const rect = canvas.getBoundingClientRect();
             const offsetX = 15;
             const offsetY = 15;
