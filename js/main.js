@@ -3485,6 +3485,9 @@ let sectionsModal;
             const visibilityNodesMenuItem = document.getElementById('visibilityNodesMenuItem');
             const visibilityElementsMenuItem = document.getElementById('visibilityElementsMenuItem');
             const visibilitySectionsMenuItem = document.getElementById('visibilitySectionsMenuItem');
+            const clearAllModal = document.getElementById('clearAllModal');
+            const confirmClearAll = document.getElementById('confirmClearAll');
+            const cancelClearAll = document.getElementById('cancelClearAll');
 			
 			// Получаем ссылки на новые DOM-элементы
             const addMaterialToModelBtn = document.getElementById('addMaterialToModelBtn');
@@ -3556,8 +3559,28 @@ let sectionsModal;
             if (selectAllMenu) {
                 selectAllMenu.addEventListener('click', selectAllElements);
             }
-            if (clearAllMenu) {
-                clearAllMenu.addEventListener('click', clearAll);
+            if (clearAllMenu && clearAllModal) {
+                clearAllMenu.addEventListener('click', () => {
+                    clearAllModal.classList.remove('hidden');
+                });
+            }
+            if (cancelClearAll && clearAllModal) {
+                cancelClearAll.addEventListener('click', () => {
+                    clearAllModal.classList.add('hidden');
+                });
+            }
+            if (confirmClearAll && clearAllModal) {
+                confirmClearAll.addEventListener('click', () => {
+                    clearAll();
+                    clearAllModal.classList.add('hidden');
+                });
+            }
+            if (clearAllModal) {
+                clearAllModal.addEventListener('click', (e) => {
+                    if (e.target === clearAllModal) {
+                        clearAllModal.classList.add('hidden');
+                    }
+                });
             }
             if (visibilityNodesMenuItem) {
                 visibilityNodesMenuItem.addEventListener('click', () => {
