@@ -18,8 +18,8 @@
         <div class="file-menu">
             <span class="menu-title">File</span>
             <div class="dropdown-menu">
-                <div id="importMenuItem">Импорт</div>
-                <div id="exportMenuItem">Экспорт</div>
+                <div id="importMenuItem">Import</div>
+                <div id="exportMenuItem">Export</div>
             </div>
         </div>
         <div id="shareMenu" class="share-menu">
@@ -74,9 +74,9 @@
     <div class="main-content-area flex flex-grow">
         <!-- Панель свойств -->
         <div id="propertiesPanel" class="properties-panel">
-            <h3>Свойства элементов</h3>
+            <h3>Properties of elements</h3>
             <div id="nodePropertiesContent">
-                <p>Выберите элемент для просмотра его свойств.</p>
+                <p>Select a node or element to view its properties</p>
                 <!-- Содержимое nodePropertiesContent будет динамически генерироваться JS -->
             </div>
         </div>
@@ -92,7 +92,7 @@
         <!-- Основной контейнер модального окна, увеличена максимальная ширина -->
         <div class="bg-white p-8 rounded-lg shadow-xl w-11/12 md:w-5/6 lg:max-w-4xl max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold">Управление материалами</h2>
+                <h2 class="text-2xl font-bold">Material Manager</h2>
                 <button id="closeMaterialsModalBtn" class="text-gray-500 hover:text-gray-700 text-3xl leading-none">&times;</button>
             </div>
             
@@ -100,10 +100,10 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <!-- ЛЕВАЯ КОЛОНКА: Выбор материала и поля пользовательского материала -->
                 <div>
-                    <h3 class="text-xl font-bold mb-4">Выбор материала</h3>
+                    <h3 class="text-xl font-bold mb-4">Material selection</h3>
 
                     <div class="mb-4">
-                        <label for="materialTypeSelect" class="block text-gray-700 text-sm font-bold mb-2">Тип материала:</label>
+                        <label for="materialTypeSelect" class="block text-gray-700 text-sm font-bold mb-2">Type:</label>
                         <select id="materialTypeSelect" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                             <!-- Опции будут заполняться из JS (или уже есть статика) -->
 
@@ -111,14 +111,14 @@
                     </div>
 
                     <div class="mb-4">
-                        <label for="materialStandardSelect" class="block text-gray-700 text-sm font-bold mb-2">Стандарт:</label>
+                        <label for="materialStandardSelect" class="block text-gray-700 text-sm font-bold mb-2">Standard:</label>
                         <select id="materialStandardSelect" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                             <!-- Опции будут заполняться из JS -->
                         </select>
                     </div>
                     
                     <div class="mb-4">
-                        <label for="materialClassSelect" class="block text-sm font-medium text-gray-700">Класс/Марка:</label>
+                        <label for="materialClassSelect" class="block text-sm font-medium text-gray-700">Class/Grade:</label>
                         <select id="materialClassSelect" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md shadow-sm">
                             <!-- Опции будут заполняться из JS -->
                         </select>
@@ -126,46 +126,46 @@
 
                     <!-- Поля для пользовательского материала (скрыты по умолчанию) -->
                     <div id="customMaterialFields" class="hidden mt-6 p-4 border rounded-md bg-gray-50">
-                        <h3 class="text-lg font-semibold mb-2">Добавить свой материал</h3>
-                        <label for="customMaterialName" class="block text-sm font-medium text-gray-700">Пользовательское имя:</label>
-                        <input type="text" id="customMaterialName" placeholder="Название материала" class="mt-1 block w-full pl-3 pr-3 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md shadow-sm mb-2">
-                        <label for="customElasticModulus" class="block text-sm font-medium text-gray-700">Модуль упругости (МПа):</label>
-                        <input type="number" id="customElasticModulus" placeholder="Например, 2.1e11" class="mt-1 block w-full pl-3 pr-3 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md shadow-sm mb-2">
-                        <label for="customDensity" class="block text-sm font-medium text-gray-700">Плотность (кг/м³):</label>
-                        <input type="number" id="customDensity" placeholder="Например, 7850" class="mt-1 block w-full pl-3 pr-3 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md shadow-sm mb-2">
-                        <label for="customPoissonRatio" class="block text-sm font-medium text-gray-700">Коэффициент Пуассона:</label>
-                        <input type="number" id="customPoissonRatio" step="0.01" placeholder="Например, 0.3" class="mt-1 block w-full pl-3 pr-3 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md shadow-sm">
+                        <h3 class="text-lg font-semibold mb-2">Add user material</h3>
+                        <label for="customMaterialName" class="block text-sm font-medium text-gray-700">User name:</label>
+                        <input type="text" id="customMaterialName" placeholder="Name of the material" class="mt-1 block w-full pl-3 pr-3 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md shadow-sm mb-2">
+                        <label for="customElasticModulus" class="block text-sm font-medium text-gray-700">Modulus of elasticity (MPa):</label>
+                        <input type="number" id="customElasticModulus" placeholder="For example, 2.1e11" class="mt-1 block w-full pl-3 pr-3 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md shadow-sm mb-2">
+                        <label for="customDensity" class="block text-sm font-medium text-gray-700">Density (kg/m³):</label>
+                        <input type="number" id="customDensity" placeholder="For example, 7850" class="mt-1 block w-full pl-3 pr-3 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md shadow-sm mb-2">
+                        <label for="customPoissonRatio" class="block text-sm font-medium text-gray-700">Poisson's ratio:</label>
+                        <input type="number" id="customPoissonRatio" step="0.01" placeholder="For example, 0.3" class="mt-1 block w-full pl-3 pr-3 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md shadow-sm">
                         
                         <button id="saveCustomMaterialBtn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">
-                            Сохранить пользовательский материал
+                            Save material
                         </button>
                     </div>
 
                     <button id="addMaterialToModelBtn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded mt-4 w-full">
-                        Добавить выбранный материал в модель
+                        Add material
                     </button>
                 </div>
 
                 <!-- ПРАВАЯ КОЛОНКА: Свойства выбранного материала и Список материалов в модели -->
                 <div>
-                    <h3 class="text-xl font-bold mb-4">Свойства выбранного материала</h3>
+                    <h3 class="text-xl font-bold mb-4">Properties of the selected material</h3>
                     <div id="selectedMaterialProperties" class="bg-gray-100 p-4 rounded-md shadow-inner mb-6">
-                        <p class="font-semibold text-gray-800 mb-2">Имя: <span id="propName" class="font-normal text-gray-700 italic">Не выбрано</span></p>
-                        <p class="text-gray-700 text-sm">Тип: <span id="propType" class="font-normal"></span></p>
-                        <p class="text-gray-700 text-sm mb-4">Стандарт: <span id="propStandard" class="font-normal"></span></p>
+                        <p class="font-semibold text-gray-800 mb-2">Name: <span id="propName" class="font-normal text-gray-700 italic">Not selected</span></p>
+                        <p class="text-gray-700 text-sm">Type: <span id="propType" class="font-normal"></span></p>
+                        <p class="text-gray-700 text-sm mb-4">Standard: <span id="propStandard" class="font-normal"></span></p>
                         
                         <div class="border-t border-gray-300 pt-4 mt-4">
-                            <p class="text-gray-700"><span class="font-medium">Модуль упругости (E):</span> <span id="propElasticModulus" class="font-normal"></span> <span id="unitElasticModulus" class="text-xs text-gray-500"></span></p>
-                            <p class="text-gray-700"><span class="font-medium">Плотность (ρ):</span> <span id="propDensity" class="font-normal"></span> <span id="unitDensity" class="text-xs text-gray-500"></span></p>
-                            <p class="text-gray-700"><span class="font-medium">Коэффициент Пуассона (ν):</span> <span id="propPoissonRatio" class="font-normal"></span> <span id="unitPoissonRatio" class="text-xs text-gray-500"></span></p>
+                            <p class="text-gray-700"><span class="font-medium">Modulus of elasticity (E):</span> <span id="propElasticModulus" class="font-normal"></span> <span id="unitElasticModulus" class="text-xs text-gray-500"></span></p>
+                            <p class="text-gray-700"><span class="font-medium">Density (ρ):</span> <span id="propDensity" class="font-normal"></span> <span id="unitDensity" class="text-xs text-gray-500"></span></p>
+                            <p class="text-gray-700"><span class="font-medium">Poisson's ratio (ν):</span> <span id="propPoissonRatio" class="font-normal"></span> <span id="unitPoissonRatio" class="text-xs text-gray-500"></span></p>
                         </div>
                     </div>
 
                     <!-- Существующий блок "Материалы в модели" -->
                     <div>
-                        <h3 class="text-xl font-bold mb-2">Материалы в модели:</h3>
+                        <h3 class="text-xl font-bold mb-2">Materials in the model:</h3>
                         <ul id="modelMaterialList" class="border rounded-md p-3 bg-white max-h-48 overflow-y-auto">
-                            <li id="noMaterialsMessage" class="text-gray-500 italic">Нет материалов в модели.</li>
+                            <li id="noMaterialsMessage" class="text-gray-500 italic">There are no materials in the model</li>
                         </ul>
                     </div>
                 </div>
@@ -174,7 +174,7 @@
             <!-- Кнопки Закрыть снизу, вне сетки -->
             <div class="flex justify-end space-x-3 mt-4">
                 <button id="closeMaterialsModalBtnBottom" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded transition duration-150 ease-in-out">
-                    Закрыть
+                    Close
                 </button>
             </div>
         </div>
@@ -186,19 +186,19 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                     <div class="mb-4">
-                        <label for="sectionTypeSelect" class="block text-gray-700 text-sm font-bold mb-2">Тип сечения:</label>
+                        <label for="sectionTypeSelect" class="block text-gray-700 text-sm font-bold mb-2">Section type:</label>
                         <select id="sectionTypeSelect" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></select>
                     </div>
                     <div class="mb-4">
-                        <label for="sectionStandardSelect" class="block text-gray-700 text-sm font-bold mb-2">Стандарт:</label>
+                        <label for="sectionStandardSelect" class="block text-gray-700 text-sm font-bold mb-2">Standard:</label>
                         <select id="sectionStandardSelect" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></select>
                     </div>
                     <div class="mb-4">
-                        <label for="sectionNameSelect" class="block text-gray-700 text-sm font-bold mb-2">Сечение:</label>
+                        <label for="sectionNameSelect" class="block text-gray-700 text-sm font-bold mb-2">Section:</label>
                         <select id="sectionNameSelect" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></select>
                     </div>
                     <div id="userSectionNameContainer" class="mb-4 hidden">
-                        <label for="userSectionNameInput" class="block text-gray-700 text-sm font-bold mb-2">Имя:</label>
+                        <label for="userSectionNameInput" class="block text-gray-700 text-sm font-bold mb-2">Name:</label>
                         <input type="text" id="userSectionNameInput" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
                     </div>
                 </div>
@@ -218,13 +218,13 @@
             </div>
 
             <button id="addSectionToModelBtn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded mb-4 w-full">
-                Добавить сечение в модель
+                Add section
             </button>
 
             <div class="mb-4">
-                <h3 class="text-xl font-bold mb-2">Сечения в модели:</h3>
+                <h3 class="text-xl font-bold mb-2">Sections in the model:</h3>
                 <ul id="modelSectionList" class="border rounded-md p-3 bg-white max-h-48 overflow-y-auto">
-                    <li id="noSectionsMessage" class="text-gray-500 italic">Нет сечений в модели.</li>
+                    <li id="noSectionsMessage" class="text-gray-500 italic">There are no materials in the model</li>
                 </ul>
             </div>
 
@@ -241,31 +241,31 @@
 
     <div id="sectionDetailsModal" class="fixed inset-0 bg-gray-600 bg-opacity-75 flex items-center justify-center hidden z-50">
         <div class="bg-white p-8 rounded-lg shadow-xl max-h-[90vh] overflow-y-auto">
-            <h2 class="text-2xl font-bold mb-4">Характеристики сечения</h2>
+            <h2 class="text-2xl font-bold mb-4">Show section properties</h2>
             <div id="sectionDetailsContent" class="space-y-2"></div>
-            <button id="closeSectionDetailsBtn" class="mt-4 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded">Закрыть</button>
+            <button id="closeSectionDetailsBtn" class="mt-4 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded">Close</button>
         </div>
     </div>
 
     <div id="copyNodeModal" class="fixed inset-0 bg-gray-600 bg-opacity-75 flex items-center justify-center hidden z-50">
         <div class="bg-white p-6 rounded-lg shadow-xl">
             <div class="mb-4">
-                <label for="copyAxisSelect" class="block text-gray-700 text-sm font-bold mb-2">Ось копирования:</label>
+                <label for="copyAxisSelect" class="block text-gray-700 text-sm font-bold mb-2">Copy axis:</label>
                 <select id="copyAxisSelect" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                     <option value="x">X</option>
                     <option value="y">Y</option>
                 </select>
             </div>
             <div class="mb-4">
-                <label for="copyCountInput" class="block text-gray-700 text-sm font-bold mb-2">Количество копий:</label>
+                <label for="copyCountInput" class="block text-gray-700 text-sm font-bold mb-2">Copies:</label>
                 <input type="number" id="copyCountInput" min="1" max="99" value="1" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
             </div>
             <div class="mb-4">
-                <label for="copyDistanceInput" class="block text-gray-700 text-sm font-bold mb-2">Расстояние между узлами:</label>
+                <label for="copyDistanceInput" class="block text-gray-700 text-sm font-bold mb-2">Step:</label>
                 <input type="number" id="copyDistanceInput" value="1" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
             </div>
             <div class="flex justify-end">
-                <button id="applyCopyNodeBtn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Применить</button>
+                <button id="applyCopyNodeBtn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Apply</button>
             </div>
         </div>
     </div>
@@ -306,18 +306,19 @@
             <svg width="1" height="25">
                 <line x1="0" y1="0" x2="0" y2="25" stroke="black" stroke-width="1" stroke-linecap="round" />
             </svg>
-            <label for="divisions">Делений на ед.:</label>
+            <label for="divisions">Unit divisions:</label>
             <input type="number" id="divisions" value="4" min="1" max="20">
-            <label for="snapToGrid">Привязка к сетке</label>
+            <label for="snapToGrid">Grid snap</label>
             <input type="checkbox" id="snapToGrid">
         </div>
     </div>
 
     <!-- Контекстное меню и тултип -->
+
     <div id="customContextMenu" class="context-menu hidden">
-        <div id="deleteNodeItem" class="context-menu-item">Удалить узел</div>
-        <div id="deleteLineItem" class="context-menu-item">Удалить линию</div>
-        <div id="copyNodeItem" class="context-menu-item">Копировать узел</div>
+        <div id="deleteNodeItem" class="context-menu-item">Delete node</div>
+        <div id="deleteLineItem" class="context-menu-item">Delete rod</div>
+        <div id="copyNodeItem" class="context-menu-item">Copy node</div>
     </div>
     <div id="tooltip" class="tooltip hidden"></div>
     <div id="cursorTooltip" class="tooltip hidden"></div>
