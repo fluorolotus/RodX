@@ -2128,10 +2128,10 @@
                                 <option value="180">180</option>
                                 <option value="270">270</option>
                             </select>
-                            <button id="changeBetaAngleBtn" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Apply section rotation</button>
+                            <button id="changeBetaAngleBtn" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Apply rotation</button>
                         </div>
                         <p class="text-sm text-gray-700">Assigned section: <span id="assignedSectionDisplay" class="font-semibold italic">${assignedSectionName}</span></p>
-                        <p class="text-sm text-gray-700 mt-1">Secction rotation: <span id="betaAngleDisplay" class="font-semibold italic">${betaAngleValue}</span></p>
+                        <p class="text-sm text-gray-700 mt-1">Section rotation: <span id="betaAngleDisplay" class="font-semibold italic">${betaAngleValue}</span></p>
                     </div>
 
                     <!-- Существующий блок: Распределенные нагрузки -->
@@ -2485,7 +2485,7 @@
                                 <option value="180">180</option>
                                 <option value="270">270</option>
                             </select>
-                            <button id="applyBetaAngleToSelectedBtn" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Apply section rotation</button>
+                            <button id="applyBetaAngleToSelectedBtn" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Apply rotation</button>
                         </div>
                         <p class="text-sm text-gray-700">Section: <span id="multiAssignedSectionDisplay" class="font-semibold italic">${assignedSectionName}</span></p>
                         <p class="text-sm text-gray-700 mt-1">Section rotation: <span id="multiBetaAngleDisplay" class="font-semibold italic">${betaAngleDisplay}</span></p>
@@ -2620,7 +2620,7 @@
 
             } else {
                 propertiesPanel.style.display = 'block';
-                nodePropertiesContent.innerHTML = '<p>Select a node or element to view its properties</p>';
+                nodePropertiesContent.innerHTML = '<p>Select a node or rod to view its properties</p>';
             }
         }
 		
@@ -3732,6 +3732,7 @@ let sectionsModal;
 
         // Start the application
         //init();
+
 
 
 
