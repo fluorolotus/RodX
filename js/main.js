@@ -1714,7 +1714,7 @@
                 let loadsHtml = '';
                 const nodeSpecificLoads = nodeLoads.filter(load => load.target_id === selectedNode.node_id);
                 if (nodeSpecificLoads.length === 0) {
-                    loadsHtml += '<p class="text-gray-500 text-sm">Нагрузок нет</p>';
+                    loadsHtml += '<p class="text-gray-500 text-sm">No loads yet</p>';
                 } else {
                     loadsHtml += '<div class="mb-2">';
                     nodeSpecificLoads.forEach(load => {
@@ -1732,7 +1732,7 @@
                         loadsHtml += `
                             <div class="load-item">
                                 <span>${load.type === 'point_force' ? 'F' : 'M'}${load.component !== 'moment' ? load.component.toUpperCase() : ''}: ${displayedValue} ${displayedUnitString}</span>
-                                <button data-load-id="${load.load_id}">Удалить</button>
+                                <button data-load-id="${load.load_id}">Delete</button>
                             </div>
                         `;
                     });
@@ -1745,7 +1745,7 @@
                 }
 
                 nodePropertiesContent.innerHTML = `
-                    <h4 class="font-bold text-gray-700 mb-2">Свойства узла ${selectedNode.node_id}</h4>
+                    <h4 class="font-bold text-gray-700 mb-2">Node properties ${selectedNode.node_id}</h4>
                     <div class="property-group">
                         <label for="nodeX">X:</label>
                         <input type="number" id="nodeX" value="${selectedNode.x.toFixed(2)}">
@@ -1753,7 +1753,7 @@
                         <input type="number" id="nodeY" value="${selectedNode.y.toFixed(2)}">
                     </div>
                     <div class="property-group">
-                        <h4 class="font-bold text-gray-700 mb-2">Закрепления</h4>
+                        <h4 class="font-bold text-gray-700 mb-2">Boundaries</h4>
                         <div id="restrictionIconsContainer" class="flex flex-wrap gap-2 mb-4">
                             </div>
                         <div class="checkbox-group">
@@ -1770,26 +1770,26 @@
                         </div>
                     </div>
                     <div class="property-group">
-                        <h4 class="font-bold text-gray-700 mb-2">Нагрузки</h4>
+                        <h4 class="font-bold text-gray-700 mb-2">Loads</h4>
                         <div id="nodeLoadsList" class="mb-4">
                             ${loadsHtml} </div>
                         <div class="load-input-group">
-                            <label for="addForceX" class="sr-only">Сила X</label>
+                            <label for="addForceX" class="sr-only">Force X</label>
                             <input type="number" id="addForceX" placeholder="Fx">
                             <span id="currentForceUnitDisplay_Fx" class="ml-2 font-semibold text-gray-700"></span> 
-                            <button id="addForceXBtn">Добавить Fx</button>
+                            <button id="addForceXBtn">Add Fx</button>
                         </div>
                         <div class="load-input-group">
-                            <label for="addForceY" class="sr-only">Сила Y</label>
+                            <label for="addForceY" class="sr-only">Force Y</label>
                             <input type="number" id="addForceY" placeholder="Fy">
                             <span id="currentForceUnitDisplay_Fy" class="ml-2 font-semibold text-gray-700"></span>
-                            <button id="addForceYBtn">Добавить Fy</button>
+                            <button id="addForceYBtn">Add Fy</button>
                         </div>
                         <div class="load-input-group">
-                            <label for="addMoment" class="sr-only">Момент</label>
+                            <label for="addMoment" class="sr-only">Moment</label>
                             <input type="number" id="addMoment" placeholder="M">
                             <span id="currentForceUnitDisplay_M" class="ml-2 font-semibold text-gray-700"></span>
-                            <button id="addMomentBtn">Добавить M</button>
+                            <button id="addMomentBtn">Add M</button>
                         </div>
                     </div>
                 `;
@@ -1871,7 +1871,7 @@
                     const noRestrictionBtn = document.createElement('button');
                     noRestrictionBtn.className = `restriction-icon-btn ${currentRestriction.dx === 0 && currentRestriction.dy === 0 && currentRestriction.dr === 0 ? 'active' : ''}`;
                     noRestrictionBtn.innerHTML = '<span class="no-restriction-text">Ø</span>';
-                    noRestrictionBtn.title = 'Нет закрепления';
+                    noRestrictionBtn.title = 'No boundaries yet';
                     noRestrictionBtn.addEventListener('click', () => {
                         restrictions = restrictions.filter(r => r.node_id !== selectedNode.node_id);
                         restrictXCheckbox.checked = false;
@@ -1913,7 +1913,7 @@
                     const loadsForSelectedNode = nodeLoads.filter(load => load.target_id === selectedNode.node_id);
 
                     if (loadsForSelectedNode.length === 0) {
-                        nodeLoadsList.innerHTML = '<p class="text-gray-500 text-sm">Нагрузок нет</p>';
+                        nodeLoadsList.innerHTML = '<p class="text-gray-500 text-sm">No loads yet</p>';
                     } else {
                         const currentForceDisplayUnit = forceUnitsSelect.value; 
                         const currentLengthDisplayUnit = unitsSelect.value;
@@ -2025,7 +2025,7 @@
                 const currentDistributedForceUnit = `${currentForceDisplayUnit}/${currentLengthDisplayUnit}`;
 				
                 // --- Формирование опций для выпадающего списка материалов ---
-                let materialOptionsHtml = '<option value="">Не выбрано</option>'; // Опция по умолчанию
+                let materialOptionsHtml = '<option value="">Not selected</option>'; // Опция по умолчанию
                 modelMaterials.forEach(mat => {
                     // Проверяем, назначен ли этот материал текущему элементу
                     const isSelected = selectedElement.materialId === mat.id ? 'selected' : '';
@@ -2033,7 +2033,7 @@
                 });
 
                 // --- Получаем имя назначенного материала для отображения ---
-                let assignedMaterialName = 'Нет';
+                let assignedMaterialName = 'No materials yet';
                 if (selectedElement.materialId) {
                     const assignedMat = modelMaterials.find(m => m.id === selectedElement.materialId);
                     if (assignedMat) {
@@ -2042,14 +2042,14 @@
                 }
 
                 // --- Формирование опций для выпадающего списка сечений ---
-                let sectionOptionsHtml = '<option value="">Не выбрано</option>';
+                let sectionOptionsHtml = '<option value="">Not selected</option>';
                 modelSections.forEach(sec => {
                     const isSelected = selectedElement.sectionId === sec.id ? 'selected' : '';
                     sectionOptionsHtml += `<option value="${sec.id}" ${isSelected}>${sec.name} (${sec.standard})</option>`;
                 });
 
                 // --- Имя назначенного сечения ---
-                let assignedSectionName = 'Нет';
+                let assignedSectionName = 'No sections yet';
                 if (selectedElement.sectionId) {
                     const assignedSec = modelSections.find(s => s.id === selectedElement.sectionId);
                     if (assignedSec) {
@@ -2061,7 +2061,7 @@
                 let loadsHtml = '';
                 const elementSpecificLoads = elementLoads.filter(load => load.target_elem_id === selectedElement.elem_id);
                 if (elementSpecificLoads.length === 0) {
-                    loadsHtml += '<p class="text-gray-500 text-sm">Нагрузок нет</p>';
+                    loadsHtml += '<p class="text-gray-500 text-sm">No loads yet</p>';
                 } else {
                     loadsHtml += '<div class="mb-2">';
                     elementSpecificLoads.forEach(load => {
@@ -2084,7 +2084,7 @@
                         loadsHtml += `
                             <div class="load-item">
                                 <span>q${load.component.toUpperCase()}: ${displayedValue} ${displayedUnitString}</span>
-                                <button data-load-id="${load.load_id}" data-load-type="distributed">Удалить</button>
+                                <button data-load-id="${load.load_id}" data-load-type="distributed">Delete</button>
                             </div>
                         `;
                     });
@@ -2093,33 +2093,33 @@
 
                 // НОВЫЙ ВНУТРЕННИЙ HTML ДЛЯ ПАНЕЛИ СВОЙСТВ ЭЛЕМЕНТА
                 nodePropertiesContent.innerHTML = `
-                    <h4 class="font-bold text-gray-700 mb-2">Свойства элемента ${selectedElement.elem_id}</h4>
+                    <h4 class="font-bold text-gray-700 mb-2">Rod properties ${selectedElement.elem_id}</h4>
                     <div class="property-group">
-                        <p>Начальный узел: ${selectedElement.nodeId1}</p>
-                        <p>Конечный узел: ${selectedElement.nodeId2}</p>
+                        <p>Start node: ${selectedElement.nodeId1}</p>
+                        <p>End node: ${selectedElement.nodeId2}</p>
                     </div>
 
                     <!-- НОВАЯ СЕКЦИЯ: Назначение материала -->
                     <div class="property-group">
-                        <h4 class="font-bold text-gray-700 mb-2">Назначение материала</h4>
+                        <h4 class="font-bold text-gray-700 mb-2">Material</h4>
                         <div class="flex items-center gap-2 mb-2">
                             <select id="materialAssignmentSelect" class="flex-grow form-select block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md shadow-sm">
                                 ${materialOptionsHtml}
                             </select>
                             <button id="assignMaterialBtn" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
-                                Выбрать
+                                Apply
                             </button>
                         </div>
-                        <p class="text-sm text-gray-700">Назначенный материал: <span id="assignedMaterialDisplay" class="font-semibold italic">${assignedMaterialName}</span></p>
+                        <p class="text-sm text-gray-700">Assigned material: <span id="assignedMaterialDisplay" class="font-semibold italic">${assignedMaterialName}</span></p>
                     </div>
 
                     <div class="property-group">
-                        <h4 class="font-bold text-gray-700 mb-2">Назначение сечения</h4>
+                        <h4 class="font-bold text-gray-700 mb-2">Section</h4>
                         <div class="flex items-center gap-2 mb-2">
                             <select id="sectionAssignmentSelect" class="flex-grow form-select block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md shadow-sm">
                                 ${sectionOptionsHtml}
                             </select>
-                            <button id="assignSectionBtn" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Выбрать сечение</button>
+                            <button id="assignSectionBtn" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Apply</button>
                         </div>
                         <div class="flex items-center gap-2 mb-2">
                             <select id="betaAngleSelect" class="form-select block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md shadow-sm">
@@ -2128,35 +2128,35 @@
                                 <option value="180">180</option>
                                 <option value="270">270</option>
                             </select>
-                            <button id="changeBetaAngleBtn" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Поменять угол сечения</button>
+                            <button id="changeBetaAngleBtn" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Apply section rotation</button>
                         </div>
-                        <p class="text-sm text-gray-700">Назначенное сечение: <span id="assignedSectionDisplay" class="font-semibold italic">${assignedSectionName}</span></p>
-                        <p class="text-sm text-gray-700 mt-1">Угол сечения: <span id="betaAngleDisplay" class="font-semibold italic">${betaAngleValue}</span></p>
+                        <p class="text-sm text-gray-700">Assigned section: <span id="assignedSectionDisplay" class="font-semibold italic">${assignedSectionName}</span></p>
+                        <p class="text-sm text-gray-700 mt-1">Secction rotation: <span id="betaAngleDisplay" class="font-semibold italic">${betaAngleValue}</span></p>
                     </div>
 
                     <!-- Существующий блок: Распределенные нагрузки -->
                     <div class="property-group">
-                        <h4 class="font-bold text-gray-700 mb-2">Распределенные нагрузки</h4>
+                        <h4 class="font-bold text-gray-700 mb-2">Beam loads</h4>
                         <div id="elementLoadsList" class="mb-4">
                             ${loadsHtml}
                         </div>
                         <div class="load-input-group">
-                            <label for="addDistributedForceX" class="sr-only">Равномерная нагрузка X</label>
+                            <label for="addDistributedForceX" class="sr-only">Uniform load X</label>
                             <input type="number" id="addDistributedForceX" placeholder="qX">
                             <span id="currentDistributedForceUnitDisplay_qX" class="ml-2 font-semibold text-gray-700">${currentDistributedForceUnit}</span>
-                            <button id="addDistributedForceXBtn">Добавить qX</button>
+                            <button id="addDistributedForceXBtn">Add qX</button>
                         </div>
                         <div class="load-input-group">
-                            <label for="addDistributedForceY" class="sr-only">Равномерная нагрузка Y</label>
+                            <label for="addDistributedForceY" class="sr-only">Uniform load Y</label>
                             <input type="number" id="addDistributedForceY" placeholder="qY">
                             <span id="currentDistributedForceUnitDisplay_qY" class="ml-2 font-semibold text-gray-700">${currentDistributedForceUnit}</span>
-                            <button id="addDistributedForceYBtn">Добавить qY</button>
+                            <button id="addDistributedForceYBtn">Add qY</button>
                         </div>
 						<div class="property-group">
-							<h4 class="font-bold text-gray-700 mb-2">Разбить стержень</h4>
+							<h4 class="font-bold text-gray-700 mb-2">Split the rod</h4>
 							<div class="flex items-center space-x-2 mb-2">
 								<input type="number" id="splitSegmentsInput" value="2" min="2" class="flex-grow form-input block w-full pl-3 pr-3 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md">
-								<button id="splitElementBtn" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Разбить</button>
+								<button id="splitElementBtn" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Split</button>
 							</div>
 						</div>
                     </div>
@@ -2173,7 +2173,7 @@
                     const loadsForSelectedElement = elementLoads.filter(load => load.target_elem_id === selectedElement.elem_id);
 
                     if (loadsForSelectedElement.length === 0) {
-                        elementLoadsList.innerHTML = '<p class="text-gray-500 text-sm">Нагрузок нет</p>';
+                        elementLoadsList.innerHTML = '<p class="text-gray-500 text-sm">No loads yet</p>';
                     } else {
                         const currentForceDisplayUnit = forceUnitsSelect.value;
                         const currentLengthDisplayUnit = unitsSelect.value;
@@ -2192,7 +2192,7 @@
                             loadItemDiv.className = 'load-item';
                             loadItemDiv.innerHTML = `
                                 <span>q${load.component.toUpperCase()}: ${displayedValue} ${displayedUnitString}</span>
-                                <button data-load-id="${load.load_id}" data-load-type="distributed">Удалить</button>
+                                <button data-load-id="${load.load_id}" data-load-type="distributed">Delete</button>
                             `;
                             elementLoadsList.appendChild(loadItemDiv);
                         });
@@ -2412,7 +2412,7 @@
 
             } else if (selectedElements.length > 1 && selectedElements.every(el => el.type === 'line')) {
                 propertiesPanel.style.display = 'block';
-                let materialOptionsHtml = '<option value="">Не выбрано</option>';
+                let materialOptionsHtml = '<option value="">Not selected</option>';
                 modelMaterials.forEach(mat => {
                     materialOptionsHtml += `<option value="${mat.id}">${mat.name} (${mat.standard})</option>`;
                 });
@@ -2429,10 +2429,10 @@
                         assignedMaterialName = mat ? `${mat.name} (${mat.standard})` : 'Нет';
                     }
                 } else {
-                    assignedMaterialName = 'разные';
+                    assignedMaterialName = 'varios';
                 }
 
-                let sectionOptionsHtml = '<option value="">Не выбрано</option>';
+                let sectionOptionsHtml = '<option value="">Not selected</option>';
                 modelSections.forEach(sec => {
                     sectionOptionsHtml += `<option value="${sec.id}">${sec.name} (${sec.standard})</option>`;
                 });
@@ -2446,37 +2446,37 @@
                         assignedSectionName = 'Нет';
                     } else {
                         const sec = modelSections.find(s => s.id === soleId);
-                        assignedSectionName = sec ? `${sec.name} (${sec.standard})` : 'Нет';
+                        assignedSectionName = sec ? `${sec.name} (${sec.standard})` : 'No name';
                     }
                 } else {
-                    assignedSectionName = 'разные';
+                    assignedSectionName = 'various';
                 }
 
                 const uniqueAngles = new Set(selectedElements.map(sel => sel.element.betaAngle !== undefined ? sel.element.betaAngle : 0));
-                const betaAngleDisplay = uniqueAngles.size === 1 ? Array.from(uniqueAngles)[0] : 'разные';
+                const betaAngleDisplay = uniqueAngles.size === 1 ? Array.from(uniqueAngles)[0] : 'various';
 
                 const currentForceDisplayUnit = forceUnitsSelect.value;
                 const currentLengthDisplayUnit = unitsSelect.value;
                 const currentDistributedForceUnit = `${currentForceDisplayUnit}/${currentLengthDisplayUnit}`;
                 nodePropertiesContent.innerHTML = `
-                    <h4 class="font-bold text-gray-700 mb-2">Выбрано стержней: ${selectedElements.length}</h4>
+                    <h4 class="font-bold text-gray-700 mb-2">Selected rods: ${selectedElements.length}</h4>
                     <div class="property-group">
-                        <h4 class="font-bold text-gray-700 mb-2">Назначение материала</h4>
+                        <h4 class="font-bold text-gray-700 mb-2">Material</h4>
                         <div class="flex items-center gap-2 mb-2">
                             <select id="multiMaterialSelect" class="flex-grow form-select block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md shadow-sm">
                                 ${materialOptionsHtml}
                             </select>
-                            <button id="applyMaterialToSelectedBtn" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Применить</button>
+                            <button id="applyMaterialToSelectedBtn" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Apply</button>
                         </div>
-                        <p class="text-sm text-gray-700">Назначенный материал: <span id="multiAssignedMaterialDisplay" class="font-semibold italic">${assignedMaterialName}</span></p>
+                        <p class="text-sm text-gray-700">Assigned material: <span id="multiAssignedMaterialDisplay" class="font-semibold italic">${assignedMaterialName}</span></p>
                     </div>
                     <div class="property-group">
-                        <h4 class="font-bold text-gray-700 mb-2">Назначение сечения</h4>
+                        <h4 class="font-bold text-gray-700 mb-2">Section</h4>
                         <div class="flex items-center gap-2 mb-2">
                             <select id="multiSectionSelect" class="flex-grow form-select block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md shadow-sm">
                                 ${sectionOptionsHtml}
                             </select>
-                            <button id="applySectionToSelectedBtn" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Выбрать сечение</button>
+                            <button id="applySectionToSelectedBtn" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Apply</button>
                         </div>
                         <div class="flex items-center gap-2 mb-2">
                             <select id="multiBetaAngleSelect" class="form-select block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md shadow-sm">
@@ -2485,24 +2485,24 @@
                                 <option value="180">180</option>
                                 <option value="270">270</option>
                             </select>
-                            <button id="applyBetaAngleToSelectedBtn" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Поменять угол сечения</button>
+                            <button id="applyBetaAngleToSelectedBtn" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Apply section rotation</button>
                         </div>
-                        <p class="text-sm text-gray-700">Назначенные сечения: <span id="multiAssignedSectionDisplay" class="font-semibold italic">${assignedSectionName}</span></p>
-                        <p class="text-sm text-gray-700 mt-1">Угол сечения: <span id="multiBetaAngleDisplay" class="font-semibold italic">${betaAngleDisplay}</span></p>
+                        <p class="text-sm text-gray-700">Section: <span id="multiAssignedSectionDisplay" class="font-semibold italic">${assignedSectionName}</span></p>
+                        <p class="text-sm text-gray-700 mt-1">Section rotation: <span id="multiBetaAngleDisplay" class="font-semibold italic">${betaAngleDisplay}</span></p>
                     </div>
                     <div class="property-group">
-                        <h4 class="font-bold text-gray-700 mb-2">Распределенные нагрузки</h4>
+                        <h4 class="font-bold text-gray-700 mb-2">Beam loads</h4>
                         <div class="load-input-group">
-                            <label for="multiDistributedForceX" class="sr-only">Равномерная нагрузка X</label>
+                            <label for="multiDistributedForceX" class="sr-only">Uniform load X</label>
                             <input type="number" id="multiDistributedForceX" placeholder="qX">
                             <span id="currentDistributedForceUnitDisplay_multi_qX" class="ml-2 font-semibold text-gray-700">${currentDistributedForceUnit}</span>
-                            <button id="multiDistributedForceXBtn">Добавить qX</button>
+                            <button id="multiDistributedForceXBtn">Add qX</button>
                         </div>
                         <div class="load-input-group">
-                            <label for="multiDistributedForceY" class="sr-only">Равномерная нагрузка Y</label>
+                            <label for="multiDistributedForceY" class="sr-only">Uniform load Y</label>
                             <input type="number" id="multiDistributedForceY" placeholder="qY">
                             <span id="currentDistributedForceUnitDisplay_multi_qY" class="ml-2 font-semibold text-gray-700">${currentDistributedForceUnit}</span>
-                            <button id="multiDistributedForceYBtn">Добавить qY</button>
+                            <button id="multiDistributedForceYBtn">Add qY</button>
                         </div>
                     </div>
                 `;
@@ -2620,7 +2620,7 @@
 
             } else {
                 propertiesPanel.style.display = 'block';
-                nodePropertiesContent.innerHTML = '<p>Выберите узел или элемент для просмотра его свойств.</p>';
+                nodePropertiesContent.innerHTML = '<p>Select a node or element to view its properties</p>';
             }
         }
 		
@@ -2796,13 +2796,13 @@
                 } else {
                     const option = document.createElement('option');
                     option.value = "";
-                    option.textContent = "Нет доступных материалов";
+                    option.textContent = "No added materials in the model yet";
                     materialClassSelect.appendChild(option);
                 }
             } else {
                 const option = document.createElement('option');
                 option.value = "";
-                option.textContent = "Нет данных для выбранного стандарта";
+                option.textContent = "No data for the selected standard";
                 materialClassSelect.appendChild(option);
             }
         }
@@ -2829,7 +2829,7 @@
             materialListContainer.innerHTML = ''; // Очищаем контейнер перед заполнением
             
             if (allMaterials.length === 0) {
-                materialListContainer.innerHTML = '<p>Материалы не найдены в данных.</p>';
+                materialListContainer.innerHTML = '<p>Materials not found in data</p>';
                 return;
             }
 
@@ -2849,9 +2849,9 @@
                 materialDiv.className = 'bg-gray-100 p-3 rounded-md flex justify-between items-center shadow-sm mb-2'; 
                 materialDiv.innerHTML = `
                     <div>
-                        <p class="font-medium text-gray-800">${material.name} (${material.type === 'concrete' ? 'Бетон' : 'Сталь'})</p>
-                        <p class="text-sm text-gray-600">Модуль упругости (E): ${material.properties.elasticModulus.value} ${material.properties.elasticModulus.unit}</p>
-                        <p class="text-sm text-gray-600">Плотность: ${material.properties.density.value} ${material.properties.density.unit}</p>
+                        <p class="font-medium text-gray-800">${material.name} (${material.type === 'concrete' ? 'Concrete' : 'Steel'})</p>
+                        <p class="text-sm text-gray-600">Modulus of elasticity (E): ${material.properties.elasticModulus.value} ${material.properties.elasticModulus.unit}</p>
+                        <p class="text-sm text-gray-600">Density: ${material.properties.density.value} ${material.properties.density.unit}</p>
                     </div>
                     <!-- Кнопка "Выбрать" пока ничего не делает, но HTML для нее есть -->
                     <button class="select-material-btn bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm transition-colors duration-200" data-material-id="${material.id}">Выбрать</button>
@@ -2872,7 +2872,7 @@
             const selectedStandardId = materialStandardSelect.value;
 
             if (!selectedMaterialId || !selectedStandardId) {
-                alert('Пожалуйста, выберите стандарт и класс/марку материала.');
+                alert('Please select standard and material class/grade');
                 return;
             }
 
@@ -2883,7 +2883,7 @@
             if (materialToAdd) {
                 // Проверяем, не добавлен ли этот материал уже в модель
                 if (modelMaterials.some(m => m.id === materialToAdd.id)) {
-                    alert(`Материал "${materialToAdd.name}" (${materialToAdd.standard}) уже добавлен в модель.`);
+                    alert(`Material "${materialToAdd.name}" (${materialToAdd.standard}) has already added to the model`);
                     return;
                 }
 
@@ -2893,7 +2893,7 @@
                 renderModelMaterialsList();
             } else {
                 console.error("Selected material not found:", selectedMaterialId, selectedStandardId);
-                alert("Не удалось найти выбранный материал. Пожалуйста, попробуйте еще раз.");
+                alert("The selected material could not be found. Please try again");
             }
         }
 		
@@ -2917,7 +2917,7 @@
                 const message = document.createElement('li');
                 message.id = 'noMaterialsMessage';
                 message.classList.add('text-gray-500', 'italic');
-                message.textContent = 'Нет материалов в модели.';
+                message.textContent = 'No materials in the model';
                 modelMaterialList.appendChild(message);
             } else {
                 modelMaterials.forEach(material => {
@@ -2927,7 +2927,7 @@
                     listItem.innerHTML = `
                         <span>${material.name} (${material.standard}) - ${material.type}</span>
                         <button class="remove-material-btn bg-red-500 hover:bg-red-700 text-white text-xs font-bold py-1 px-2 rounded" data-material-id="${material.id}">
-                            Удалить
+                            Delete
                         </button>
                     `;
                     modelMaterialList.appendChild(listItem);
@@ -2962,7 +2962,7 @@
             const selectedStandardId = sectionStandardSelect.value;
 
             if (!selectedSectionId || !selectedStandardId) {
-                alert('Пожалуйста, выберите стандарт и сечение.');
+                alert('Please select standard and section');
                 return;
             }
 
@@ -2971,7 +2971,7 @@
 
             if (sectionToAdd) {
                 if (modelSections.some(s => s.id === sectionToAdd.id)) {
-                    alert(`Сечение "${sectionToAdd.name}" (${sectionToAdd.standard}) уже добавлено в модель.`);
+                    alert(`Section "${sectionToAdd.name}" (${sectionToAdd.standard}) has already added to the model`);
                     return;
                 }
 
@@ -2980,7 +2980,7 @@
                 renderModelSectionsList();
             } else {
                 console.error('Selected section not found:', selectedSectionId, selectedStandardId);
-                alert('Не удалось найти выбранное сечение. Пожалуйста, попробуйте еще раз.');
+                alert('The selected section could not be found. Please try again');
             }
         }
 
@@ -3003,7 +3003,7 @@
                 const message = document.createElement('li');
                 message.id = 'noSectionsMessage';
                 message.classList.add('text-gray-500', 'italic');
-                message.textContent = 'Нет сечений в модели.';
+                message.textContent = 'No sections in the model yet';
                 modelSectionList.appendChild(message);
             } else {
                 modelSections.forEach(section => {
@@ -3013,7 +3013,7 @@
                     listItem.innerHTML = `
                         <span>${section.name} (${section.standard}) - ${section.type}</span>
                         <button class="remove-section-btn bg-red-500 hover:bg-red-700 text-white text-xs font-bold py-1 px-2 rounded" data-section-id="${section.id}">
-                            Удалить
+                            Delete
                         </button>`;
                     modelSectionList.appendChild(listItem);
                 });
@@ -3267,13 +3267,13 @@
                             restrictionTypes[key].dr === restriction.dr
                         );
                         if (typeKey && restrictionTypes[typeKey].label) {
-                            restrictionInfo = `\nЗакрепление: ${restrictionTypes[typeKey].label}`;
+                            restrictionInfo = `\nBoundaries: ${restrictionTypes[typeKey].label}`;
                         } else {
-                             restrictionInfo = `\nЗакрепление: dx=${restriction.dx}, dy=${restriction.dy}, dr=${restriction.dr}`;
+                             restrictionInfo = `\nBoundaries: dx=${restriction.dx}, dy=${restriction.dy}, dr=${restriction.dr}`;
                         }
                     }
 
-                    content = `Узел ${node.node_id}\nX: ${node.x.toFixed(3)} ${currentUnit}\nY: ${node.y.toFixed(3)} ${currentUnit}${restrictionInfo}`; 
+                    content = `Node ${node.node_id}\nX: ${node.x.toFixed(3)} ${currentUnit}\nY: ${node.y.toFixed(3)} ${currentUnit}${restrictionInfo}`; 
                 } else if (hoveredElement.type === 'line') {
                     const line = hoveredElement.element;
                     const n1 = nodes.find(n => n.node_id === line.nodeId1); 
@@ -3282,7 +3282,7 @@
                         const dx = n2.x - n1.x; 
                         const dy = n2.y - n1.y; 
                         const length = Math.sqrt(dx**2 + dy**2); 
-                        content = `Стержень ${line.elem_id}\nДлина: ${length.toFixed(3)} ${currentUnit}`; 
+                        content = `Rod ${line.elem_id}\Length: ${length.toFixed(3)} ${currentUnit}`; 
                     }
                 }
                 
@@ -3344,7 +3344,7 @@
         // Функция для добавления нового пользовательского материала
         function addCustomMaterial(name, type, elasticModulus, density, poissonRatio) {
             if (!name || isNaN(elasticModulus) || isNaN(density) || isNaN(poissonRatio)) {
-                alert("Пожалуйста, заполните все поля для пользовательского материала (Имя, Модуль упругости, Плотность, Коэффициент Пуассона).");
+                alert("Please fill in all fields for the custom material (Name, Elastic Modulus, Density, Poisson's Ratio)");
                 return;
             }
 
@@ -3370,7 +3370,7 @@
             // if (materialClassSelect) {
             //     materialClassSelect.value = newMaterial.id;
             // }
-            alert(`Материал "${name}" успешно добавлен.`);
+            alert(`Material "${name}" successfully added`);
         }
 		
 		// Функция для отображения свойств выбранного материала
@@ -3391,7 +3391,7 @@
             // Обновляем UI с свойствами материала
             if (selectedMaterial) {
                 propName.textContent = selectedMaterial.name || 'N/A';
-                propType.textContent = (selectedMaterial.type === 'steel' ? 'Сталь' : selectedMaterial.type === 'concrete' ? 'Бетон' : selectedMaterial.type || 'N/A');
+                propType.textContent = (selectedMaterial.type === 'steel' ? 'Steel' : selectedMaterial.type === 'concrete' ? 'Concrete' : selectedMaterial.type || 'N/A');
                 
                 const standardDisplayName = standardsData.find(s => s.id === selectedMaterial.standard)?.name || selectedMaterial.standard || 'N/A';
                 propStandard.textContent = standardDisplayName;
@@ -3413,7 +3413,7 @@
                 // unitDampingCoefficient.textContent = selectedMaterial.properties && selectedMaterial.properties.dampingCoefficient ? getUnitText(selectedMaterial.properties.dampingCoefficient.unit) : '';
             } else {
                 // Если материал не выбран или не найден, очищаем поля
-                propName.textContent = 'Не выбрано';
+                propName.textContent = 'Not selected';
                 propType.textContent = '';
                 propStandard.textContent = '';
                 propElasticModulus.textContent = '';
@@ -3732,5 +3732,6 @@ let sectionsModal;
 
         // Start the application
         //init();
+
 
 
