@@ -1149,10 +1149,6 @@
                 mouse.snappedY = snapped.y; 
                 draw();
             });
-            if (clearCanvasBtn) {
-                clearCanvasBtn.addEventListener('click', clearAll);
-            }
-
             // НОВОЕ: Обработчик для кнопки сохранения модели
             if (saveModelBtn) {
                 saveModelBtn.addEventListener('click', saveModel);
@@ -3488,6 +3484,7 @@ let sectionsModal;
             const clearAllModal = document.getElementById('clearAllModal');
             const confirmClearAll = document.getElementById('confirmClearAll');
             const cancelClearAll = document.getElementById('cancelClearAll');
+            const closeClearAllModal = document.getElementById('closeClearAllModal');
 			
 			// Получаем ссылки на новые DOM-элементы
             const addMaterialToModelBtn = document.getElementById('addMaterialToModelBtn');
@@ -3564,6 +3561,11 @@ let sectionsModal;
                     clearAllModal.classList.remove('hidden');
                 });
             }
+            if (clearCanvasBtn && clearAllModal) {
+                clearCanvasBtn.addEventListener('click', () => {
+                    clearAllModal.classList.remove('hidden');
+                });
+            }
             if (cancelClearAll && clearAllModal) {
                 cancelClearAll.addEventListener('click', () => {
                     clearAllModal.classList.add('hidden');
@@ -3572,6 +3574,11 @@ let sectionsModal;
             if (confirmClearAll && clearAllModal) {
                 confirmClearAll.addEventListener('click', () => {
                     clearAll();
+                    clearAllModal.classList.add('hidden');
+                });
+            }
+            if (closeClearAllModal && clearAllModal) {
+                closeClearAllModal.addEventListener('click', () => {
                     clearAllModal.classList.add('hidden');
                 });
             }
