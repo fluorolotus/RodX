@@ -20,6 +20,7 @@
                 let showNodeIds = true;    // Показывать ID узлов по умолчанию
                 let showElementIds = true; // Показывать ID элементов (линий) по умолчанию
                 let showBetaAngleIcons = false; // Не показывать иконки угла сечения по умолчанию
+                const modelTreeState = {}; // Сохраняет состояние развёрнутых разделов model tree
 
         let scale = 50; 
         let panX = 0;
