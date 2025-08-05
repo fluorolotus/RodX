@@ -1743,26 +1743,32 @@
                 nodePropertiesContent.innerHTML = `
                     <h4 class="text-gray-700 mb-2">Node properties ${selectedNode.node_id}</h4>
                     <div class="property-group">
-                        <label for="nodeX">X:</label>
-                        <input type="number" id="nodeX" value="${selectedNode.x.toFixed(2)}">
-                        <label for="nodeY">Y:</label>
-                        <input type="number" id="nodeY" value="${selectedNode.y.toFixed(2)}">
+                        <div class="coordinates-row">
+                            <label for="nodeX">X:</label>
+                            <input type="number" id="nodeX" value="${selectedNode.x.toFixed(2)}">
+                            <label for="nodeY">Y:</label>
+                            <input type="number" id="nodeY" value="${selectedNode.y.toFixed(2)}">
+                        </div>
                     </div>
                     <div class="property-group">
                         <h4 class="text-gray-700 mb-2">Boundaries</h4>
-                        <div id="restrictionIconsContainer" class="flex flex-wrap gap-2 mb-4">
+                        <div class="restriction-grid">
+                            <div id="restrictionIconsCol1" class="restriction-icons-col"></div>
+                            <div id="restrictionIconsCol2" class="restriction-icons-col"></div>
+                            <div class="restriction-checkboxes-col">
+                                <div class="checkbox-group">
+                                    <input type="checkbox" id="restrictX" ${currentRestriction.dx === 1 ? 'checked' : ''}>
+                                    <label for="restrictX">dx</label>
+                                </div>
+                                <div class="checkbox-group">
+                                    <input type="checkbox" id="restrictY" ${currentRestriction.dy === 1 ? 'checked' : ''}>
+                                    <label for="restrictY">dy</label>
+                                </div>
+                                <div class="checkbox-group">
+                                    <input type="checkbox" id="restrictR" ${currentRestriction.dr === 1 ? 'checked' : ''}>
+                                    <label for="restrictR">dr</label>
+                                </div>
                             </div>
-                        <div class="checkbox-group">
-                            <input type="checkbox" id="restrictX" ${currentRestriction.dx === 1 ? 'checked' : ''}>
-                            <label for="restrictX">dx</label>
-                        </div>
-                        <div class="checkbox-group">
-                            <input type="checkbox" id="restrictY" ${currentRestriction.dy === 1 ? 'checked' : ''}>
-                            <label for="restrictY">dy</label>
-                        </div>
-                        <div class="checkbox-group">
-                            <input type="checkbox" id="restrictR" ${currentRestriction.dr === 1 ? 'checked' : ''}>
-                            <label for="restrictR">dr</label>
                         </div>
                     </div>
                     <div class="property-group">
@@ -1796,7 +1802,8 @@
                 const restrictXCheckbox = document.getElementById('restrictX');
                 const restrictYCheckbox = document.getElementById('restrictY');
                 const restrictRCheckbox = document.getElementById('restrictR');
-                const restrictionIconsContainer = document.getElementById('restrictionIconsContainer');
+                const restrictionIconsCol1 = document.getElementById('restrictionIconsCol1');
+                const restrictionIconsCol2 = document.getElementById('restrictionIconsCol2');
 
                 const nodeLoadsList = document.getElementById('nodeLoadsList');
                 const addForceXInput = document.getElementById('addForceX');
@@ -1857,12 +1864,15 @@
                 restrictRCheckbox.addEventListener('change', updateRestriction);
 
                 const renderRestrictionIcons = () => {
-                    restrictionIconsContainer.innerHTML = '';
+                    restrictionIconsCol1.innerHTML = '';
+                    restrictionIconsCol2.innerHTML = '';
 
                     currentRestriction = restrictions.find(r => r.node_id === selectedNode.node_id);
                     if (!currentRestriction) {
                         currentRestriction = { dx: 0, dy: 0, dr: 0, type: "none" };
                     }
+
+                    const buttons = [];
 
                     const noRestrictionBtn = document.createElement('button');
                     noRestrictionBtn.className = `restriction-icon-btn ${currentRestriction.dx === 0 && currentRestriction.dy === 0 && currentRestriction.dr === 0 ? 'active' : ''}`;
@@ -1875,7 +1885,7 @@
                         restrictRCheckbox.checked = false;
                         updateRestriction();
                     });
-                    restrictionIconsContainer.appendChild(noRestrictionBtn);
+                    buttons.push(noRestrictionBtn);
 
                     for (const typeKey in restrictionTypes) {
                         const type = restrictionTypes[typeKey];
@@ -1897,9 +1907,12 @@
                                 restrictRCheckbox.checked = type.dr === 1;
                                 updateRestriction();
                             });
-                            restrictionIconsContainer.appendChild(btn);
+                            buttons.push(btn);
                         }
                     }
+
+                    buttons.slice(0, 4).forEach(btn => restrictionIconsCol1.appendChild(btn));
+                    buttons.slice(4).forEach(btn => restrictionIconsCol2.appendChild(btn));
                 };
 
                 renderRestrictionIcons();
@@ -1911,12 +1924,12 @@
                     if (loadsForSelectedNode.length === 0) {
                         nodeLoadsList.innerHTML = '<p class="text-gray-500 text-xs font-light">No loads yet</p>';
                     } else {
-                        const currentForceDisplayUnit = forceUnitsSelect.value; 
+                        const currentForceDisplayUnit = forceUnitsSelect.value;
                         const currentLengthDisplayUnit = unitsSelect.value;
                         const currentMomentDisplayUnit = currentForceDisplayUnit + '*' + currentLengthDisplayUnit;
 
                         nodeLoadsList.innerHTML = '';
-                        nodeSpecificLoads.forEach(load => { 
+                        loadsForSelectedNode.forEach(load => {
                             let displayedValue;
                             let displayedUnitString;
 

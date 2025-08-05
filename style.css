@@ -104,6 +104,19 @@
             box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
             border-color: #000;
         }
+
+        .coordinates-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .coordinates-row label {
+            display: inline-block;
+            margin-bottom: 0;
+        }
+        .coordinates-row input[type="number"] {
+            margin-bottom: 0;
+        }
         .property-group .checkbox-group {
             display: flex;
             align-items: center;
@@ -182,17 +195,21 @@
             border: 0.3px solid #529774;
         }
 
+        .properties-panel button.restriction-icon-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 5px;
+            padding: 5px;
+            box-sizing: border-box;
+        }
+
         .restriction-icon-btn {
             background-color: #e2e8f0;
             border: 1px solid #cbd5e0;
-            border-radius: 6px;
-            padding: 5px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 33px;
-            height: 33px;
             transition: all 0.2s ease-in-out;
             margin: 4px;
         }
@@ -214,6 +231,21 @@
             font-size: 2em; /* Размер символа "Ø" */
             font-weight: bold;
             color: #666;
+        }
+
+        .restriction-grid {
+            display: grid;
+            grid-template-columns: repeat(3, max-content);
+            gap: 10px;
+            align-items: start;
+        }
+        .restriction-icons-col {
+            display: flex;
+            flex-direction: column;
+        }
+        .restriction-checkboxes-col {
+            display: flex;
+            flex-direction: column;
         }
 		
         .visibility-toggle-btn {
