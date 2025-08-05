@@ -27,7 +27,7 @@
             left: 10px;
             bottom: 43px;
             width: 300px;
-            background-color: #f0f2f5;
+            background-color: #ffffff;
             padding: 15px;
             box-sizing: border-box;
             overflow-y: auto;
@@ -254,10 +254,11 @@
             border-radius: 5px;
             padding: 5px;
             box-sizing: border-box;
+            background-color: #ffffff;
         }
 
         .restriction-icon-btn {
-            background-color: #e2e8f0;
+            background-color: #ffffff;
             border: 1px solid #cbd5e0;
             cursor: pointer;
             display: flex;
