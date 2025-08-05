@@ -220,23 +220,20 @@
             const sectionsChildren = modelSections.map((sec, index) => `${index + 1}: ${sec.name}`);
             addSection('sections', `Sections: ${modelSections.length}`, sectionsChildren, modelSections.length > 0);
 
-            const supportCounts = {
-                fixed: restrictions.filter(r => r.type === 'fixed').length,
-                pinned: restrictions.filter(r => r.type === 'pinned').length,
-                'rolled-x': restrictions.filter(r => r.type === 'rolled-x').length,
-                'rolled-y': restrictions.filter(r => r.type === 'rolled-y').length,
-                'sleeve-x': restrictions.filter(r => r.type === 'sleeve-x').length,
-                'sleeve-y': restrictions.filter(r => r.type === 'sleeve-y').length
-            };
-            const supportsTotal = Object.values(supportCounts).reduce((a, b) => a + b, 0);
-            const supportsChildren = [
-                `Fixed: ${supportCounts.fixed}`,
-                `Pinned: ${supportCounts.pinned}`,
-                `Roller-X: ${supportCounts['rolled-x']}`,
-                `Roller-Y: ${supportCounts['rolled-y']}`,
-                `Sliding-X: ${supportCounts['sleeve-x']}`,
-                `Sliding-Y: ${supportCounts['sleeve-y']}`
+            const supportTypes = [
+                { name: 'Fixed', dx: 1, dy: 1, dr: 1 },
+                { name: 'Pinned', dx: 1, dy: 1, dr: 0 },
+                { name: 'Roller-X', dx: 0, dy: 1, dr: 0 },
+                { name: 'Roller-Y', dx: 1, dy: 0, dr: 0 },
+                { name: 'Slider-X', dx: 0, dy: 1, dr: 1 },
+                { name: 'Slider-Y', dx: 1, dy: 0, dr: 1 }
             ];
+            const supportCounts = {};
+            supportTypes.forEach(type => {
+                supportCounts[type.name] = restrictions.filter(r => r.dx === type.dx && r.dy === type.dy && r.dr === type.dr).length;
+            });
+            const supportsTotal = Object.values(supportCounts).reduce((a, b) => a + b, 0);
+            const supportsChildren = supportTypes.map(type => `${type.name}: ${supportCounts[type.name]}`);
             addSection('supports', `Supports: ${supportsTotal}`, supportsChildren, supportsTotal > 0);
 
             const pointLoads = nodeLoads.filter(l => l.type === 'point_force').length;

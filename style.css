@@ -45,7 +45,7 @@
             left: 10px;
             bottom: calc(43px + 300px + 10px);
             width: 300px;
-            background-color: #f0f2f5;
+            background-color: #ffffff;
             padding: 15px;
             box-sizing: border-box;
             overflow-y: auto;
@@ -69,6 +69,9 @@
             list-style: none;
             padding-left: 15px;
             margin: 0;
+        }
+        .model-tree-panel ul ul {
+            padding-left: 0;
         }
         .tree-item {
             cursor: pointer;
