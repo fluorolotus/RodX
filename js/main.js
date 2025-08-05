@@ -210,8 +210,10 @@
                 treeRoot.appendChild(li);
             }
 
-            const structuresChildren = [`Nodes: ${nodes.length}`, `Rods: ${lines.length}`];
-            const structuresExpandable = nodes.length > 0 || lines.length > 0;
+            const structuresChildren = [];
+            if (nodes.length > 0) structuresChildren.push(`Nodes: ${nodes.length}`);
+            if (lines.length > 0) structuresChildren.push(`Rods: ${lines.length}`);
+            const structuresExpandable = structuresChildren.length > 0;
             addSection('structures', 'Structures', structuresChildren, structuresExpandable);
 
             const materialsChildren = modelMaterials.map((mat, index) => `${index + 1}: ${mat.name}`);
@@ -233,17 +235,18 @@
                 supportCounts[type.name] = restrictions.filter(r => r.dx === type.dx && r.dy === type.dy && r.dr === type.dr).length;
             });
             const supportsTotal = Object.values(supportCounts).reduce((a, b) => a + b, 0);
-            const supportsChildren = supportTypes.map(type => `${type.name}: ${supportCounts[type.name]}`);
+            const supportsChildren = supportTypes
+                .filter(type => supportCounts[type.name] > 0)
+                .map(type => `${type.name}: ${supportCounts[type.name]}`);
             addSection('supports', `Supports: ${supportsTotal}`, supportsChildren, supportsTotal > 0);
 
             const pointLoads = nodeLoads.filter(l => l.type === 'point_force').length;
             const moments = nodeLoads.filter(l => l.type === 'moment').length;
             const beamLoads = elementLoads.length;
-            const loadsChildren = [
-                `Point load: ${pointLoads}`,
-                `Moment: ${moments}`,
-                `Beam Load: ${beamLoads}`
-            ];
+            const loadsChildren = [];
+            if (pointLoads > 0) loadsChildren.push(`Point load: ${pointLoads}`);
+            if (moments > 0) loadsChildren.push(`Moment: ${moments}`);
+            if (beamLoads > 0) loadsChildren.push(`Beam Load: ${beamLoads}`);
             const loadsTotal = pointLoads + moments + beamLoads;
             addSection('loads', 'Loads', loadsChildren, loadsTotal > 0);
 
