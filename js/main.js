@@ -983,7 +983,10 @@
                     ctx.closePath();
                     ctx.fill();
                     ctx.stroke();
-
+/*-----*/
+		    const rollerRadius_y = iconRenderSize * 0.15;
+                    const rollerOffsetX_y = iconRenderSize + rollerRadius_y + 1 / currentScale;
+/*-----*/
                     ctx.beginPath();
                     ctx.moveTo(-(rollerOffsetX_y + rollerRadius_y - 2 / currentScale), -iconRenderSize * 0.8);
                     ctx.lineTo(-(rollerOffsetX_y + rollerRadius_y - 2 / currentScale), iconRenderSize * 0.8);			
@@ -3877,6 +3880,7 @@ let sectionsModal;
 
         // Start the application
         //init();
+
 
 
 
