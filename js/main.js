@@ -145,6 +145,101 @@
                 panel.style.height = `${panelHeight}px`;
                 panel.style.bottom = '43px';
             }
+            const modelPanel = document.getElementById('modelTreePanel');
+            if (panelHeight > 0 && modelPanel) {
+                modelPanel.style.height = `${panelHeight}px`;
+                modelPanel.style.top = '70px';
+            }
+        }
+
+        function renderModelTree() {
+            const container = document.getElementById('modelTreeContent');
+            if (!container) return;
+            container.innerHTML = '';
+
+            const treeRoot = document.createElement('ul');
+
+            function addSection(title, children, expandable) {
+                const li = document.createElement('li');
+                const item = document.createElement('div');
+                item.className = 'tree-item';
+
+                let arrow;
+                if (expandable) {
+                    arrow = document.createElement('span');
+                    arrow.className = 'tree-arrow';
+                    item.appendChild(arrow);
+                } else {
+                    arrow = document.createElement('span');
+                    arrow.className = 'tree-arrow invisible';
+                    item.appendChild(arrow);
+                }
+
+                const text = document.createElement('span');
+                text.textContent = title;
+                item.appendChild(text);
+                li.appendChild(item);
+
+                if (expandable) {
+                    const childList = document.createElement('ul');
+                    childList.classList.add('hidden');
+                    children.forEach(child => {
+                        const childLi = document.createElement('li');
+                        childLi.textContent = child;
+                        childList.appendChild(childLi);
+                    });
+                    li.appendChild(childList);
+
+                    item.addEventListener('click', () => {
+                        childList.classList.toggle('hidden');
+                        arrow.classList.toggle('down');
+                    });
+                }
+
+                treeRoot.appendChild(li);
+            }
+
+            const structuresChildren = [`Nodes: ${nodes.length}`, `Rods: ${lines.length}`];
+            const structuresExpandable = nodes.length > 0 || lines.length > 0;
+            addSection('Structures', structuresChildren, structuresExpandable);
+
+            const materialsChildren = modelMaterials.map(mat => `${mat.id}: ${mat.name}`);
+            addSection(`Materials: ${modelMaterials.length}`, materialsChildren, modelMaterials.length > 0);
+
+            const sectionsChildren = modelSections.map(sec => `${sec.id}: ${sec.name}`);
+            addSection(`Sections: ${modelSections.length}`, sectionsChildren, modelSections.length > 0);
+
+            const supportCounts = {
+                fixed: restrictions.filter(r => r.type === 'fixed').length,
+                pinned: restrictions.filter(r => r.type === 'pinned').length,
+                'rolled-x': restrictions.filter(r => r.type === 'rolled-x').length,
+                'rolled-y': restrictions.filter(r => r.type === 'rolled-y').length,
+                'sleeve-x': restrictions.filter(r => r.type === 'sleeve-x').length,
+                'sleeve-y': restrictions.filter(r => r.type === 'sleeve-y').length
+            };
+            const supportsTotal = Object.values(supportCounts).reduce((a, b) => a + b, 0);
+            const supportsChildren = [
+                `Fixed: ${supportCounts.fixed}`,
+                `Pinned: ${supportCounts.pinned}`,
+                `Roller-X: ${supportCounts['rolled-x']}`,
+                `Roller-Y: ${supportCounts['rolled-y']}`,
+                `Sliding-X: ${supportCounts['sleeve-x']}`,
+                `Sliding-Y: ${supportCounts['sleeve-y']}`
+            ];
+            addSection(`Supports: ${supportsTotal}`, supportsChildren, supportsTotal > 0);
+
+            const pointLoads = nodeLoads.filter(l => l.type === 'point_force').length;
+            const moments = nodeLoads.filter(l => l.type === 'moment').length;
+            const beamLoads = elementLoads.length;
+            const loadsChildren = [
+                `Point load: ${pointLoads}`,
+                `Moment: ${moments}`,
+                `Beam Load: ${beamLoads}`
+            ];
+            const loadsTotal = pointLoads + moments + beamLoads;
+            addSection('Loads', loadsChildren, loadsTotal > 0);
+
+            container.appendChild(treeRoot);
         }
 
         // Coordinate Transformations (world coords are in currentUnit, positive Y is UP)
@@ -272,6 +367,7 @@
             drawCrosshair();
             updateCursorTooltip();
             updateTooltip();
+            renderModelTree();
         }
 		
 		// ====================================================================

@@ -30,6 +30,8 @@
         const applyCopyNodeBtn = document.getElementById('applyCopyNodeBtn');
         
         // Элементы propertiesPanel
-        const propertiesPanel = document.getElementById('propertiesPanel');
-        const nodePropertiesContent = document.getElementById('nodePropertiesContent');
+const propertiesPanel = document.getElementById('propertiesPanel');
+const nodePropertiesContent = document.getElementById('nodePropertiesContent');
+const modelTreePanel = document.getElementById('modelTreePanel');
+const modelTreeContent = document.getElementById('modelTreeContent');
         
