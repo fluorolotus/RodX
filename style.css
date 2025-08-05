@@ -34,6 +34,10 @@
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
             z-index: 10;
+            font-family: 'Roboto', sans-serif;
+            font-weight: 300;
+            font-size: 14px;
+            font-style: normal;
         }
 
         /* Контейнер для холста (рабочая область) */
@@ -61,6 +65,12 @@
             color: #333;
             border-bottom: 1px solid #ccc;
             padding-bottom: 5px;
+            font-weight: 400;
+            font-style: normal;
+        }
+        .properties-panel h4 {
+            font-weight: 400;
+            font-style: normal;
         }
         .property-group {
             margin-bottom: 15px;
@@ -72,21 +82,27 @@
         .property-group label {
             display: block;
             margin-bottom: 5px;
-            font-weight: 500;
+            font-weight: 300;
             color: #555;
         }
         .property-group input[type="number"] {
-            width: calc(100% - 16px); /* Учитываем padding */
-            padding: 8px;
-            border: 1px solid #ccc;
+            width: 70px;
+            height: 23px;
+            padding-left: 3px;
+            padding-right: 3px;
+            border: 0.5px solid #000;
             border-radius: 4px;
-            font-size: 1em;
+            background-color: #FFFFFF;
+            font-size: 14px;
+            line-height: 15px;
             margin-bottom: 10px;
+            font-family: 'Roboto', sans-serif;
+            font-weight: 300;
         }
         .property-group input[type="number"]:focus {
-            border-color: #007bff;
             outline: none;
-            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+            box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+            border-color: #000;
         }
         .property-group .checkbox-group {
             display: flex;
@@ -95,22 +111,90 @@
         }
         .property-group .checkbox-group input[type="checkbox"] {
             margin-right: 8px;
-            transform: scale(1.2);
+            appearance: none;
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border: 0.5px solid #000000;
+            background-color: #FFFFFF;
+            position: relative;
+        }
+        .property-group .checkbox-group input[type="checkbox"]:checked::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 9px;
+            height: 9px;
+            background-color: #529774;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .properties-panel select {
+            width: 100%;
+            height: 23px;
+            padding-left: 3px;
+            padding-right: 20px;
+            border-radius: 4px;
+            background-color: #FFFFFF;
+            border: 0.5px solid #000000;
+            font-family: 'Roboto', sans-serif;
+            font-weight: 300;
+            font-size: 14px;
+            color: #000000;
+            appearance: none;
+            -moz-appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 6'><path d='M0 0 L4 6 L8 0 Z' fill='%23529774'/></svg>");
+            background-repeat: no-repeat;
+            background-position: right 3px center;
+            background-size: 8px 6px;
+        }
+        .properties-panel select:focus {
+            box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+        }
+        .properties-panel select option {
+            padding: 7px;
+            border: 0;
+            font-size: 14px;
+            color: #000000;
+        }
+
+        .properties-panel button {
+            width: 64px;
+            height: 22px;
+            border-radius: 10px;
+            background-color: #BABCBB;
+            color: #000000;
+            border: none;
+            cursor: pointer;
+            font-family: 'Roboto', sans-serif;
+            font-weight: 300;
+            font-size: 14px;
+        }
+        .properties-panel button:hover {
+            border: 0.3px solid #000000;
+        }
+        .properties-panel button:active {
+            background-color: #E1F6EF;
+            color: #529774;
+            border: 0.3px solid #529774;
         }
 
         .restriction-icon-btn {
             background-color: #e2e8f0;
             border: 1px solid #cbd5e0;
             border-radius: 6px;
-            padding: 8px;
+            padding: 5px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 50px; /* Фиксированный размер для кнопок */
-            height: 50px;
+            width: 33px;
+            height: 33px;
             transition: all 0.2s ease-in-out;
-            margin: 4px; /* Небольшой отступ между кнопками */
+            margin: 4px;
         }
         .restriction-icon-btn:hover {
             background-color: #d1d9e2;
@@ -167,20 +251,7 @@
             gap: 8px; /* Добавляем отступ между элементами группы */
         }
         .load-input-group input[type="number"] {
-            flex-grow: 1; /* Позволяет полю ввода занимать всё доступное пространство */
-            margin-bottom: 0; /* Убираем нижний отступ, так как он уже есть в flexbox gap */
-        }
-        .load-input-group button {
-            padding: 6px 12px;
-            background-color: #4CAF50; /* Зеленая кнопка */
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-        .load-input-group button:hover {
-            background-color: #45a049;
+            margin-bottom: 0;
         }
         .load-item {
             display: flex;
@@ -193,12 +264,7 @@
             border-bottom: none; /* Убираем границу у последнего элемента */
         }
         .load-item button {
-            background-color: #f44336; /* Красная кнопка удаления */
-            padding: 4px 8px;
-            font-size: 0.8em;
-        }
-        .load-item button:hover {
-            background-color: #da190b;
+            margin-left: 8px;
         }
 
         /* Стили для элементов управления в нижней панели */

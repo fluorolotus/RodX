@@ -1710,7 +1710,7 @@
                 let loadsHtml = '';
                 const nodeSpecificLoads = nodeLoads.filter(load => load.target_id === selectedNode.node_id);
                 if (nodeSpecificLoads.length === 0) {
-                    loadsHtml += '<p class="text-gray-500 text-sm">No loads yet</p>';
+                    loadsHtml += '<p class="text-gray-500 text-xs font-light">No loads yet</p>';
                 } else {
                     loadsHtml += '<div class="mb-2">';
                     nodeSpecificLoads.forEach(load => {
@@ -1741,7 +1741,7 @@
                 }
 
                 nodePropertiesContent.innerHTML = `
-                    <h4 class="font-bold text-gray-700 mb-2">Node properties ${selectedNode.node_id}</h4>
+                    <h4 class="text-gray-700 mb-2">Node properties ${selectedNode.node_id}</h4>
                     <div class="property-group">
                         <label for="nodeX">X:</label>
                         <input type="number" id="nodeX" value="${selectedNode.x.toFixed(2)}">
@@ -1749,42 +1749,42 @@
                         <input type="number" id="nodeY" value="${selectedNode.y.toFixed(2)}">
                     </div>
                     <div class="property-group">
-                        <h4 class="font-bold text-gray-700 mb-2">Boundaries</h4>
+                        <h4 class="text-gray-700 mb-2">Boundaries</h4>
                         <div id="restrictionIconsContainer" class="flex flex-wrap gap-2 mb-4">
                             </div>
                         <div class="checkbox-group">
-                            <input type="checkbox" id="restrictX" class="mr-2" ${currentRestriction.dx === 1 ? 'checked' : ''}>
+                            <input type="checkbox" id="restrictX" ${currentRestriction.dx === 1 ? 'checked' : ''}>
                             <label for="restrictX">dx</label>
                         </div>
                         <div class="checkbox-group">
-                            <input type="checkbox" id="restrictY" class="mr-2" ${currentRestriction.dy === 1 ? 'checked' : ''}>
+                            <input type="checkbox" id="restrictY" ${currentRestriction.dy === 1 ? 'checked' : ''}>
                             <label for="restrictY">dy</label>
                         </div>
                         <div class="checkbox-group">
-                            <input type="checkbox" id="restrictR" class="mr-2" ${currentRestriction.dr === 1 ? 'checked' : ''}>
+                            <input type="checkbox" id="restrictR" ${currentRestriction.dr === 1 ? 'checked' : ''}>
                             <label for="restrictR">dr</label>
                         </div>
                     </div>
                     <div class="property-group">
-                        <h4 class="font-bold text-gray-700 mb-2">Loads</h4>
+                        <h4 class="text-gray-700 mb-2">Loads</h4>
                         <div id="nodeLoadsList" class="mb-4">
                             ${loadsHtml} </div>
                         <div class="load-input-group">
                             <label for="addForceX" class="sr-only">Force X</label>
                             <input type="number" id="addForceX" placeholder="Fx">
-                            <span id="currentForceUnitDisplay_Fx" class="ml-2 font-semibold text-gray-700"></span> 
+                            <span id="currentForceUnitDisplay_Fx" class="ml-2"></span>
                             <button id="addForceXBtn">Add Fx</button>
                         </div>
                         <div class="load-input-group">
                             <label for="addForceY" class="sr-only">Force Y</label>
                             <input type="number" id="addForceY" placeholder="Fy">
-                            <span id="currentForceUnitDisplay_Fy" class="ml-2 font-semibold text-gray-700"></span>
+                            <span id="currentForceUnitDisplay_Fy" class="ml-2"></span>
                             <button id="addForceYBtn">Add Fy</button>
                         </div>
                         <div class="load-input-group">
                             <label for="addMoment" class="sr-only">Moment</label>
                             <input type="number" id="addMoment" placeholder="M">
-                            <span id="currentForceUnitDisplay_M" class="ml-2 font-semibold text-gray-700"></span>
+                            <span id="currentForceUnitDisplay_M" class="ml-2"></span>
                             <button id="addMomentBtn">Add M</button>
                         </div>
                     </div>
@@ -1909,7 +1909,7 @@
                     const loadsForSelectedNode = nodeLoads.filter(load => load.target_id === selectedNode.node_id);
 
                     if (loadsForSelectedNode.length === 0) {
-                        nodeLoadsList.innerHTML = '<p class="text-gray-500 text-sm">No loads yet</p>';
+                        nodeLoadsList.innerHTML = '<p class="text-gray-500 text-xs font-light">No loads yet</p>';
                     } else {
                         const currentForceDisplayUnit = forceUnitsSelect.value; 
                         const currentLengthDisplayUnit = unitsSelect.value;
@@ -2057,7 +2057,7 @@
                 let loadsHtml = '';
                 const elementSpecificLoads = elementLoads.filter(load => load.target_elem_id === selectedElement.elem_id);
                 if (elementSpecificLoads.length === 0) {
-                    loadsHtml += '<p class="text-gray-500 text-sm">No loads yet</p>';
+                    loadsHtml += '<p class="text-gray-500 text-xs font-light">No loads yet</p>';
                 } else {
                     loadsHtml += '<div class="mb-2">';
                     elementSpecificLoads.forEach(load => {
@@ -2089,7 +2089,7 @@
 
                 // НОВЫЙ ВНУТРЕННИЙ HTML ДЛЯ ПАНЕЛИ СВОЙСТВ ЭЛЕМЕНТА
                 nodePropertiesContent.innerHTML = `
-                    <h4 class="font-bold text-gray-700 mb-2">Rod properties ${selectedElement.elem_id}</h4>
+                    <h4 class="text-gray-700 mb-2">Rod properties ${selectedElement.elem_id}</h4>
                     <div class="property-group">
                         <p>Start node: ${selectedElement.nodeId1}</p>
                         <p>End node: ${selectedElement.nodeId2}</p>
@@ -2097,64 +2097,61 @@
 
                     <!-- НОВАЯ СЕКЦИЯ: Назначение материала -->
                     <div class="property-group">
-                        <h4 class="font-bold text-gray-700 mb-2">Material</h4>
+                        <h4 class="text-gray-700 mb-2">Material</h4>
                         <div class="flex items-center gap-2 mb-2">
-                            <select id="materialAssignmentSelect" class="flex-grow form-select block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md shadow-sm">
+                            <select id="materialAssignmentSelect" class="flex-grow">
                                 ${materialOptionsHtml}
                             </select>
-                            <button id="assignMaterialBtn" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
-                                Apply
-                            </button>
+                            <button id="assignMaterialBtn">Apply</button>
                         </div>
-                        <p class="text-sm text-gray-700">Assigned material: <span id="assignedMaterialDisplay" class="font-semibold italic">${assignedMaterialName}</span></p>
+                        <p class="text-xs text-gray-700 font-light">Assigned material: <span id="assignedMaterialDisplay">${assignedMaterialName}</span></p>
                     </div>
 
                     <div class="property-group">
-                        <h4 class="font-bold text-gray-700 mb-2">Section</h4>
+                        <h4 class="text-gray-700 mb-2">Section</h4>
                         <div class="flex items-center gap-2 mb-2">
-                            <select id="sectionAssignmentSelect" class="flex-grow form-select block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md shadow-sm">
+                            <select id="sectionAssignmentSelect" class="flex-grow">
                                 ${sectionOptionsHtml}
                             </select>
-                            <button id="assignSectionBtn" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Apply</button>
+                            <button id="assignSectionBtn">Apply</button>
                         </div>
                         <div class="flex items-center gap-2 mb-2">
-                            <select id="betaAngleSelect" class="form-select block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md shadow-sm">
+                            <select id="betaAngleSelect">
                                 <option value="0">0</option>
                                 <option value="90">90</option>
                                 <option value="180">180</option>
                                 <option value="270">270</option>
                             </select>
-                            <button id="changeBetaAngleBtn" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Apply rotation</button>
+                            <button id="changeBetaAngleBtn">Apply rotation</button>
                         </div>
-                        <p class="text-sm text-gray-700">Assigned section: <span id="assignedSectionDisplay" class="font-semibold italic">${assignedSectionName}</span></p>
-                        <p class="text-sm text-gray-700 mt-1">Section rotation: <span id="betaAngleDisplay" class="font-semibold italic">${betaAngleValue}</span></p>
+                        <p class="text-xs text-gray-700 font-light">Assigned section: <span id="assignedSectionDisplay">${assignedSectionName}</span></p>
+                        <p class="text-xs text-gray-700 font-light mt-1">Section rotation: <span id="betaAngleDisplay">${betaAngleValue}</span></p>
                     </div>
 
-                    <!-- Существующий блок: Распределенные нагрузки -->
                     <div class="property-group">
-                        <h4 class="font-bold text-gray-700 mb-2">Beam loads</h4>
+                        <h4 class="text-gray-700 mb-2">Beam loads</h4>
                         <div id="elementLoadsList" class="mb-4">
                             ${loadsHtml}
                         </div>
                         <div class="load-input-group">
                             <label for="addDistributedForceX" class="sr-only">Uniform load X</label>
                             <input type="number" id="addDistributedForceX" placeholder="qX">
-                            <span id="currentDistributedForceUnitDisplay_qX" class="ml-2 font-semibold text-gray-700">${currentDistributedForceUnit}</span>
+                            <span id="currentDistributedForceUnitDisplay_qX" class="ml-2">${currentDistributedForceUnit}</span>
                             <button id="addDistributedForceXBtn">Add qX</button>
                         </div>
                         <div class="load-input-group">
                             <label for="addDistributedForceY" class="sr-only">Uniform load Y</label>
                             <input type="number" id="addDistributedForceY" placeholder="qY">
-                            <span id="currentDistributedForceUnitDisplay_qY" class="ml-2 font-semibold text-gray-700">${currentDistributedForceUnit}</span>
+                            <span id="currentDistributedForceUnitDisplay_qY" class="ml-2">${currentDistributedForceUnit}</span>
                             <button id="addDistributedForceYBtn">Add qY</button>
                         </div>
-						<div class="property-group">
-							<h4 class="font-bold text-gray-700 mb-2">Split the rod</h4>
-							<div class="flex items-center space-x-2 mb-2">
-								<input type="number" id="splitSegmentsInput" value="2" min="2" class="flex-grow form-input block w-full pl-3 pr-3 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md">
-								<button id="splitElementBtn" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Split</button>
-							</div>
-						</div>
+                    </div>
+                    <div class="property-group">
+                        <h4 class="text-gray-700 mb-2">Split the rod</h4>
+                        <div class="flex items-center space-x-2 mb-2">
+                            <input type="number" id="splitSegmentsInput" value="2" min="2">
+                            <button id="splitElementBtn">Split</button>
+                        </div>
                     </div>
                 `;
 
@@ -2169,7 +2166,7 @@
                     const loadsForSelectedElement = elementLoads.filter(load => load.target_elem_id === selectedElement.elem_id);
 
                     if (loadsForSelectedElement.length === 0) {
-                        elementLoadsList.innerHTML = '<p class="text-gray-500 text-sm">No loads yet</p>';
+                        elementLoadsList.innerHTML = '<p class="text-gray-500 text-xs font-light">No loads yet</p>';
                     } else {
                         const currentForceDisplayUnit = forceUnitsSelect.value;
                         const currentLengthDisplayUnit = unitsSelect.value;
@@ -2455,49 +2452,49 @@
                 const currentLengthDisplayUnit = unitsSelect.value;
                 const currentDistributedForceUnit = `${currentForceDisplayUnit}/${currentLengthDisplayUnit}`;
                 nodePropertiesContent.innerHTML = `
-                    <h4 class="font-bold text-gray-700 mb-2">Selected rods: ${selectedElements.length}</h4>
+                    <h4 class="text-gray-700 mb-2">Selected rods: ${selectedElements.length}</h4>
                     <div class="property-group">
-                        <h4 class="font-bold text-gray-700 mb-2">Material</h4>
+                        <h4 class="text-gray-700 mb-2">Material</h4>
                         <div class="flex items-center gap-2 mb-2">
-                            <select id="multiMaterialSelect" class="flex-grow form-select block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md shadow-sm">
+                            <select id="multiMaterialSelect" class="flex-grow">
                                 ${materialOptionsHtml}
                             </select>
-                            <button id="applyMaterialToSelectedBtn" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Apply</button>
+                            <button id="applyMaterialToSelectedBtn">Apply</button>
                         </div>
-                        <p class="text-sm text-gray-700">Assigned material: <span id="multiAssignedMaterialDisplay" class="font-semibold italic">${assignedMaterialName}</span></p>
+                        <p class="text-xs text-gray-700 font-light">Assigned material: <span id="multiAssignedMaterialDisplay">${assignedMaterialName}</span></p>
                     </div>
                     <div class="property-group">
-                        <h4 class="font-bold text-gray-700 mb-2">Section</h4>
+                        <h4 class="text-gray-700 mb-2">Section</h4>
                         <div class="flex items-center gap-2 mb-2">
-                            <select id="multiSectionSelect" class="flex-grow form-select block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md shadow-sm">
+                            <select id="multiSectionSelect" class="flex-grow">
                                 ${sectionOptionsHtml}
                             </select>
-                            <button id="applySectionToSelectedBtn" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Apply</button>
+                            <button id="applySectionToSelectedBtn">Apply</button>
                         </div>
                         <div class="flex items-center gap-2 mb-2">
-                            <select id="multiBetaAngleSelect" class="form-select block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md shadow-sm">
+                            <select id="multiBetaAngleSelect">
                                 <option value="0">0</option>
                                 <option value="90">90</option>
                                 <option value="180">180</option>
                                 <option value="270">270</option>
                             </select>
-                            <button id="applyBetaAngleToSelectedBtn" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Apply rotation</button>
+                            <button id="applyBetaAngleToSelectedBtn">Apply rotation</button>
                         </div>
-                        <p class="text-sm text-gray-700">Section: <span id="multiAssignedSectionDisplay" class="font-semibold italic">${assignedSectionName}</span></p>
-                        <p class="text-sm text-gray-700 mt-1">Section rotation: <span id="multiBetaAngleDisplay" class="font-semibold italic">${betaAngleDisplay}</span></p>
+                        <p class="text-xs text-gray-700 font-light">Section: <span id="multiAssignedSectionDisplay">${assignedSectionName}</span></p>
+                        <p class="text-xs text-gray-700 font-light mt-1">Section rotation: <span id="multiBetaAngleDisplay">${betaAngleDisplay}</span></p>
                     </div>
                     <div class="property-group">
-                        <h4 class="font-bold text-gray-700 mb-2">Beam loads</h4>
+                        <h4 class="text-gray-700 mb-2">Beam loads</h4>
                         <div class="load-input-group">
                             <label for="multiDistributedForceX" class="sr-only">Uniform load X</label>
                             <input type="number" id="multiDistributedForceX" placeholder="qX">
-                            <span id="currentDistributedForceUnitDisplay_multi_qX" class="ml-2 font-semibold text-gray-700">${currentDistributedForceUnit}</span>
+                            <span id="currentDistributedForceUnitDisplay_multi_qX" class="ml-2">${currentDistributedForceUnit}</span>
                             <button id="multiDistributedForceXBtn">Add qX</button>
                         </div>
                         <div class="load-input-group">
                             <label for="multiDistributedForceY" class="sr-only">Uniform load Y</label>
                             <input type="number" id="multiDistributedForceY" placeholder="qY">
-                            <span id="currentDistributedForceUnitDisplay_multi_qY" class="ml-2 font-semibold text-gray-700">${currentDistributedForceUnit}</span>
+                            <span id="currentDistributedForceUnitDisplay_multi_qY" class="ml-2">${currentDistributedForceUnit}</span>
                             <button id="multiDistributedForceYBtn">Add qY</button>
                         </div>
                     </div>
@@ -2912,7 +2909,7 @@
                 // Если материалов нет, добавляем сообщение
                 const message = document.createElement('li');
                 message.id = 'noMaterialsMessage';
-                message.classList.add('text-gray-500', 'italic');
+                message.classList.add('text-gray-500');
                 message.textContent = 'No materials in the model';
                 modelMaterialList.appendChild(message);
             } else {
@@ -2998,7 +2995,7 @@
             if (modelSections.length === 0) {
                 const message = document.createElement('li');
                 message.id = 'noSectionsMessage';
-                message.classList.add('text-gray-500', 'italic');
+                message.classList.add('text-gray-500');
                 message.textContent = 'No sections in the model yet';
                 modelSectionList.appendChild(message);
             } else {
