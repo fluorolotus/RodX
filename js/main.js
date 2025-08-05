@@ -148,7 +148,12 @@
             const modelPanel = document.getElementById('modelTreePanel');
             if (panelHeight > 0 && modelPanel) {
                 modelPanel.style.height = `${panelHeight}px`;
-                modelPanel.style.top = '70px';
+                if (panel) {
+                    modelPanel.style.bottom = `${43 + panelHeight + 10}px`;
+                    modelPanel.style.width = panel.style.width || `${panel.offsetWidth}px`;
+                } else {
+                    modelPanel.style.bottom = `${43 + panelHeight + 10}px`;
+                }
             }
         }
 
