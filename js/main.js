@@ -164,7 +164,7 @@
 
             const treeRoot = document.createElement('ul');
 
-            function addSection(title, children, expandable) {
+            function addSection(key, title, children, expandable) {
                 const li = document.createElement('li');
                 const item = document.createElement('div');
                 item.className = 'tree-item';
@@ -187,7 +187,12 @@
 
                 if (expandable) {
                     const childList = document.createElement('ul');
-                    childList.classList.add('hidden');
+                    const isExpanded = modelTreeState[key];
+                    if (!isExpanded) {
+                        childList.classList.add('hidden');
+                    } else {
+                        arrow.classList.add('down');
+                    }
                     children.forEach(child => {
                         const childLi = document.createElement('li');
                         childLi.textContent = child;
@@ -196,8 +201,9 @@
                     li.appendChild(childList);
 
                     item.addEventListener('click', () => {
-                        childList.classList.toggle('hidden');
+                        const isHidden = childList.classList.toggle('hidden');
                         arrow.classList.toggle('down');
+                        modelTreeState[key] = !isHidden;
                     });
                 }
 
@@ -206,13 +212,13 @@
 
             const structuresChildren = [`Nodes: ${nodes.length}`, `Rods: ${lines.length}`];
             const structuresExpandable = nodes.length > 0 || lines.length > 0;
-            addSection('Structures', structuresChildren, structuresExpandable);
+            addSection('structures', 'Structures', structuresChildren, structuresExpandable);
 
-            const materialsChildren = modelMaterials.map(mat => `${mat.id}: ${mat.name}`);
-            addSection(`Materials: ${modelMaterials.length}`, materialsChildren, modelMaterials.length > 0);
+            const materialsChildren = modelMaterials.map((mat, index) => `${index + 1}: ${mat.name}`);
+            addSection('materials', `Materials: ${modelMaterials.length}`, materialsChildren, modelMaterials.length > 0);
 
-            const sectionsChildren = modelSections.map(sec => `${sec.id}: ${sec.name}`);
-            addSection(`Sections: ${modelSections.length}`, sectionsChildren, modelSections.length > 0);
+            const sectionsChildren = modelSections.map((sec, index) => `${index + 1}: ${sec.name}`);
+            addSection('sections', `Sections: ${modelSections.length}`, sectionsChildren, modelSections.length > 0);
 
             const supportCounts = {
                 fixed: restrictions.filter(r => r.type === 'fixed').length,
@@ -231,7 +237,7 @@
                 `Sliding-X: ${supportCounts['sleeve-x']}`,
                 `Sliding-Y: ${supportCounts['sleeve-y']}`
             ];
-            addSection(`Supports: ${supportsTotal}`, supportsChildren, supportsTotal > 0);
+            addSection('supports', `Supports: ${supportsTotal}`, supportsChildren, supportsTotal > 0);
 
             const pointLoads = nodeLoads.filter(l => l.type === 'point_force').length;
             const moments = nodeLoads.filter(l => l.type === 'moment').length;
@@ -242,7 +248,7 @@
                 `Beam Load: ${beamLoads}`
             ];
             const loadsTotal = pointLoads + moments + beamLoads;
-            addSection('Loads', loadsChildren, loadsTotal > 0);
+            addSection('loads', 'Loads', loadsChildren, loadsTotal > 0);
 
             container.appendChild(treeRoot);
         }
