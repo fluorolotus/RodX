@@ -95,8 +95,8 @@
 
     <!-- Модальное окно для материалов -->
     <div id="materialsModal" class="fixed inset-0 bg-gray-600 bg-opacity-75 flex items-center justify-center hidden z-50">
-        <div class="modal-content bg-white p-8 rounded-lg shadow-xl relative flex flex-col">
-            <div class="flex justify-between items-center mb-6">
+        <div class="modal-content bg-white p-8 rounded-lg shadow-xl relative flex flex-col h-[500px]">
+            <div class="flex justify-between items-center pb-[7px]">
                 <h2>Material Manager</h2>
                 <button id="closeMaterialsModalBtn" class="modal-close">&times;</button>
             </div>
@@ -107,29 +107,30 @@
                     <!-- Блок выбора материала -->
                     <div id="materialSelectionBlock">
                         <h3 class="mb-4">Material selection</h3>
+                        <div class="border rounded-md p-3 bg-white">
+                            <div class="mb-4">
+                                <label for="materialTypeSelect" class="block mb-2">Type:</label>
+                                <select id="materialTypeSelect" class="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"></select>
+                            </div>
 
-                        <div class="mb-4">
-                            <label for="materialTypeSelect" class="block mb-2">Type:</label>
-                            <select id="materialTypeSelect" class="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"></select>
+                            <div class="mb-4">
+                                <label for="materialStandardSelect" class="block mb-2">Standard:</label>
+                                <select id="materialStandardSelect" class="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"></select>
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="materialClassSelect" class="block mb-2">Class/Grade:</label>
+                                <select id="materialClassSelect" class="block w-full pl-3 pr-10 py-2 border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 rounded-md shadow-sm"></select>
+                            </div>
+
+                            <button id="addMaterialToModelBtn" class="standard-button mt-2">Add material</button>
                         </div>
-
-                        <div class="mb-4">
-                            <label for="materialStandardSelect" class="block mb-2">Standard:</label>
-                            <select id="materialStandardSelect" class="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"></select>
-                        </div>
-
-                        <div class="mb-4">
-                            <label for="materialClassSelect" class="block mb-2">Class/Grade:</label>
-                            <select id="materialClassSelect" class="block w-full pl-3 pr-10 py-2 border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 rounded-md shadow-sm"></select>
-                        </div>
-
-                        <button id="addMaterialToModelBtn" class="standard-button mt-2">Add material</button>
                     </div>
 
                     <!-- Блок добавления пользовательского материала -->
-                    <div id="customMaterialBlock">
+                    <div id="customMaterialBlock" class="hidden">
                         <h3 class="mb-2">Add User Material</h3>
-                        <div id="customMaterialFields" class="hidden p-4 border rounded-md bg-gray-50">
+                        <div id="customMaterialFields" class="p-4 border rounded-md bg-white">
                             <label for="customMaterialName" class="block mb-1">User name:</label>
                             <input type="text" id="customMaterialName" placeholder="Name of the material" class="block w-full pl-3 pr-3 py-2 border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 rounded-md shadow-sm mb-2">
                             <label for="customElasticModulus" class="block mb-1">Modulus of elasticity (MPa):</label>
@@ -146,7 +147,7 @@
                     <!-- Блок свойств выбранного материала -->
                     <div id="selectedMaterialBlock">
                         <h3 class="mb-2">Properties of the material</h3>
-                        <div id="selectedMaterialProperties" class="bg-gray-100 p-4 rounded-md shadow-inner mb-6">
+                        <div id="selectedMaterialProperties" class="border rounded-md p-4 bg-white mb-6">
                             <p>Name: <span id="propName">Not selected</span></p>
                             <p>Type: <span id="propType"></span></p>
                             <p class="mb-2">Standard: <span id="propStandard"></span></p>
