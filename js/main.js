@@ -3447,17 +3447,17 @@
         }
 		
 		
-		// Функция для показа/скрытия полей ввода пользовательского материала
+        // Функция для показа/скрытия секции пользовательского материала
         function toggleCustomMaterialFields(show) {
-            const customMaterialFields = document.getElementById('customMaterialFields');
-            if (customMaterialFields) {
+            const customMaterialBlock = document.getElementById('customMaterialBlock');
+            if (customMaterialBlock) {
                 if (show) {
-                    customMaterialFields.classList.remove('hidden');
+                    customMaterialBlock.classList.remove('hidden');
                 } else {
-                    customMaterialFields.classList.add('hidden');
+                    customMaterialBlock.classList.add('hidden');
                 }
             } else {
-                console.warn("Custom material fields container not found.");
+                console.warn("Custom material block not found.");
             }
         }
 
@@ -3815,13 +3815,14 @@ let sectionsModal;
 					displaySelectedMaterialProperties(); // <-- НОВОЕ: Затем обновляем свойства
 				});
 			}
-			if (materialStandardSelect) {
-				materialStandardSelect.addEventListener('change', () => {
-					populateMaterialClassSelect(); // Сначала обновляем список класса/марки
-					toggleCustomMaterialFields(materialStandardSelect.value === 'USER'); // Показать/скрыть поля пользовательского материала
-					displaySelectedMaterialProperties(); // <-- НОВОЕ: Затем обновляем свойства
-				});
-			}
+                        if (materialStandardSelect) {
+                                materialStandardSelect.addEventListener('change', () => {
+                                        populateMaterialClassSelect(); // Сначала обновляем список класса/марки
+                                        toggleCustomMaterialFields(materialStandardSelect.value === 'USER'); // Показать/скрыть секцию пользовательского материала
+                                        displaySelectedMaterialProperties(); // <-- НОВОЕ: Затем обновляем свойства
+                                });
+                                toggleCustomMaterialFields(materialStandardSelect.value === 'USER');
+                        }
 			
             if (materialClassSelect) {
                 materialClassSelect.addEventListener('change', displaySelectedMaterialProperties); // <-- Это строка, которая должна вызывать функцию
