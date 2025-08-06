@@ -1,38 +1,39 @@
 [
   {
     "id": "RU",
-    "name": "Российские нормы (ГОСТ СП)",
-    "shortName": "ГОСТ СП",
-    "country": "Россия",
-    "description": "Действующие строительные нормы и правила Российской Федерации",
+    "name": "Russian standards (GOST SP)",
+    "shortName": "GOST SP",
+    "country": "Russia",
+    "description": "Current building codes and regulations of the Russian Federation",
     "materialFile": "data/materials/gost_materials.json",
     "sectionFile": "data/sections/gost_sections.json"
   },
   {
     "id": "EU",
-    "name": "Европейские нормы (EN)",
+    "name": "European standards (EN)",
     "shortName": "EN",
-    "country": "Евросоюз",
-    "description": "Еврокоды и другие европейские стандарты",
+    "country": "European Union",
+    "description": "Eurocodes and other European standards",
     "materialFile": "data/materials/en_materials.json",
     "sectionFile": "data/sections/en_sections.json"
   },
   {
     "id": "US",
-    "name": "Американские нормы (ASTM)",
+    "name": "American standards (ASTM)",
     "shortName": "ASTM",
-    "country": "США",
-    "description": "Стандарты Американского общества по испытанию материалов",
+    "country": "USA",
+    "description": "American Society for Testing and Materials Standards",
     "materialFile": "data/materials/astm_materials.json",
     "sectionFile": "data/sections/us_sections.json"
   },
   {
     "id": "USER",
-    "name": "Пользовательские материалы",
-    "shortName": "Польз.",
-    "country": "Локальные",
-    "description": "Материалы, созданные и сохраненные пользователем",
+    "name": "Custom",
+    "shortName": "Custom",
+    "country": "Local",
+    "description": "Materials created and saved by the user",
     "materialFile": "localStorage",
     "sectionFile": "localStorage"
   }
 ]
+
