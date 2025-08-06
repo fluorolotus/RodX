@@ -2245,7 +2245,7 @@
                                 <option value="180">180</option>
                                 <option value="270">270</option>
                             </select>
-                            <button id="changeBetaAngleBtn">Apply rotation</button>
+                            <button id="changeBetaAngleBtn">Apply</button>
                         </div>
                         <p class="text-xs text-gray-700 font-light">Assigned section: <span id="assignedSectionDisplay">${assignedSectionName}</span></p>
                         <p class="text-xs text-gray-700 font-light mt-1">Section rotation: <span id="betaAngleDisplay">${betaAngleValue}</span></p>
@@ -2601,7 +2601,7 @@
                                 <option value="180">180</option>
                                 <option value="270">270</option>
                             </select>
-                            <button id="applyBetaAngleToSelectedBtn">Apply rotation</button>
+                            <button id="applyBetaAngleToSelectedBtn">Apply</button>
                         </div>
                         <p class="text-xs text-gray-700 font-light">Section: <span id="multiAssignedSectionDisplay">${assignedSectionName}</span></p>
                         <p class="text-xs text-gray-700 font-light mt-1">Section rotation: <span id="multiBetaAngleDisplay">${betaAngleDisplay}</span></p>
@@ -3886,6 +3886,7 @@ let sectionsModal;
 
         // Start the application
         //init();
+
 
 
 
