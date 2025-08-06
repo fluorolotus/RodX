@@ -43,6 +43,7 @@
         .model-tree-panel {
             position: absolute;
             left: 10px;
+            top: calc(50px + 10px);
             bottom: calc(43px + 300px + 10px);
             width: 300px;
             background-color: #ffffff;
