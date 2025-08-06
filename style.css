@@ -484,9 +484,9 @@
         }
         #materialsModal > div { /* Внутренний контейнер модального окна */
             background-color: #fff;
-            padding: 2rem;
-            border-radius: 0.5rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.25);
             max-width: none;
             height: 550px;
             overflow: hidden;
@@ -850,6 +850,7 @@
     right: 2rem;
     bottom: 2rem;
 }
+
 
 
 
