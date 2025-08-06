@@ -488,8 +488,9 @@
             border-radius: 0.5rem;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             max-width: none;
-            max-height: 500px;
-            overflow-y: auto;
+            height: 550px;
+            overflow: hidden;
+            position: relative;
         }
 
         #sectionsModal {
@@ -829,14 +830,25 @@
 }
 
 #materialsModal #materialSelectionBlock {
-    flex: 0 0 130px;
-    width: 130px;
+    flex: 0 0 150px;
+    width: 150px;
 }
-#materialsModal #selectedMaterialBlock,
-#materialsModal #modelMaterialsBlock,
-#materialsModal #customMaterialFields {
+#materialsModal #selectedMaterialBlock {
+    flex: 0 0 250px;
+    width: 250px;
+}
+#materialsModal #modelMaterialsBlock {
+    flex: 0 0 250px;
+    width: 250px;
+}
+#materialsModal #customMaterialBlock {
     flex: 0 0 210px;
     width: 210px;
+}
+#materialsModal #closeMaterialsModalBtnBottom {
+    position: absolute;
+    right: 2rem;
+    bottom: 2rem;
 }
 
 
