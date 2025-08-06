@@ -117,12 +117,13 @@
         // Иконки закреплений и их свойства (dx, dy, dr)
         const restrictionTypes = {
             "none":      { dx: 0, dy: 0, dr: 0, icon: null, label: "Нет" },
-            "pinned":    { dx: 1, dy: 1, dr: 0, icon: "icon_Pinned.svg", label: "Шарнирная (Pin)" },
-            "rolled-x":  { dx: 0, dy: 1, dr: 0, icon: "icon_Rolled-X.svg", label: "Подвижная по X" },
-            "rolled-y":  { dx: 1, dy: 0, dr: 0, icon: "icon_Rolled-Y.svg", label: "Подвижная по Y" },
-            "fixed":     { dx: 1, dy: 1, dr: 1, icon: "icon_Fixed.svg", label: "Защемление (Fixed)" },
-            "sleeve-x":  { dx: 0, dy: 1, dr: 1, icon: "icon_Sleeve-X.svg", label: "Обойма по X" },
-            "sleeve-y":  { dx: 1, dy: 0, dr: 1, icon: "icon_Sleeve-Y.svg", label: "Обойма по Y" }
+            "pinned":    { dx: 1, dy: 1, dr: 0, icon: "icon_Pinned.svg", label: "Pinned" },
+            "rolled-x":  { dx: 0, dy: 1, dr: 0, icon: "icon_Rolled-X.svg", label: "Roller-X" },
+            "rolled-y":  { dx: 1, dy: 0, dr: 0, icon: "icon_Rolled-Y.svg", label: "Roller-Y" },
+            "fixed":     { dx: 1, dy: 1, dr: 1, icon: "icon_Fixed.svg", label: "Fixed" },
+            "sleeve-x":  { dx: 0, dy: 1, dr: 1, icon: "icon_Sleeve-X.svg", label: "Slider-X" },
+            "sleeve-y":  { dx: 1, dy: 0, dr: 1, icon: "icon_Sleeve-Y.svg", label: "Slider-Y" }
         };
 
         // Функция для сохранения модели в JSON
+
