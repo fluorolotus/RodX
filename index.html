@@ -95,93 +95,78 @@
 
     <!-- Модальное окно для материалов -->
     <div id="materialsModal" class="fixed inset-0 bg-gray-600 bg-opacity-75 flex items-center justify-center hidden z-50">
-        <!-- Основной контейнер модального окна, увеличена максимальная ширина -->
-        <div class="bg-white p-8 rounded-lg shadow-xl w-11/12 md:w-5/6 lg:max-w-4xl max-h-[90vh] overflow-y-auto">
+        <div class="modal-content bg-white p-8 rounded-lg shadow-xl w-11/12 md:w-5/6 max-h-[80vh] overflow-y-auto">
             <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold">Material Manager</h2>
+                <h2>Material Manager</h2>
                 <button id="closeMaterialsModalBtn" class="text-gray-500 hover:text-gray-700 text-3xl leading-none">&times;</button>
             </div>
-            
-            <!-- Сетка для разделения на две колонки: выбор/пользовательский материал слева, свойства/материалы в модели справа -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <!-- ЛЕВАЯ КОЛОНКА: Выбор материала и поля пользовательского материала -->
-                <div>
-                    <h3 class="text-xl font-bold mb-4">Material selection</h3>
+
+            <!-- Горизонтальное разделение на 4 блока -->
+            <div class="flex flex-row gap-4 mb-4">
+                <!-- Блок выбора материала -->
+                <div class="flex-1" id="materialSelectionBlock">
+                    <h3 class="mb-4">Material selection</h3>
 
                     <div class="mb-4">
-                        <label for="materialTypeSelect" class="block text-gray-700 text-sm font-bold mb-2">Type:</label>
-                        <select id="materialTypeSelect" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                            <!-- Опции будут заполняться из JS (или уже есть статика) -->
-
-                        </select>
+                        <label for="materialTypeSelect" class="block mb-2">Type:</label>
+                        <select id="materialTypeSelect" class="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"></select>
                     </div>
 
                     <div class="mb-4">
-                        <label for="materialStandardSelect" class="block text-gray-700 text-sm font-bold mb-2">Standard:</label>
-                        <select id="materialStandardSelect" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                            <!-- Опции будут заполняться из JS -->
-                        </select>
+                        <label for="materialStandardSelect" class="block mb-2">Standard:</label>
+                        <select id="materialStandardSelect" class="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"></select>
                     </div>
-                    
+
                     <div class="mb-4">
-                        <label for="materialClassSelect" class="block text-sm font-medium text-gray-700">Class/Grade:</label>
-                        <select id="materialClassSelect" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md shadow-sm">
-                            <!-- Опции будут заполняться из JS -->
-                        </select>
+                        <label for="materialClassSelect" class="block mb-2">Class/Grade:</label>
+                        <select id="materialClassSelect" class="block w-full pl-3 pr-10 py-2 border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 rounded-md shadow-sm"></select>
                     </div>
-
-                    <!-- Поля для пользовательского материала (скрыты по умолчанию) -->
-                    <div id="customMaterialFields" class="hidden mt-6 p-4 border rounded-md bg-gray-50">
-                        <h3 class="text-lg font-semibold mb-2">Add user material</h3>
-                        <label for="customMaterialName" class="block text-sm font-medium text-gray-700">User name:</label>
-                        <input type="text" id="customMaterialName" placeholder="Name of the material" class="mt-1 block w-full pl-3 pr-3 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md shadow-sm mb-2">
-                        <label for="customElasticModulus" class="block text-sm font-medium text-gray-700">Modulus of elasticity (MPa):</label>
-                        <input type="number" id="customElasticModulus" placeholder="For example, 2.1e11" class="mt-1 block w-full pl-3 pr-3 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md shadow-sm mb-2">
-                        <label for="customDensity" class="block text-sm font-medium text-gray-700">Density (kg/m³):</label>
-                        <input type="number" id="customDensity" placeholder="For example, 7850" class="mt-1 block w-full pl-3 pr-3 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md shadow-sm mb-2">
-                        <label for="customPoissonRatio" class="block text-sm font-medium text-gray-700">Poisson's ratio:</label>
-                        <input type="number" id="customPoissonRatio" step="0.01" placeholder="For example, 0.3" class="mt-1 block w-full pl-3 pr-3 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md shadow-sm">
-                        
-                        <button id="saveCustomMaterialBtn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">
-                            Save material
-                        </button>
-                    </div>
-
-                    <button id="addMaterialToModelBtn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded mt-4 w-full">
-                        Add material
-                    </button>
                 </div>
 
-                <!-- ПРАВАЯ КОЛОНКА: Свойства выбранного материала и Список материалов в модели -->
-                <div>
-                    <h3 class="text-xl font-bold mb-4">Properties of the selected material</h3>
+                <!-- Блок добавления пользовательского материала -->
+                <div id="customMaterialFields" class="flex-1 hidden p-4 border rounded-md bg-gray-50">
+                    <h3 class="mb-2">Add User Material</h3>
+                    <label for="customMaterialName" class="block mb-1">User name:</label>
+                    <input type="text" id="customMaterialName" placeholder="Name of the material" class="block w-full pl-3 pr-3 py-2 border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 rounded-md shadow-sm mb-2">
+                    <label for="customElasticModulus" class="block mb-1">Modulus of elasticity (MPa):</label>
+                    <input type="number" id="customElasticModulus" placeholder="For example, 2.1e11" class="block w-full pl-3 pr-3 py-2 border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 rounded-md shadow-sm mb-2">
+                    <label for="customDensity" class="block mb-1">Density (kg/m³):</label>
+                    <input type="number" id="customDensity" placeholder="For example, 7850" class="block w-full pl-3 pr-3 py-2 border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 rounded-md shadow-sm mb-2">
+                    <label for="customPoissonRatio" class="block mb-1">Poisson's ratio:</label>
+                    <input type="number" id="customPoissonRatio" step="0.01" placeholder="For example, 0.3" class="block w-full pl-3 pr-3 py-2 border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 rounded-md shadow-sm mb-2">
+
+                    <button id="saveCustomMaterialBtn" class="standard-button mt-2">Save material</button>
+                </div>
+
+                <!-- Блок свойств выбранного материала -->
+                <div class="flex-1" id="selectedMaterialBlock">
+                    <h3 class="mb-4">Properties of the selected material</h3>
                     <div id="selectedMaterialProperties" class="bg-gray-100 p-4 rounded-md shadow-inner mb-6">
-                        <p class="font-semibold text-gray-800 mb-2">Name: <span id="propName" class="font-normal text-gray-700">Not selected</span></p>
-                        <p class="text-gray-700 text-sm">Type: <span id="propType" class="font-normal"></span></p>
-                        <p class="text-gray-700 text-sm mb-4">Standard: <span id="propStandard" class="font-normal"></span></p>
-                        
+                        <p class="mb-2">Name: <span id="propName">Not selected</span></p>
+                        <p>Type: <span id="propType"></span></p>
+                        <p class="mb-4">Standard: <span id="propStandard"></span></p>
+
                         <div class="border-t border-gray-300 pt-4 mt-4">
-                            <p class="text-gray-700"><span class="font-medium">Modulus of elasticity (E):</span> <span id="propElasticModulus" class="font-normal"></span> <span id="unitElasticModulus" class="text-xs text-gray-500"></span></p>
-                            <p class="text-gray-700"><span class="font-medium">Density (ρ):</span> <span id="propDensity" class="font-normal"></span> <span id="unitDensity" class="text-xs text-gray-500"></span></p>
-                            <p class="text-gray-700"><span class="font-medium">Poisson's ratio (ν):</span> <span id="propPoissonRatio" class="font-normal"></span> <span id="unitPoissonRatio" class="text-xs text-gray-500"></span></p>
+                            <p><span>Modulus of elasticity (E):</span> <span id="propElasticModulus"></span> <span id="unitElasticModulus" class="text-gray-500"></span></p>
+                            <p><span>Density (ρ):</span> <span id="propDensity"></span> <span id="unitDensity" class="text-gray-500"></span></p>
+                            <p><span>Poisson's ratio (ν):</span> <span id="propPoissonRatio"></span> <span id="unitPoissonRatio" class="text-gray-500"></span></p>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Существующий блок "Материалы в модели" -->
-                    <div>
-                        <h3 class="text-xl font-bold mb-2">Materials in the model:</h3>
-                        <ul id="modelMaterialList" class="border rounded-md p-3 bg-white max-h-48 overflow-y-auto">
-                            <li id="noMaterialsMessage" class="text-gray-500">There are no materials in the model</li>
-                        </ul>
-                    </div>
+                <!-- Блок материалов в модели -->
+                <div class="flex-1" id="modelMaterialsBlock">
+                    <h3 class="mb-2">Materials in the model</h3>
+                    <ul id="modelMaterialList" class="border rounded-md p-3 bg-white max-h-48 overflow-y-auto">
+                        <li id="noMaterialsMessage" class="text-gray-500">There are no materials in the model</li>
+                    </ul>
                 </div>
             </div>
 
-            <!-- Кнопки Закрыть снизу, вне сетки -->
-            <div class="flex justify-end space-x-3 mt-4">
-                <button id="closeMaterialsModalBtnBottom" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded transition duration-150 ease-in-out">
-                    Close
-                </button>
+            <!-- Кнопки снизу -->
+            <div class="flex justify-end space-x-3">
+                <button id="addMaterialToModelBtn" class="standard-button">Add material</button>
+                <button id="closeMaterialsModalBtnBottom" class="standard-button">Close</button>
             </div>
         </div>
     </div>
