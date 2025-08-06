@@ -834,12 +834,12 @@
     width: 150px;
 }
 #materialsModal #selectedMaterialBlock {
-    flex: 0 0 250px;
-    width: 250px;
+    flex: 0 0 260px;
+    width: 260px;
 }
 #materialsModal #modelMaterialsBlock {
-    flex: 0 0 250px;
-    width: 250px;
+    flex: 0 0 260px;
+    width: 260px;
 }
 #materialsModal #customMaterialBlock {
     flex: 0 0 210px;
@@ -850,6 +850,7 @@
     right: 2rem;
     bottom: 2rem;
 }
+
 
 
 
