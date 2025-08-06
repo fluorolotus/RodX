@@ -95,16 +95,16 @@
 
     <!-- Модальное окно для материалов -->
     <div id="materialsModal" class="fixed inset-0 bg-gray-600 bg-opacity-75 flex items-center justify-center hidden z-50">
-        <div class="modal-content bg-white p-8 rounded-lg shadow-xl w-11/12 md:w-5/6 max-h-[80vh] overflow-y-auto">
+        <div class="modal-content bg-white p-8 rounded-lg shadow-xl overflow-y-auto">
             <div class="flex justify-between items-center mb-6">
                 <h2>Material Manager</h2>
-                <button id="closeMaterialsModalBtn" class="text-gray-500 hover:text-gray-700 text-3xl leading-none">&times;</button>
+                <button id="closeMaterialsModalBtn" class="modal-close">&times;</button>
             </div>
 
             <!-- Горизонтальное разделение на 4 блока -->
             <div class="flex flex-row gap-4 mb-4">
                 <!-- Блок выбора материала -->
-                <div class="flex-1" id="materialSelectionBlock">
+                <div id="materialSelectionBlock">
                     <h3 class="mb-4">Material selection</h3>
 
                     <div class="mb-4">
@@ -124,7 +124,7 @@
                 </div>
 
                 <!-- Блок добавления пользовательского материала -->
-                <div id="customMaterialFields" class="flex-1 hidden p-4 border rounded-md bg-gray-50">
+                <div id="customMaterialFields" class="hidden p-4 border rounded-md bg-gray-50">
                     <h3 class="mb-2">Add User Material</h3>
                     <label for="customMaterialName" class="block mb-1">User name:</label>
                     <input type="text" id="customMaterialName" placeholder="Name of the material" class="block w-full pl-3 pr-3 py-2 border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 rounded-md shadow-sm mb-2">
@@ -139,7 +139,7 @@
                 </div>
 
                 <!-- Блок свойств выбранного материала -->
-                <div class="flex-1" id="selectedMaterialBlock">
+                <div id="selectedMaterialBlock">
                     <h3 class="mb-4">Properties of the selected material</h3>
                     <div id="selectedMaterialProperties" class="bg-gray-100 p-4 rounded-md shadow-inner mb-6">
                         <p class="mb-2">Name: <span id="propName">Not selected</span></p>
@@ -155,7 +155,7 @@
                 </div>
 
                 <!-- Блок материалов в модели -->
-                <div class="flex-1" id="modelMaterialsBlock">
+                <div id="modelMaterialsBlock">
                     <h3 class="mb-2">Materials in the model</h3>
                     <ul id="modelMaterialList" class="border rounded-md p-3 bg-white max-h-48 overflow-y-auto">
                         <li id="noMaterialsMessage" class="text-gray-500">There are no materials in the model</li>
