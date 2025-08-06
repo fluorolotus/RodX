@@ -487,9 +487,8 @@
             padding: 2rem;
             border-radius: 0.5rem;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            width: 11/12; /* Tailwind-класс */
-            max-width: 600px; /* Максимальная ширина */
-            max-height: 90vh;
+            max-width: none;
+            max-height: 500px;
             overflow-y: auto;
         }
 
@@ -799,6 +798,7 @@
     font-size: 1.2em;
 }
 #materialsModal .standard-button {
+    min-width: 64px;
     height: 22px;
     padding: 0 10px;
     border-radius: 10px;
@@ -817,6 +817,26 @@
     background-color: #E1F6EF;
     color: #529774;
     border: 0.3px solid #529774;
+}
+
+#materialsModal .modal-close {
+    background: none;
+    border: none;
+    font-size: 14px;
+    font-weight: 300;
+    cursor: pointer;
+    color: #000000;
+}
+
+#materialsModal #materialSelectionBlock {
+    flex: 0 0 130px;
+    width: 130px;
+}
+#materialsModal #selectedMaterialBlock,
+#materialsModal #modelMaterialsBlock,
+#materialsModal #customMaterialFields {
+    flex: 0 0 210px;
+    width: 210px;
 }
 
 
