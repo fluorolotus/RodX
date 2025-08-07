@@ -361,7 +361,7 @@
         #bottomBar button {
             font-family: 'Roboto', sans-serif;
             font-weight: 300; /* Roboto Light */
-            font-size: 14px;
+            font-size: 13px;
             color: #000000;
         }
 
@@ -850,6 +850,7 @@
     right: 1rem;
     bottom: 1rem;
 }
+
 
 
 
