@@ -66,8 +66,8 @@
 		{"position": 2.00, "value": -0.2686}
           ],
           "Qz_diagram": [
-		{"position": 0.00, "value": -2.0851},
-		{"position": 2.00, "value": 2.3537}
+		{"position": 0.00, "value": 0.0000},
+		{"position": 2.00, "value": 0.0000}
           ],
           "Ux_diagram": [
 		{"position": 0.00, "value": -0.000132},
@@ -101,3 +101,4 @@
   ]
 
 }
+
