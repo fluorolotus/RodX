@@ -109,7 +109,9 @@
             try {
                 const data = JSON.parse(jsonFileContent);
                 resultsData = data.results || data;
+                reactionsData = data.reactions || [];
                 activeDiagram = null;
+                showReactions = false;
                 draw();
                 console.log("Результаты успешно загружены.");
             } catch (error) {
@@ -389,6 +391,10 @@
             drawNodeLoads();
             }
 
+            if (showReactions) {
+            drawReactions();
+            }
+
 
             ctx.restore(); // Восстанавливаем исходную матрицу трансформации
             // Crosshair is drawn last so it stays above fill, grid and axes
@@ -637,8 +643,8 @@
         }
 		
 		// --- Обновленная функция для отрисовки узловых нагрузок ---
-		function drawNodeLoads() {
-			const LOAD_COLOR = 'black'; 
+                function drawNodeLoads() {
+                        const LOAD_COLOR = 'black';
 
 			const FIXED_ARROW_LENGTH_PX = 70; 
 			const FIXED_MOMENT_RADIUS_PX = 35; 
@@ -730,9 +736,101 @@
 					ctx.textAlign = load.value > 0 ? 'left' : 'right';
 					ctx.fillText(`${displayedValue} ${displayedUnitString}`, textPosX, -textPosY); 
 					ctx.restore();
-				}
-			});
-		}
+                                }
+                        });
+                }
+
+                function drawReactions() {
+                        if (!showReactions || reactionsData.length === 0 || !resultsData) return;
+
+                        const LOAD_COLOR = 'black';
+                        const FIXED_ARROW_LENGTH_PX = 70;
+                        const FIXED_MOMENT_RADIUS_PX = 35;
+                        const FIXED_TEXT_OFFSET_PX = 10;
+
+                        const resultsForceUnit = resultsData.units?.force || 'kN';
+                        const resultsLengthUnit = resultsData.units?.length || 'm';
+                        const currentForceDisplayUnit = forceUnitsSelect.value;
+                        const currentLengthDisplayUnit = unitsSelect.value;
+
+                        reactionsData.forEach(reaction => {
+                                const nodeId = reaction.nodeId || reaction.node_id;
+                                const node = nodes.find(n => n.node_id === nodeId || `node${n.node_id}` === nodeId || n.node_id === parseInt(nodeId));
+                                if (!node) return;
+
+                                const drawX = node.x;
+                                const drawY = node.y;
+
+                                const arrowLength = FIXED_ARROW_LENGTH_PX / scale;
+                                const momentRadius = FIXED_MOMENT_RADIUS_PX / scale;
+                                const textOffset = FIXED_TEXT_OFFSET_PX / scale;
+
+                                ctx.font = `${12 / scale}px Roboto`;
+                                ctx.fillStyle = LOAD_COLOR;
+                                ctx.textBaseline = 'middle';
+
+                                const fx = reaction.FX || reaction.Fx || reaction.fx || 0;
+                                if (Math.abs(fx) > 1e-8) {
+                                        const fromX = drawX - (fx > 0 ? arrowLength : -arrowLength);
+                                        const fromY = drawY;
+                                        drawArrow(fromX, fromY, drawX, drawY, LOAD_COLOR);
+
+                                        const displayedValue = convertForce(fx, resultsForceUnit, currentForceDisplayUnit).toFixed(2);
+                                        const textX = fromX;
+                                        const textY = fromY + textOffset * 0.5;
+                                        ctx.save();
+                                        ctx.scale(1, -1);
+                                        ctx.textAlign = fx > 0 ? 'left' : 'right';
+                                        ctx.textBaseline = 'bottom';
+                                        ctx.fillText(`${displayedValue} ${currentForceDisplayUnit}`, textX, -textY);
+                                        ctx.restore();
+                                }
+
+                                const fy = reaction.FY || reaction.Fy || reaction.fy || 0;
+                                if (Math.abs(fy) > 1e-8) {
+                                        const fromX = drawX;
+                                        const fromY = drawY - (fy > 0 ? arrowLength : -arrowLength);
+                                        drawArrow(fromX, fromY, drawX, drawY, LOAD_COLOR);
+
+                                        const displayedValue = convertForce(fy, resultsForceUnit, currentForceDisplayUnit).toFixed(2);
+                                        const textX = fromX + textOffset;
+                                        const textY = fromY;
+                                        ctx.save();
+                                        ctx.scale(1, -1);
+                                        ctx.textAlign = 'left';
+                                        ctx.textBaseline = fy > 0 ? 'bottom' : 'top';
+                                        ctx.fillText(`${displayedValue} ${currentForceDisplayUnit}`, textX, -textY);
+                                        ctx.restore();
+                                }
+
+                                const mz = reaction.MZ || reaction.M || reaction.m || 0;
+                                if (Math.abs(mz) > 1e-8) {
+                                        const arcLength = Math.PI * (90 / 180);
+                                        let startAngle, endAngle, counterClockwise;
+                                        if (mz > 0) {
+                                                startAngle = Math.PI / 4;
+                                                endAngle = startAngle - arcLength;
+                                                counterClockwise = false;
+                                        } else {
+                                                startAngle = Math.PI / 1.33333;
+                                                endAngle = startAngle + arcLength;
+                                                counterClockwise = true;
+                                        }
+
+                                        drawArcArrow(drawX, drawY, momentRadius, startAngle, endAngle, counterClockwise, LOAD_COLOR);
+
+                                        const displayedValue = convertMoment(mz, resultsForceUnit, resultsLengthUnit, currentForceDisplayUnit, currentLengthDisplayUnit).toFixed(2);
+                                        const textArcAngle = endAngle;
+                                        const textPosX = drawX + (momentRadius + textOffset) * Math.cos(textArcAngle);
+                                        const textPosY = drawY + (momentRadius + textOffset) * Math.sin(textArcAngle);
+                                        ctx.save();
+                                        ctx.scale(1, -1);
+                                        ctx.textAlign = mz > 0 ? 'left' : 'right';
+                                        ctx.fillText(`${displayedValue} ${currentForceDisplayUnit}*${currentLengthDisplayUnit}`, textPosX, -textPosY);
+                                        ctx.restore();
+                                }
+                        });
+                }
 		
 		// НОВАЯ ФУНКЦИЯ: Отрисовка распределенных нагрузок
         function drawDistributedLoads() {
@@ -1338,6 +1436,13 @@
             if (resultsUxyMenuItem) {
                 resultsUxyMenuItem.addEventListener('click', () => {
                     activeDiagram = 'Uxy';
+                    draw();
+                });
+            }
+
+            if (resultsReactionsMenuItem) {
+                resultsReactionsMenuItem.addEventListener('click', () => {
+                    showReactions = !showReactions;
                     draw();
                 });
             }

@@ -20,6 +20,7 @@
         const resultsMyMenuItem = document.getElementById('resultsMyMenuItem');
         const resultsQzMenuItem = document.getElementById('resultsQzMenuItem');
         const resultsUxyMenuItem = document.getElementById('resultsUxyMenuItem');
+        const resultsReactionsMenuItem = document.getElementById('resultsReactionsMenuItem');
         const resultsFileInput = document.getElementById('resultsFileInput');
 
         const tooltip = document.getElementById('tooltip');
