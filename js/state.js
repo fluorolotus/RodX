@@ -6,10 +6,19 @@
         let nextElemId = 1; 
 		let nodeLoads = [];
         let nextLoadId = 1;
-		let elementLoads = [];
+        let elementLoads = [];
         let nextElementLoadId = 1;
-		
-		let selectedElements = [];
+
+        // Results and auxiliary mappings
+        let rodResults = [];
+        let nodesById = {};
+
+        // Flags for result diagrams
+        let showMy = false;
+        let showQ = false;
+        let showU = false;
+
+        let selectedElements = [];
 		
 		// --- Глобальные переменные для работы с материалами ---
         let allMaterials = []; // Здесь будут храниться все загруженные материалы

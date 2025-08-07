@@ -13,6 +13,11 @@
         const saveModelBtn = document.getElementById('saveModelBtn');
         const loadModelBtn = document.getElementById('loadModelBtn');
         const fileInput = document.getElementById('fileInput');
+        const resultsInput = document.getElementById('resultsInput');
+        const loadResultsBtn = document.getElementById('loadResultsBtn');
+        const resultsMyMenu = document.getElementById('resultsMyMenu');
+        const resultsQzMenu = document.getElementById('resultsQzMenu');
+        const resultsUxyMenu = document.getElementById('resultsUxyMenu');
         const importMenuItem = document.getElementById('importMenuItem');
         const exportMenuItem = document.getElementById('exportMenuItem');
         const shareMenu = document.getElementById('shareMenu');

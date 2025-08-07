@@ -31,11 +31,17 @@
             console.log("Модель сохранена в model.json");
         }
 
-		async function loadModel(jsonFileContent) {
+        async function loadModel(jsonFileContent) {
             try {
                 const modelData = JSON.parse(jsonFileContent);
 
                 nodes = modelData.nodes || [];
+                // Store node coordinates by id for quick access
+                nodesById = {};
+                nodes.forEach(n => {
+                    nodesById[n.node_id] = { x: n.x, y: n.y };
+                });
+
                 lines = (modelData.lines || []).map(l => ({
                     ...l,
                     sectionId: l.sectionId !== undefined ? l.sectionId : null,
@@ -104,10 +110,26 @@
                 console.error("Не удалось загрузить модель. Проверьте формат файла.");
             }
         }
-		
-		function toggleMaterialsModal() {
-			materialsModal.classList.toggle('hidden');
-		}
+
+        function loadResults(jsonContent) {
+            try {
+                const results = JSON.parse(jsonContent).results;
+                rodResults = results.rods || [];
+                rodResults.forEach(rod => {
+                    const line = lines.find(l => l.elem_id === rod.elem_id);
+                    if (line && rod.results) {
+                        line.diagram = rod.results;
+                    }
+                });
+                draw();
+            } catch (error) {
+                console.error('Ошибка при загрузке результатов:', error);
+            }
+        }
+
+                function toggleMaterialsModal() {
+                        materialsModal.classList.toggle('hidden');
+                }
 
         function init() {
             snapToGridCheckbox.checked = snapToGrid; 
@@ -368,9 +390,10 @@
 			drawDistributedLoads();
             drawLines();
             drawRestrictions();
-            drawNodes();        
+            drawNodes();
 
             drawNodeLoads();
+            drawResults();
 
 
             ctx.restore(); // Восстанавливаем исходную матрицу трансформации
@@ -620,7 +643,7 @@
         }
 		
 		// --- Обновленная функция для отрисовки узловых нагрузок ---
-		function drawNodeLoads() {
+                function drawNodeLoads() {
 			const LOAD_COLOR = 'black'; 
 
 			const FIXED_ARROW_LENGTH_PX = 70; 
@@ -715,9 +738,49 @@
 					ctx.restore();
 				}
 			});
-		}
-		
-		// НОВАЯ ФУНКЦИЯ: Отрисовка распределенных нагрузок
+                }
+
+        function drawResults() {
+            lines.forEach(line => {
+                if (!line.diagram) return;
+                const node1 = nodesById[line.nodeId1];
+                const node2 = nodesById[line.nodeId2];
+                if (!node1 || !node2) return;
+
+                const dx = node2.x - node1.x;
+                const dy = node2.y - node1.y;
+                const length = Math.sqrt(dx * dx + dy * dy);
+                const angle = Math.atan2(dy, dx);
+
+                ctx.save();
+                ctx.translate(node1.x, node1.y);
+                ctx.rotate(angle);
+
+                const drawDiagram = (diagram, color) => {
+                    if (!diagram || diagram.length === 0) return;
+                    let maxVal = Math.max(...diagram.map(p => Math.abs(p.value)));
+                    if (maxVal === 0) maxVal = 1;
+                    const scaleFactor = (length * 0.2) / maxVal;
+                    ctx.beginPath();
+                    diagram.forEach((pt, idx) => {
+                        const x = pt.position;
+                        const y = pt.value * scaleFactor;
+                        if (idx === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+                    });
+                    ctx.strokeStyle = color;
+                    ctx.lineWidth = 1 / scale;
+                    ctx.stroke();
+                };
+
+                if (showMy) drawDiagram(line.diagram.My_diagram, '#e74c3c');
+                if (showQ) drawDiagram(line.diagram.qy_diagram, '#27ae60');
+                if (showU) drawDiagram(line.diagram.uz_diagram, '#3498db');
+
+                ctx.restore();
+            });
+        }
+
+                // НОВАЯ ФУНКЦИЯ: Отрисовка распределенных нагрузок
         function drawDistributedLoads() {
             const LOAD_COLOR = 'green';
             const DIST_LOAD_ARROW_LENGTH_PX = 15;
@@ -1283,6 +1346,44 @@
 
             if (shareMenu) {
                 shareMenu.addEventListener('click', () => {});
+            }
+
+            if (loadResultsBtn && resultsInput) {
+                loadResultsBtn.addEventListener('click', () => {
+                    resultsInput.click();
+                });
+            }
+
+            if (resultsInput) {
+                resultsInput.addEventListener('change', (e) => {
+                    const file = e.target.files[0];
+                    if (!file) return;
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        loadResults(event.target.result);
+                        resultsInput.value = '';
+                    };
+                    reader.readAsText(file);
+                });
+            }
+
+            if (resultsMyMenu) {
+                resultsMyMenu.addEventListener('click', () => {
+                    showMy = !showMy;
+                    draw();
+                });
+            }
+            if (resultsQzMenu) {
+                resultsQzMenu.addEventListener('click', () => {
+                    showQ = !showQ;
+                    draw();
+                });
+            }
+            if (resultsUxyMenu) {
+                resultsUxyMenu.addEventListener('click', () => {
+                    showU = !showU;
+                    draw();
+                });
             }
 
             // Обработчик для изменения (выбора) файла в поле ввода
