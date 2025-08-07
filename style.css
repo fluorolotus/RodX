@@ -588,7 +588,7 @@
     left: 10px;
 }
 .floating-panel.center {
-    width: 400px;
+    width: 520px;
     left: 60%;
     transform: translateX(-50%);
 }
