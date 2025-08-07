@@ -3523,6 +3523,8 @@
 
             const resultsForceUnit = resultsData.units?.force || 'kN';
             const resultsLengthUnit = resultsData.units?.length || 'm';
+            const currentLengthUnit = unitsSelect.value;
+            const dispScale = 1000; // Визуальное увеличение перемещений
 
             let globalMax = 0;
             if (activeDiagram === 'Uxy') {
@@ -3531,7 +3533,7 @@
                     const uz = rod.results.Uz_diagram || [];
                     const count = Math.min(ux.length, uz.length);
                     for (let i = 0; i < count; i++) {
-                        const mag = Math.sqrt(ux[i].value * ux[i].value + uz[i].value * uz[i].value);
+                        const mag = Math.sqrt(ux[i].value * ux[i].value + uz[i].value * uz[i].value) * dispScale;
                         if (mag > globalMax) globalMax = mag;
                     }
                 });
@@ -3547,7 +3549,9 @@
             }
 
             if (globalMax === 0) globalMax = 1;
-            const avgLen = resultsData.rods.reduce((s, r) => s + r.length, 0) / resultsData.rods.length;
+            const avgLen =
+                resultsData.rods.reduce((s, r) => s + convertUnits(r.length, resultsLengthUnit, currentLengthUnit), 0) /
+                resultsData.rods.length;
             const baseScale = (avgLen * 0.2) / globalMax;
 
             resultsData.rods.forEach(rod => {
@@ -3572,10 +3576,11 @@
 
                     const pts = [];
                     for (let i = 0; i < count; i++) {
-                        const baseX = n1.x + ex * ux[i].position;
-                        const baseY = n1.y + ey * uz[i].position;
-                        const x = baseX + ux[i].value * baseScale;
-                        const y = baseY + uz[i].value * baseScale;
+                        const pos = convertUnits(ux[i].position, resultsLengthUnit, currentLengthUnit);
+                        const baseX = n1.x + ex * pos;
+                        const baseY = n1.y + ey * pos;
+                        const x = baseX + ux[i].value * dispScale * baseScale;
+                        const y = baseY + uz[i].value * dispScale * baseScale;
                         const mag = Math.sqrt(ux[i].value * ux[i].value + uz[i].value * uz[i].value);
                         pts.push({ x, y, baseX, baseY, mag });
 
@@ -3590,9 +3595,12 @@
                     ctx.beginPath();
                     ctx.moveTo(n1.x, n1.y);
                     ctx.lineTo(pts[0].x, pts[0].y);
-                    for (let i = 1; i < pts.length; i++) {
-                        ctx.lineTo(pts[i].x, pts[i].y);
+                    for (let i = 0; i < pts.length - 1; i++) {
+                        const xc = (pts[i].x + pts[i + 1].x) / 2;
+                        const yc = (pts[i].y + pts[i + 1].y) / 2;
+                        ctx.quadraticCurveTo(pts[i].x, pts[i].y, xc, yc);
                     }
+                    ctx.lineTo(pts[pts.length - 1].x, pts[pts.length - 1].y);
                     ctx.lineTo(n2.x, n2.y);
                     ctx.strokeStyle = 'blue';
                     ctx.lineWidth = 1 / scale;
@@ -3600,7 +3608,7 @@
 
                     let maxP = pts[0];
                     pts.forEach(p => { if (p.mag > maxP.mag) maxP = p; });
-                    const maxDisp = convertLength(maxP.mag, resultsLengthUnit, unitsSelect.value);
+                    const maxDisp = convertUnits(maxP.mag, resultsLengthUnit, currentLengthUnit);
                     ctx.save();
                     ctx.scale(1, -1);
                     ctx.font = `${12 / scale}px Roboto`;
@@ -3616,8 +3624,9 @@
                     diag.forEach(pt => {
                         let val = pt.value;
                         if (activeDiagram === 'My') val = -val;
-                        const baseX = n1.x + ex * pt.position;
-                        const baseY = n1.y + ey * pt.position;
+                        const pos = convertUnits(pt.position, resultsLengthUnit, currentLengthUnit);
+                        const baseX = n1.x + ex * pos;
+                        const baseY = n1.y + ey * pos;
                         const x = baseX + px * val * baseScale;
                         const y = baseY + py * val * baseScale;
 
@@ -3634,9 +3643,12 @@
                     ctx.beginPath();
                     ctx.moveTo(n1.x, n1.y);
                     ctx.lineTo(pts[0].x, pts[0].y);
-                    for (let i = 1; i < pts.length; i++) {
-                        ctx.lineTo(pts[i].x, pts[i].y);
+                    for (let i = 0; i < pts.length - 1; i++) {
+                        const xc = (pts[i].x + pts[i + 1].x) / 2;
+                        const yc = (pts[i].y + pts[i + 1].y) / 2;
+                        ctx.quadraticCurveTo(pts[i].x, pts[i].y, xc, yc);
                     }
+                    ctx.lineTo(pts[pts.length - 1].x, pts[pts.length - 1].y);
                     ctx.lineTo(n2.x, n2.y);
                     ctx.strokeStyle = activeDiagram === 'My' ? 'red' : 'green';
                     ctx.lineWidth = 1 / scale;
@@ -3653,7 +3665,6 @@
                     });
 
                     const currentForceUnit = forceUnitsSelect.value;
-                    const currentLengthUnit = unitsSelect.value;
                     const maxValConverted = activeDiagram === 'My'
                         ? convertMoment(maxVal, resultsForceUnit, resultsLengthUnit, currentForceUnit, currentLengthUnit)
                         : convertForce(maxVal, resultsForceUnit, currentForceUnit);
