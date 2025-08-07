@@ -9,7 +9,10 @@
 		let elementLoads = [];
         let nextElementLoadId = 1;
 		
-		let selectedElements = [];
+                let selectedElements = [];
+
+        let resultsData = null;
+        let activeDiagram = null;
 		
 		// --- Глобальные переменные для работы с материалами ---
         let allMaterials = []; // Здесь будут храниться все загруженные материалы

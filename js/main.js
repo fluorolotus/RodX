@@ -31,7 +31,7 @@
             console.log("Модель сохранена в model.json");
         }
 
-		async function loadModel(jsonFileContent) {
+                async function loadModel(jsonFileContent) {
             try {
                 const modelData = JSON.parse(jsonFileContent);
 
@@ -102,6 +102,18 @@
             } catch (error) {
                 console.error("Ошибка при загрузке модели:", error);
                 console.error("Не удалось загрузить модель. Проверьте формат файла.");
+            }
+        }
+
+        async function loadResults(jsonFileContent) {
+            try {
+                const data = JSON.parse(jsonFileContent);
+                resultsData = data.results || data;
+                activeDiagram = null;
+                draw();
+                console.log("Результаты успешно загружены.");
+            } catch (error) {
+                console.error("Ошибка при загрузке результатов:", error);
             }
         }
 		
@@ -365,10 +377,11 @@
 
             drawGrid();
             drawAxes();
-			drawDistributedLoads();
+                        drawDistributedLoads();
             drawLines();
+            drawResults();
             drawRestrictions();
-            drawNodes();        
+            drawNodes();
 
             drawNodeLoads();
 
@@ -1106,7 +1119,7 @@
             ctx.restore();
         }
 
-		function drawLines() {
+                function drawLines() {
 			const lineIdFontSizeWorld = 12 / scale;
 			const lineIdOffsetWorld = 7 / scale;
 			const normalLineWidth = 1.25;
@@ -1283,6 +1296,46 @@
 
             if (shareMenu) {
                 shareMenu.addEventListener('click', () => {});
+            }
+
+            if (resultsUploadMenuItem && resultsFileInput) {
+                resultsUploadMenuItem.addEventListener('click', () => {
+                    resultsFileInput.click();
+                });
+            }
+
+            if (resultsFileInput) {
+                resultsFileInput.addEventListener('change', (e) => {
+                    const file = e.target.files[0];
+                    if (!file) return;
+                    const reader = new FileReader();
+                    reader.onload = async (ev) => {
+                        await loadResults(ev.target.result);
+                        resultsFileInput.value = '';
+                    };
+                    reader.readAsText(file);
+                });
+            }
+
+            if (resultsMyMenuItem) {
+                resultsMyMenuItem.addEventListener('click', () => {
+                    activeDiagram = 'My';
+                    draw();
+                });
+            }
+
+            if (resultsQzMenuItem) {
+                resultsQzMenuItem.addEventListener('click', () => {
+                    activeDiagram = 'Qz';
+                    draw();
+                });
+            }
+
+            if (resultsUxyMenuItem) {
+                resultsUxyMenuItem.addEventListener('click', () => {
+                    activeDiagram = 'Uxy';
+                    draw();
+                });
             }
 
             // Обработчик для изменения (выбора) файла в поле ввода
@@ -3459,6 +3512,132 @@
             } else {
                 console.warn("Custom material block not found.");
             }
+        }
+
+        function drawResults() {
+            if (!resultsData || !activeDiagram) return;
+
+            let globalMax = 0;
+            if (activeDiagram === 'Uxy') {
+                resultsData.rods.forEach(rod => {
+                    const ux = rod.results.Ux_diagram || [];
+                    const uz = rod.results.Uz_diagram || [];
+                    const count = Math.min(ux.length, uz.length);
+                    for (let i = 0; i < count; i++) {
+                        const mag = Math.sqrt(ux[i].value * ux[i].value + uz[i].value * uz[i].value);
+                        if (mag > globalMax) globalMax = mag;
+                    }
+                });
+            } else {
+                const key = activeDiagram === 'My' ? 'My_diagram' : 'Qz_diagram';
+                resultsData.rods.forEach(rod => {
+                    const diag = rod.results[key] || [];
+                    diag.forEach(pt => {
+                        const val = Math.abs(pt.value);
+                        if (val > globalMax) globalMax = val;
+                    });
+                });
+            }
+
+            if (globalMax === 0) globalMax = 1;
+            const avgLen = resultsData.rods.reduce((s, r) => s + r.length, 0) / resultsData.rods.length;
+            const baseScale = (avgLen * 0.2) / globalMax;
+
+            resultsData.rods.forEach(rod => {
+                const line = lines.find(l => l.elem_id === rod.elem_id);
+                if (!line) return;
+                const n1 = nodes.find(n => n.node_id === line.nodeId1);
+                const n2 = nodes.find(n => n.node_id === line.nodeId2);
+                if (!n1 || !n2) return;
+                const dx = n2.x - n1.x;
+                const dy = n2.y - n1.y;
+                const L = Math.hypot(dx, dy);
+                const ex = dx / L;
+                const ey = dy / L;
+                const px = -ey;
+                const py = ex;
+
+                if (activeDiagram === 'Uxy') {
+                    const ux = rod.results.Ux_diagram || [];
+                    const uz = rod.results.Uz_diagram || [];
+                    const count = Math.min(ux.length, uz.length);
+                    if (count === 0) return;
+
+                    const pts = [];
+                    for (let i = 0; i < count; i++) {
+                        const pos = ux[i].position;
+                        const baseX = n1.x + ex * pos;
+                        const baseY = n1.y + ey * pos;
+                        const x = baseX + ux[i].value * baseScale;
+                        const y = baseY + uz[i].value * baseScale;
+                        pts.push({ x, y, mag: Math.sqrt(ux[i].value * ux[i].value + uz[i].value * uz[i].value) });
+                    }
+
+                    ctx.beginPath();
+                    ctx.moveTo(n1.x, n1.y);
+                    ctx.lineTo(pts[0].x, pts[0].y);
+                    for (let i = 1; i < pts.length; i++) {
+                        ctx.lineTo(pts[i].x, pts[i].y);
+                    }
+                    ctx.lineTo(n2.x, n2.y);
+                    ctx.strokeStyle = 'blue';
+                    ctx.lineWidth = 1 / scale;
+                    ctx.stroke();
+
+                    let maxP = pts[0];
+                    pts.forEach(p => { if (p.mag > maxP.mag) maxP = p; });
+                    ctx.save();
+                    ctx.scale(1, -1);
+                    ctx.font = `${12 / scale}px Roboto`;
+                    ctx.fillStyle = 'blue';
+                    ctx.textBaseline = 'bottom';
+                    ctx.fillText(maxP.mag.toFixed(3), maxP.x + 12 / scale, -maxP.y - 12 / scale);
+                    ctx.restore();
+                } else {
+                    const key = activeDiagram === 'My' ? 'My_diagram' : 'Qz_diagram';
+                    const diag = rod.results[key] || [];
+                    if (diag.length === 0) return;
+                    const pts = [];
+                    diag.forEach(pt => {
+                        let val = pt.value;
+                        if (activeDiagram === 'My') val = -val;
+                        const baseX = n1.x + ex * pt.position;
+                        const baseY = n1.y + ey * pt.position;
+                        const x = baseX + px * val * baseScale;
+                        const y = baseY + py * val * baseScale;
+                        pts.push({ x, y, raw: pt.value });
+                    });
+
+                    ctx.beginPath();
+                    ctx.moveTo(n1.x, n1.y);
+                    ctx.lineTo(pts[0].x, pts[0].y);
+                    for (let i = 1; i < pts.length; i++) {
+                        ctx.lineTo(pts[i].x, pts[i].y);
+                    }
+                    ctx.lineTo(n2.x, n2.y);
+                    ctx.strokeStyle = activeDiagram === 'My' ? 'red' : 'green';
+                    ctx.lineWidth = 1 / scale;
+                    ctx.stroke();
+
+                    let maxVal = 0;
+                    let maxPoint = pts[0];
+                    diag.forEach((pt, i) => {
+                        const val = Math.abs(pt.value);
+                        if (val > maxVal) {
+                            maxVal = val;
+                            maxPoint = pts[i];
+                        }
+                    });
+
+                    ctx.save();
+                    ctx.scale(1, -1);
+                    ctx.font = `${12 / scale}px Roboto`;
+                    ctx.fillStyle = activeDiagram === 'My' ? 'red' : 'green';
+                    ctx.textBaseline = 'bottom';
+                    ctx.fillText(maxVal.toFixed(3), maxPoint.x + 12 / scale, -maxPoint.y - 12 / scale);
+                    ctx.restore();
+                }
+            });
         }
 
         // Функция для добавления нового пользовательского материала
