@@ -3524,7 +3524,26 @@
             const resultsForceUnit = resultsData.units?.force || 'kN';
             const resultsLengthUnit = resultsData.units?.length || 'm';
             const currentLengthUnit = unitsSelect.value;
-            const dispScale = 1000; // Визуальное увеличение перемещений
+            const canvasBgColor = getComputedStyle(canvas).backgroundColor;
+
+            function drawLabel(text, x, y, color) {
+                ctx.save();
+                ctx.scale(1, -1);
+                ctx.font = `${12 / scale}px Roboto`;
+                ctx.textBaseline = 'bottom';
+                const offset = 6 / scale;
+                const drawX = x + offset;
+                const drawY = -y - offset;
+                const padding = 2 / scale;
+                const textWidth = ctx.measureText(text).width;
+                const textHeight = 12 / scale;
+                ctx.fillStyle = canvasBgColor;
+                ctx.fillRect(drawX - padding, drawY - textHeight - padding,
+                    textWidth + 2 * padding, textHeight + 2 * padding);
+                ctx.fillStyle = color;
+                ctx.fillText(text, drawX, drawY);
+                ctx.restore();
+            }
 
             let globalMax = 0;
             if (activeDiagram === 'Uxy') {
@@ -3533,7 +3552,7 @@
                     const uz = rod.results.Uz_diagram || [];
                     const count = Math.min(ux.length, uz.length);
                     for (let i = 0; i < count; i++) {
-                        const mag = Math.sqrt(ux[i].value * ux[i].value + uz[i].value * uz[i].value) * dispScale;
+                        const mag = Math.sqrt(ux[i].value * ux[i].value + uz[i].value * uz[i].value);
                         if (mag > globalMax) globalMax = mag;
                     }
                 });
@@ -3579,29 +3598,20 @@
                         const pos = convertUnits(ux[i].position, resultsLengthUnit, currentLengthUnit);
                         const baseX = n1.x + ex * pos;
                         const baseY = n1.y + ey * pos;
-                        const x = baseX + ux[i].value * dispScale * baseScale;
-                        const y = baseY + uz[i].value * dispScale * baseScale;
+                        const x = baseX + ux[i].value * baseScale;
+                        const y = baseY + uz[i].value * baseScale;
                         const mag = Math.sqrt(ux[i].value * ux[i].value + uz[i].value * uz[i].value);
                         pts.push({ x, y, baseX, baseY, mag });
-
-                        ctx.beginPath();
-                        ctx.moveTo(baseX, baseY);
-                        ctx.lineTo(x, y);
-                        ctx.strokeStyle = 'blue';
-                        ctx.lineWidth = 0.5 / scale;
-                        ctx.stroke();
                     }
 
                     ctx.beginPath();
-                    ctx.moveTo(n1.x, n1.y);
-                    ctx.lineTo(pts[0].x, pts[0].y);
+                    ctx.moveTo(pts[0].x, pts[0].y);
                     for (let i = 0; i < pts.length - 1; i++) {
                         const xc = (pts[i].x + pts[i + 1].x) / 2;
                         const yc = (pts[i].y + pts[i + 1].y) / 2;
                         ctx.quadraticCurveTo(pts[i].x, pts[i].y, xc, yc);
                     }
                     ctx.lineTo(pts[pts.length - 1].x, pts[pts.length - 1].y);
-                    ctx.lineTo(n2.x, n2.y);
                     ctx.strokeStyle = 'blue';
                     ctx.lineWidth = 1 / scale;
                     ctx.stroke();
@@ -3609,13 +3619,7 @@
                     let maxP = pts[0];
                     pts.forEach(p => { if (p.mag > maxP.mag) maxP = p; });
                     const maxDisp = convertUnits(maxP.mag, resultsLengthUnit, currentLengthUnit);
-                    ctx.save();
-                    ctx.scale(1, -1);
-                    ctx.font = `${12 / scale}px Roboto`;
-                    ctx.fillStyle = 'blue';
-                    ctx.textBaseline = 'bottom';
-                    ctx.fillText(maxDisp.toFixed(3), maxP.x + 12 / scale, -maxP.y - 12 / scale);
-                    ctx.restore();
+                    drawLabel(maxDisp.toFixed(3), maxP.x, maxP.y, 'blue');
                 } else {
                     const key = activeDiagram === 'My' ? 'My_diagram' : 'Qz_diagram';
                     const diag = rod.results[key] || [];
@@ -3675,15 +3679,10 @@
                         ? convertMoment(diag[diag.length - 1].value, resultsForceUnit, resultsLengthUnit, currentForceUnit, currentLengthUnit)
                         : convertForce(diag[diag.length - 1].value, resultsForceUnit, currentForceUnit);
 
-                    ctx.save();
-                    ctx.scale(1, -1);
-                    ctx.font = `${12 / scale}px Roboto`;
-                    ctx.fillStyle = activeDiagram === 'My' ? 'red' : 'green';
-                    ctx.textBaseline = 'bottom';
-                    ctx.fillText(maxValConverted.toFixed(3), maxPoint.x + 12 / scale, -maxPoint.y - 12 / scale);
-                    ctx.fillText(startValConverted.toFixed(3), pts[0].x + 12 / scale, -pts[0].y - 12 / scale);
-                    ctx.fillText(endValConverted.toFixed(3), pts[pts.length - 1].x + 12 / scale, -pts[pts.length - 1].y - 12 / scale);
-                    ctx.restore();
+                    const color = activeDiagram === 'My' ? 'red' : 'green';
+                    drawLabel(maxValConverted.toFixed(3), maxPoint.x, maxPoint.y, color);
+                    drawLabel(startValConverted.toFixed(3), pts[0].x, pts[0].y, color);
+                    drawLabel(endValConverted.toFixed(3), pts[pts.length - 1].x, pts[pts.length - 1].y, color);
                 }
             });
         }
