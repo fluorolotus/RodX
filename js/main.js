@@ -808,13 +808,13 @@
                                         const arcLength = Math.PI * (90 / 180);
                                         let startAngle, endAngle, counterClockwise;
                                         if (mz > 0) {
-                                                startAngle = Math.PI / 4;
-                                                endAngle = startAngle - arcLength;
-                                                counterClockwise = false;
-                                        } else {
                                                 startAngle = Math.PI / 1.33333;
                                                 endAngle = startAngle + arcLength;
                                                 counterClockwise = true;
+                                        } else {
+                                                startAngle = Math.PI / 4;
+                                                endAngle = startAngle - arcLength;
+                                                counterClockwise = false;
                                         }
 
                                         drawArcArrow(drawX, drawY, momentRadius, startAngle, endAngle, counterClockwise, LOAD_COLOR);
@@ -825,7 +825,7 @@
                                         const textPosY = drawY + (momentRadius + textOffset) * Math.sin(textArcAngle);
                                         ctx.save();
                                         ctx.scale(1, -1);
-                                        ctx.textAlign = mz > 0 ? 'left' : 'right';
+                                        ctx.textAlign = mz > 0 ? 'right' : 'left';
                                         ctx.fillText(`${displayedValue} ${currentForceDisplayUnit}*${currentLengthDisplayUnit}`, textPosX, -textPosY);
                                         ctx.restore();
                                 }
