@@ -1,0 +1,293 @@
+{
+  "nodes": [
+    {
+      "node_id": 1,
+      "x": 2,
+      "y": 4
+    },
+    {
+      "node_id": 2,
+      "x": 4,
+      "y": 4
+    },
+    {
+      "node_id": 3,
+      "x": 4,
+      "y": 2
+    }
+  ],
+  "lines": [
+    {
+      "elem_id": 1,
+      "nodeId1": 1,
+      "nodeId2": 2,
+      "structural_type": "beam",
+      "materialId": "en_steel_S235",
+      "sectionId": "I-beam_en_IPE-200",
+      "betaAngle": 0,
+      "loads": []
+    },
+    {
+      "elem_id": 2,
+      "nodeId1": 2,
+      "nodeId2": 3,
+      "structural_type": "beam",
+      "materialId": "en_steel_S235",
+      "sectionId": "I-beam_en_IPE-200",
+      "betaAngle": 0,
+      "loads": []
+    }
+  ],
+  "restrictions": [
+    {
+      "node_id": 1,
+      "dx": 0,
+      "dy": 1,
+      "dr": 0
+    },
+    {
+      "node_id": 3,
+      "dx": 1,
+      "dy": 1,
+      "dr": 1
+    }
+  ],
+  "nodeLoads": [],
+  "elementLoads": [
+    {
+      "load_id": 1,
+      "target_elem_id": 1,
+      "type": "uniform",
+      "component": "y",
+      "startValue": -2,
+      "endValue": -2,
+      "unit": "kN/m",
+      "startPosition": 0,
+      "endPosition": 1
+    }
+  ],
+  "materials": [
+    {
+      "id": "en_steel_S235",
+      "name": "S235",
+      "type": "steel",
+      "standard": "EN",
+      "properties": {
+        "elasticModulus": {
+          "value": 210,
+          "unit": "GPa"
+        },
+        "density": {
+          "value": 7850,
+          "unit": "kg/m^3"
+        },
+        "thermalExpansionCoefficient": {
+          "value": 0.000012,
+          "unit": "1/C"
+        },
+        "poissonRatio": {
+          "value": 0.3,
+          "unit": "none"
+        },
+        "dampingRatio": {
+          "value": 0.02,
+          "unit": "none"
+        }
+      }
+    }
+  ],
+  "sections": [
+    {
+      "id": "I-beam_en_IPE-80",
+      "name": "IPE-80",
+      "type": "I-beam",
+      "standard": "EU",
+      "comments": "Двутавровый профиль IPE-80 по Европейским нормам",
+      "properties": {
+        "height": {
+          "value": 80,
+          "unit": "mm"
+        },
+        "width": {
+          "value": 46,
+          "unit": "mm"
+        },
+        "webThickness": {
+          "value": 3.8,
+          "unit": "mm"
+        },
+        "flangeThickness": {
+          "value": 5.2,
+          "unit": "mm"
+        },
+        "radius": {
+          "value": 5,
+          "unit": "mm"
+        },
+        "unitWeight": {
+          "value": 6,
+          "unit": "kg/m"
+        },
+        "perimeter": {
+          "value": 0.328,
+          "unit": "m"
+        },
+        "area": {
+          "value": 764,
+          "unit": "mm^2"
+        },
+        "shearAreaZ": {
+          "value": 358,
+          "unit": "mm^2"
+        },
+        "shearAreaY": {
+          "value": 478,
+          "unit": "mm^2"
+        },
+        "momentOfInertiaY": {
+          "value": 801400,
+          "unit": "mm^4"
+        },
+        "radiusOfGyrationY": {
+          "value": 32.4,
+          "unit": "mm"
+        },
+        "elasticModulusSectionY": {
+          "value": 20030,
+          "unit": "mm^3"
+        },
+        "plasticModulusSectionY": {
+          "value": 23220,
+          "unit": "mm^3"
+        },
+        "momentOfInertiaZ": {
+          "value": 84890,
+          "unit": "mm^4"
+        },
+        "radiusOfGyrationZ": {
+          "value": 10.5,
+          "unit": "mm"
+        },
+        "elasticModulusSectionZ": {
+          "value": 3691,
+          "unit": "mm^3"
+        },
+        "plasticModulusSectionZ": {
+          "value": 5818,
+          "unit": "mm^3"
+        },
+        "torsionalConstant": {
+          "value": 6727,
+          "unit": "mm^4"
+        },
+        "torsionalModulusSection": {
+          "value": 1770,
+          "unit": "mm^3"
+        },
+        "polarMomentOfInertia": {
+          "value": 0,
+          "unit": "mm^4"
+        }
+      }
+    },
+    {
+      "id": "I-beam_en_IPE-200",
+      "name": "IPE-200",
+      "type": "I-beam",
+      "standard": "EU",
+      "comments": "Двутавровый профиль IPE-200 по Европейским нормам",
+      "properties": {
+        "height": {
+          "value": 200,
+          "unit": "mm"
+        },
+        "width": {
+          "value": 100,
+          "unit": "mm"
+        },
+        "webThickness": {
+          "value": 5.6,
+          "unit": "mm"
+        },
+        "flangeThickness": {
+          "value": 8.5,
+          "unit": "mm"
+        },
+        "radius": {
+          "value": 12,
+          "unit": "mm"
+        },
+        "unitWeight": {
+          "value": 22.4,
+          "unit": "kg/m"
+        },
+        "perimeter": {
+          "value": 0.768,
+          "unit": "m"
+        },
+        "area": {
+          "value": 2848,
+          "unit": "mm^2"
+        },
+        "shearAreaZ": {
+          "value": 1400,
+          "unit": "mm^2"
+        },
+        "shearAreaY": {
+          "value": 1700,
+          "unit": "mm^2"
+        },
+        "momentOfInertiaY": {
+          "value": 19430000,
+          "unit": "mm^4"
+        },
+        "radiusOfGyrationY": {
+          "value": 82.6,
+          "unit": "mm"
+        },
+        "elasticModulusSectionY": {
+          "value": 194300,
+          "unit": "mm^3"
+        },
+        "plasticModulusSectionY": {
+          "value": 220600,
+          "unit": "mm^3"
+        },
+        "momentOfInertiaZ": {
+          "value": 1424000,
+          "unit": "mm^4"
+        },
+        "radiusOfGyrationZ": {
+          "value": 22.4,
+          "unit": "mm"
+        },
+        "elasticModulusSectionZ": {
+          "value": 28470,
+          "unit": "mm^3"
+        },
+        "plasticModulusSectionZ": {
+          "value": 44610,
+          "unit": "mm^3"
+        },
+        "torsionalConstant": {
+          "value": 68460,
+          "unit": "mm^4"
+        },
+        "torsionalModulusSection": {
+          "value": 12220,
+          "unit": "mm^3"
+        },
+        "polarMomentOfInertia": {
+          "value": 0,
+          "unit": "mm^4"
+        }
+      }
+    }
+  ],
+  "units": {
+    "length": "m",
+    "force": "kN",
+    "temperature": "C",
+    "time": "s"
+  }
+}
