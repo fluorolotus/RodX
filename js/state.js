@@ -13,6 +13,8 @@
 
         let resultsData = null;
         let activeDiagram = null;
+        let reactionsData = [];
+        let showReactions = false;
 		
 		// --- Глобальные переменные для работы с материалами ---
         let allMaterials = []; // Здесь будут храниться все загруженные материалы
