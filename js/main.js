@@ -377,13 +377,17 @@
 
             drawGrid();
             drawAxes();
+            if (showLoads) {
                         drawDistributedLoads();
+            }
             drawLines();
             drawResults();
             drawRestrictions();
             drawNodes();
 
+            if (showLoads) {
             drawNodeLoads();
+            }
 
 
             ctx.restore(); // Восстанавливаем исходную матрицу трансформации
@@ -3517,6 +3521,9 @@
         function drawResults() {
             if (!resultsData || !activeDiagram) return;
 
+            const resultsForceUnit = resultsData.units?.force || 'kN';
+            const resultsLengthUnit = resultsData.units?.length || 'm';
+
             let globalMax = 0;
             if (activeDiagram === 'Uxy') {
                 resultsData.rods.forEach(rod => {
@@ -3565,12 +3572,19 @@
 
                     const pts = [];
                     for (let i = 0; i < count; i++) {
-                        const pos = ux[i].position;
-                        const baseX = n1.x + ex * pos;
-                        const baseY = n1.y + ey * pos;
+                        const baseX = n1.x + ex * ux[i].position;
+                        const baseY = n1.y + ey * uz[i].position;
                         const x = baseX + ux[i].value * baseScale;
                         const y = baseY + uz[i].value * baseScale;
-                        pts.push({ x, y, mag: Math.sqrt(ux[i].value * ux[i].value + uz[i].value * uz[i].value) });
+                        const mag = Math.sqrt(ux[i].value * ux[i].value + uz[i].value * uz[i].value);
+                        pts.push({ x, y, baseX, baseY, mag });
+
+                        ctx.beginPath();
+                        ctx.moveTo(baseX, baseY);
+                        ctx.lineTo(x, y);
+                        ctx.strokeStyle = 'blue';
+                        ctx.lineWidth = 0.5 / scale;
+                        ctx.stroke();
                     }
 
                     ctx.beginPath();
@@ -3586,12 +3600,13 @@
 
                     let maxP = pts[0];
                     pts.forEach(p => { if (p.mag > maxP.mag) maxP = p; });
+                    const maxDisp = convertLength(maxP.mag, resultsLengthUnit, unitsSelect.value);
                     ctx.save();
                     ctx.scale(1, -1);
                     ctx.font = `${12 / scale}px Roboto`;
                     ctx.fillStyle = 'blue';
                     ctx.textBaseline = 'bottom';
-                    ctx.fillText(maxP.mag.toFixed(3), maxP.x + 12 / scale, -maxP.y - 12 / scale);
+                    ctx.fillText(maxDisp.toFixed(3), maxP.x + 12 / scale, -maxP.y - 12 / scale);
                     ctx.restore();
                 } else {
                     const key = activeDiagram === 'My' ? 'My_diagram' : 'Qz_diagram';
@@ -3605,7 +3620,15 @@
                         const baseY = n1.y + ey * pt.position;
                         const x = baseX + px * val * baseScale;
                         const y = baseY + py * val * baseScale;
-                        pts.push({ x, y, raw: pt.value });
+
+                        ctx.beginPath();
+                        ctx.moveTo(baseX, baseY);
+                        ctx.lineTo(x, y);
+                        ctx.strokeStyle = activeDiagram === 'My' ? 'red' : 'green';
+                        ctx.lineWidth = 0.5 / scale;
+                        ctx.stroke();
+
+                        pts.push({ x, y, baseX, baseY, raw: pt.value });
                     });
 
                     ctx.beginPath();
@@ -3629,12 +3652,26 @@
                         }
                     });
 
+                    const currentForceUnit = forceUnitsSelect.value;
+                    const currentLengthUnit = unitsSelect.value;
+                    const maxValConverted = activeDiagram === 'My'
+                        ? convertMoment(maxVal, resultsForceUnit, resultsLengthUnit, currentForceUnit, currentLengthUnit)
+                        : convertForce(maxVal, resultsForceUnit, currentForceUnit);
+                    const startValConverted = activeDiagram === 'My'
+                        ? convertMoment(diag[0].value, resultsForceUnit, resultsLengthUnit, currentForceUnit, currentLengthUnit)
+                        : convertForce(diag[0].value, resultsForceUnit, currentForceUnit);
+                    const endValConverted = activeDiagram === 'My'
+                        ? convertMoment(diag[diag.length - 1].value, resultsForceUnit, resultsLengthUnit, currentForceUnit, currentLengthUnit)
+                        : convertForce(diag[diag.length - 1].value, resultsForceUnit, currentForceUnit);
+
                     ctx.save();
                     ctx.scale(1, -1);
                     ctx.font = `${12 / scale}px Roboto`;
                     ctx.fillStyle = activeDiagram === 'My' ? 'red' : 'green';
                     ctx.textBaseline = 'bottom';
-                    ctx.fillText(maxVal.toFixed(3), maxPoint.x + 12 / scale, -maxPoint.y - 12 / scale);
+                    ctx.fillText(maxValConverted.toFixed(3), maxPoint.x + 12 / scale, -maxPoint.y - 12 / scale);
+                    ctx.fillText(startValConverted.toFixed(3), pts[0].x + 12 / scale, -pts[0].y - 12 / scale);
+                    ctx.fillText(endValConverted.toFixed(3), pts[pts.length - 1].x + 12 / scale, -pts[pts.length - 1].y - 12 / scale);
                     ctx.restore();
                 }
             });
@@ -3780,6 +3817,7 @@ let sectionsModal;
             const visibilityNodesMenuItem = document.getElementById('visibilityNodesMenuItem');
             const visibilityElementsMenuItem = document.getElementById('visibilityElementsMenuItem');
             const visibilitySectionsMenuItem = document.getElementById('visibilitySectionsMenuItem');
+            const visibilityLoadsMenuItem = document.getElementById('visibilityLoadsMenuItem');
             const clearAllModal = document.getElementById('clearAllModal');
             const confirmClearAll = document.getElementById('confirmClearAll');
             const cancelClearAll = document.getElementById('cancelClearAll');
@@ -3912,6 +3950,13 @@ let sectionsModal;
                     if (toggleBetaAngleIconsBtn) {
                         toggleBetaAngleIconsBtn.classList.toggle('active', showBetaAngleIcons);
                     }
+                    draw();
+                });
+            }
+
+            if (visibilityLoadsMenuItem) {
+                visibilityLoadsMenuItem.addEventListener('click', () => {
+                    showLoads = !showLoads;
                     draw();
                 });
             }
