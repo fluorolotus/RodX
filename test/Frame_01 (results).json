@@ -1,0 +1,102 @@
+{
+  "results": {
+    "units": {
+      "force": "kN",
+      "length": "m"
+    },
+    "rods": [
+      {
+        "elem_id": 1,
+        "length": 2.0,
+        "nodes": ["nodeId1", "nodeId2"],
+        "results": {
+          "My_diagram": [
+            {"position": 0.00, "value": 0.0000},
+            {"position": 0.25, "value": 0.4519},
+            {"position": 0.50, "value": 0.7651},
+            {"position": 0.75, "value": 0.9396},
+			{"position": 1.00, "value": 0.9754},
+			{"position": 1.25, "value": 0.8725},
+			{"position": 1.50, "value": 0.6308},
+			{"position": 1.75, "value": 0.2505},
+			{"position": 2.00, "value": -0.2686}
+          ],
+          "Qz_diagram": [
+            {"position": 0.00, "value": -2.0851},
+            {"position": 0.25, "value": -1.5303},
+            {"position": 0.50, "value": -0.9754},
+            {"position": 0.75, "value": -0.4206},
+			{"position": 1.00, "value": 0.1343},
+			{"position": 1.25, "value": 0.6891},
+			{"position": 1.50, "value": 1.2440},
+			{"position": 1.75, "value": 1.7988},
+			{"position": 2.00, "value": 2.3537}
+          ],
+          "Ux_diagram": [
+            {"position": 0.00, "value": -0.132},
+            {"position": 0.25, "value": -0.132},
+            {"position": 0.50, "value": -0.132},
+            {"position": 0.75, "value": -0.132},
+			{"position": 1.00, "value": -0.132},
+			{"position": 1.25, "value": -0.132},
+			{"position": 1.50, "value": -0.132},
+			{"position": 1.75, "value": -0.132},
+			{"position": 2.00, "value": -0.132}
+          ],
+		  "Uz_diagram": [
+            {"position": 0.00, "value": 0.000000},
+            {"position": 0.25, "value": -0.000045},
+            {"position": 0.50, "value": -0.000082},
+            {"position": 0.75, "value": -0.000105},
+			{"position": 1.00, "value": -0.000113},
+			{"position": 1.25, "value": -0.000105},
+			{"position": 1.50, "value": -0.000082},
+			{"position": 1.75, "value": -0.000048},
+			{"position": 2.00, "value": -0.000009}
+          ]
+        }
+      },
+      {
+        "elem_id": 2,
+        "length": 2.0,
+        "nodes": ["nodeId1", "nodeId2"],
+        "results": {
+          "My_diagram": [
+            {"position": 0.00, "value": 0.0000},
+			{"position": 2.00, "value": -0.2686}
+          ],
+          "Qz_diagram": [
+            {"position": 0.00, "value": -2.0851},
+			{"position": 2.00, "value": 2.3537}
+          ],
+          "Ux_diagram": [
+            {"position": 0.00, "value": -0.000132},
+            {"position": 0.25, "value": -0.000101},
+            {"position": 0.50, "value": -0.000074},
+            {"position": 0.75, "value": -0.000051},
+			{"position": 1.00, "value": -0.000033},
+			{"position": 1.25, "value": -0.000019},
+			{"position": 1.50, "value": -0.000008},
+			{"position": 1.75, "value": -0.000002},
+			{"position": 2.00, "value": -0.000000}
+          ],
+		  "Uz_diagram": [
+            {"position": 0.00, "value": -0.000009},
+            {"position": 0.25, "value": -0.000008},
+            {"position": 0.50, "value": -0.000007},
+            {"position": 0.75, "value": -0.000006},
+			{"position": 1.00, "value": -0.000004},
+			{"position": 1.25, "value": -0.000003},
+			{"position": 1.50, "value": -0.000002},
+			{"position": 1.75, "value": -0.000001},
+			{"position": 2.00, "value": -0.000000}
+          ]
+        }
+      }
+    ]
+  },
+  "reactions": [
+    {"nodeId": "node1", "FX": 0.0, "FY": 2.085, "MZ": 0.000},
+    {"nodeId": "node3", "FX": 0.0, "FY": 2.792, "MZ": 0.269}
+  ]
+}
