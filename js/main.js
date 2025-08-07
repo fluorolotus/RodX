@@ -122,10 +122,10 @@
 		}
 
         function init() {
-            snapToGridCheckbox.checked = snapToGrid; 
-            resizeCanvas();
             addEventListeners();
-            
+            snapToGridCheckbox.checked = snapToGrid;
+            resizeCanvas();
+
             forceUnitsSelect.value = 'kN';
             forceUnitsSelect.dataset.previousValue = 'kN';
 
@@ -133,9 +133,9 @@
             currentUnit = unitsSelect.value;
             currentForceUnit = forceUnitsSelect.value;
             unitsSelect.dispatchEvent(new Event('change'));
-            
-            updateUnitPairsSelect(); 
-            updateForceUnitDisplay(); 
+
+            updateUnitPairsSelect();
+            updateForceUnitDisplay();
         }
 
         function resizeCanvas() {
@@ -4108,14 +4108,24 @@ let sectionsModal;
                 addSectionToModelBtn.addEventListener('click', addSelectedSectionToModel);
             }
             
-			// --- Инициализируем селекторы материалов и загружаем данные ---\
-            await initializeMaterialSelectors();
-            await initializeSectionSelectors();
-            
+                        // --- Инициализируем селекторы материалов и загружаем данные ---\
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            if (loadingIndicator) loadingIndicator.classList.remove('hidden');
+
             // --- 3. Запускаем основную инициализацию приложения ---\
-            init(); 
-            console.log('Initialization complete.'); 
-        });	
+            init();
+
+            Promise.all([
+                initializeMaterialSelectors(),
+                initializeSectionSelectors()
+            ])
+                .catch(error => console.error('Error initializing selectors:', error))
+                .finally(() => {
+                    if (loadingIndicator) loadingIndicator.classList.add('hidden');
+                });
+
+            console.log('Initialization complete.');
+        });
 		
 		
 		
