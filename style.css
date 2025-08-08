@@ -428,16 +428,28 @@
             cursor: pointer; 
             border-color: #007bff;
         }
-        #bottomBar button:hover { background-color: #0056b3; border-color: #0056b3; }
-        #bottomBar #clearCanvasBtn { background-color: #dc3545; border-color: #dc3545;}
-        #bottomBar #clearCanvasBtn:hover { background-color: #c82333; border-color: #bd2130;}
+#bottomBar button:hover { background-color: #0056b3; border-color: #0056b3; }
+#bottomBar #clearCanvasBtn { background-color: #dc3545; border-color: #dc3545;}
+#bottomBar #clearCanvasBtn:hover { background-color: #c82333; border-color: #bd2130;}
 
-        /* Контейнер элементов нижней панели */
-        #bottomBarContent {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+/* Контейнер элементов нижней панели */
+#bottomBarContent {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Кнопка загрузки результатов в нижней панели */
+#resultsUploadButton {
+    position: absolute;
+    right: 5px;
+    bottom: 3px;
+    background: transparent;
+    border: none;
+    color: #888888;
+    font-size: 16px;
+    cursor: pointer;
+}
 
 
         /* Стили для тултипа и контекстного меню */
@@ -587,6 +599,7 @@
     width: 450px;
     left: 10px;
 }
+
 .floating-panel.center {
     width: 590px;
     left: 60%;

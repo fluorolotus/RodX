@@ -1400,8 +1400,8 @@
                 shareMenu.addEventListener('click', () => {});
             }
 
-            if (resultsUploadMenuItem && resultsFileInput) {
-                resultsUploadMenuItem.addEventListener('click', () => {
+            if (resultsUploadButton && resultsFileInput) {
+                resultsUploadButton.addEventListener('click', () => {
                     resultsFileInput.click();
                 });
             }
