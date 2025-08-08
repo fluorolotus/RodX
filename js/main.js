@@ -1421,21 +1421,45 @@
 
             if (resultsMyMenuItem) {
                 resultsMyMenuItem.addEventListener('click', () => {
-                    activeDiagram = 'My';
+                    if (activeDiagram === 'My') {
+                        activeDiagram = null;
+                        resultsMyMenuItem.classList.remove('active');
+                    } else {
+                        activeDiagram = 'My';
+                        resultsMyMenuItem.classList.add('active');
+                        if (resultsQzMenuItem) resultsQzMenuItem.classList.remove('active');
+                        if (resultsUxyMenuItem) resultsUxyMenuItem.classList.remove('active');
+                    }
                     draw();
                 });
             }
 
             if (resultsQzMenuItem) {
                 resultsQzMenuItem.addEventListener('click', () => {
-                    activeDiagram = 'Qz';
+                    if (activeDiagram === 'Qz') {
+                        activeDiagram = null;
+                        resultsQzMenuItem.classList.remove('active');
+                    } else {
+                        activeDiagram = 'Qz';
+                        resultsQzMenuItem.classList.add('active');
+                        if (resultsMyMenuItem) resultsMyMenuItem.classList.remove('active');
+                        if (resultsUxyMenuItem) resultsUxyMenuItem.classList.remove('active');
+                    }
                     draw();
                 });
             }
 
             if (resultsUxyMenuItem) {
                 resultsUxyMenuItem.addEventListener('click', () => {
-                    activeDiagram = 'Uxy';
+                    if (activeDiagram === 'Uxy') {
+                        activeDiagram = null;
+                        resultsUxyMenuItem.classList.remove('active');
+                    } else {
+                        activeDiagram = 'Uxy';
+                        resultsUxyMenuItem.classList.add('active');
+                        if (resultsMyMenuItem) resultsMyMenuItem.classList.remove('active');
+                        if (resultsQzMenuItem) resultsQzMenuItem.classList.remove('active');
+                    }
                     draw();
                 });
             }
@@ -1443,6 +1467,7 @@
             if (resultsReactionsMenuItem) {
                 resultsReactionsMenuItem.addEventListener('click', () => {
                     showReactions = !showReactions;
+                    resultsReactionsMenuItem.classList.toggle('active', showReactions);
                     draw();
                 });
             }
