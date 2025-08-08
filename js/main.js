@@ -151,7 +151,7 @@
 
         function adjustPropertiesPanelHeight() {
             const H = window.innerHeight;
-            const T = 50; // высота верхней панели инструментов
+            const T = 60; // высота верхней панели инструментов
             const B = 33; // высота нижней панели
             const panelHeight = (H - T - B - 30) / 2;
             const panel = document.getElementById('propertiesPanel');
@@ -4261,6 +4261,7 @@ let sectionsModal;
 
         // Start the application
         //init();
+
 
 
 
