@@ -44,7 +44,7 @@
             position: absolute;
             left: 10px;
             top: calc(50px + 10px + 10px);
-            bottom: calc(43px + 300px + 0px);
+            bottom: calc(43px + 300px + 10px);
             width: 300px;
             background-color: #ffffff;
             padding: 15px;
@@ -683,6 +683,13 @@
 
 .file-menu .dropdown-menu div:hover {
     background-color: #E1F6EF;
+    color: #529774;
+    text-decoration: underline;
+    text-decoration-thickness: 9%;
+}
+
+.file-menu .dropdown-menu div.active {
+    background-color: #a7d9f7;
     color: #529774;
     text-decoration: underline;
     text-decoration-thickness: 9%;
