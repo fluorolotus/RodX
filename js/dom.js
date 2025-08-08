@@ -16,7 +16,7 @@
         const importMenuItem = document.getElementById('importMenuItem');
         const exportMenuItem = document.getElementById('exportMenuItem');
         const shareMenu = document.getElementById('shareMenu');
-        const resultsUploadMenuItem = document.getElementById('resultsUploadMenuItem');
+        const resultsUploadButton = document.getElementById('resultsUploadButton');
         const resultsMyMenuItem = document.getElementById('resultsMyMenuItem');
         const resultsQzMenuItem = document.getElementById('resultsQzMenuItem');
         const resultsUxyMenuItem = document.getElementById('resultsUxyMenuItem');
