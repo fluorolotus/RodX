@@ -3045,7 +3045,7 @@
                 const option = document.createElement('option');
                 option.value = type;
                 // Более понятное отображение (например, "steel" -> "Сталь")
-                option.textContent = type === 'steel' ? 'Сталь' : (type === 'concrete' ? 'Бетон' : type); 
+                option.textContent = type === 'steel' ? 'Steel' : (type === 'concrete' ? 'Concrete' : type); 
                 materialTypeSelect.appendChild(option);
             });
         }
@@ -3139,12 +3139,12 @@
             // Создаем группы для бетона и стали для лучшей организации
             const concreteGroup = document.createElement('div');
             concreteGroup.className = 'mb-4 border-b pb-2'; 
-            concreteGroup.innerHTML = '<h3 class="text-lg font-semibold text-gray-700 mb-2">Бетон</h3>';
+            concreteGroup.innerHTML = '<h3 class="text-lg font-semibold text-gray-700 mb-2">Concrete</h3>';
             materialListContainer.appendChild(concreteGroup);
 
             const steelGroup = document.createElement('div');
             steelGroup.className = 'mb-4';
-            steelGroup.innerHTML = '<h3 class="text-lg font-semibold text-gray-700 mb-2">Сталь</h3>';
+            steelGroup.innerHTML = '<h3 class="text-lg font-semibold text-gray-700 mb-2">Steel</h3>';
             materialListContainer.appendChild(steelGroup);
 
             allMaterials.forEach(material => {
@@ -4261,6 +4261,7 @@ let sectionsModal;
 
         // Start the application
         //init();
+
 
 
 
