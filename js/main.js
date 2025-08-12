@@ -3020,7 +3020,7 @@
             // Добавляем опцию "Выберите тип"
             let defaultOption = document.createElement('option');
             defaultOption.value = "";
-            defaultOption.textContent = "Выберите тип";
+            defaultOption.textContent = "Select type";
             defaultOption.disabled = true; // Сделать невыбираемым
             defaultOption.selected = true; // Сделать выбранным по умолчанию
             materialTypeSelect.appendChild(defaultOption);
@@ -3380,7 +3380,7 @@
 
             const defaultOption = document.createElement('option');
             defaultOption.value = '';
-            defaultOption.textContent = 'Выберите тип';
+            defaultOption.textContent = 'Select type';
             defaultOption.disabled = true;
             defaultOption.selected = true;
             sectionTypeSelect.appendChild(defaultOption);
@@ -4261,6 +4261,7 @@ let sectionsModal;
 
         // Start the application
         //init();
+
 
 
 
