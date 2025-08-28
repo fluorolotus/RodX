@@ -1,7 +1,7 @@
         function saveModel() {
             const modelData = {
                 nodes: nodes,
-                lines: lines,
+                elements: lines,
                 restrictions: restrictions,
                 nodeLoads: nodeLoads,
                 elementLoads: elementLoads,
@@ -36,7 +36,7 @@
                 const modelData = JSON.parse(jsonFileContent);
 
                 nodes = modelData.nodes || [];
-                lines = (modelData.lines || []).map(l => ({
+                lines = (modelData.elements || []).map(l => ({
                     ...l,
                     sectionId: l.sectionId !== undefined ? l.sectionId : null,
                     betaAngle: l.betaAngle !== undefined ? l.betaAngle : 0
