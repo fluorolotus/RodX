@@ -1,5 +1,5 @@
-        function saveModel() {
-            const loads = [
+        function getModelLoads() {
+            return [
                 ...nodalLoads.map(l => ({
                     id: l.id,
                     scope: 'node',
@@ -22,8 +22,10 @@
                     endPosition: l.endPosition
                 }))
             ];
+        }
 
-            const modelData = {
+        function getModelData() {
+            return {
                 units: {
                     length: currentUnit,
                     force: currentForceUnit,
@@ -35,9 +37,12 @@
                 supports: restrictions,
                 materials: modelMaterials,
                 sections: modelSections,
-                loads: loads
+                loads: getModelLoads()
             };
-            
+        }
+
+        function saveModel() {
+            const modelData = getModelData();
             console.log("Модель данных перед сохранением:", modelData);
             console.log("Единицы измерения в модели:", modelData.units);
 
@@ -4009,8 +4014,26 @@ let userSectionNameInput;
 let sectionDetailsContent;
 let materialsModal;
 let sectionsModal;
-		
-		document.addEventListener('DOMContentLoaded', async () => {
+
+        Object.defineProperties(window, {
+            nodes: { get: () => nodes },
+            elements: { get: () => lines },
+            supports: { get: () => restrictions },
+            materials: { get: () => modelMaterials },
+            sections: { get: () => modelSections },
+            units: {
+                get: () => ({
+                    length: currentUnit,
+                    force: currentForceUnit,
+                    temperature: currentTemperatureUnit,
+                    time: currentTimeUnit
+                })
+            },
+            loads: { get: getModelLoads },
+            model: { get: getModelData }
+        });
+
+                document.addEventListener('DOMContentLoaded', async () => {
             console.log('DOMContentLoaded fired. Starting initialization...'); 
             // --- 1. Получаем ссылки на ВСЕ DOM-элементы здесь, когда они гарантированно существуют ---
             // ... (все ваши существующие document.getElementById(...) для propertiesPanel, canvas, и т.д.) ...
