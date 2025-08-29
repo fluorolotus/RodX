@@ -1,0 +1,1748 @@
+ххх[
+  {
+    "id": "eu_I-beam_IPE-80",
+    "name": "IPE-80",
+    "type": "I-beam",
+    "standard": "EU",
+    "comments": "I-beam profile IPE-80 according to European standards",
+    "geometry": {
+      "h": {
+        "value": 80,
+        "unit": "mm"
+      },
+      "b": {
+        "value": 46,
+        "unit": "mm"
+      },
+      "tw": {
+        "value": 3.8,
+        "unit": "mm"
+      },
+      "tf": {
+        "value": 5.2,
+        "unit": "mm"
+      },
+      "r": {
+        "value": 5,
+        "unit": "mm"
+      }
+    },
+    "properties": {
+      "A": {
+        "value": 764,
+        "unit": "mm^2"
+      },
+      "Iy": {
+        "value": 801400,
+        "unit": "mm^4"
+      },
+      "Iz": {
+        "value": 84890.0,
+        "unit": "mm^4"
+      },
+      "J": {
+        "value": 6727,
+        "unit": "mm^4"
+      }
+    },
+    "extra": {
+      "unitWeight": {
+        "value": 6.0,
+        "unit": "kg/m"
+      },
+      "perimeter": {
+        "value": 0.328,
+        "unit": "m"
+      },
+      "shearAreaZ": {
+        "value": 358,
+        "unit": "mm^2"
+      },
+      "shearAreaY": {
+        "value": 478,
+        "unit": "mm^2"
+      },
+      "radiusOfGyrationY": {
+        "value": 32.4,
+        "unit": "mm"
+      },
+      "elasticModulusSectionY": {
+        "value": 20030,
+        "unit": "mm^3"
+      },
+      "plasticModulusSectionY": {
+        "value": 23220,
+        "unit": "mm^3"
+      },
+      "radiusOfGyrationZ": {
+        "value": 10.5,
+        "unit": "mm"
+      },
+      "elasticModulusSectionZ": {
+        "value": 3691,
+        "unit": "mm^3"
+      },
+      "plasticModulusSectionZ": {
+        "value": 5818,
+        "unit": "mm^3"
+      },
+      "torsionalModulusSection": {
+        "value": 1770,
+        "unit": "mm^3"
+      },
+      "polarMomentOfInertia": {
+        "value": 0,
+        "unit": "mm^4"
+      }
+    }
+  },
+  {
+    "id": "eu_I-beam_IPE-100",
+    "name": "IPE-100",
+    "type": "I-beam",
+    "standard": "EU",
+    "comments": "I-beam profile IPE-100 according to European standards",
+    "geometry": {
+      "h": {
+        "value": 100,
+        "unit": "mm"
+      },
+      "b": {
+        "value": 55,
+        "unit": "mm"
+      },
+      "tw": {
+        "value": 4.1,
+        "unit": "mm"
+      },
+      "tf": {
+        "value": 5.7,
+        "unit": "mm"
+      },
+      "r": {
+        "value": 7,
+        "unit": "mm"
+      }
+    },
+    "properties": {
+      "A": {
+        "value": 1032,
+        "unit": "mm^2"
+      },
+      "Iy": {
+        "value": 1710000,
+        "unit": "mm^4"
+      },
+      "Iz": {
+        "value": 159200.0,
+        "unit": "mm^4"
+      },
+      "J": {
+        "value": 11530,
+        "unit": "mm^4"
+      }
+    },
+    "extra": {
+      "unitWeight": {
+        "value": 8.1,
+        "unit": "kg/m"
+      },
+      "perimeter": {
+        "value": 0.4,
+        "unit": "m"
+      },
+      "shearAreaZ": {
+        "value": 508,
+        "unit": "mm^2"
+      },
+      "shearAreaY": {
+        "value": 627,
+        "unit": "mm^2"
+      },
+      "radiusOfGyrationY": {
+        "value": 40.7,
+        "unit": "mm"
+      },
+      "elasticModulusSectionY": {
+        "value": 34200,
+        "unit": "mm^3"
+      },
+      "plasticModulusSectionY": {
+        "value": 39410,
+        "unit": "mm^3"
+      },
+      "radiusOfGyrationZ": {
+        "value": 12.4,
+        "unit": "mm"
+      },
+      "elasticModulusSectionZ": {
+        "value": 5789,
+        "unit": "mm^3"
+      },
+      "plasticModulusSectionZ": {
+        "value": 9146,
+        "unit": "mm^3"
+      },
+      "torsionalModulusSection": {
+        "value": 2812,
+        "unit": "mm^3"
+      },
+      "polarMomentOfInertia": {
+        "value": 0,
+        "unit": "mm^4"
+      }
+    }
+  },
+  {
+    "id": "eu_I-beam_IPE-120",
+    "name": "IPE-120",
+    "type": "I-beam",
+    "standard": "EU",
+    "comments": "I-beam profile IPE-120 according to European standards",
+    "geometry": {
+      "h": {
+        "value": 120,
+        "unit": "mm"
+      },
+      "b": {
+        "value": 64,
+        "unit": "mm"
+      },
+      "tw": {
+        "value": 4.4,
+        "unit": "mm"
+      },
+      "tf": {
+        "value": 6.3,
+        "unit": "mm"
+      },
+      "r": {
+        "value": 7,
+        "unit": "mm"
+      }
+    },
+    "properties": {
+      "A": {
+        "value": 1321,
+        "unit": "mm^2"
+      },
+      "Iy": {
+        "value": 3178000,
+        "unit": "mm^4"
+      },
+      "Iz": {
+        "value": 276700.0,
+        "unit": "mm^4"
+      },
+      "J": {
+        "value": 16890,
+        "unit": "mm^4"
+      }
+    },
+    "extra": {
+      "unitWeight": {
+        "value": 10.4,
+        "unit": "kg/m"
+      },
+      "perimeter": {
+        "value": 0.475,
+        "unit": "m"
+      },
+      "shearAreaZ": {
+        "value": 631,
+        "unit": "mm^2"
+      },
+      "shearAreaY": {
+        "value": 806,
+        "unit": "mm^2"
+      },
+      "radiusOfGyrationY": {
+        "value": 49.0,
+        "unit": "mm"
+      },
+      "elasticModulusSectionY": {
+        "value": 52960,
+        "unit": "mm^3"
+      },
+      "plasticModulusSectionY": {
+        "value": 60730,
+        "unit": "mm^3"
+      },
+      "radiusOfGyrationZ": {
+        "value": 14.5,
+        "unit": "mm"
+      },
+      "elasticModulusSectionZ": {
+        "value": 8646,
+        "unit": "mm^3"
+      },
+      "plasticModulusSectionZ": {
+        "value": 13580,
+        "unit": "mm^3"
+      },
+      "torsionalModulusSection": {
+        "value": 3839,
+        "unit": "mm^3"
+      },
+      "polarMomentOfInertia": {
+        "value": 0,
+        "unit": "mm^4"
+      }
+    }
+  },
+  {
+    "id": "eu_I-beam_IPE-140",
+    "name": "IPE-140",
+    "type": "I-beam",
+    "standard": "EU",
+    "comments": "I-beam profile IPE-140 according to European standards",
+    "geometry": {
+      "h": {
+        "value": 140,
+        "unit": "mm"
+      },
+      "b": {
+        "value": 73,
+        "unit": "mm"
+      },
+      "tw": {
+        "value": 4.7,
+        "unit": "mm"
+      },
+      "tf": {
+        "value": 6.9,
+        "unit": "mm"
+      },
+      "r": {
+        "value": 7,
+        "unit": "mm"
+      }
+    },
+    "properties": {
+      "A": {
+        "value": 1643,
+        "unit": "mm^2"
+      },
+      "Iy": {
+        "value": 5412000,
+        "unit": "mm^4"
+      },
+      "Iz": {
+        "value": 449200.0,
+        "unit": "mm^4"
+      },
+      "J": {
+        "value": 24010,
+        "unit": "mm^4"
+      }
+    },
+    "extra": {
+      "unitWeight": {
+        "value": 12.9,
+        "unit": "kg/m"
+      },
+      "perimeter": {
+        "value": 0.551,
+        "unit": "m"
+      },
+      "shearAreaZ": {
+        "value": 764,
+        "unit": "mm^2"
+      },
+      "shearAreaY": {
+        "value": 1007,
+        "unit": "mm^2"
+      },
+      "radiusOfGyrationY": {
+        "value": 57.4,
+        "unit": "mm"
+      },
+      "elasticModulusSectionY": {
+        "value": 77320,
+        "unit": "mm^3"
+      },
+      "plasticModulusSectionY": {
+        "value": 88340,
+        "unit": "mm^3"
+      },
+      "radiusOfGyrationZ": {
+        "value": 16.5,
+        "unit": "mm"
+      },
+      "elasticModulusSectionZ": {
+        "value": 12310,
+        "unit": "mm^3"
+      },
+      "plasticModulusSectionZ": {
+        "value": 19250,
+        "unit": "mm^3"
+      },
+      "torsionalModulusSection": {
+        "value": 5109,
+        "unit": "mm^3"
+      },
+      "polarMomentOfInertia": {
+        "value": 0,
+        "unit": "mm^4"
+      }
+    }
+  },
+  {
+    "id": "eu_I-beam_IPE-160",
+    "name": "IPE-160",
+    "type": "I-beam",
+    "standard": "EU",
+    "comments": "I-beam profile IPE-160 according to European standards",
+    "geometry": {
+      "h": {
+        "value": 160,
+        "unit": "mm"
+      },
+      "b": {
+        "value": 82,
+        "unit": "mm"
+      },
+      "tw": {
+        "value": 5.0,
+        "unit": "mm"
+      },
+      "tf": {
+        "value": 7.4,
+        "unit": "mm"
+      },
+      "r": {
+        "value": 9,
+        "unit": "mm"
+      }
+    },
+    "properties": {
+      "A": {
+        "value": 2009,
+        "unit": "mm^2"
+      },
+      "Iy": {
+        "value": 8693000,
+        "unit": "mm^4"
+      },
+      "Iz": {
+        "value": 683100.0,
+        "unit": "mm^4"
+      },
+      "J": {
+        "value": 35300,
+        "unit": "mm^4"
+      }
+    },
+    "extra": {
+      "unitWeight": {
+        "value": 15.8,
+        "unit": "kg/m"
+      },
+      "perimeter": {
+        "value": 0.623,
+        "unit": "m"
+      },
+      "shearAreaZ": {
+        "value": 966,
+        "unit": "mm^2"
+      },
+      "shearAreaY": {
+        "value": 1214,
+        "unit": "mm^2"
+      },
+      "radiusOfGyrationY": {
+        "value": 65.8,
+        "unit": "mm"
+      },
+      "elasticModulusSectionY": {
+        "value": 108700,
+        "unit": "mm^3"
+      },
+      "plasticModulusSectionY": {
+        "value": 123900,
+        "unit": "mm^3"
+      },
+      "radiusOfGyrationZ": {
+        "value": 18.4,
+        "unit": "mm"
+      },
+      "elasticModulusSectionZ": {
+        "value": 16660,
+        "unit": "mm^3"
+      },
+      "plasticModulusSectionZ": {
+        "value": 26100,
+        "unit": "mm^3"
+      },
+      "torsionalModulusSection": {
+        "value": 7060,
+        "unit": "mm^3"
+      },
+      "polarMomentOfInertia": {
+        "value": 0,
+        "unit": "mm^4"
+      }
+    }
+  },
+  {
+    "id": "eu_I-beam_IPE-180",
+    "name": "IPE-180",
+    "type": "I-beam",
+    "standard": "EU",
+    "comments": "I-beam profile IPE-180 according to European standards",
+    "geometry": {
+      "h": {
+        "value": 180,
+        "unit": "mm"
+      },
+      "b": {
+        "value": 91,
+        "unit": "mm"
+      },
+      "tw": {
+        "value": 5.3,
+        "unit": "mm"
+      },
+      "tf": {
+        "value": 8.0,
+        "unit": "mm"
+      },
+      "r": {
+        "value": 9,
+        "unit": "mm"
+      }
+    },
+    "properties": {
+      "A": {
+        "value": 2395,
+        "unit": "mm^2"
+      },
+      "Iy": {
+        "value": 13170000,
+        "unit": "mm^4"
+      },
+      "Iz": {
+        "value": 1008999.9999999999,
+        "unit": "mm^4"
+      },
+      "J": {
+        "value": 47230,
+        "unit": "mm^4"
+      }
+    },
+    "extra": {
+      "unitWeight": {
+        "value": 18.8,
+        "unit": "kg/m"
+      },
+      "perimeter": {
+        "value": 0.698,
+        "unit": "m"
+      },
+      "shearAreaZ": {
+        "value": 1125,
+        "unit": "mm^2"
+      },
+      "shearAreaY": {
+        "value": 1456,
+        "unit": "mm^2"
+      },
+      "radiusOfGyrationY": {
+        "value": 74.2,
+        "unit": "mm"
+      },
+      "elasticModulusSectionY": {
+        "value": 146300,
+        "unit": "mm^3"
+      },
+      "plasticModulusSectionY": {
+        "value": 166400,
+        "unit": "mm^3"
+      },
+      "radiusOfGyrationZ": {
+        "value": 20.5,
+        "unit": "mm"
+      },
+      "elasticModulusSectionZ": {
+        "value": 22160,
+        "unit": "mm^3"
+      },
+      "plasticModulusSectionZ": {
+        "value": 34600,
+        "unit": "mm^3"
+      },
+      "torsionalModulusSection": {
+        "value": 8911,
+        "unit": "mm^3"
+      },
+      "polarMomentOfInertia": {
+        "value": 0,
+        "unit": "mm^4"
+      }
+    }
+  },
+  {
+    "id": "eu_I-beam_IPE-200",
+    "name": "IPE-200",
+    "type": "I-beam",
+    "standard": "EU",
+    "comments": "I-beam profile IPE-200 according to European standards",
+    "geometry": {
+      "h": {
+        "value": 200,
+        "unit": "mm"
+      },
+      "b": {
+        "value": 100,
+        "unit": "mm"
+      },
+      "tw": {
+        "value": 5.6,
+        "unit": "mm"
+      },
+      "tf": {
+        "value": 8.5,
+        "unit": "mm"
+      },
+      "r": {
+        "value": 12,
+        "unit": "mm"
+      }
+    },
+    "properties": {
+      "A": {
+        "value": 2848,
+        "unit": "mm^2"
+      },
+      "Iy": {
+        "value": 19430000,
+        "unit": "mm^4"
+      },
+      "Iz": {
+        "value": 1424000.0,
+        "unit": "mm^4"
+      },
+      "J": {
+        "value": 68460,
+        "unit": "mm^4"
+      }
+    },
+    "extra": {
+      "unitWeight": {
+        "value": 22.4,
+        "unit": "kg/m"
+      },
+      "perimeter": {
+        "value": 0.768,
+        "unit": "m"
+      },
+      "shearAreaZ": {
+        "value": 1400,
+        "unit": "mm^2"
+      },
+      "shearAreaY": {
+        "value": 1700,
+        "unit": "mm^2"
+      },
+      "radiusOfGyrationY": {
+        "value": 82.6,
+        "unit": "mm"
+      },
+      "elasticModulusSectionY": {
+        "value": 194300,
+        "unit": "mm^3"
+      },
+      "plasticModulusSectionY": {
+        "value": 220600,
+        "unit": "mm^3"
+      },
+      "radiusOfGyrationZ": {
+        "value": 22.4,
+        "unit": "mm"
+      },
+      "elasticModulusSectionZ": {
+        "value": 28470,
+        "unit": "mm^3"
+      },
+      "plasticModulusSectionZ": {
+        "value": 44610,
+        "unit": "mm^3"
+      },
+      "torsionalModulusSection": {
+        "value": 12220,
+        "unit": "mm^3"
+      },
+      "polarMomentOfInertia": {
+        "value": 0,
+        "unit": "mm^4"
+      }
+    }
+  },
+  {
+    "id": "eu_I-beam_IPE-220",
+    "name": "IPE-220",
+    "type": "I-beam",
+    "standard": "EU",
+    "comments": "I-beam profile IPE-220 according to European standards",
+    "geometry": {
+      "h": {
+        "value": 220,
+        "unit": "mm"
+      },
+      "b": {
+        "value": 110,
+        "unit": "mm"
+      },
+      "tw": {
+        "value": 5.9,
+        "unit": "mm"
+      },
+      "tf": {
+        "value": 9.2,
+        "unit": "mm"
+      },
+      "r": {
+        "value": 12,
+        "unit": "mm"
+      }
+    },
+    "properties": {
+      "A": {
+        "value": 3337,
+        "unit": "mm^2"
+      },
+      "Iy": {
+        "value": 27720000,
+        "unit": "mm^4"
+      },
+      "Iz": {
+        "value": 2049000.0,
+        "unit": "mm^4"
+      },
+      "J": {
+        "value": 89820,
+        "unit": "mm^4"
+      }
+    },
+    "extra": {
+      "unitWeight": {
+        "value": 26.2,
+        "unit": "kg/m"
+      },
+      "perimeter": {
+        "value": 0.848,
+        "unit": "m"
+      },
+      "shearAreaZ": {
+        "value": 1588,
+        "unit": "mm^2"
+      },
+      "shearAreaY": {
+        "value": 2024,
+        "unit": "mm^2"
+      },
+      "radiusOfGyrationY": {
+        "value": 91.1,
+        "unit": "mm"
+      },
+      "elasticModulusSectionY": {
+        "value": 252000,
+        "unit": "mm^3"
+      },
+      "plasticModulusSectionY": {
+        "value": 285400,
+        "unit": "mm^3"
+      },
+      "radiusOfGyrationZ": {
+        "value": 24.8,
+        "unit": "mm"
+      },
+      "elasticModulusSectionZ": {
+        "value": 37250,
+        "unit": "mm^3"
+      },
+      "plasticModulusSectionZ": {
+        "value": 58110,
+        "unit": "mm^3"
+      },
+      "torsionalModulusSection": {
+        "value": 15220,
+        "unit": "mm^3"
+      },
+      "polarMomentOfInertia": {
+        "value": 0,
+        "unit": "mm^4"
+      }
+    }
+  },
+  {
+    "id": "eu_I-beam_IPE-240",
+    "name": "IPE-240",
+    "type": "I-beam",
+    "standard": "EU",
+    "comments": "I-beam profile IPE-240 according to European standards",
+    "geometry": {
+      "h": {
+        "value": 240,
+        "unit": "mm"
+      },
+      "b": {
+        "value": 120,
+        "unit": "mm"
+      },
+      "tw": {
+        "value": 6.2,
+        "unit": "mm"
+      },
+      "tf": {
+        "value": 9.8,
+        "unit": "mm"
+      },
+      "r": {
+        "value": 15,
+        "unit": "mm"
+      }
+    },
+    "properties": {
+      "A": {
+        "value": 3912,
+        "unit": "mm^2"
+      },
+      "Iy": {
+        "value": 38920000,
+        "unit": "mm^4"
+      },
+      "Iz": {
+        "value": 2836000.0,
+        "unit": "mm^4"
+      },
+      "J": {
+        "value": 127400,
+        "unit": "mm^4"
+      }
+    },
+    "extra": {
+      "unitWeight": {
+        "value": 30.7,
+        "unit": "kg/m"
+      },
+      "perimeter": {
+        "value": 0.922,
+        "unit": "m"
+      },
+      "shearAreaZ": {
+        "value": 1914,
+        "unit": "mm^2"
+      },
+      "shearAreaY": {
+        "value": 2352,
+        "unit": "mm^2"
+      },
+      "radiusOfGyrationY": {
+        "value": 99.7,
+        "unit": "mm"
+      },
+      "elasticModulusSectionY": {
+        "value": 324300,
+        "unit": "mm^3"
+      },
+      "plasticModulusSectionY": {
+        "value": 366600,
+        "unit": "mm^3"
+      },
+      "radiusOfGyrationZ": {
+        "value": 26.9,
+        "unit": "mm"
+      },
+      "elasticModulusSectionZ": {
+        "value": 47270,
+        "unit": "mm^3"
+      },
+      "plasticModulusSectionZ": {
+        "value": 73920,
+        "unit": "mm^3"
+      },
+      "torsionalModulusSection": {
+        "value": 20550,
+        "unit": "mm^3"
+      },
+      "polarMomentOfInertia": {
+        "value": 0,
+        "unit": "mm^4"
+      }
+    }
+  },
+  {
+    "id": "eu_I-beam_IPE-270",
+    "name": "IPE-270",
+    "type": "I-beam",
+    "standard": "EU",
+    "comments": "I-beam profile IPE-270 according to European standards",
+    "geometry": {
+      "h": {
+        "value": 270,
+        "unit": "mm"
+      },
+      "b": {
+        "value": 135,
+        "unit": "mm"
+      },
+      "tw": {
+        "value": 6.6,
+        "unit": "mm"
+      },
+      "tf": {
+        "value": 10.2,
+        "unit": "mm"
+      },
+      "r": {
+        "value": 15,
+        "unit": "mm"
+      }
+    },
+    "properties": {
+      "A": {
+        "value": 4595,
+        "unit": "mm^2"
+      },
+      "Iy": {
+        "value": 57900000,
+        "unit": "mm^4"
+      },
+      "Iz": {
+        "value": 4199000.0,
+        "unit": "mm^4"
+      },
+      "J": {
+        "value": 157100,
+        "unit": "mm^4"
+      }
+    },
+    "extra": {
+      "unitWeight": {
+        "value": 36.1,
+        "unit": "kg/m"
+      },
+      "perimeter": {
+        "value": 1.041,
+        "unit": "m"
+      },
+      "shearAreaZ": {
+        "value": 2214,
+        "unit": "mm^2"
+      },
+      "shearAreaY": {
+        "value": 2754,
+        "unit": "mm^2"
+      },
+      "radiusOfGyrationY": {
+        "value": 112.3,
+        "unit": "mm"
+      },
+      "elasticModulusSectionY": {
+        "value": 428900,
+        "unit": "mm^3"
+      },
+      "plasticModulusSectionY": {
+        "value": 484000,
+        "unit": "mm^3"
+      },
+      "radiusOfGyrationZ": {
+        "value": 30.2,
+        "unit": "mm"
+      },
+      "elasticModulusSectionZ": {
+        "value": 62200,
+        "unit": "mm^3"
+      },
+      "plasticModulusSectionZ": {
+        "value": 96950,
+        "unit": "mm^3"
+      },
+      "torsionalModulusSection": {
+        "value": 23800,
+        "unit": "mm^3"
+      },
+      "polarMomentOfInertia": {
+        "value": 0,
+        "unit": "mm^4"
+      }
+    }
+  },
+  {
+    "id": "eu_I-beam_IPE-300",
+    "name": "IPE-300",
+    "type": "I-beam",
+    "standard": "EU",
+    "comments": "I-beam profile IPE-300 according to European standards",
+    "geometry": {
+      "h": {
+        "value": 300,
+        "unit": "mm"
+      },
+      "b": {
+        "value": 150,
+        "unit": "mm"
+      },
+      "tw": {
+        "value": 7.1,
+        "unit": "mm"
+      },
+      "tf": {
+        "value": 10.7,
+        "unit": "mm"
+      },
+      "r": {
+        "value": 15,
+        "unit": "mm"
+      }
+    },
+    "properties": {
+      "A": {
+        "value": 5381,
+        "unit": "mm^2"
+      },
+      "Iy": {
+        "value": 83560000,
+        "unit": "mm^4"
+      },
+      "Iz": {
+        "value": 6038000.0,
+        "unit": "mm^4"
+      },
+      "J": {
+        "value": 197500,
+        "unit": "mm^4"
+      }
+    },
+    "extra": {
+      "unitWeight": {
+        "value": 42.2,
+        "unit": "kg/m"
+      },
+      "perimeter": {
+        "value": 1.16,
+        "unit": "m"
+      },
+      "shearAreaZ": {
+        "value": 2568,
+        "unit": "mm^2"
+      },
+      "shearAreaY": {
+        "value": 3210,
+        "unit": "mm^2"
+      },
+      "radiusOfGyrationY": {
+        "value": 124.6,
+        "unit": "mm"
+      },
+      "elasticModulusSectionY": {
+        "value": 557100,
+        "unit": "mm^3"
+      },
+      "plasticModulusSectionY": {
+        "value": 628400,
+        "unit": "mm^3"
+      },
+      "radiusOfGyrationZ": {
+        "value": 33.5,
+        "unit": "mm"
+      },
+      "elasticModulusSectionZ": {
+        "value": 80500,
+        "unit": "mm^3"
+      },
+      "plasticModulusSectionZ": {
+        "value": 125200,
+        "unit": "mm^3"
+      },
+      "torsionalModulusSection": {
+        "value": 27820,
+        "unit": "mm^3"
+      },
+      "polarMomentOfInertia": {
+        "value": 0,
+        "unit": "mm^4"
+      }
+    }
+  },
+  {
+    "id": "eu_I-beam_IPE-330",
+    "name": "IPE-330",
+    "type": "I-beam",
+    "standard": "EU",
+    "comments": "I-beam profile IPE-330 according to European standards",
+    "geometry": {
+      "h": {
+        "value": 330,
+        "unit": "mm"
+      },
+      "b": {
+        "value": 160,
+        "unit": "mm"
+      },
+      "tw": {
+        "value": 7.5,
+        "unit": "mm"
+      },
+      "tf": {
+        "value": 11.5,
+        "unit": "mm"
+      },
+      "r": {
+        "value": 18,
+        "unit": "mm"
+      }
+    },
+    "properties": {
+      "A": {
+        "value": 6261,
+        "unit": "mm^2"
+      },
+      "Iy": {
+        "value": 117700000,
+        "unit": "mm^4"
+      },
+      "Iz": {
+        "value": 7881000.0,
+        "unit": "mm^4"
+      },
+      "J": {
+        "value": 275900,
+        "unit": "mm^4"
+      }
+    },
+    "extra": {
+      "unitWeight": {
+        "value": 49.1,
+        "unit": "kg/m"
+      },
+      "perimeter": {
+        "value": 1.254,
+        "unit": "m"
+      },
+      "shearAreaZ": {
+        "value": 3081,
+        "unit": "mm^2"
+      },
+      "shearAreaY": {
+        "value": 3680,
+        "unit": "mm^2"
+      },
+      "radiusOfGyrationY": {
+        "value": 137.1,
+        "unit": "mm"
+      },
+      "elasticModulusSectionY": {
+        "value": 713100,
+        "unit": "mm^3"
+      },
+      "plasticModulusSectionY": {
+        "value": 804300,
+        "unit": "mm^3"
+      },
+      "radiusOfGyrationZ": {
+        "value": 35.5,
+        "unit": "mm"
+      },
+      "elasticModulusSectionZ": {
+        "value": 98520,
+        "unit": "mm^3"
+      },
+      "plasticModulusSectionZ": {
+        "value": 153700,
+        "unit": "mm^3"
+      },
+      "torsionalModulusSection": {
+        "value": 36790,
+        "unit": "mm^3"
+      },
+      "polarMomentOfInertia": {
+        "value": 0,
+        "unit": "mm^4"
+      }
+    }
+  },
+  {
+    "id": "eu_I-beam_IPE-360",
+    "name": "IPE-360",
+    "type": "I-beam",
+    "standard": "EU",
+    "comments": "I-beam profile IPE-360 according to European standards",
+    "geometry": {
+      "h": {
+        "value": 360,
+        "unit": "mm"
+      },
+      "b": {
+        "value": 170,
+        "unit": "mm"
+      },
+      "tw": {
+        "value": 8.0,
+        "unit": "mm"
+      },
+      "tf": {
+        "value": 12.7,
+        "unit": "mm"
+      },
+      "r": {
+        "value": 18,
+        "unit": "mm"
+      }
+    },
+    "properties": {
+      "A": {
+        "value": 7273,
+        "unit": "mm^2"
+      },
+      "Iy": {
+        "value": 162700000,
+        "unit": "mm^4"
+      },
+      "Iz": {
+        "value": 10430000.0,
+        "unit": "mm^4"
+      },
+      "J": {
+        "value": 370800,
+        "unit": "mm^4"
+      }
+    },
+    "extra": {
+      "unitWeight": {
+        "value": 57.1,
+        "unit": "kg/m"
+      },
+      "perimeter": {
+        "value": 1.353,
+        "unit": "m"
+      },
+      "shearAreaZ": {
+        "value": 3514,
+        "unit": "mm^2"
+      },
+      "shearAreaY": {
+        "value": 4318,
+        "unit": "mm^2"
+      },
+      "radiusOfGyrationY": {
+        "value": 149.5,
+        "unit": "mm"
+      },
+      "elasticModulusSectionY": {
+        "value": 903600,
+        "unit": "mm^3"
+      },
+      "plasticModulusSectionY": {
+        "value": 1019000,
+        "unit": "mm^3"
+      },
+      "radiusOfGyrationZ": {
+        "value": 37.9,
+        "unit": "mm"
+      },
+      "elasticModulusSectionZ": {
+        "value": 122800,
+        "unit": "mm^3"
+      },
+      "plasticModulusSectionZ": {
+        "value": 191100,
+        "unit": "mm^3"
+      },
+      "torsionalModulusSection": {
+        "value": 46350,
+        "unit": "mm^3"
+      },
+      "polarMomentOfInertia": {
+        "value": 0,
+        "unit": "mm^4"
+      }
+    }
+  },
+  {
+    "id": "eu_I-beam_IPE-400",
+    "name": "IPE-400",
+    "type": "I-beam",
+    "standard": "EU",
+    "comments": "I-beam profile IPE-400 according to European standards",
+    "geometry": {
+      "h": {
+        "value": 400,
+        "unit": "mm"
+      },
+      "b": {
+        "value": 180,
+        "unit": "mm"
+      },
+      "tw": {
+        "value": 8.6,
+        "unit": "mm"
+      },
+      "tf": {
+        "value": 13.5,
+        "unit": "mm"
+      },
+      "r": {
+        "value": 21,
+        "unit": "mm"
+      }
+    },
+    "properties": {
+      "A": {
+        "value": 8446,
+        "unit": "mm^2"
+      },
+      "Iy": {
+        "value": 231300000,
+        "unit": "mm^4"
+      },
+      "Iz": {
+        "value": 13180000.0,
+        "unit": "mm^4"
+      },
+      "J": {
+        "value": 504100,
+        "unit": "mm^4"
+      }
+    },
+    "extra": {
+      "unitWeight": {
+        "value": 66.3,
+        "unit": "kg/m"
+      },
+      "perimeter": {
+        "value": 1.467,
+        "unit": "m"
+      },
+      "shearAreaZ": {
+        "value": 4269,
+        "unit": "mm^2"
+      },
+      "shearAreaY": {
+        "value": 4860,
+        "unit": "mm^2"
+      },
+      "radiusOfGyrationY": {
+        "value": 165.5,
+        "unit": "mm"
+      },
+      "elasticModulusSectionY": {
+        "value": 1156000,
+        "unit": "mm^3"
+      },
+      "plasticModulusSectionY": {
+        "value": 1307000,
+        "unit": "mm^3"
+      },
+      "radiusOfGyrationZ": {
+        "value": 39.5,
+        "unit": "mm"
+      },
+      "elasticModulusSectionZ": {
+        "value": 146400,
+        "unit": "mm^3"
+      },
+      "plasticModulusSectionZ": {
+        "value": 229000,
+        "unit": "mm^3"
+      },
+      "torsionalModulusSection": {
+        "value": 58620,
+        "unit": "mm^3"
+      },
+      "polarMomentOfInertia": {
+        "value": 0,
+        "unit": "mm^4"
+      }
+    }
+  },
+  {
+    "id": "eu_I-beam_IPE-450",
+    "name": "IPE-450",
+    "type": "I-beam",
+    "standard": "EU",
+    "comments": "I-beam profile IPE-450 according to European standards",
+    "geometry": {
+      "h": {
+        "value": 450,
+        "unit": "mm"
+      },
+      "b": {
+        "value": 190,
+        "unit": "mm"
+      },
+      "tw": {
+        "value": 9.4,
+        "unit": "mm"
+      },
+      "tf": {
+        "value": 14.6,
+        "unit": "mm"
+      },
+      "r": {
+        "value": 21,
+        "unit": "mm"
+      }
+    },
+    "properties": {
+      "A": {
+        "value": 9882,
+        "unit": "mm^2"
+      },
+      "Iy": {
+        "value": 337400000,
+        "unit": "mm^4"
+      },
+      "Iz": {
+        "value": 16760000.000000002,
+        "unit": "mm^4"
+      },
+      "J": {
+        "value": 660500,
+        "unit": "mm^4"
+      }
+    },
+    "extra": {
+      "unitWeight": {
+        "value": 77.6,
+        "unit": "kg/m"
+      },
+      "perimeter": {
+        "value": 1.605,
+        "unit": "m"
+      },
+      "shearAreaZ": {
+        "value": 5085,
+        "unit": "mm^2"
+      },
+      "shearAreaY": {
+        "value": 5548,
+        "unit": "mm^2"
+      },
+      "radiusOfGyrationY": {
+        "value": 184.8,
+        "unit": "mm"
+      },
+      "elasticModulusSectionY": {
+        "value": 1500000,
+        "unit": "mm^3"
+      },
+      "plasticModulusSectionY": {
+        "value": 1702000,
+        "unit": "mm^3"
+      },
+      "radiusOfGyrationZ": {
+        "value": 41.2,
+        "unit": "mm"
+      },
+      "elasticModulusSectionZ": {
+        "value": 176400,
+        "unit": "mm^3"
+      },
+      "plasticModulusSectionZ": {
+        "value": 276400,
+        "unit": "mm^3"
+      },
+      "torsionalModulusSection": {
+        "value": 70270,
+        "unit": "mm^3"
+      },
+      "polarMomentOfInertia": {
+        "value": 0,
+        "unit": "mm^4"
+      }
+    }
+  },
+  {
+    "id": "eu_I-beam_IPE-500",
+    "name": "IPE-500",
+    "type": "I-beam",
+    "standard": "EU",
+    "comments": "I-beam profile IPE-500 according to European standards",
+    "geometry": {
+      "h": {
+        "value": 500,
+        "unit": "mm"
+      },
+      "b": {
+        "value": 200,
+        "unit": "mm"
+      },
+      "tw": {
+        "value": 10.2,
+        "unit": "mm"
+      },
+      "tf": {
+        "value": 16.0,
+        "unit": "mm"
+      },
+      "r": {
+        "value": 21,
+        "unit": "mm"
+      }
+    },
+    "properties": {
+      "A": {
+        "value": 11552,
+        "unit": "mm^2"
+      },
+      "Iy": {
+        "value": 482000000,
+        "unit": "mm^4"
+      },
+      "Iz": {
+        "value": 21420000.0,
+        "unit": "mm^4"
+      },
+      "J": {
+        "value": 886200,
+        "unit": "mm^4"
+      }
+    },
+    "extra": {
+      "unitWeight": {
+        "value": 90.7,
+        "unit": "kg/m"
+      },
+      "perimeter": {
+        "value": 1.744,
+        "unit": "m"
+      },
+      "shearAreaZ": {
+        "value": 5987,
+        "unit": "mm^2"
+      },
+      "shearAreaY": {
+        "value": 6400,
+        "unit": "mm^2"
+      },
+      "radiusOfGyrationY": {
+        "value": 204.3,
+        "unit": "mm"
+      },
+      "elasticModulusSectionY": {
+        "value": 1928000,
+        "unit": "mm^3"
+      },
+      "plasticModulusSectionY": {
+        "value": 2194000,
+        "unit": "mm^3"
+      },
+      "radiusOfGyrationZ": {
+        "value": 43.1,
+        "unit": "mm"
+      },
+      "elasticModulusSectionZ": {
+        "value": 214200,
+        "unit": "mm^3"
+      },
+      "plasticModulusSectionZ": {
+        "value": 335900,
+        "unit": "mm^3"
+      },
+      "torsionalModulusSection": {
+        "value": 86880,
+        "unit": "mm^3"
+      },
+      "polarMomentOfInertia": {
+        "value": 0,
+        "unit": "mm^4"
+      }
+    }
+  },
+  {
+    "id": "eu_I-beam_IPE-550",
+    "name": "IPE-550",
+    "type": "I-beam",
+    "standard": "EU",
+    "comments": "I-beam profile IPE-550 according to European standards",
+    "geometry": {
+      "h": {
+        "value": 550,
+        "unit": "mm"
+      },
+      "b": {
+        "value": 210,
+        "unit": "mm"
+      },
+      "tw": {
+        "value": 11.1,
+        "unit": "mm"
+      },
+      "tf": {
+        "value": 17.2,
+        "unit": "mm"
+      },
+      "r": {
+        "value": 24,
+        "unit": "mm"
+      }
+    },
+    "properties": {
+      "A": {
+        "value": 13442,
+        "unit": "mm^2"
+      },
+      "Iy": {
+        "value": 671200000,
+        "unit": "mm^4"
+      },
+      "Iz": {
+        "value": 26680000.0,
+        "unit": "mm^4"
+      },
+      "J": {
+        "value": 1217000,
+        "unit": "mm^4"
+      }
+    },
+    "extra": {
+      "unitWeight": {
+        "value": 105.5,
+        "unit": "kg/m"
+      },
+      "perimeter": {
+        "value": 1.877,
+        "unit": "m"
+      },
+      "shearAreaZ": {
+        "value": 7234,
+        "unit": "mm^2"
+      },
+      "shearAreaY": {
+        "value": 7224,
+        "unit": "mm^2"
+      },
+      "radiusOfGyrationY": {
+        "value": 223.5,
+        "unit": "mm"
+      },
+      "elasticModulusSectionY": {
+        "value": 2441000,
+        "unit": "mm^3"
+      },
+      "plasticModulusSectionY": {
+        "value": 2787000,
+        "unit": "mm^3"
+      },
+      "radiusOfGyrationZ": {
+        "value": 44.5,
+        "unit": "mm"
+      },
+      "elasticModulusSectionZ": {
+        "value": 254100,
+        "unit": "mm^3"
+      },
+      "plasticModulusSectionZ": {
+        "value": 400500,
+        "unit": "mm^3"
+      },
+      "torsionalModulusSection": {
+        "value": 109600,
+        "unit": "mm^3"
+      },
+      "polarMomentOfInertia": {
+        "value": 0,
+        "unit": "mm^4"
+      }
+    }
+  },
+  {
+    "id": "eu_I-beam_IPE-600",
+    "name": "IPE-600",
+    "type": "I-beam",
+    "standard": "EU",
+    "comments": "I-beam profile IPE-600 according to European standards",
+    "geometry": {
+      "h": {
+        "value": 600,
+        "unit": "mm"
+      },
+      "b": {
+        "value": 220,
+        "unit": "mm"
+      },
+      "tw": {
+        "value": 12.0,
+        "unit": "mm"
+      },
+      "tf": {
+        "value": 19.0,
+        "unit": "mm"
+      },
+      "r": {
+        "value": 24,
+        "unit": "mm"
+      }
+    },
+    "properties": {
+      "A": {
+        "value": 15598,
+        "unit": "mm^2"
+      },
+      "Iy": {
+        "value": 920800000,
+        "unit": "mm^4"
+      },
+      "Iz": {
+        "value": 33870000.0,
+        "unit": "mm^4"
+      },
+      "J": {
+        "value": 1646000,
+        "unit": "mm^4"
+      }
+    },
+    "extra": {
+      "unitWeight": {
+        "value": 122.4,
+        "unit": "kg/m"
+      },
+      "perimeter": {
+        "value": 2.015,
+        "unit": "m"
+      },
+      "shearAreaZ": {
+        "value": 8378,
+        "unit": "mm^2"
+      },
+      "shearAreaY": {
+        "value": 8360,
+        "unit": "mm^2"
+      },
+      "radiusOfGyrationY": {
+        "value": 243.0,
+        "unit": "mm"
+      },
+      "elasticModulusSectionY": {
+        "value": 3069000,
+        "unit": "mm^3"
+      },
+      "plasticModulusSectionY": {
+        "value": 3512000,
+        "unit": "mm^3"
+      },
+      "radiusOfGyrationZ": {
+        "value": 46.6,
+        "unit": "mm"
+      },
+      "elasticModulusSectionZ": {
+        "value": 307900,
+        "unit": "mm^3"
+      },
+      "plasticModulusSectionZ": {
+        "value": 485600,
+        "unit": "mm^3"
+      },
+      "torsionalModulusSection": {
+        "value": 137200,
+        "unit": "mm^3"
+      },
+      "polarMomentOfInertia": {
+        "value": 0,
+        "unit": "mm^4"
+      }
+    }
+  }
+]

@@ -1,0 +1,1820 @@
+[
+  {
+    "id": "ru_C-channel_5U",
+    "name": "5U",
+    "type": "C-channel",
+    "standard": "RU",
+    "comments": "Channel profile 5U according to Russian standards",
+    "geometry": {
+      "h": {
+        "value": 50,
+        "unit": "mm"
+      },
+      "b": {
+        "value": 32,
+        "unit": "mm"
+      },
+      "tw": {
+        "value": 4.4,
+        "unit": "mm"
+      },
+      "tf": {
+        "value": 7.0,
+        "unit": "mm"
+      },
+      "r": {
+        "value": 6.0,
+        "unit": "mm"
+      },
+      "rf": {
+        "value": 2.5,
+        "unit": "mm"
+      }
+    },
+    "properties": {
+      "A": {
+        "value": 6.16,
+        "unit": "mm^2"
+      },
+      "Iy": {
+        "value": 22.8,
+        "unit": "cm^4"
+      },
+      "Iz": {
+        "value": 5.61,
+        "unit": "cm^4"
+      },
+      "J": {
+        "value": 0,
+        "unit": "cm^4"
+      }
+    },
+    "extra": {
+      "unitWeight": {
+        "value": 4.84,
+        "unit": "kg/m"
+      },
+      "perimeter": {
+        "value": 0,
+        "unit": "mm"
+      },
+      "shearAreaZ": {
+        "value": 0,
+        "unit": "mm^2"
+      },
+      "shearAreaY": {
+        "value": 0,
+        "unit": "mm^2"
+      },
+      "radiusOfGyrationY": {
+        "value": 1.92,
+        "unit": "cm"
+      },
+      "elasticModulusSectionY": {
+        "value": 9.1,
+        "unit": "cm^3"
+      },
+      "plasticModulusSectionY": {
+        "value": 0,
+        "unit": "cm^3"
+      },
+      "radiusOfGyrationZ": {
+        "value": 0.95,
+        "unit": "cm"
+      },
+      "elasticModulusSectionZ": {
+        "value": 2.75,
+        "unit": "cm^3"
+      },
+      "plasticModulusSectionZ": {
+        "value": 0,
+        "unit": "cm^3"
+      },
+      "torsionalModulusSection": {
+        "value": 0,
+        "unit": "cm^3"
+      },
+      "polarMomentOfInertia": {
+        "value": 0,
+        "unit": "cm^4"
+      }
+    }
+  },
+  {
+    "id": "ru_C-channel_6.5U",
+    "name": "6.5U",
+    "type": "C-channel",
+    "standard": "RU",
+    "comments": "Channel profile 6.5U according to Russian standards",
+    "geometry": {
+      "h": {
+        "value": 65,
+        "unit": "mm"
+      },
+      "b": {
+        "value": 36,
+        "unit": "mm"
+      },
+      "tw": {
+        "value": 4.4,
+        "unit": "mm"
+      },
+      "tf": {
+        "value": 7.2,
+        "unit": "mm"
+      },
+      "r": {
+        "value": 6.0,
+        "unit": "mm"
+      },
+      "rf": {
+        "value": 2.5,
+        "unit": "mm"
+      }
+    },
+    "properties": {
+      "A": {
+        "value": 7.51,
+        "unit": "mm^2"
+      },
+      "Iy": {
+        "value": 48.6,
+        "unit": "cm^4"
+      },
+      "Iz": {
+        "value": 8.7,
+        "unit": "cm^4"
+      },
+      "J": {
+        "value": 0,
+        "unit": "cm^4"
+      }
+    },
+    "extra": {
+      "unitWeight": {
+        "value": 5.9,
+        "unit": "kg/m"
+      },
+      "perimeter": {
+        "value": 0,
+        "unit": "mm"
+      },
+      "shearAreaZ": {
+        "value": 0,
+        "unit": "mm^2"
+      },
+      "shearAreaY": {
+        "value": 0,
+        "unit": "mm^2"
+      },
+      "radiusOfGyrationY": {
+        "value": 2.54,
+        "unit": "cm"
+      },
+      "elasticModulusSectionY": {
+        "value": 15.0,
+        "unit": "cm^3"
+      },
+      "plasticModulusSectionY": {
+        "value": 0,
+        "unit": "cm^3"
+      },
+      "radiusOfGyrationZ": {
+        "value": 1.08,
+        "unit": "cm"
+      },
+      "elasticModulusSectionZ": {
+        "value": 3.68,
+        "unit": "cm^3"
+      },
+      "plasticModulusSectionZ": {
+        "value": 0,
+        "unit": "cm^3"
+      },
+      "torsionalModulusSection": {
+        "value": 0,
+        "unit": "cm^3"
+      },
+      "polarMomentOfInertia": {
+        "value": 0,
+        "unit": "cm^4"
+      }
+    }
+  },
+  {
+    "id": "ru_C-channel_8U",
+    "name": "8U",
+    "type": "C-channel",
+    "standard": "RU",
+    "comments": "Channel profile 8U according to Russian standards",
+    "geometry": {
+      "h": {
+        "value": 80,
+        "unit": "mm"
+      },
+      "b": {
+        "value": 40,
+        "unit": "mm"
+      },
+      "tw": {
+        "value": 4.5,
+        "unit": "mm"
+      },
+      "tf": {
+        "value": 7.4,
+        "unit": "mm"
+      },
+      "r": {
+        "value": 6.5,
+        "unit": "mm"
+      },
+      "rf": {
+        "value": 2.5,
+        "unit": "mm"
+      }
+    },
+    "properties": {
+      "A": {
+        "value": 8.98,
+        "unit": "mm^2"
+      },
+      "Iy": {
+        "value": 89.4,
+        "unit": "cm^4"
+      },
+      "Iz": {
+        "value": 12.8,
+        "unit": "cm^4"
+      },
+      "J": {
+        "value": 0,
+        "unit": "cm^4"
+      }
+    },
+    "extra": {
+      "unitWeight": {
+        "value": 7.05,
+        "unit": "kg/m"
+      },
+      "perimeter": {
+        "value": 0,
+        "unit": "mm"
+      },
+      "shearAreaZ": {
+        "value": 0,
+        "unit": "mm^2"
+      },
+      "shearAreaY": {
+        "value": 0,
+        "unit": "mm^2"
+      },
+      "radiusOfGyrationY": {
+        "value": 3.16,
+        "unit": "cm"
+      },
+      "elasticModulusSectionY": {
+        "value": 22.4,
+        "unit": "cm^3"
+      },
+      "plasticModulusSectionY": {
+        "value": 0,
+        "unit": "cm^3"
+      },
+      "radiusOfGyrationZ": {
+        "value": 1.19,
+        "unit": "cm"
+      },
+      "elasticModulusSectionZ": {
+        "value": 4.75,
+        "unit": "cm^3"
+      },
+      "plasticModulusSectionZ": {
+        "value": 0,
+        "unit": "cm^3"
+      },
+      "torsionalModulusSection": {
+        "value": 0,
+        "unit": "cm^3"
+      },
+      "polarMomentOfInertia": {
+        "value": 0,
+        "unit": "cm^4"
+      }
+    }
+  },
+  {
+    "id": "ru_C-channel_10U",
+    "name": "10U",
+    "type": "C-channel",
+    "standard": "RU",
+    "comments": "Channel profile 10U according to Russian standards",
+    "geometry": {
+      "h": {
+        "value": 100,
+        "unit": "mm"
+      },
+      "b": {
+        "value": 46,
+        "unit": "mm"
+      },
+      "tw": {
+        "value": 4.5,
+        "unit": "mm"
+      },
+      "tf": {
+        "value": 7.6,
+        "unit": "mm"
+      },
+      "r": {
+        "value": 7.0,
+        "unit": "mm"
+      },
+      "rf": {
+        "value": 3.0,
+        "unit": "mm"
+      }
+    },
+    "properties": {
+      "A": {
+        "value": 10.9,
+        "unit": "mm^2"
+      },
+      "Iy": {
+        "value": 174.0,
+        "unit": "cm^4"
+      },
+      "Iz": {
+        "value": 20.4,
+        "unit": "cm^4"
+      },
+      "J": {
+        "value": 0,
+        "unit": "cm^4"
+      }
+    },
+    "extra": {
+      "unitWeight": {
+        "value": 8.59,
+        "unit": "kg/m"
+      },
+      "perimeter": {
+        "value": 0,
+        "unit": "mm"
+      },
+      "shearAreaZ": {
+        "value": 0,
+        "unit": "mm^2"
+      },
+      "shearAreaY": {
+        "value": 0,
+        "unit": "mm^2"
+      },
+      "radiusOfGyrationY": {
+        "value": 3.99,
+        "unit": "cm"
+      },
+      "elasticModulusSectionY": {
+        "value": 34.8,
+        "unit": "cm^3"
+      },
+      "plasticModulusSectionY": {
+        "value": 0,
+        "unit": "cm^3"
+      },
+      "radiusOfGyrationZ": {
+        "value": 1.37,
+        "unit": "cm"
+      },
+      "elasticModulusSectionZ": {
+        "value": 6.46,
+        "unit": "cm^3"
+      },
+      "plasticModulusSectionZ": {
+        "value": 0,
+        "unit": "cm^3"
+      },
+      "torsionalModulusSection": {
+        "value": 0,
+        "unit": "cm^3"
+      },
+      "polarMomentOfInertia": {
+        "value": 0,
+        "unit": "cm^4"
+      }
+    }
+  },
+  {
+    "id": "ru_C-channel_12U",
+    "name": "12U",
+    "type": "C-channel",
+    "standard": "RU",
+    "comments": "Channel profile 12U according to Russian standards",
+    "geometry": {
+      "h": {
+        "value": 120,
+        "unit": "mm"
+      },
+      "b": {
+        "value": 52,
+        "unit": "mm"
+      },
+      "tw": {
+        "value": 4.8,
+        "unit": "mm"
+      },
+      "tf": {
+        "value": 7.8,
+        "unit": "mm"
+      },
+      "r": {
+        "value": 7.5,
+        "unit": "mm"
+      },
+      "rf": {
+        "value": 3.0,
+        "unit": "mm"
+      }
+    },
+    "properties": {
+      "A": {
+        "value": 13.3,
+        "unit": "mm^2"
+      },
+      "Iy": {
+        "value": 304.0,
+        "unit": "cm^4"
+      },
+      "Iz": {
+        "value": 31.2,
+        "unit": "cm^4"
+      },
+      "J": {
+        "value": 0,
+        "unit": "cm^4"
+      }
+    },
+    "extra": {
+      "unitWeight": {
+        "value": 10.4,
+        "unit": "kg/m"
+      },
+      "perimeter": {
+        "value": 0,
+        "unit": "mm"
+      },
+      "shearAreaZ": {
+        "value": 0,
+        "unit": "mm^2"
+      },
+      "shearAreaY": {
+        "value": 0,
+        "unit": "mm^2"
+      },
+      "radiusOfGyrationY": {
+        "value": 4.78,
+        "unit": "cm"
+      },
+      "elasticModulusSectionY": {
+        "value": 50.6,
+        "unit": "cm^3"
+      },
+      "plasticModulusSectionY": {
+        "value": 0,
+        "unit": "cm^3"
+      },
+      "radiusOfGyrationZ": {
+        "value": 1.53,
+        "unit": "cm"
+      },
+      "elasticModulusSectionZ": {
+        "value": 8.52,
+        "unit": "cm^3"
+      },
+      "plasticModulusSectionZ": {
+        "value": 0,
+        "unit": "cm^3"
+      },
+      "torsionalModulusSection": {
+        "value": 0,
+        "unit": "cm^3"
+      },
+      "polarMomentOfInertia": {
+        "value": 0,
+        "unit": "cm^4"
+      }
+    }
+  },
+  {
+    "id": "ru_C-channel_14U",
+    "name": "14U",
+    "type": "C-channel",
+    "standard": "RU",
+    "comments": "Channel profile 14U according to Russian standards",
+    "geometry": {
+      "h": {
+        "value": 140,
+        "unit": "mm"
+      },
+      "b": {
+        "value": 58,
+        "unit": "mm"
+      },
+      "tw": {
+        "value": 4.9,
+        "unit": "mm"
+      },
+      "tf": {
+        "value": 8.1,
+        "unit": "mm"
+      },
+      "r": {
+        "value": 8.0,
+        "unit": "mm"
+      },
+      "rf": {
+        "value": 3.0,
+        "unit": "mm"
+      }
+    },
+    "properties": {
+      "A": {
+        "value": 15.6,
+        "unit": "mm^2"
+      },
+      "Iy": {
+        "value": 491.0,
+        "unit": "cm^4"
+      },
+      "Iz": {
+        "value": 45.4,
+        "unit": "cm^4"
+      },
+      "J": {
+        "value": 0,
+        "unit": "cm^4"
+      }
+    },
+    "extra": {
+      "unitWeight": {
+        "value": 12.3,
+        "unit": "kg/m"
+      },
+      "perimeter": {
+        "value": 0,
+        "unit": "mm"
+      },
+      "shearAreaZ": {
+        "value": 0,
+        "unit": "mm^2"
+      },
+      "shearAreaY": {
+        "value": 0,
+        "unit": "mm^2"
+      },
+      "radiusOfGyrationY": {
+        "value": 5.6,
+        "unit": "cm"
+      },
+      "elasticModulusSectionY": {
+        "value": 70.2,
+        "unit": "cm^3"
+      },
+      "plasticModulusSectionY": {
+        "value": 0,
+        "unit": "cm^3"
+      },
+      "radiusOfGyrationZ": {
+        "value": 1.7,
+        "unit": "cm"
+      },
+      "elasticModulusSectionZ": {
+        "value": 11.0,
+        "unit": "cm^3"
+      },
+      "plasticModulusSectionZ": {
+        "value": 0,
+        "unit": "cm^3"
+      },
+      "torsionalModulusSection": {
+        "value": 0,
+        "unit": "cm^3"
+      },
+      "polarMomentOfInertia": {
+        "value": 0,
+        "unit": "cm^4"
+      }
+    }
+  },
+  {
+    "id": "ru_C-channel_16U",
+    "name": "16U",
+    "type": "C-channel",
+    "standard": "RU",
+    "comments": "Channel profile 16U according to Russian standards",
+    "geometry": {
+      "h": {
+        "value": 160,
+        "unit": "mm"
+      },
+      "b": {
+        "value": 64,
+        "unit": "mm"
+      },
+      "tw": {
+        "value": 5.0,
+        "unit": "mm"
+      },
+      "tf": {
+        "value": 8.4,
+        "unit": "mm"
+      },
+      "r": {
+        "value": 8.5,
+        "unit": "mm"
+      },
+      "rf": {
+        "value": 3.5,
+        "unit": "mm"
+      }
+    },
+    "properties": {
+      "A": {
+        "value": 18.1,
+        "unit": "mm^2"
+      },
+      "Iy": {
+        "value": 747.0,
+        "unit": "cm^4"
+      },
+      "Iz": {
+        "value": 63.3,
+        "unit": "cm^4"
+      },
+      "J": {
+        "value": 0,
+        "unit": "cm^4"
+      }
+    },
+    "extra": {
+      "unitWeight": {
+        "value": 14.2,
+        "unit": "kg/m"
+      },
+      "perimeter": {
+        "value": 0,
+        "unit": "mm"
+      },
+      "shearAreaZ": {
+        "value": 0,
+        "unit": "mm^2"
+      },
+      "shearAreaY": {
+        "value": 0,
+        "unit": "mm^2"
+      },
+      "radiusOfGyrationY": {
+        "value": 6.42,
+        "unit": "cm"
+      },
+      "elasticModulusSectionY": {
+        "value": 93.4,
+        "unit": "cm^3"
+      },
+      "plasticModulusSectionY": {
+        "value": 0,
+        "unit": "cm^3"
+      },
+      "radiusOfGyrationZ": {
+        "value": 1.87,
+        "unit": "cm"
+      },
+      "elasticModulusSectionZ": {
+        "value": 13.8,
+        "unit": "cm^3"
+      },
+      "plasticModulusSectionZ": {
+        "value": 0,
+        "unit": "cm^3"
+      },
+      "torsionalModulusSection": {
+        "value": 0,
+        "unit": "cm^3"
+      },
+      "polarMomentOfInertia": {
+        "value": 0,
+        "unit": "cm^4"
+      }
+    }
+  },
+  {
+    "id": "ru_C-channel_16aU",
+    "name": "16aU",
+    "type": "C-channel",
+    "standard": "RU",
+    "comments": "Channel profile 16aU according to Russian standards",
+    "geometry": {
+      "h": {
+        "value": 160,
+        "unit": "mm"
+      },
+      "b": {
+        "value": 68,
+        "unit": "mm"
+      },
+      "tw": {
+        "value": 5.0,
+        "unit": "mm"
+      },
+      "tf": {
+        "value": 9.0,
+        "unit": "mm"
+      },
+      "r": {
+        "value": 8.5,
+        "unit": "mm"
+      },
+      "rf": {
+        "value": 3.5,
+        "unit": "mm"
+      }
+    },
+    "properties": {
+      "A": {
+        "value": 19.5,
+        "unit": "mm^2"
+      },
+      "Iy": {
+        "value": 823.0,
+        "unit": "cm^4"
+      },
+      "Iz": {
+        "value": 78.8,
+        "unit": "cm^4"
+      },
+      "J": {
+        "value": 0,
+        "unit": "cm^4"
+      }
+    },
+    "extra": {
+      "unitWeight": {
+        "value": 15.3,
+        "unit": "kg/m"
+      },
+      "perimeter": {
+        "value": 0,
+        "unit": "mm"
+      },
+      "shearAreaZ": {
+        "value": 0,
+        "unit": "mm^2"
+      },
+      "shearAreaY": {
+        "value": 0,
+        "unit": "mm^2"
+      },
+      "radiusOfGyrationY": {
+        "value": 6.49,
+        "unit": "cm"
+      },
+      "elasticModulusSectionY": {
+        "value": 103.0,
+        "unit": "cm^3"
+      },
+      "plasticModulusSectionY": {
+        "value": 0,
+        "unit": "cm^3"
+      },
+      "radiusOfGyrationZ": {
+        "value": 2.01,
+        "unit": "cm"
+      },
+      "elasticModulusSectionZ": {
+        "value": 16.4,
+        "unit": "cm^3"
+      },
+      "plasticModulusSectionZ": {
+        "value": 0,
+        "unit": "cm^3"
+      },
+      "torsionalModulusSection": {
+        "value": 0,
+        "unit": "cm^3"
+      },
+      "polarMomentOfInertia": {
+        "value": 0,
+        "unit": "cm^4"
+      }
+    }
+  },
+  {
+    "id": "ru_C-channel_18U",
+    "name": "18U",
+    "type": "C-channel",
+    "standard": "RU",
+    "comments": "Channel profile 18U according to Russian standards",
+    "geometry": {
+      "h": {
+        "value": 180,
+        "unit": "mm"
+      },
+      "b": {
+        "value": 70,
+        "unit": "mm"
+      },
+      "tw": {
+        "value": 5.1,
+        "unit": "mm"
+      },
+      "tf": {
+        "value": 8.7,
+        "unit": "mm"
+      },
+      "r": {
+        "value": 9.0,
+        "unit": "mm"
+      },
+      "rf": {
+        "value": 3.5,
+        "unit": "mm"
+      }
+    },
+    "properties": {
+      "A": {
+        "value": 20.7,
+        "unit": "mm^2"
+      },
+      "Iy": {
+        "value": 1090.0,
+        "unit": "cm^4"
+      },
+      "Iz": {
+        "value": 86.0,
+        "unit": "cm^4"
+      },
+      "J": {
+        "value": 0,
+        "unit": "cm^4"
+      }
+    },
+    "extra": {
+      "unitWeight": {
+        "value": 16.3,
+        "unit": "kg/m"
+      },
+      "perimeter": {
+        "value": 0,
+        "unit": "mm"
+      },
+      "shearAreaZ": {
+        "value": 0,
+        "unit": "mm^2"
+      },
+      "shearAreaY": {
+        "value": 0,
+        "unit": "mm^2"
+      },
+      "radiusOfGyrationY": {
+        "value": 7.24,
+        "unit": "cm"
+      },
+      "elasticModulusSectionY": {
+        "value": 121.0,
+        "unit": "cm^3"
+      },
+      "plasticModulusSectionY": {
+        "value": 0,
+        "unit": "cm^3"
+      },
+      "radiusOfGyrationZ": {
+        "value": 2.04,
+        "unit": "cm"
+      },
+      "elasticModulusSectionZ": {
+        "value": 17.0,
+        "unit": "cm^3"
+      },
+      "plasticModulusSectionZ": {
+        "value": 0,
+        "unit": "cm^3"
+      },
+      "torsionalModulusSection": {
+        "value": 0,
+        "unit": "cm^3"
+      },
+      "polarMomentOfInertia": {
+        "value": 0,
+        "unit": "cm^4"
+      }
+    }
+  },
+  {
+    "id": "ru_C-channel_18aU",
+    "name": "18aU",
+    "type": "C-channel",
+    "standard": "RU",
+    "comments": "Channel profile 18aU according to Russian standards",
+    "geometry": {
+      "h": {
+        "value": 180,
+        "unit": "mm"
+      },
+      "b": {
+        "value": 74,
+        "unit": "mm"
+      },
+      "tw": {
+        "value": 5.1,
+        "unit": "mm"
+      },
+      "tf": {
+        "value": 9.3,
+        "unit": "mm"
+      },
+      "r": {
+        "value": 9.0,
+        "unit": "mm"
+      },
+      "rf": {
+        "value": 3.5,
+        "unit": "mm"
+      }
+    },
+    "properties": {
+      "A": {
+        "value": 22.2,
+        "unit": "mm^2"
+      },
+      "Iy": {
+        "value": 1190.0,
+        "unit": "cm^4"
+      },
+      "Iz": {
+        "value": 105.0,
+        "unit": "cm^4"
+      },
+      "J": {
+        "value": 0,
+        "unit": "cm^4"
+      }
+    },
+    "extra": {
+      "unitWeight": {
+        "value": 17.4,
+        "unit": "kg/m"
+      },
+      "perimeter": {
+        "value": 0,
+        "unit": "mm"
+      },
+      "shearAreaZ": {
+        "value": 0,
+        "unit": "mm^2"
+      },
+      "shearAreaY": {
+        "value": 0,
+        "unit": "mm^2"
+      },
+      "radiusOfGyrationY": {
+        "value": 7.32,
+        "unit": "cm"
+      },
+      "elasticModulusSectionY": {
+        "value": 132.0,
+        "unit": "cm^3"
+      },
+      "plasticModulusSectionY": {
+        "value": 0,
+        "unit": "cm^3"
+      },
+      "radiusOfGyrationZ": {
+        "value": 2.18,
+        "unit": "cm"
+      },
+      "elasticModulusSectionZ": {
+        "value": 20.0,
+        "unit": "cm^3"
+      },
+      "plasticModulusSectionZ": {
+        "value": 0,
+        "unit": "cm^3"
+      },
+      "torsionalModulusSection": {
+        "value": 0,
+        "unit": "cm^3"
+      },
+      "polarMomentOfInertia": {
+        "value": 0,
+        "unit": "cm^4"
+      }
+    }
+  },
+  {
+    "id": "ru_C-channel_20U",
+    "name": "20U",
+    "type": "C-channel",
+    "standard": "RU",
+    "comments": "Channel profile 20U according to Russian standards",
+    "geometry": {
+      "h": {
+        "value": 200,
+        "unit": "mm"
+      },
+      "b": {
+        "value": 76,
+        "unit": "mm"
+      },
+      "tw": {
+        "value": 5.2,
+        "unit": "mm"
+      },
+      "tf": {
+        "value": 9.0,
+        "unit": "mm"
+      },
+      "r": {
+        "value": 9.5,
+        "unit": "mm"
+      },
+      "rf": {
+        "value": 4.0,
+        "unit": "mm"
+      }
+    },
+    "properties": {
+      "A": {
+        "value": 23.4,
+        "unit": "mm^2"
+      },
+      "Iy": {
+        "value": 1520.0,
+        "unit": "cm^4"
+      },
+      "Iz": {
+        "value": 113.0,
+        "unit": "cm^4"
+      },
+      "J": {
+        "value": 0,
+        "unit": "cm^4"
+      }
+    },
+    "extra": {
+      "unitWeight": {
+        "value": 18.4,
+        "unit": "kg/m"
+      },
+      "perimeter": {
+        "value": 0,
+        "unit": "mm"
+      },
+      "shearAreaZ": {
+        "value": 0,
+        "unit": "mm^2"
+      },
+      "shearAreaY": {
+        "value": 0,
+        "unit": "mm^2"
+      },
+      "radiusOfGyrationY": {
+        "value": 8.07,
+        "unit": "cm"
+      },
+      "elasticModulusSectionY": {
+        "value": 152.0,
+        "unit": "cm^3"
+      },
+      "plasticModulusSectionY": {
+        "value": 0,
+        "unit": "cm^3"
+      },
+      "radiusOfGyrationZ": {
+        "value": 2.2,
+        "unit": "cm"
+      },
+      "elasticModulusSectionZ": {
+        "value": 20.5,
+        "unit": "cm^3"
+      },
+      "plasticModulusSectionZ": {
+        "value": 0,
+        "unit": "cm^3"
+      },
+      "torsionalModulusSection": {
+        "value": 0,
+        "unit": "cm^3"
+      },
+      "polarMomentOfInertia": {
+        "value": 0,
+        "unit": "cm^4"
+      }
+    }
+  },
+  {
+    "id": "ru_C-channel_22U",
+    "name": "22U",
+    "type": "C-channel",
+    "standard": "RU",
+    "comments": "Channel profile 22U according to Russian standards",
+    "geometry": {
+      "h": {
+        "value": 220,
+        "unit": "mm"
+      },
+      "b": {
+        "value": 82,
+        "unit": "mm"
+      },
+      "tw": {
+        "value": 5.4,
+        "unit": "mm"
+      },
+      "tf": {
+        "value": 9.5,
+        "unit": "mm"
+      },
+      "r": {
+        "value": 10.0,
+        "unit": "mm"
+      },
+      "rf": {
+        "value": 4.0,
+        "unit": "mm"
+      }
+    },
+    "properties": {
+      "A": {
+        "value": 26.7,
+        "unit": "mm^2"
+      },
+      "Iy": {
+        "value": 2110.0,
+        "unit": "cm^4"
+      },
+      "Iz": {
+        "value": 151.0,
+        "unit": "cm^4"
+      },
+      "J": {
+        "value": 0,
+        "unit": "cm^4"
+      }
+    },
+    "extra": {
+      "unitWeight": {
+        "value": 21.0,
+        "unit": "kg/m"
+      },
+      "perimeter": {
+        "value": 0,
+        "unit": "mm"
+      },
+      "shearAreaZ": {
+        "value": 0,
+        "unit": "mm^2"
+      },
+      "shearAreaY": {
+        "value": 0,
+        "unit": "mm^2"
+      },
+      "radiusOfGyrationY": {
+        "value": 8.89,
+        "unit": "cm"
+      },
+      "elasticModulusSectionY": {
+        "value": 192.0,
+        "unit": "cm^3"
+      },
+      "plasticModulusSectionY": {
+        "value": 0,
+        "unit": "cm^3"
+      },
+      "radiusOfGyrationZ": {
+        "value": 2.37,
+        "unit": "cm"
+      },
+      "elasticModulusSectionZ": {
+        "value": 25.1,
+        "unit": "cm^3"
+      },
+      "plasticModulusSectionZ": {
+        "value": 0,
+        "unit": "cm^3"
+      },
+      "torsionalModulusSection": {
+        "value": 0,
+        "unit": "cm^3"
+      },
+      "polarMomentOfInertia": {
+        "value": 0,
+        "unit": "cm^4"
+      }
+    }
+  },
+  {
+    "id": "ru_C-channel_24U",
+    "name": "24U",
+    "type": "C-channel",
+    "standard": "RU",
+    "comments": "Channel profile 24U according to Russian standards",
+    "geometry": {
+      "h": {
+        "value": 240,
+        "unit": "mm"
+      },
+      "b": {
+        "value": 90,
+        "unit": "mm"
+      },
+      "tw": {
+        "value": 5.6,
+        "unit": "mm"
+      },
+      "tf": {
+        "value": 10.0,
+        "unit": "mm"
+      },
+      "r": {
+        "value": 10.5,
+        "unit": "mm"
+      },
+      "rf": {
+        "value": 4.0,
+        "unit": "mm"
+      }
+    },
+    "properties": {
+      "A": {
+        "value": 30.6,
+        "unit": "mm^2"
+      },
+      "Iy": {
+        "value": 2900.0,
+        "unit": "cm^4"
+      },
+      "Iz": {
+        "value": 208.0,
+        "unit": "cm^4"
+      },
+      "J": {
+        "value": 0,
+        "unit": "cm^4"
+      }
+    },
+    "extra": {
+      "unitWeight": {
+        "value": 24.0,
+        "unit": "kg/m"
+      },
+      "perimeter": {
+        "value": 0,
+        "unit": "mm"
+      },
+      "shearAreaZ": {
+        "value": 0,
+        "unit": "mm^2"
+      },
+      "shearAreaY": {
+        "value": 0,
+        "unit": "mm^2"
+      },
+      "radiusOfGyrationY": {
+        "value": 9.73,
+        "unit": "cm"
+      },
+      "elasticModulusSectionY": {
+        "value": 242.0,
+        "unit": "cm^3"
+      },
+      "plasticModulusSectionY": {
+        "value": 0,
+        "unit": "cm^3"
+      },
+      "radiusOfGyrationZ": {
+        "value": 2.6,
+        "unit": "cm"
+      },
+      "elasticModulusSectionZ": {
+        "value": 31.6,
+        "unit": "cm^3"
+      },
+      "plasticModulusSectionZ": {
+        "value": 0,
+        "unit": "cm^3"
+      },
+      "torsionalModulusSection": {
+        "value": 0,
+        "unit": "cm^3"
+      },
+      "polarMomentOfInertia": {
+        "value": 0,
+        "unit": "cm^4"
+      }
+    }
+  },
+  {
+    "id": "ru_C-channel_27U",
+    "name": "27U",
+    "type": "C-channel",
+    "standard": "RU",
+    "comments": "Channel profile 27U according to Russian standards",
+    "geometry": {
+      "h": {
+        "value": 270,
+        "unit": "mm"
+      },
+      "b": {
+        "value": 95,
+        "unit": "mm"
+      },
+      "tw": {
+        "value": 6.0,
+        "unit": "mm"
+      },
+      "tf": {
+        "value": 10.5,
+        "unit": "mm"
+      },
+      "r": {
+        "value": 11.0,
+        "unit": "mm"
+      },
+      "rf": {
+        "value": 4.5,
+        "unit": "mm"
+      }
+    },
+    "properties": {
+      "A": {
+        "value": 35.2,
+        "unit": "mm^2"
+      },
+      "Iy": {
+        "value": 4160.0,
+        "unit": "cm^4"
+      },
+      "Iz": {
+        "value": 262.0,
+        "unit": "cm^4"
+      },
+      "J": {
+        "value": 0,
+        "unit": "cm^4"
+      }
+    },
+    "extra": {
+      "unitWeight": {
+        "value": 27.7,
+        "unit": "kg/m"
+      },
+      "perimeter": {
+        "value": 0,
+        "unit": "mm"
+      },
+      "shearAreaZ": {
+        "value": 0,
+        "unit": "mm^2"
+      },
+      "shearAreaY": {
+        "value": 0,
+        "unit": "mm^2"
+      },
+      "radiusOfGyrationY": {
+        "value": 10.9,
+        "unit": "cm"
+      },
+      "elasticModulusSectionY": {
+        "value": 308.0,
+        "unit": "cm^3"
+      },
+      "plasticModulusSectionY": {
+        "value": 0,
+        "unit": "cm^3"
+      },
+      "radiusOfGyrationZ": {
+        "value": 2.73,
+        "unit": "cm"
+      },
+      "elasticModulusSectionZ": {
+        "value": 37.3,
+        "unit": "cm^3"
+      },
+      "plasticModulusSectionZ": {
+        "value": 0,
+        "unit": "cm^3"
+      },
+      "torsionalModulusSection": {
+        "value": 0,
+        "unit": "cm^3"
+      },
+      "polarMomentOfInertia": {
+        "value": 0,
+        "unit": "cm^4"
+      }
+    }
+  },
+  {
+    "id": "ru_C-channel_30U",
+    "name": "30U",
+    "type": "C-channel",
+    "standard": "RU",
+    "comments": "Channel profile 30U according to Russian standards",
+    "geometry": {
+      "h": {
+        "value": 300,
+        "unit": "mm"
+      },
+      "b": {
+        "value": 100,
+        "unit": "mm"
+      },
+      "tw": {
+        "value": 6.5,
+        "unit": "mm"
+      },
+      "tf": {
+        "value": 11.0,
+        "unit": "mm"
+      },
+      "r": {
+        "value": 12.0,
+        "unit": "mm"
+      },
+      "rf": {
+        "value": 5.0,
+        "unit": "mm"
+      }
+    },
+    "properties": {
+      "A": {
+        "value": 40.5,
+        "unit": "mm^2"
+      },
+      "Iy": {
+        "value": 5810.0,
+        "unit": "cm^4"
+      },
+      "Iz": {
+        "value": 327.0,
+        "unit": "cm^4"
+      },
+      "J": {
+        "value": 0,
+        "unit": "cm^4"
+      }
+    },
+    "extra": {
+      "unitWeight": {
+        "value": 31.8,
+        "unit": "kg/m"
+      },
+      "perimeter": {
+        "value": 0,
+        "unit": "mm"
+      },
+      "shearAreaZ": {
+        "value": 0,
+        "unit": "mm^2"
+      },
+      "shearAreaY": {
+        "value": 0,
+        "unit": "mm^2"
+      },
+      "radiusOfGyrationY": {
+        "value": 12.0,
+        "unit": "cm"
+      },
+      "elasticModulusSectionY": {
+        "value": 387.0,
+        "unit": "cm^3"
+      },
+      "plasticModulusSectionY": {
+        "value": 0,
+        "unit": "cm^3"
+      },
+      "radiusOfGyrationZ": {
+        "value": 2.84,
+        "unit": "cm"
+      },
+      "elasticModulusSectionZ": {
+        "value": 43.6,
+        "unit": "cm^3"
+      },
+      "plasticModulusSectionZ": {
+        "value": 0,
+        "unit": "cm^3"
+      },
+      "torsionalModulusSection": {
+        "value": 0,
+        "unit": "cm^3"
+      },
+      "polarMomentOfInertia": {
+        "value": 0,
+        "unit": "cm^4"
+      }
+    }
+  },
+  {
+    "id": "ru_C-channel_33U",
+    "name": "33U",
+    "type": "C-channel",
+    "standard": "RU",
+    "comments": "Channel profile 33U according to Russian standards",
+    "geometry": {
+      "h": {
+        "value": 330,
+        "unit": "mm"
+      },
+      "b": {
+        "value": 105,
+        "unit": "mm"
+      },
+      "tw": {
+        "value": 7.0,
+        "unit": "mm"
+      },
+      "tf": {
+        "value": 11.7,
+        "unit": "mm"
+      },
+      "r": {
+        "value": 13.0,
+        "unit": "mm"
+      },
+      "rf": {
+        "value": 5.0,
+        "unit": "mm"
+      }
+    },
+    "properties": {
+      "A": {
+        "value": 46.5,
+        "unit": "mm^2"
+      },
+      "Iy": {
+        "value": 7980.0,
+        "unit": "cm^4"
+      },
+      "Iz": {
+        "value": 410.0,
+        "unit": "cm^4"
+      },
+      "J": {
+        "value": 0,
+        "unit": "cm^4"
+      }
+    },
+    "extra": {
+      "unitWeight": {
+        "value": 36.5,
+        "unit": "kg/m"
+      },
+      "perimeter": {
+        "value": 0,
+        "unit": "mm"
+      },
+      "shearAreaZ": {
+        "value": 0,
+        "unit": "mm^2"
+      },
+      "shearAreaY": {
+        "value": 0,
+        "unit": "mm^2"
+      },
+      "radiusOfGyrationY": {
+        "value": 13.1,
+        "unit": "cm"
+      },
+      "elasticModulusSectionY": {
+        "value": 484.0,
+        "unit": "cm^3"
+      },
+      "plasticModulusSectionY": {
+        "value": 0,
+        "unit": "cm^3"
+      },
+      "radiusOfGyrationZ": {
+        "value": 2.97,
+        "unit": "cm"
+      },
+      "elasticModulusSectionZ": {
+        "value": 51.8,
+        "unit": "cm^3"
+      },
+      "plasticModulusSectionZ": {
+        "value": 0,
+        "unit": "cm^3"
+      },
+      "torsionalModulusSection": {
+        "value": 0,
+        "unit": "cm^3"
+      },
+      "polarMomentOfInertia": {
+        "value": 0,
+        "unit": "cm^4"
+      }
+    }
+  },
+  {
+    "id": "ru_C-channel_36U",
+    "name": "36U",
+    "type": "C-channel",
+    "standard": "RU",
+    "comments": "Channel profile 36U according to Russian standards",
+    "geometry": {
+      "h": {
+        "value": 360,
+        "unit": "mm"
+      },
+      "b": {
+        "value": 110,
+        "unit": "mm"
+      },
+      "tw": {
+        "value": 7.5,
+        "unit": "mm"
+      },
+      "tf": {
+        "value": 12.6,
+        "unit": "mm"
+      },
+      "r": {
+        "value": 14.0,
+        "unit": "mm"
+      },
+      "rf": {
+        "value": 6.0,
+        "unit": "mm"
+      }
+    },
+    "properties": {
+      "A": {
+        "value": 53.4,
+        "unit": "mm^2"
+      },
+      "Iy": {
+        "value": 10820.0,
+        "unit": "cm^4"
+      },
+      "Iz": {
+        "value": 513.0,
+        "unit": "cm^4"
+      },
+      "J": {
+        "value": 0,
+        "unit": "cm^4"
+      }
+    },
+    "extra": {
+      "unitWeight": {
+        "value": 41.9,
+        "unit": "kg/m"
+      },
+      "perimeter": {
+        "value": 0,
+        "unit": "mm"
+      },
+      "shearAreaZ": {
+        "value": 0,
+        "unit": "mm^2"
+      },
+      "shearAreaY": {
+        "value": 0,
+        "unit": "mm^2"
+      },
+      "radiusOfGyrationY": {
+        "value": 14.2,
+        "unit": "cm"
+      },
+      "elasticModulusSectionY": {
+        "value": 601.0,
+        "unit": "cm^3"
+      },
+      "plasticModulusSectionY": {
+        "value": 0,
+        "unit": "cm^3"
+      },
+      "radiusOfGyrationZ": {
+        "value": 3.1,
+        "unit": "cm"
+      },
+      "elasticModulusSectionZ": {
+        "value": 61.7,
+        "unit": "cm^3"
+      },
+      "plasticModulusSectionZ": {
+        "value": 0,
+        "unit": "cm^3"
+      },
+      "torsionalModulusSection": {
+        "value": 0,
+        "unit": "cm^3"
+      },
+      "polarMomentOfInertia": {
+        "value": 0,
+        "unit": "cm^4"
+      }
+    }
+  },
+  {
+    "id": "ru_C-channel_40U",
+    "name": "40U",
+    "type": "C-channel",
+    "standard": "RU",
+    "comments": "Channel profile 40U according to Russian standards",
+    "geometry": {
+      "h": {
+        "value": 400,
+        "unit": "mm"
+      },
+      "b": {
+        "value": 115,
+        "unit": "mm"
+      },
+      "tw": {
+        "value": 8.0,
+        "unit": "mm"
+      },
+      "tf": {
+        "value": 13.5,
+        "unit": "mm"
+      },
+      "r": {
+        "value": 15.0,
+        "unit": "mm"
+      },
+      "rf": {
+        "value": 6.0,
+        "unit": "mm"
+      }
+    },
+    "properties": {
+      "A": {
+        "value": 61.5,
+        "unit": "mm^2"
+      },
+      "Iy": {
+        "value": 15220.0,
+        "unit": "cm^4"
+      },
+      "Iz": {
+        "value": 642.0,
+        "unit": "cm^4"
+      },
+      "J": {
+        "value": 0,
+        "unit": "cm^4"
+      }
+    },
+    "extra": {
+      "unitWeight": {
+        "value": 48.3,
+        "unit": "kg/m"
+      },
+      "perimeter": {
+        "value": 0,
+        "unit": "mm"
+      },
+      "shearAreaZ": {
+        "value": 0,
+        "unit": "mm^2"
+      },
+      "shearAreaY": {
+        "value": 0,
+        "unit": "mm^2"
+      },
+      "radiusOfGyrationY": {
+        "value": 15.7,
+        "unit": "cm"
+      },
+      "elasticModulusSectionY": {
+        "value": 761.0,
+        "unit": "cm^3"
+      },
+      "plasticModulusSectionY": {
+        "value": 0,
+        "unit": "cm^3"
+      },
+      "radiusOfGyrationZ": {
+        "value": 3.23,
+        "unit": "cm"
+      },
+      "elasticModulusSectionZ": {
+        "value": 73.4,
+        "unit": "cm^3"
+      },
+      "plasticModulusSectionZ": {
+        "value": 0,
+        "unit": "cm^3"
+      },
+      "torsionalModulusSection": {
+        "value": 0,
+        "unit": "cm^3"
+      },
+      "polarMomentOfInertia": {
+        "value": 0,
+        "unit": "cm^4"
+      }
+    }
+  }
+]
