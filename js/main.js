@@ -121,7 +121,7 @@
                     }));
                     elementLoads = (modelData.elementLoads || []).map(l => ({
                         id: l.load_id !== undefined ? l.load_id : l.id,
-                        targetElemId: l.target_elem_id !== undefined ? l.target_elem_id : l.targetElemId,
+                        targetElemId: l.targetElemId,
                         type: l.type,
                         component: l.component,
                         startValue: l.startValue,
@@ -171,8 +171,8 @@
                     currentTimeUnit = 's';
                 }
 
-                nextNodeId = nodes.length > 0 ? Math.max(...nodes.map(n => n.node_id)) + 1 : 1;
-                nextElemId = lines.length > 0 ? Math.max(...lines.map(l => l.elem_id)) + 1 : 1;
+                nextNodeId = nodes.length > 0 ? Math.max(...nodes.map(n => n.nodeId)) + 1 : 1;
+                nextElemId = lines.length > 0 ? Math.max(...lines.map(l => l.elemId)) + 1 : 1;
                 nextLoadId = nodalLoads.length > 0 ? Math.max(...nodalLoads.map(l => l.id)) + 1 : 1;
                 nextElementLoadId = elementLoads.length > 0 ? Math.max(...elementLoads.map(l => l.id)) + 1 : 1;
 
@@ -675,11 +675,11 @@
 				ctx.beginPath();
 				ctx.arc(node.x, node.y, nodeRadiusWorld, 0, 2 * Math.PI);
 				
-				const isSelected = selectedElements.some(el => el.type === 'node' && el.element.node_id === node.node_id);
+				const isSelected = selectedElements.some(el => el.type === 'node' && el.element.nodeId === node.nodeId);
 
 				if (isSelected) {
 					ctx.fillStyle = '#FF6D2D'; // Оранжево-красный для выделенного
-				} else if (hoveredElement && hoveredElement.type === 'node' && hoveredElement.element.node_id === node.node_id) {
+				} else if (hoveredElement && hoveredElement.type === 'node' && hoveredElement.element.nodeId === node.nodeId) {
 					ctx.fillStyle = '#dc3545'; // Красный для наведения
 				} else {
 					ctx.fillStyle = '#007bff'; // Синий по умолчанию
@@ -699,7 +699,7 @@
                                         ctx.font = `${nodeIdFontSizeWorld}px Roboto`;
 					ctx.textAlign = 'center';
 					ctx.textBaseline = 'middle';
-					ctx.fillText(node.node_id, 0, -(nodeRadiusWorld + (nodeIdFontSizeWorld / 2) + 2/scale));
+					ctx.fillText(node.nodeId, 0, -(nodeRadiusWorld + (nodeIdFontSizeWorld / 2) + 2/scale));
 					ctx.restore(); // Восстанавливаем состояние после преобразований текста
 				}
 				ctx.restore(); // НОВОЕ: Восстанавливаем состояние контекста после отрисовки этого узла
@@ -711,7 +711,7 @@
         // ===============================================
         function drawRestrictions() {
             restrictions.forEach(restriction => {
-                const node = nodes.find(n => n.node_id === restriction.node_id);
+                const node = nodes.find(n => n.nodeId === restriction.nodeId);
                 if (node) {
                     let iconToDraw = null;
                     for (const typeKey in restrictionTypes) {
@@ -738,7 +738,7 @@
 			const FIXED_TEXT_OFFSET_PX = 10; 
 
 			nodalLoads.forEach(load => {
-				const node = nodes.find(n => n.node_id === load.targetId);
+				const node = nodes.find(n => n.nodeId === load.targetId);
 				if (!node) return;
 
                 const currentForceDisplayUnit = forceUnitsSelect.value;
@@ -841,8 +841,8 @@
                         const currentLengthDisplayUnit = unitsSelect.value;
 
                         reactionsData.forEach(reaction => {
-                                const nodeId = reaction.nodeId || reaction.node_id;
-                                const node = nodes.find(n => n.node_id === nodeId || `node${n.node_id}` === nodeId || n.node_id === parseInt(nodeId));
+                                const nodeId = reaction.nodeId;
+                                const node = nodes.find(n => n.nodeId === nodeId || `node${n.nodeId}` === nodeId || n.nodeId === parseInt(nodeId));
                                 if (!node) return;
 
                                 const drawX = node.x;
@@ -952,11 +952,11 @@
             const maxRelativeArrowWorld = canvasHeightWorld / 16;
 
             elementLoads.forEach((load, idx) => {
-                const line = lines.find(l => l.elem_id === load.targetElemId);
+                const line = lines.find(l => l.elemId === load.targetElemId);
                 if (!line) return;
 
-                const node1 = nodes.find(n => n.node_id === line.nodeId1);
-                const node2 = nodes.find(n => n.node_id === line.nodeId2);
+                const node1 = nodes.find(n => n.nodeId === line.nodeId1);
+                const node2 = nodes.find(n => n.nodeId === line.nodeId2);
                 if (!node1 || !node2) return;
 
                 const currentDistributedForceUnit = `${currentForceDisplayUnit}/${currentLengthDisplayUnit}`;
@@ -1315,20 +1315,20 @@
 			const selectedLineWidth = 3;  // УВЕЛИЧЕННАЯ ТОЛЩИНА ДЛЯ ВЫДЕЛЕННОГО ЭЛЕМЕНТА
 
 			lines.forEach(line => {
-				const node1 = nodes.find(n => n.node_id === line.nodeId1);
-				const node2 = nodes.find(n => n.node_id === line.nodeId2);
+				const node1 = nodes.find(n => n.nodeId === line.nodeId1);
+				const node2 = nodes.find(n => n.nodeId === line.nodeId2);
 				if (node1 && node2) {
 					ctx.save(); // НОВОЕ: Сохраняем состояние контекста для этой линии
 					ctx.beginPath();
 					ctx.moveTo(node1.x, node1.y);
 					ctx.lineTo(node2.x, node2.y);
 
-					const isSelected = selectedElements.some(el => el.type === 'line' && el.element.elem_id === line.elem_id);
+					const isSelected = selectedElements.some(el => el.type === 'line' && el.element.elemId === line.elemId);
 
 					if (isSelected) {
 						ctx.strokeStyle = '#FF6D2D'; // Оранжево-красный для выделенного
 						ctx.lineWidth = selectedLineWidth / scale;
-					} else if (hoveredElement && hoveredElement.type === 'line' && hoveredElement.element.elem_id === line.elem_id) {
+					} else if (hoveredElement && hoveredElement.type === 'line' && hoveredElement.element.elemId === line.elemId) {
 						ctx.strokeStyle = '#dc3545'; // Красный для наведения
 						ctx.lineWidth = normalLineWidth / scale;
 					} else {
@@ -1358,7 +1358,7 @@
 						ctx.textAlign = 'center';
 						ctx.textBaseline = 'middle';
 
-                                               ctx.fillText(line.elem_id, 0, -lineIdOffsetWorld);
+                                               ctx.fillText(line.elemId, 0, -lineIdOffsetWorld);
 
                                                ctx.restore(); // Восстанавливаем состояние после преобразований текста
                                        }
@@ -1385,12 +1385,12 @@
                                                 const centerX = midX_icon + offsetX;
                                                 const centerY = midY_icon + offsetY;
 
-                                                betaIconPositions[line.elem_id] = { x: centerX, y: centerY, size: iconSize };
+                                                betaIconPositions[line.elemId] = { x: centerX, y: centerY, size: iconSize };
 
                                                 ctx.save();
                                                 ctx.translate(centerX, centerY);
                                                 ctx.rotate(theta + (line.betaAngle || 0) * Math.PI / 180);
-                                                if (hoveredBetaIconLine && hoveredBetaIconLine.elem_id === line.elem_id) {
+                                                if (hoveredBetaIconLine && hoveredBetaIconLine.elemId === line.elemId) {
                                                     ctx.beginPath();
                                                     ctx.arc(0, 0, iconSize * 0.6, 0, 2 * Math.PI);
                                                     ctx.fillStyle = '#dc3545';
@@ -1402,7 +1402,7 @@
                                                 ctx.restore();
                                             }
                                         } else {
-                                            delete betaIconPositions[line.elem_id];
+                                            delete betaIconPositions[line.elemId];
                                         }
                                        ctx.restore(); // НОВОЕ: Восстанавливаем состояние контекста после отрисовки этой линии
                                }
@@ -1730,17 +1730,17 @@
 			if (e.button === 0) { // Левый клик
 				// --- СЦЕНАРИЙ 1: Попытка завершить линию (firstNodeForLine активен) ---
 				if (firstNodeForLine) {
-					if (clickedNode && firstNodeForLine.node_id !== clickedNode.node_id) {
+					if (clickedNode && firstNodeForLine.nodeId !== clickedNode.nodeId) {
 						// Второй клик по другому узлу: пытаемся создать линию
 						const exists = lines.some(line =>
-							(line.nodeId1 === firstNodeForLine.node_id && line.nodeId2 === clickedNode.node_id) || 
-							(line.nodeId1 === clickedNode.node_id && line.nodeId2 === firstNodeForLine.node_id)    
+							(line.nodeId1 === firstNodeForLine.nodeId && line.nodeId2 === clickedNode.nodeId) || 
+							(line.nodeId1 === clickedNode.nodeId && line.nodeId2 === firstNodeForLine.nodeId)    
 						);
                                                 if (!exists) {
-                                                        lines.push({ elem_id: nextElemId++, nodeId1: firstNodeForLine.node_id, nodeId2: clickedNode.node_id, structural_type: 'beam', materialId: null, sectionId: null, betaAngle: 0, loads: [] });
-                                                        console.log(`Линия ${nextElemId - 1} создана между узлами ${firstNodeForLine.node_id} и ${clickedNode.node_id}.`);
+                                                        lines.push({ elemId: nextElemId++, nodeId1: firstNodeForLine.nodeId, nodeId2: clickedNode.nodeId, structuralType: 'beam', materialId: null, sectionId: null, betaAngle: 0, loads: [] });
+                                                        console.log(`Линия ${nextElemId - 1} создана между узлами ${firstNodeForLine.nodeId} и ${clickedNode.nodeId}.`);
                                                 } else {
-							console.log(`Линия между узлами ${firstNodeForLine.node_id} и ${clickedNode.node_id} уже существует.`); 
+							console.log(`Линия между узлами ${firstNodeForLine.nodeId} и ${clickedNode.nodeId} уже существует.`); 
 						}
 						
 						// --- ИЗМЕНЕНИЕ ДЛЯ СКВОЗНОГО ПОСТРОЕНИЯ ЛИНИЙ ---
@@ -1764,7 +1764,7 @@
 				else if (isCtrlPressed) { 
 					if (clickedNode) {
 						// Если клик по узлу с Ctrl: добавить/удалить узел из множественного выделения
-						const existingIndex = selectedElements.findIndex(el => el.type === 'node' && el.element.node_id === clickedNode.node_id);
+						const existingIndex = selectedElements.findIndex(el => el.type === 'node' && el.element.nodeId === clickedNode.nodeId);
 						if (existingIndex > -1) {
 							selectedElements.splice(existingIndex, 1); // Удалить, если уже выделен
 						} else {
@@ -1772,7 +1772,7 @@
 						}
 					} else if (clickedLine) {
 						// Если клик по линии с Ctrl: добавить/удалить линию из множественного выделения
-						const existingIndex = selectedElements.findIndex(el => el.type === 'line' && el.element.elem_id === clickedLine.elem_id);
+						const existingIndex = selectedElements.findIndex(el => el.type === 'line' && el.element.elemId === clickedLine.elemId);
 						if (existingIndex > -1) {
 							selectedElements.splice(existingIndex, 1); // Удалить, если уже выделен
 						} else {
@@ -1813,9 +1813,9 @@
 							// Ничего не выделено/не наполовину, клик по пустому месту: создаем новый узел (ВАША ИСХОДНАЯ ЛОГИКА)
 							const placeX = snapToGrid ? mouse.snappedX : mouse.worldX; 
 							const placeY = snapToGrid ? mouse.snappedY : mouse.worldY;
-							const newNode = { node_id: nextNodeId++, x: placeX, y: placeY }; 
+							const newNode = { nodeId: nextNodeId++, x: placeX, y: placeY }; 
 							nodes.push(newNode); 
-							console.log(`Узел ${newNode.node_id} создан по координатам (${newNode.x.toFixed(3)}, ${newNode.y.toFixed(3)}).`);
+							console.log(`Узел ${newNode.nodeId} создан по координатам (${newNode.x.toFixed(3)}, ${newNode.y.toFixed(3)}).`);
 							
 							// После создания узла, выделения быть не должно
 							selectedNode = null; 
@@ -1959,8 +1959,8 @@
             const clickRadiusWorld = 6 / scale;
             for (let i = lines.length - 1; i >= 0; i--) {
                 const line = lines[i];
-                const n1 = nodes.find(n => n.node_id === line.nodeId1); 
-                const n2 = nodes.find(n => n.node_id === line.nodeId2); 
+                const n1 = nodes.find(n => n.nodeId === line.nodeId1); 
+                const n2 = nodes.find(n => n.nodeId === line.nodeId2); 
                 if (n1 && n2) { 
                     const lenSq = (n1.x - n2.x)**2 + (n1.y - n2.y)**2; 
                     if (lenSq === 0) continue; 
@@ -1982,7 +1982,7 @@
                 const half = info.size / 2;
                 if (worldX_currentUnit >= info.x - half && worldX_currentUnit <= info.x + half &&
                     worldY_currentUnit >= info.y - half && worldY_currentUnit <= info.y + half) {
-                    return lines.find(l => l.elem_id === parseInt(id));
+                    return lines.find(l => l.elemId === parseInt(id));
                 }
             }
             return null;
@@ -1998,14 +1998,14 @@
 
         function handleDeleteNode() {
             if (contextMenuTarget && contextMenuTarget.type === 'node') {
-                const nodeIdToDelete = contextMenuTarget.element.node_id; 
-                nodes = nodes.filter(node => node.node_id !== nodeIdToDelete); 
+                const nodeIdToDelete = contextMenuTarget.element.nodeId; 
+                nodes = nodes.filter(node => node.nodeId !== nodeIdToDelete); 
                 lines = lines.filter(line => line.nodeId1 !== nodeIdToDelete && line.nodeId2 !== nodeIdToDelete);
-                restrictions = restrictions.filter(res => res.node_id !== nodeIdToDelete);
+                restrictions = restrictions.filter(res => res.nodeId !== nodeIdToDelete);
 				nodalLoads = nodalLoads.filter(load => load.targetId !== nodeIdToDelete);
 
-                if (firstNodeForLine && firstNodeForLine.node_id === nodeIdToDelete) firstNodeForLine = null; 
-                if (selectedNode && selectedNode.node_id === nodeIdToDelete) selectedNode = null; 
+                if (firstNodeForLine && firstNodeForLine.nodeId === nodeIdToDelete) firstNodeForLine = null; 
+                if (selectedNode && selectedNode.nodeId === nodeIdToDelete) selectedNode = null; 
                 hideContextMenu();
                 updatePropertiesPanel(); 
                 draw();
@@ -2014,7 +2014,7 @@
 
         function handleDeleteLine() {
              if (contextMenuTarget && contextMenuTarget.type === 'line') {
-                lines = lines.filter(line => line.elem_id !== contextMenuTarget.element.elem_id);
+                lines = lines.filter(line => line.elemId !== contextMenuTarget.element.elemId);
                 hideContextMenu();
                 draw();
             }
@@ -2042,7 +2042,7 @@
             const axis = copyAxisSelect.value;
             for (let i = 1; i <= count; i++) {
                 const newNode = {
-                    node_id: nextNodeId++,
+                    nodeId: nextNodeId++,
                     x: nodeToCopy.x + (axis === 'x' ? dist * i : 0),
                     y: nodeToCopy.y + (axis === 'y' ? dist * i : 0)
                 };
@@ -2092,7 +2092,7 @@
                 const currentMomentDisplayUnit = currentForceDisplayUnit + '*' + currentLengthDisplayUnit;
 
                 let loadsHtml = '';
-                const nodeSpecificLoads = nodalLoads.filter(load => load.targetId === selectedNode.node_id);
+                const nodeSpecificLoads = nodalLoads.filter(load => load.targetId === selectedNode.nodeId);
                 if (nodeSpecificLoads.length === 0) {
                     loadsHtml += '<p class="text-gray-500 text-xs font-light">No loads yet</p>';
                 } else {
@@ -2119,13 +2119,13 @@
                     loadsHtml += '</div>';
                 }
 
-                let currentRestriction = restrictions.find(r => r.node_id === selectedNode.node_id);
+                let currentRestriction = restrictions.find(r => r.nodeId === selectedNode.nodeId);
                 if (!currentRestriction) {
                     currentRestriction = { dx: 0, dy: 0, dr: 0, type: "none" };
                 }
 
                 nodePropertiesContent.innerHTML = `
-                    <h4 class="text-gray-700 mb-2">Node properties ${selectedNode.node_id}</h4>
+                    <h4 class="text-gray-700 mb-2">Node properties ${selectedNode.nodeId}</h4>
                     <div class="property-group">
                         <div class="coordinates-row">
                             <label for="nodeX">X:</label>
@@ -2219,7 +2219,7 @@
                 const updateRestriction = () => {
                     let updated = false;
                     restrictions = restrictions.filter(r => {
-                        if (r.node_id === selectedNode.node_id) {
+                        if (r.nodeId === selectedNode.nodeId) {
                             r.dx = restrictXCheckbox.checked ? 1 : 0;
                             r.dy = restrictYCheckbox.checked ? 1 : 0;
                             r.dr = restrictRCheckbox.checked ? 1 : 0;
@@ -2233,7 +2233,7 @@
 
                     if (!updated && (restrictXCheckbox.checked || restrictYCheckbox.checked || restrictRCheckbox.checked)) {
                         restrictions.push({
-                            node_id: selectedNode.node_id,
+                            nodeId: selectedNode.nodeId,
                             dx: restrictXCheckbox.checked ? 1 : 0,
                             dy: restrictYCheckbox.checked ? 1 : 0,
                             dr: restrictRCheckbox.checked ? 1 : 0
@@ -2251,7 +2251,7 @@
                     restrictionIconsCol1.innerHTML = '';
                     restrictionIconsCol2.innerHTML = '';
 
-                    currentRestriction = restrictions.find(r => r.node_id === selectedNode.node_id);
+                    currentRestriction = restrictions.find(r => r.nodeId === selectedNode.nodeId);
                     if (!currentRestriction) {
                         currentRestriction = { dx: 0, dy: 0, dr: 0, type: "none" };
                     }
@@ -2263,7 +2263,7 @@
                     noRestrictionBtn.innerHTML = '<span class="no-restriction-text">Ø</span>';
                     noRestrictionBtn.title = 'No boundaries yet';
                     noRestrictionBtn.addEventListener('click', () => {
-                        restrictions = restrictions.filter(r => r.node_id !== selectedNode.node_id);
+                        restrictions = restrictions.filter(r => r.nodeId !== selectedNode.nodeId);
                         restrictXCheckbox.checked = false;
                         restrictYCheckbox.checked = false;
                         restrictRCheckbox.checked = false;
@@ -2279,9 +2279,9 @@
                             btn.innerHTML = `<img src="icons/${type.icon}" alt="${type.label}" title="${type.label}">`;
                             btn.title = type.label;
                             btn.addEventListener('click', () => {
-                                restrictions = restrictions.filter(r => r.node_id !== selectedNode.node_id);
+                                restrictions = restrictions.filter(r => r.nodeId !== selectedNode.nodeId);
                                 restrictions.push({
-                                    node_id: selectedNode.node_id,
+                                    nodeId: selectedNode.nodeId,
                                     dx: type.dx,
                                     dy: type.dy,
                                     dr: type.dr
@@ -2303,7 +2303,7 @@
 
                 const renderNodalLoads = () => {
                     nodalLoadsList.innerHTML = '';
-                    const loadsForSelectedNode = nodalLoads.filter(load => load.targetId === selectedNode.node_id);
+                    const loadsForSelectedNode = nodalLoads.filter(load => load.targetId === selectedNode.nodeId);
 
                     if (loadsForSelectedNode.length === 0) {
                         nodalLoadsList.innerHTML = '<p class="text-gray-500 text-xs font-light">No loads yet</p>';
@@ -2363,7 +2363,7 @@
                         nodalLoads.push({
                             id: nextLoadId++,
                             type: 'point_force',
-                            targetId: selectedNode.node_id,
+                            targetId: selectedNode.nodeId,
                             component: 'x',
                             value: value,
                             unit: forceUnitsSelect.value
@@ -2380,7 +2380,7 @@
                         nodalLoads.push({
                             id: nextLoadId++,
                             type: 'point_force',
-                            targetId: selectedNode.node_id,
+                            targetId: selectedNode.nodeId,
                             component: 'y',
                             value: value,
                             unit: forceUnitsSelect.value
@@ -2397,7 +2397,7 @@
                         nodalLoads.push({
                             id: nextLoadId++,
                             type: 'moment',
-                            targetId: selectedNode.node_id,
+                            targetId: selectedNode.nodeId,
                             component: 'r',
                             value: value,
                             unit: forceUnitsSelect.value,
@@ -2452,7 +2452,7 @@
                 const betaAngleValue = selectedElement.betaAngle !== undefined ? selectedElement.betaAngle : 0;
 
                 let loadsHtml = '';
-                const elementSpecificLoads = elementLoads.filter(load => load.targetElemId === selectedElement.elem_id);
+                const elementSpecificLoads = elementLoads.filter(load => load.targetElemId === selectedElement.elemId);
                 if (elementSpecificLoads.length === 0) {
                     loadsHtml += '<p class="text-gray-500 text-xs font-light">No loads yet</p>';
                 } else {
@@ -2486,7 +2486,7 @@
 
                 // НОВЫЙ ВНУТРЕННИЙ HTML ДЛЯ ПАНЕЛИ СВОЙСТВ ЭЛЕМЕНТА
                 nodePropertiesContent.innerHTML = `
-                    <h4 class="text-gray-700 mb-2">Rod properties ${selectedElement.elem_id}</h4>
+                    <h4 class="text-gray-700 mb-2">Rod properties ${selectedElement.elemId}</h4>
                     <div class="property-group">
                         <p>Start node: ${selectedElement.nodeId1}</p>
                         <p>End node: ${selectedElement.nodeId2}</p>
@@ -2560,7 +2560,7 @@
 
                 const renderElementLoads = () => {
                     elementLoadsList.innerHTML = '';
-                    const loadsForSelectedElement = elementLoads.filter(load => load.targetElemId === selectedElement.elem_id);
+                    const loadsForSelectedElement = elementLoads.filter(load => load.targetElemId === selectedElement.elemId);
 
                     if (loadsForSelectedElement.length === 0) {
                         elementLoadsList.innerHTML = '<p class="text-gray-500 text-xs font-light">No loads yet</p>';
@@ -2605,7 +2605,7 @@
                     if (!isNaN(value)) {
                         elementLoads.push({
                             id: nextElementLoadId++,
-                            targetElemId: selectedElement.elem_id,
+                            targetElemId: selectedElement.elemId,
                             type: 'uniform', 
                             component: 'x',
                             startValue: value,
@@ -2625,7 +2625,7 @@
                     if (!isNaN(value)) {
                         elementLoads.push({
                             id: nextElementLoadId++,
-                            targetElemId: selectedElement.elem_id,
+                            targetElemId: selectedElement.elemId,
                             type: 'uniform',
                             component: 'y',
                             startValue: value,
@@ -2673,13 +2673,13 @@
                             // Если пользователь выбрал пустую опцию "Не выбрано"
                             if (newMaterialId === "") {
                                 selectedElement.materialId = null; // Сброс назначенного материала
-                                console.log(`Материал для элемента ${selectedElement.elem_id} сброшен.`);
+                                console.log(`Материал для элемента ${selectedElement.elemId} сброшен.`);
                             } else {
                                 // Назначаем новый материал
                                 selectedElement.materialId = newMaterialId;
                                 const assignedMat = modelMaterials.find(m => m.id === newMaterialId);
                                 if (assignedMat) {
-                                    console.log(`Материал "${assignedMat.name}" назначен элементу ${selectedElement.elem_id}.`);
+                                    console.log(`Материал "${assignedMat.name}" назначен элементу ${selectedElement.elemId}.`);
                                 } else {
                                     console.warn(`Выбранный материал ID "${newMaterialId}" не найден в modelMaterials.`);
                                 }
@@ -2699,12 +2699,12 @@
                         if (selectedElement) {
                             if (newSectionId === "") {
                                 selectedElement.sectionId = null;
-                                console.log(`Сечение для элемента ${selectedElement.elem_id} сброшено.`);
+                                console.log(`Сечение для элемента ${selectedElement.elemId} сброшено.`);
                             } else {
                                 selectedElement.sectionId = newSectionId;
                                 const assignedSec = modelSections.find(s => s.id === newSectionId);
                                 if (assignedSec) {
-                                    console.log(`Сечение "${assignedSec.name}" назначено элементу ${selectedElement.elem_id}.`);
+                                    console.log(`Сечение "${assignedSec.name}" назначено элементу ${selectedElement.elemId}.`);
                                 } else {
                                     console.warn(`Выбранное сечение ID "${newSectionId}" не найдено в modelSections.`);
                                 }
@@ -2736,19 +2736,19 @@
                     }
 
                     const originalLine = selectedElement;
-                    const node1 = nodes.find(n => n.node_id === originalLine.nodeId1);
-                    const node2 = nodes.find(n => n.node_id === originalLine.nodeId2);
+                    const node1 = nodes.find(n => n.nodeId === originalLine.nodeId1);
+                    const node2 = nodes.find(n => n.nodeId === originalLine.nodeId2);
 
                     if (!node1 || !node2) {
                         console.error("Не найдены узлы для выбранного элемента.");
                         return;
                     }
 
-                    lines = lines.filter(line => line.elem_id !== originalLine.elem_id);
-                    console.log(`Удален стержень с ID: ${originalLine.elem_id}`);
+                    lines = lines.filter(line => line.elemId !== originalLine.elemId);
+                    console.log(`Удален стержень с ID: ${originalLine.elemId}`);
 
-                    elementLoads = elementLoads.filter(load => load.targetElemId === originalLine.elem_id);
-                    console.log(`Удалены равномерно-распределенные нагрузки для стержня ${originalLine.elem_id}`);
+                    elementLoads = elementLoads.filter(load => load.targetElemId === originalLine.elemId);
+                    console.log(`Удалены равномерно-распределенные нагрузки для стержня ${originalLine.elemId}`);
 
                     const newNodes = [];
                     const newLines = [];
@@ -2762,12 +2762,12 @@
                         const newNodeY = node1.y + dy * ratio;
 
                         const newNode = { 
-                            node_id: nextNodeId++, 
+                            nodeId: nextNodeId++, 
                             x: newNodeX, 
                             y: newNodeY 
                         };
                         newNodes.push(newNode);
-                        console.log(`Добавлен новый узел ${newNode.node_id} по координатам (${newNode.x.toFixed(3)}, ${newNode.y.toFixed(3)})`);
+                        console.log(`Добавлен новый узел ${newNode.nodeId} по координатам (${newNode.x.toFixed(3)}, ${newNode.y.toFixed(3)})`);
                     }
 
                     const allSegmentNodes = [node1, ...newNodes, node2]; 
@@ -2777,16 +2777,16 @@
                         const endNode = allSegmentNodes[i + 1];
 
                         const newLine = {
-                            elem_id: nextElemId++,
-                            nodeId1: startNode.node_id,
-                            nodeId2: endNode.node_id,
-                            structural_type: originalLine.structural_type || 'beam',
+                            elemId: nextElemId++,
+                            nodeId1: startNode.nodeId,
+                            nodeId2: endNode.nodeId,
+                            structuralType: originalLine.structuralType || 'beam',
                             materialId: originalLine.materialId || null,
                             sectionId: originalLine.sectionId || null,
                             betaAngle: originalLine.betaAngle || 0
                         };
                         newLines.push(newLine);
-                        console.log(`Добавлен новый стержень ${newLine.elem_id} между узлами ${startNode.node_id} и ${endNode.node_id}`);
+                        console.log(`Добавлен новый стержень ${newLine.elemId} между узлами ${startNode.nodeId} и ${endNode.nodeId}`);
                     }
 
                     nodes.push(...newNodes);
@@ -2964,7 +2964,7 @@
                                 if (sel.type === 'line') {
                                     elementLoads.push({
                                         id: nextElementLoadId++,
-                                        targetElemId: sel.element.elem_id,
+                                        targetElemId: sel.element.elemId,
                                         type: 'uniform',
                                         component: 'x',
                                         startValue: value,
@@ -2990,7 +2990,7 @@
                                 if (sel.type === 'line') {
                                     elementLoads.push({
                                         id: nextElementLoadId++,
-                                        targetElemId: sel.element.elem_id,
+                                        targetElemId: sel.element.elemId,
                                         type: 'uniform',
                                         component: 'y',
                                         startValue: value,
@@ -3613,10 +3613,10 @@
         function applyRestrictionToSelectedNode(dxValue, dyValue, drValue) {
             if (!selectedNode) return;
 
-            let existingRestrictionIndex = restrictions.findIndex(res => res.node_id === selectedNode.node_id);
+            let existingRestrictionIndex = restrictions.findIndex(res => res.nodeId === selectedNode.nodeId);
 
             const newRestriction = {
-                node_id: selectedNode.node_id,
+                nodeId: selectedNode.nodeId,
                 dx: dxValue,
                 dy: dyValue,
                 dr: drValue
@@ -3661,7 +3661,7 @@
                 let content = '';
                 if (hoveredElement.type === 'node') {
                     const node = hoveredElement.element;
-                    const restriction = restrictions.find(res => res.node_id === node.node_id);
+                    const restriction = restrictions.find(res => res.nodeId === node.nodeId);
                     let restrictionInfo = '';
                     if (restriction) {
                         const typeKey = Object.keys(restrictionTypes).find(key => 
@@ -3676,16 +3676,16 @@
                         }
                     }
 
-                    content = `Node ${node.node_id}\nX: ${node.x.toFixed(3)} ${currentUnit}\nY: ${node.y.toFixed(3)} ${currentUnit}${restrictionInfo}`; 
+                    content = `Node ${node.nodeId}\nX: ${node.x.toFixed(3)} ${currentUnit}\nY: ${node.y.toFixed(3)} ${currentUnit}${restrictionInfo}`; 
                 } else if (hoveredElement.type === 'line') {
                     const line = hoveredElement.element;
-                    const n1 = nodes.find(n => n.node_id === line.nodeId1); 
-                    const n2 = nodes.find(n => n.node_id === line.nodeId2); 
+                    const n1 = nodes.find(n => n.nodeId === line.nodeId1); 
+                    const n2 = nodes.find(n => n.nodeId === line.nodeId2); 
                     if (n1 && n2) { 
                         const dx = n2.x - n1.x; 
                         const dy = n2.y - n1.y; 
                         const length = Math.sqrt(dx**2 + dy**2); 
-                        content = `Rod ${line.elem_id}\Length: ${length.toFixed(3)} ${currentUnit}`; 
+                        content = `Rod ${line.elemId}\Length: ${length.toFixed(3)} ${currentUnit}`; 
                     }
                 }
                 
@@ -3800,10 +3800,10 @@
             const baseScale = (avgLen * 0.2) / globalMax;
 
             resultsData.rods.forEach(rod => {
-                const line = lines.find(l => l.elem_id === rod.elem_id);
+                const line = lines.find(l => l.elemId === rod.elemId);
                 if (!line) return;
-                const n1 = nodes.find(n => n.node_id === line.nodeId1);
-                const n2 = nodes.find(n => n.node_id === line.nodeId2);
+                const n1 = nodes.find(n => n.nodeId === line.nodeId1);
+                const n2 = nodes.find(n => n.nodeId === line.nodeId2);
                 if (!n1 || !n2) return;
                 const dx = n2.x - n1.x;
                 const dy = n2.y - n1.y;

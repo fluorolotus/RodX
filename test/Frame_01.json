@@ -7,37 +7,37 @@
   },
   "nodes": [
     {
-      "node_id": 1,
+      "nodeId": 1,
       "x": 2,
       "y": 4
     },
     {
-      "node_id": 2,
+      "nodeId": 2,
       "x": 4,
       "y": 4
     },
     {
-      "node_id": 3,
+      "nodeId": 3,
       "x": 4,
       "y": 2
     }
   ],
   "elements": [
     {
-      "elem_id": 1,
+      "elemId": 1,
       "nodeId1": 1,
       "nodeId2": 2,
-      "structural_type": "beam",
+      "structuralType": "beam",
       "materialId": "en_steel_S235",
       "sectionId": "eu_I-beam_IPE-200",
       "betaAngle": 0,
       "loads": []
     },
     {
-      "elem_id": 2,
+      "elemId": 2,
       "nodeId1": 2,
       "nodeId2": 3,
-      "structural_type": "beam",
+      "structuralType": "beam",
       "materialId": "en_steel_S235",
       "sectionId": "eu_I-beam_IPE-200",
       "betaAngle": 0,
@@ -46,13 +46,13 @@
   ],
   "supports": [
     {
-      "node_id": 1,
+      "nodeId": 1,
       "dx": 0,
       "dy": 1,
       "dr": 0
     },
     {
-      "node_id": 3,
+      "nodeId": 3,
       "dx": 1,
       "dy": 1,
       "dr": 1

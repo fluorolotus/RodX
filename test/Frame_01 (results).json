@@ -6,7 +6,7 @@
     },
     "rods": [
       {
-        "elem_id": 1,
+        "elemId": 1,
         "length": 2.0,
         "nodes": ["nodeId1", "nodeId2"],
         "results": {
@@ -57,7 +57,7 @@
         }
       },
       {
-        "elem_id": 2,
+        "elemId": 2,
         "length": 2.0,
         "nodes": ["nodeId1", "nodeId2"],
         "results": {
