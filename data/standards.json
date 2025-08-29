@@ -1,39 +1,34 @@
 [
   {
     "id": "RU",
-    "name": "Russian standards (GOST SP)",
-    "shortName": "GOST SP",
+    "name": "Russian standards (ГОСТ СП)",
+    "shortName": "RU",
     "country": "Russia",
-    "description": "Current building codes and regulations of the Russian Federation",
-    "materialFile": "data/materials/gost_materials.json",
-    "sectionFile": "data/sections/gost_sections.json"
+    "description": "Standards of the Russian Federation",
+    "materialFile": "data/materials/ru_materials.json"
   },
   {
     "id": "EU",
-    "name": "European standards (EN)",
-    "shortName": "EN",
+    "name": "European standards (EU)",
+    "shortName": "EU",
     "country": "European Union",
-    "description": "Eurocodes and other European standards",
-    "materialFile": "data/materials/en_materials.json",
-    "sectionFile": "data/sections/en_sections.json"
+    "description": "European standards",
+    "materialFile": "data/materials/eu_materials.json"
   },
   {
     "id": "US",
-    "name": "American standards (ASTM)",
-    "shortName": "ASTM",
+    "name": "Standards of the United States (ASTM)",
+    "shortName": "US",
     "country": "USA",
     "description": "American Society for Testing and Materials Standards",
-    "materialFile": "data/materials/astm_materials.json",
-    "sectionFile": "data/sections/us_sections.json"
+    "materialFile": "data/materials/us_materials.json"
   },
   {
     "id": "USER",
-    "name": "Custom",
-    "shortName": "Custom",
+    "name": "Custom materials",
+    "shortName": "USER",
     "country": "Local",
     "description": "Materials created and saved by the user",
-    "materialFile": "localStorage",
-    "sectionFile": "localStorage"
+    "materialFile": "localStorage"
   }
 ]
-
