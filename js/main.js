@@ -3077,7 +3077,7 @@
             }
 
             const selectedType = materialTypeSelect.value; // 'steel' or 'concrete'
-            const selectedStandard = materialStandardSelect.value; // 'GOST_SP', 'EN', etc.
+            const selectedStandard = materialStandardSelect.value; // 'RU', 'EU', 'US', etc.
             materialClassSelect.innerHTML = ''; // Очищаем текущие опции
 
             // Получаем данные для выбранного стандарта
