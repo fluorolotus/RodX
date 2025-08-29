@@ -276,18 +276,44 @@
       }
     }
   ],
-  "nodeLoads": [],
-  "elementLoads": [
+  "loads": [
     {
-      "load_id": 1,
-      "target_elem_id": 1,
+      "id": 1,
+      "scope": "node",
+      "targetId": 2,
+      "type": "force",
+      "component": "y",
+      "value": -3,
+      "units": "kN"
+    },
+    {
+      "id": 2,
+      "scope": "element",
+      "targetId": 1,
       "type": "uniform",
       "component": "y",
-      "startValue": -2,
-      "endValue": -2,
-      "unit": "kN/m",
+      "startValue": -3,
+      "endValue": -3,
+      "units": "kN/m",
       "startPosition": 0,
       "endPosition": 1
+    },
+    {
+      "id": 3,
+      "scope": "global",
+      "type": "self_weight",
+      "direction": "y",
+      "factor": -1.0,
+      "units": "g"
+    },
+    {
+      "id": 4,
+      "scope": "node",
+      "targetId": 1,
+      "type": "moment",
+      "component": "r",
+      "value": -3,
+      "units": "kNm"
     }
   ]
 }

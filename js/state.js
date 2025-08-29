@@ -3,10 +3,10 @@
         let lines = [];
         let restrictions = [];
         let nextNodeId = 1;
-        let nextElemId = 1; 
-		let nodeLoads = [];
+        let nextElemId = 1;
+                let nodalLoads = [];
         let nextLoadId = 1;
-		let elementLoads = [];
+                let elementLoads = [];
         let nextElementLoadId = 1;
 		
                 let selectedElements = [];
