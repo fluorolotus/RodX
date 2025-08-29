@@ -1,4 +1,10 @@
 {
+  "units": {
+    "length": "m",
+    "force": "kN",
+    "temperature": "C",
+    "time": "s"
+  },
   "nodes": [
     {
       "node_id": 1,
@@ -22,8 +28,8 @@
       "nodeId1": 1,
       "nodeId2": 2,
       "structural_type": "beam",
-        "materialId": "en_steel_S235",
-        "sectionId": "eu_I-beam_IPE-200",
+      "materialId": "en_steel_S235",
+      "sectionId": "eu_I-beam_IPE-200",
       "betaAngle": 0,
       "loads": []
     },
@@ -32,13 +38,13 @@
       "nodeId1": 2,
       "nodeId2": 3,
       "structural_type": "beam",
-        "materialId": "en_steel_S235",
-        "sectionId": "eu_I-beam_IPE-200",
+      "materialId": "en_steel_S235",
+      "sectionId": "eu_I-beam_IPE-200",
       "betaAngle": 0,
       "loads": []
     }
   ],
-  "restrictions": [
+  "supports": [
     {
       "node_id": 1,
       "dx": 0,
@@ -50,20 +56,6 @@
       "dx": 1,
       "dy": 1,
       "dr": 1
-    }
-  ],
-  "nodeLoads": [],
-  "elementLoads": [
-    {
-      "load_id": 1,
-      "target_elem_id": 1,
-      "type": "uniform",
-      "component": "y",
-      "startValue": -2,
-      "endValue": -2,
-      "unit": "kN/m",
-      "startPosition": 0,
-      "endPosition": 1
     }
   ],
   "materials": [
@@ -284,10 +276,18 @@
       }
     }
   ],
-  "units": {
-    "length": "m",
-    "force": "kN",
-    "temperature": "C",
-    "time": "s"
-  }
+  "nodeLoads": [],
+  "elementLoads": [
+    {
+      "load_id": 1,
+      "target_elem_id": 1,
+      "type": "uniform",
+      "component": "y",
+      "startValue": -2,
+      "endValue": -2,
+      "unit": "kN/m",
+      "startPosition": 0,
+      "endPosition": 1
+    }
+  ]
 }
