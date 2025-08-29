@@ -1,4 +1,28 @@
         function saveModel() {
+            const loads = [
+                ...nodalLoads.map(l => ({
+                    id: l.id,
+                    scope: 'node',
+                    targetId: l.targetId,
+                    type: l.type === 'point_force' ? 'force' : l.type,
+                    component: l.component,
+                    value: l.value,
+                    units: l.type === 'moment' ? `${l.unit}${l.lengthUnit}` : l.unit
+                })),
+                ...elementLoads.map(l => ({
+                    id: l.id,
+                    scope: 'element',
+                    targetId: l.targetElemId,
+                    type: l.type,
+                    component: l.component,
+                    startValue: l.startValue,
+                    endValue: l.endValue,
+                    units: l.unit,
+                    startPosition: l.startPosition,
+                    endPosition: l.endPosition
+                }))
+            ];
+
             const modelData = {
                 units: {
                     length: currentUnit,
@@ -11,8 +35,7 @@
                 supports: restrictions,
                 materials: modelMaterials,
                 sections: modelSections,
-                nodeLoads: nodeLoads,
-                elementLoads: elementLoads
+                loads: loads
             };
             
             console.log("Модель данных перед сохранением:", modelData);
@@ -42,8 +65,67 @@
                     betaAngle: l.betaAngle !== undefined ? l.betaAngle : 0
                 }));
                 restrictions = modelData.supports || modelData.restrictions || [];
-                nodeLoads = modelData.nodeLoads || [];
-                elementLoads = modelData.elementLoads || [];
+                nodalLoads = [];
+                elementLoads = [];
+                if (modelData.loads) {
+                    modelData.loads.forEach(load => {
+                        if (load.scope === 'node') {
+                            const type = load.type === 'force' ? 'point_force' : load.type;
+                            let unit = load.units;
+                            let lengthUnit = null;
+                            if (type === 'moment') {
+                                const match = load.units.match(/^([a-zA-Z]+)([a-zA-Z]+)$/);
+                                if (match) {
+                                    unit = match[1];
+                                    lengthUnit = match[2];
+                                }
+                            }
+                            const nodalLoad = {
+                                id: load.id,
+                                type: type,
+                                targetId: load.targetId,
+                                component: load.component,
+                                value: load.value,
+                                unit: unit
+                            };
+                            if (lengthUnit) nodalLoad.lengthUnit = lengthUnit;
+                            nodalLoads.push(nodalLoad);
+                        } else if (load.scope === 'element') {
+                            elementLoads.push({
+                                id: load.id,
+                                targetElemId: load.targetId,
+                                type: load.type,
+                                component: load.component,
+                                startValue: load.startValue,
+                                endValue: load.endValue,
+                                unit: load.units,
+                                startPosition: load.startPosition,
+                                endPosition: load.endPosition
+                            });
+                        }
+                    });
+                } else {
+                    nodalLoads = (modelData.nodalLoads || modelData.nodeLoads || []).map(l => ({
+                        id: l.load_id !== undefined ? l.load_id : l.id,
+                        type: l.type,
+                        targetId: l.target_id !== undefined ? l.target_id : l.targetId,
+                        component: l.component,
+                        value: l.value,
+                        unit: l.unit,
+                        lengthUnit: l.lengthUnit
+                    }));
+                    elementLoads = (modelData.elementLoads || []).map(l => ({
+                        id: l.load_id !== undefined ? l.load_id : l.id,
+                        targetElemId: l.target_elem_id !== undefined ? l.target_elem_id : l.targetElemId,
+                        type: l.type,
+                        component: l.component,
+                        startValue: l.startValue,
+                        endValue: l.endValue,
+                        unit: l.unit,
+                        startPosition: l.startPosition,
+                        endPosition: l.endPosition
+                    }));
+                }
 				
 				// НОВОЕ: Загружаем материалы модели
                 modelMaterials = modelData.materials || [];
@@ -86,8 +168,8 @@
 
                 nextNodeId = nodes.length > 0 ? Math.max(...nodes.map(n => n.node_id)) + 1 : 1;
                 nextElemId = lines.length > 0 ? Math.max(...lines.map(l => l.elem_id)) + 1 : 1;
-                nextLoadId = nodeLoads.length > 0 ? Math.max(...nodeLoads.map(l => l.load_id)) + 1 : 1;
-                nextElementLoadId = elementLoads.length > 0 ? Math.max(...elementLoads.map(l => l.load_id)) + 1 : 1;
+                nextLoadId = nodalLoads.length > 0 ? Math.max(...nodalLoads.map(l => l.id)) + 1 : 1;
+                nextElementLoadId = elementLoads.length > 0 ? Math.max(...elementLoads.map(l => l.id)) + 1 : 1;
 
                 selectedNode = null;
                 selectedElement = null;
@@ -254,8 +336,8 @@
                 .map(type => `${type.name}: ${supportCounts[type.name]}`);
             addSection('supports', `Supports: ${supportsTotal}`, supportsChildren, supportsTotal > 0);
 
-            const pointLoads = nodeLoads.filter(l => l.type === 'point_force').length;
-            const moments = nodeLoads.filter(l => l.type === 'moment').length;
+            const pointLoads = nodalLoads.filter(l => l.type === 'point_force').length;
+            const moments = nodalLoads.filter(l => l.type === 'moment').length;
             const beamLoads = elementLoads.length;
             const loadsChildren = [];
             if (pointLoads > 0) loadsChildren.push(`Point load: ${pointLoads}`);
@@ -388,7 +470,7 @@
             drawNodes();
 
             if (showLoads) {
-            drawNodeLoads();
+            drawNodalLoads();
             }
 
             if (showReactions) {
@@ -643,15 +725,15 @@
         }
 		
 		// --- Обновленная функция для отрисовки узловых нагрузок ---
-                function drawNodeLoads() {
+                function drawNodalLoads() {
                         const LOAD_COLOR = 'black';
 
 			const FIXED_ARROW_LENGTH_PX = 70; 
 			const FIXED_MOMENT_RADIUS_PX = 35; 
 			const FIXED_TEXT_OFFSET_PX = 10; 
 
-			nodeLoads.forEach(load => {
-				const node = nodes.find(n => n.node_id === load.target_id);
+			nodalLoads.forEach(load => {
+				const node = nodes.find(n => n.node_id === load.targetId);
 				if (!node) return;
 
                 const currentForceDisplayUnit = forceUnitsSelect.value;
@@ -860,12 +942,12 @@
             const minArrowLengthWorldLimit = canvasHeightWorld / 25;
             const defaultArrowLengthWorld = DIST_LOAD_ARROW_LENGTH_PX / scale;
 
-            const uniqueLoadElements = new Set(elementLoads.map(ld => ld.target_elem_id));
+            const uniqueLoadElements = new Set(elementLoads.map(ld => ld.targetElemId));
             const useRelativeMaxScaling = uniqueLoadElements.size > 2 && maxMagnitude > 0;
             const maxRelativeArrowWorld = canvasHeightWorld / 16;
 
             elementLoads.forEach((load, idx) => {
-                const line = lines.find(l => l.elem_id === load.target_elem_id);
+                const line = lines.find(l => l.elem_id === load.targetElemId);
                 if (!line) return;
 
                 const node1 = nodes.find(n => n.node_id === line.nodeId1);
@@ -1508,7 +1590,7 @@
                     node.y = convertUnits(node.y, oldUnit, newUnit);
                 });
 
-				nodeLoads.forEach(load => {
+				nodalLoads.forEach(load => {
                     if (load.type === 'moment') {
                         load.value = convertMoment(load.value, load.unit, oldUnit, load.unit, newUnit);
                         load.lengthUnit = newUnit; 
@@ -1557,7 +1639,7 @@
 
                 forceUnitsSelect.dataset.previousValue = newForceUnit;
 
-				nodeLoads.forEach(load => {
+				nodalLoads.forEach(load => {
                     if (load.type === 'point_force') {
                         load.value = convertForce(load.value, load.unit, newForceUnit);
                         load.unit = newForceUnit; 
@@ -1915,7 +1997,7 @@
                 nodes = nodes.filter(node => node.node_id !== nodeIdToDelete); 
                 lines = lines.filter(line => line.nodeId1 !== nodeIdToDelete && line.nodeId2 !== nodeIdToDelete);
                 restrictions = restrictions.filter(res => res.node_id !== nodeIdToDelete);
-				nodeLoads = nodeLoads.filter(load => load.target_id !== nodeIdToDelete);
+				nodalLoads = nodalLoads.filter(load => load.targetId !== nodeIdToDelete);
 
                 if (firstNodeForLine && firstNodeForLine.node_id === nodeIdToDelete) firstNodeForLine = null; 
                 if (selectedNode && selectedNode.node_id === nodeIdToDelete) selectedNode = null; 
@@ -1979,7 +2061,7 @@
             nodes = [];
             lines = [];
             restrictions = [];
-            nodeLoads = [];
+            nodalLoads = [];
 			elementLoads = [];
             nextNodeId = 1;
             nextElemId = 1;
@@ -2005,7 +2087,7 @@
                 const currentMomentDisplayUnit = currentForceDisplayUnit + '*' + currentLengthDisplayUnit;
 
                 let loadsHtml = '';
-                const nodeSpecificLoads = nodeLoads.filter(load => load.target_id === selectedNode.node_id);
+                const nodeSpecificLoads = nodalLoads.filter(load => load.targetId === selectedNode.node_id);
                 if (nodeSpecificLoads.length === 0) {
                     loadsHtml += '<p class="text-gray-500 text-xs font-light">No loads yet</p>';
                 } else {
@@ -2025,7 +2107,7 @@
                         loadsHtml += `
                             <div class="load-item">
                                 <span>${load.type === 'point_force' ? 'F' : 'M'}${load.component !== 'moment' ? load.component.toUpperCase() : ''}: ${displayedValue} ${displayedUnitString}</span>
-                                <button data-load-id="${load.load_id}">Delete</button>
+                                <button data-load-id="${load.id}">Delete</button>
                             </div>
                         `;
                     });
@@ -2070,7 +2152,7 @@
                     </div>
                     <div class="property-group">
                         <h4 class="text-gray-700 mb-2">Loads</h4>
-                        <div id="nodeLoadsList" class="mb-4">
+                        <div id="nodalLoadsList" class="mb-4">
                             ${loadsHtml} </div>
                         <div class="load-input-group">
                             <label for="addForceX" class="sr-only">Force X</label>
@@ -2102,7 +2184,7 @@
                 const restrictionIconsCol1 = document.getElementById('restrictionIconsCol1');
                 const restrictionIconsCol2 = document.getElementById('restrictionIconsCol2');
 
-                const nodeLoadsList = document.getElementById('nodeLoadsList');
+                const nodalLoadsList = document.getElementById('nodalLoadsList');
                 const addForceXInput = document.getElementById('addForceX');
                 const addForceXBtn = document.getElementById('addForceXBtn');
                 const addForceYInput = document.getElementById('addForceY');
@@ -2214,18 +2296,18 @@
 
                 renderRestrictionIcons();
 
-                const renderNodeLoads = () => {
-                    nodeLoadsList.innerHTML = '';
-                    const loadsForSelectedNode = nodeLoads.filter(load => load.target_id === selectedNode.node_id);
+                const renderNodalLoads = () => {
+                    nodalLoadsList.innerHTML = '';
+                    const loadsForSelectedNode = nodalLoads.filter(load => load.targetId === selectedNode.node_id);
 
                     if (loadsForSelectedNode.length === 0) {
-                        nodeLoadsList.innerHTML = '<p class="text-gray-500 text-xs font-light">No loads yet</p>';
+                        nodalLoadsList.innerHTML = '<p class="text-gray-500 text-xs font-light">No loads yet</p>';
                     } else {
                         const currentForceDisplayUnit = forceUnitsSelect.value;
                         const currentLengthDisplayUnit = unitsSelect.value;
                         const currentMomentDisplayUnit = currentForceDisplayUnit + '*' + currentLengthDisplayUnit;
 
-                        nodeLoadsList.innerHTML = '';
+                        nodalLoadsList.innerHTML = '';
                         loadsForSelectedNode.forEach(load => {
                             let displayedValue;
                             let displayedUnitString;
@@ -2252,37 +2334,37 @@
                             loadItemDiv.className = 'load-item';
                             loadItemDiv.innerHTML = `
                                 <span>${loadLabel}</span>
-                                <button data-load-id="${load.load_id}">Удалить</button>
+                                <button data-load-id="${load.id}">Удалить</button>
                             `;
-                            nodeLoadsList.appendChild(loadItemDiv);
+                            nodalLoadsList.appendChild(loadItemDiv);
                         });
 
-                        nodeLoadsList.querySelectorAll('.load-item button').forEach(button => {
+                        nodalLoadsList.querySelectorAll('.load-item button').forEach(button => {
                             button.addEventListener('click', (e) => {
                                 const loadIdToDelete = parseInt(e.target.dataset.loadId);
-                                nodeLoads = nodeLoads.filter(load => load.load_id !== loadIdToDelete);
-                                renderNodeLoads();
+                                nodalLoads = nodalLoads.filter(load => load.id !== loadIdToDelete);
+                                renderNodalLoads();
                                 draw();
                             });
                         });
                     }
                 };
 
-                renderNodeLoads();
+                renderNodalLoads();
 
                 addForceXBtn.addEventListener('click', () => {
                     const value = parseFloat(addForceXInput.value);
                     if (!isNaN(value)) {
-                        nodeLoads.push({
-                            load_id: nextLoadId++,
+                        nodalLoads.push({
+                            id: nextLoadId++,
                             type: 'point_force',
-                            target_id: selectedNode.node_id,
+                            targetId: selectedNode.node_id,
                             component: 'x',
                             value: value,
                             unit: forceUnitsSelect.value
                         });
                         addForceXInput.value = '';
-                        renderNodeLoads();
+                        renderNodalLoads();
                         draw();
                     }
                 });
@@ -2290,16 +2372,16 @@
                 addForceYBtn.addEventListener('click', () => {
                     const value = parseFloat(addForceYInput.value);
                     if (!isNaN(value)) {
-                        nodeLoads.push({
-                            load_id: nextLoadId++,
+                        nodalLoads.push({
+                            id: nextLoadId++,
                             type: 'point_force',
-                            target_id: selectedNode.node_id,
+                            targetId: selectedNode.node_id,
                             component: 'y',
                             value: value,
                             unit: forceUnitsSelect.value
                         });
                         addForceYInput.value = '';
-                        renderNodeLoads();
+                        renderNodalLoads();
                         draw();
                     }
                 });
@@ -2307,17 +2389,17 @@
                 addMomentBtn.addEventListener('click', () => {
                     const value = parseFloat(addMomentInput.value);
                     if (!isNaN(value)) {
-                        nodeLoads.push({
-                            load_id: nextLoadId++,
+                        nodalLoads.push({
+                            id: nextLoadId++,
                             type: 'moment',
-                            target_id: selectedNode.node_id,
+                            targetId: selectedNode.node_id,
                             component: 'r',
                             value: value,
                             unit: forceUnitsSelect.value,
                             lengthUnit: unitsSelect.value
                         });
                         addMomentInput.value = '';
-                        renderNodeLoads();
+                        renderNodalLoads();
                         draw();
                     }
                 });
@@ -2365,7 +2447,7 @@
                 const betaAngleValue = selectedElement.betaAngle !== undefined ? selectedElement.betaAngle : 0;
 
                 let loadsHtml = '';
-                const elementSpecificLoads = elementLoads.filter(load => load.target_elem_id === selectedElement.elem_id);
+                const elementSpecificLoads = elementLoads.filter(load => load.targetElemId === selectedElement.elem_id);
                 if (elementSpecificLoads.length === 0) {
                     loadsHtml += '<p class="text-gray-500 text-xs font-light">No loads yet</p>';
                 } else {
@@ -2390,7 +2472,7 @@
                         loadsHtml += `
                             <div class="load-item">
                                 <span>q${load.component.toUpperCase()}: ${displayedValue} ${displayedUnitString}</span>
-                                <button data-load-id="${load.load_id}" data-load-type="distributed">Delete</button>
+                                <button data-load-id="${load.id}" data-load-type="distributed">Delete</button>
                             </div>
                         `;
                     });
@@ -2473,7 +2555,7 @@
 
                 const renderElementLoads = () => {
                     elementLoadsList.innerHTML = '';
-                    const loadsForSelectedElement = elementLoads.filter(load => load.target_elem_id === selectedElement.elem_id);
+                    const loadsForSelectedElement = elementLoads.filter(load => load.targetElemId === selectedElement.elem_id);
 
                     if (loadsForSelectedElement.length === 0) {
                         elementLoadsList.innerHTML = '<p class="text-gray-500 text-xs font-light">No loads yet</p>';
@@ -2495,7 +2577,7 @@
                             loadItemDiv.className = 'load-item';
                             loadItemDiv.innerHTML = `
                                 <span>q${load.component.toUpperCase()}: ${displayedValue} ${displayedUnitString}</span>
-                                <button data-load-id="${load.load_id}" data-load-type="distributed">Delete</button>
+                                <button data-load-id="${load.id}" data-load-type="distributed">Delete</button>
                             `;
                             elementLoadsList.appendChild(loadItemDiv);
                         });
@@ -2503,7 +2585,7 @@
                         elementLoadsList.querySelectorAll('.load-item button').forEach(button => {
                             button.addEventListener('click', (e) => {
                                 const loadIdToDelete = parseInt(e.target.dataset.loadId);
-                                elementLoads = elementLoads.filter(load => load.load_id !== loadIdToDelete);
+                                elementLoads = elementLoads.filter(load => load.id !== loadIdToDelete);
                                 renderElementLoads();
                                 draw();
                             });
@@ -2517,8 +2599,8 @@
                     const value = parseFloat(addDistributedForceXInput.value);
                     if (!isNaN(value)) {
                         elementLoads.push({
-                            load_id: nextElementLoadId++,
-                            target_elem_id: selectedElement.elem_id,
+                            id: nextElementLoadId++,
+                            targetElemId: selectedElement.elem_id,
                             type: 'uniform', 
                             component: 'x',
                             startValue: value,
@@ -2537,8 +2619,8 @@
                     const value = parseFloat(addDistributedForceYInput.value);
                     if (!isNaN(value)) {
                         elementLoads.push({
-                            load_id: nextElementLoadId++,
-                            target_elem_id: selectedElement.elem_id,
+                            id: nextElementLoadId++,
+                            targetElemId: selectedElement.elem_id,
                             type: 'uniform',
                             component: 'y',
                             startValue: value,
@@ -2660,7 +2742,7 @@
                     lines = lines.filter(line => line.elem_id !== originalLine.elem_id);
                     console.log(`Удален стержень с ID: ${originalLine.elem_id}`);
 
-                    elementLoads = elementLoads.filter(load => load.target_elem_id === originalLine.elem_id);
+                    elementLoads = elementLoads.filter(load => load.targetElemId === originalLine.elem_id);
                     console.log(`Удалены равномерно-распределенные нагрузки для стержня ${originalLine.elem_id}`);
 
                     const newNodes = [];
@@ -2876,8 +2958,8 @@
                             selectedElements.forEach(sel => {
                                 if (sel.type === 'line') {
                                     elementLoads.push({
-                                        load_id: nextElementLoadId++,
-                                        target_elem_id: sel.element.elem_id,
+                                        id: nextElementLoadId++,
+                                        targetElemId: sel.element.elem_id,
                                         type: 'uniform',
                                         component: 'x',
                                         startValue: value,
@@ -2902,8 +2984,8 @@
                             selectedElements.forEach(sel => {
                                 if (sel.type === 'line') {
                                     elementLoads.push({
-                                        load_id: nextElementLoadId++,
-                                        target_elem_id: sel.element.elem_id,
+                                        id: nextElementLoadId++,
+                                        targetElemId: sel.element.elem_id,
                                         type: 'uniform',
                                         component: 'y',
                                         startValue: value,
