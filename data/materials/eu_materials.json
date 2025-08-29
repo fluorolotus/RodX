@@ -308,7 +308,7 @@
     }
   },
   {
-    "id": "en_steel_S235",
+    "id": "eu_steel_S235",
     "name": "S235",
     "type": "steel",
     "standard": "EU",
@@ -336,7 +336,7 @@
     }
   },
   {
-    "id": "en_steel_S275",
+    "id": "eu_steel_S275",
     "name": "S275",
     "type": "steel",
     "standard": "EU",
@@ -364,7 +364,7 @@
     }
   },
   {
-    "id": "en_steel_S355",
+    "id": "eu_steel_S355",
     "name": "S355",
     "type": "steel",
     "standard": "EU",
@@ -392,7 +392,7 @@
     }
   },
   {
-    "id": "en_steel_S420",
+    "id": "eu_steel_S420",
     "name": "S420",
     "type": "steel",
     "standard": "EU",
@@ -420,7 +420,7 @@
     }
   },
   {
-    "id": "en_steel_S460",
+    "id": "eu_steel_S460",
     "name": "S460",
     "type": "steel",
     "standard": "EU",
