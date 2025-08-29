@@ -1,18 +1,18 @@
         function saveModel() {
             const modelData = {
-                nodes: nodes,
-                elements: lines,
-                restrictions: restrictions,
-                nodeLoads: nodeLoads,
-                elementLoads: elementLoads,
-                materials: modelMaterials,
-                sections: modelSections,
                 units: {
                     length: currentUnit,
                     force: currentForceUnit,
                     temperature: currentTemperatureUnit,
                     time: currentTimeUnit
-                }
+                },
+                nodes: nodes,
+                elements: lines,
+                supports: restrictions,
+                materials: modelMaterials,
+                sections: modelSections,
+                nodeLoads: nodeLoads,
+                elementLoads: elementLoads
             };
             
             console.log("Модель данных перед сохранением:", modelData);
@@ -41,7 +41,7 @@
                     sectionId: l.sectionId !== undefined ? l.sectionId : null,
                     betaAngle: l.betaAngle !== undefined ? l.betaAngle : 0
                 }));
-                restrictions = modelData.restrictions || [];
+                restrictions = modelData.supports || modelData.restrictions || [];
                 nodeLoads = modelData.nodeLoads || [];
                 elementLoads = modelData.elementLoads || [];
 				
