@@ -5,7 +5,8 @@
     "shortName": "RU",
     "country": "Russia",
     "description": "Standards of the Russian Federation",
-    "materialFile": "data/materials/ru_materials.json"
+    "materialFile": "data/materials/ru_materials.json",
+    "sectionFile": "data/sections/ru_sections.json"
   },
   {
     "id": "EU",
@@ -13,7 +14,8 @@
     "shortName": "EU",
     "country": "European Union",
     "description": "European standards",
-    "materialFile": "data/materials/eu_materials.json"
+    "materialFile": "data/materials/eu_materials.json",
+    "sectionFile": "data/sections/eu_sections.json"
   },
   {
     "id": "US",
@@ -29,6 +31,7 @@
     "shortName": "USER",
     "country": "Local",
     "description": "Materials created and saved by the user",
-    "materialFile": "localStorage"
+    "materialFile": "localStorage",
+    "sectionFile": "localStorage"
   }
 ]

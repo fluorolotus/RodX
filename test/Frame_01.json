@@ -22,8 +22,8 @@
       "nodeId1": 1,
       "nodeId2": 2,
       "structural_type": "beam",
-      "materialId": "en_steel_S235",
-      "sectionId": "I-beam_en_IPE-200",
+        "materialId": "en_steel_S235",
+        "sectionId": "eu_I-beam_IPE-200",
       "betaAngle": 0,
       "loads": []
     },
@@ -32,8 +32,8 @@
       "nodeId1": 2,
       "nodeId2": 3,
       "structural_type": "beam",
-      "materialId": "en_steel_S235",
-      "sectionId": "I-beam_en_IPE-200",
+        "materialId": "en_steel_S235",
+        "sectionId": "eu_I-beam_IPE-200",
       "betaAngle": 0,
       "loads": []
     }
@@ -71,7 +71,7 @@
       "id": "en_steel_S235",
       "name": "S235",
       "type": "steel",
-      "standard": "EN",
+      "standard": "EU",
       "properties": {
         "elasticModulus": {
           "value": 210,
@@ -98,7 +98,7 @@
   ],
   "sections": [
     {
-      "id": "I-beam_en_IPE-80",
+      "id": "eu_I-beam_IPE-80",
       "name": "IPE-80",
       "type": "I-beam",
       "standard": "EU",
@@ -191,7 +191,7 @@
       }
     },
     {
-      "id": "I-beam_en_IPE-200",
+      "id": "eu_I-beam_IPE-200",
       "name": "IPE-200",
       "type": "I-beam",
       "standard": "EU",
