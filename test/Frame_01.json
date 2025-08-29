@@ -30,8 +30,7 @@
       "structuralType": "beam",
       "materialId": "en_steel_S235",
       "sectionId": "eu_I-beam_IPE-200",
-      "betaAngle": 0,
-      "loads": []
+      "betaAngle": 0
     },
     {
       "elemId": 2,
@@ -40,8 +39,7 @@
       "structuralType": "beam",
       "materialId": "en_steel_S235",
       "sectionId": "eu_I-beam_IPE-200",
-      "betaAngle": 0,
-      "loads": []
+      "betaAngle": 0
     }
   ],
   "supports": [

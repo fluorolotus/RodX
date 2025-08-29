@@ -64,10 +64,10 @@
                 const modelData = JSON.parse(jsonFileContent);
 
                 nodes = modelData.nodes || [];
-                lines = (modelData.elements || []).map(l => ({
-                    ...l,
-                    sectionId: l.sectionId !== undefined ? l.sectionId : null,
-                    betaAngle: l.betaAngle !== undefined ? l.betaAngle : 0
+                lines = (modelData.elements || []).map(({ loads, ...rest }) => ({
+                    ...rest,
+                    sectionId: rest.sectionId !== undefined ? rest.sectionId : null,
+                    betaAngle: rest.betaAngle !== undefined ? rest.betaAngle : 0
                 }));
                 restrictions = modelData.supports || modelData.restrictions || [];
                 nodalLoads = [];
@@ -1737,7 +1737,7 @@
 							(line.nodeId1 === clickedNode.nodeId && line.nodeId2 === firstNodeForLine.nodeId)    
 						);
                                                 if (!exists) {
-                                                        lines.push({ elemId: nextElemId++, nodeId1: firstNodeForLine.nodeId, nodeId2: clickedNode.nodeId, structuralType: 'beam', materialId: null, sectionId: null, betaAngle: 0, loads: [] });
+                                                        lines.push({ elemId: nextElemId++, nodeId1: firstNodeForLine.nodeId, nodeId2: clickedNode.nodeId, structuralType: 'beam', materialId: null, sectionId: null, betaAngle: 0 });
                                                         console.log(`Линия ${nextElemId - 1} создана между узлами ${firstNodeForLine.nodeId} и ${clickedNode.nodeId}.`);
                                                 } else {
 							console.log(`Линия между узлами ${firstNodeForLine.nodeId} и ${clickedNode.nodeId} уже существует.`); 
