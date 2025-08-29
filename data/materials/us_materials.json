@@ -1,0 +1,422 @@
+[
+  {
+    "id": "us_concrete_2500",
+    "name": "C2500",
+    "type": "concrete",
+    "standard": "US",
+    "properties": {
+      "elasticModulus": {
+        "value": 2850,
+        "unit": "ksi"
+      },
+      "density": {
+        "value": 150,
+        "unit": "lbf/ft^3"
+      },
+      "thermalExpansionCoefficient": {
+        "value": 1e-05,
+        "unit": "1/F"
+      },
+      "poissonRatio": {
+        "value": 0.2,
+        "unit": "none"
+      },
+      "dampingRatio": {
+        "value": 0.05,
+        "unit": "none"
+      }
+    }
+  },
+  {
+    "id": "us_concrete_3000",
+    "name": "C3000",
+    "type": "concrete",
+    "standard": "US",
+    "properties": {
+      "elasticModulus": {
+        "value": 3120,
+        "unit": "ksi"
+      },
+      "density": {
+        "value": 150,
+        "unit": "lbf/ft^3"
+      },
+      "thermalExpansionCoefficient": {
+        "value": 1e-05,
+        "unit": "1/F"
+      },
+      "poissonRatio": {
+        "value": 0.2,
+        "unit": "none"
+      },
+      "dampingRatio": {
+        "value": 0.05,
+        "unit": "none"
+      }
+    }
+  },
+  {
+    "id": "us_concrete_3500",
+    "name": "C3500",
+    "type": "concrete",
+    "standard": "US",
+    "properties": {
+      "elasticModulus": {
+        "value": 3370,
+        "unit": "ksi"
+      },
+      "density": {
+        "value": 150,
+        "unit": "lbf/ft^3"
+      },
+      "thermalExpansionCoefficient": {
+        "value": 1e-05,
+        "unit": "1/F"
+      },
+      "poissonRatio": {
+        "value": 0.2,
+        "unit": "none"
+      },
+      "dampingRatio": {
+        "value": 0.05,
+        "unit": "none"
+      }
+    }
+  },
+  {
+    "id": "us_concrete_4000",
+    "name": "C4000",
+    "type": "concrete",
+    "standard": "US",
+    "properties": {
+      "elasticModulus": {
+        "value": 3605,
+        "unit": "ksi"
+      },
+      "density": {
+        "value": 150,
+        "unit": "lbf/ft^3"
+      },
+      "thermalExpansionCoefficient": {
+        "value": 1e-05,
+        "unit": "1/F"
+      },
+      "poissonRatio": {
+        "value": 0.2,
+        "unit": "none"
+      },
+      "dampingRatio": {
+        "value": 0.05,
+        "unit": "none"
+      }
+    }
+  },
+  {
+    "id": "us_concrete_4500",
+    "name": "C4500",
+    "type": "concrete",
+    "standard": "US",
+    "properties": {
+      "elasticModulus": {
+        "value": 3825,
+        "unit": "ksi"
+      },
+      "density": {
+        "value": 150,
+        "unit": "lbf/ft^3"
+      },
+      "thermalExpansionCoefficient": {
+        "value": 1e-05,
+        "unit": "1/F"
+      },
+      "poissonRatio": {
+        "value": 0.2,
+        "unit": "none"
+      },
+      "dampingRatio": {
+        "value": 0.05,
+        "unit": "none"
+      }
+    }
+  },
+  {
+    "id": "us_concrete_5000",
+    "name": "C5000",
+    "type": "concrete",
+    "standard": "US",
+    "properties": {
+      "elasticModulus": {
+        "value": 4030,
+        "unit": "ksi"
+      },
+      "density": {
+        "value": 150,
+        "unit": "lbf/ft^3"
+      },
+      "thermalExpansionCoefficient": {
+        "value": 1e-05,
+        "unit": "1/F"
+      },
+      "poissonRatio": {
+        "value": 0.2,
+        "unit": "none"
+      },
+      "dampingRatio": {
+        "value": 0.05,
+        "unit": "none"
+      }
+    }
+  },
+  {
+    "id": "us_concrete_6000",
+    "name": "C6000",
+    "type": "concrete",
+    "standard": "US",
+    "properties": {
+      "elasticModulus": {
+        "value": 4415,
+        "unit": "ksi"
+      },
+      "density": {
+        "value": 150,
+        "unit": "lbf/ft^3"
+      },
+      "thermalExpansionCoefficient": {
+        "value": 1e-05,
+        "unit": "1/F"
+      },
+      "poissonRatio": {
+        "value": 0.2,
+        "unit": "none"
+      },
+      "dampingRatio": {
+        "value": 0.05,
+        "unit": "none"
+      }
+    }
+  },
+  {
+    "id": "us_concrete_7000",
+    "name": "C7000",
+    "type": "concrete",
+    "standard": "US",
+    "properties": {
+      "elasticModulus": {
+        "value": 4770,
+        "unit": "ksi"
+      },
+      "density": {
+        "value": 150,
+        "unit": "lbf/ft^3"
+      },
+      "thermalExpansionCoefficient": {
+        "value": 1e-05,
+        "unit": "1/F"
+      },
+      "poissonRatio": {
+        "value": 0.2,
+        "unit": "none"
+      },
+      "dampingRatio": {
+        "value": 0.05,
+        "unit": "none"
+      }
+    }
+  },
+  {
+    "id": "us_concrete_8000",
+    "name": "C8000",
+    "type": "concrete",
+    "standard": "US",
+    "properties": {
+      "elasticModulus": {
+        "value": 5100,
+        "unit": "ksi"
+      },
+      "density": {
+        "value": 150,
+        "unit": "lbf/ft^3"
+      },
+      "thermalExpansionCoefficient": {
+        "value": 1e-05,
+        "unit": "1/F"
+      },
+      "poissonRatio": {
+        "value": 0.2,
+        "unit": "none"
+      },
+      "dampingRatio": {
+        "value": 0.05,
+        "unit": "none"
+      }
+    }
+  },
+  {
+    "id": "us_concrete_10000",
+    "name": "C10000",
+    "type": "concrete",
+    "standard": "US",
+    "properties": {
+      "elasticModulus": {
+        "value": 5700,
+        "unit": "ksi"
+      },
+      "density": {
+        "value": 150,
+        "unit": "lbf/ft^3"
+      },
+      "thermalExpansionCoefficient": {
+        "value": 1e-05,
+        "unit": "1/F"
+      },
+      "poissonRatio": {
+        "value": 0.2,
+        "unit": "none"
+      },
+      "dampingRatio": {
+        "value": 0.05,
+        "unit": "none"
+      }
+    }
+  },
+  {
+    "id": "astm_steel_A36",
+    "name": "A36",
+    "type": "steel",
+    "standard": "US",
+    "properties": {
+      "elasticModulus": {
+        "value": 29000,
+        "unit": "ksi"
+      },
+      "density": {
+        "value": 490,
+        "unit": "lbf/ft^3"
+      },
+      "thermalExpansionCoefficient": {
+        "value": 1.17e-05,
+        "unit": "1/F"
+      },
+      "poissonRatio": {
+        "value": 0.3,
+        "unit": "none"
+      },
+      "dampingRatio": {
+        "value": 0.02,
+        "unit": "none"
+      }
+    }
+  },
+  {
+    "id": "astm_steel_A572-50",
+    "name": "A572-50",
+    "type": "steel",
+    "standard": "US",
+    "properties": {
+      "elasticModulus": {
+        "value": 29000,
+        "unit": "ksi"
+      },
+      "density": {
+        "value": 490,
+        "unit": "lbf/ft^3"
+      },
+      "thermalExpansionCoefficient": {
+        "value": 1.17e-05,
+        "unit": "1/F"
+      },
+      "poissonRatio": {
+        "value": 0.3,
+        "unit": "none"
+      },
+      "dampingRatio": {
+        "value": 0.02,
+        "unit": "none"
+      }
+    }
+  },
+  {
+    "id": "astm_steel_A588",
+    "name": "A588",
+    "type": "steel",
+    "standard": "US",
+    "properties": {
+      "elasticModulus": {
+        "value": 29000,
+        "unit": "ksi"
+      },
+      "density": {
+        "value": 490,
+        "unit": "lbf/ft^3"
+      },
+      "thermalExpansionCoefficient": {
+        "value": 1.17e-05,
+        "unit": "1/F"
+      },
+      "poissonRatio": {
+        "value": 0.3,
+        "unit": "none"
+      },
+      "dampingRatio": {
+        "value": 0.02,
+        "unit": "none"
+      }
+    }
+  },
+  {
+    "id": "astm_steel_A709-50",
+    "name": "A709-50",
+    "type": "steel",
+    "standard": "US",
+    "properties": {
+      "elasticModulus": {
+        "value": 29000,
+        "unit": "ksi"
+      },
+      "density": {
+        "value": 490,
+        "unit": "lbf/ft^3"
+      },
+      "thermalExpansionCoefficient": {
+        "value": 1.17e-05,
+        "unit": "1/F"
+      },
+      "poissonRatio": {
+        "value": 0.3,
+        "unit": "none"
+      },
+      "dampingRatio": {
+        "value": 0.02,
+        "unit": "none"
+      }
+    }
+  },
+  {
+    "id": "astm_steel_A992",
+    "name": "A992",
+    "type": "steel",
+    "standard": "US",
+    "properties": {
+      "elasticModulus": {
+        "value": 29000,
+        "unit": "ksi"
+      },
+      "density": {
+        "value": 490,
+        "unit": "lbf/ft^3"
+      },
+      "thermalExpansionCoefficient": {
+        "value": 1.17e-05,
+        "unit": "1/F"
+      },
+      "poissonRatio": {
+        "value": 0.3,
+        "unit": "none"
+      },
+      "dampingRatio": {
+        "value": 0.02,
+        "unit": "none"
+      }
+    }
+  }
+]
