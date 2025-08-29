@@ -420,7 +420,7 @@
     }
   },
   {
-    "id": "gost_steel_C235",
+    "id": "ru_steel_C235",
     "name": "C235",
     "type": "steel",
     "standard": "RU",
@@ -448,7 +448,7 @@
     }
   },
   {
-    "id": "gost_steel_C245",
+    "id": "ru_steel_C245",
     "name": "C245",
     "type": "steel",
     "standard": "RU",
@@ -476,7 +476,7 @@
     }
   },
   {
-    "id": "gost_steel_C255",
+    "id": "ru_steel_C255",
     "name": "C255",
     "type": "steel",
     "standard": "RU",
@@ -504,7 +504,7 @@
     }
   },
   {
-    "id": "gost_steel_C295",
+    "id": "ru_steel_C295",
     "name": "C295",
     "type": "steel",
     "standard": "RU",
@@ -532,7 +532,7 @@
     }
   },
   {
-    "id": "gost_steel_C345",
+    "id": "ru_steel_C345",
     "name": "C345",
     "type": "steel",
     "standard": "RU",
@@ -560,7 +560,7 @@
     }
   },
   {
-    "id": "gost_steel_09G2S",
+    "id": "ru_steel_09G2S",
     "name": "09G2S",
     "type": "steel",
     "standard": "RU",
@@ -588,7 +588,7 @@
     }
   },
   {
-    "id": "gost_steel_15HSND",
+    "id": "ru_steel_15HSND",
     "name": "15HSND",
     "type": "steel",
     "standard": "RU",
@@ -616,7 +616,7 @@
     }
   },
   {
-    "id": "gost_steel_St3ps",
+    "id": "ru_steel_St3ps",
     "name": "St3ps",
     "type": "steel",
     "standard": "RU",
@@ -644,7 +644,7 @@
     }
   },
   {
-    "id": "gost_steel_St3sp",
+    "id": "ru_steel_St3sp",
     "name": "St3sp",
     "type": "steel",
     "standard": "RU",
