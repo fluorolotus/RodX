@@ -3461,12 +3461,12 @@
                     userSectionNameContainer.classList.add('hidden');
                 }
             }
-            if (selectedSection && selectedSection.properties) {
-                const props = selectedSection.properties;
-                sectionHeightSpan.value = props.height ? props.height.value : '';
-                sectionWidthSpan.value = props.width ? props.width.value : '';
-                sectionWebThicknessSpan.value = props.webThickness ? props.webThickness.value : '';
-                sectionFlangeThicknessSpan.value = props.flangeThickness ? props.flangeThickness.value : '';
+            if (selectedSection && selectedSection.geometry) {
+                const geom = selectedSection.geometry;
+                sectionHeightSpan.value = geom.h ? geom.h.value : '';
+                sectionWidthSpan.value = geom.b ? geom.b.value : '';
+                sectionWebThicknessSpan.value = geom.tw ? geom.tw.value : '';
+                sectionFlangeThicknessSpan.value = geom.tf ? geom.tf.value : '';
             } else {
                 sectionHeightSpan.value = '';
                 sectionWidthSpan.value = '';
@@ -3490,13 +3490,22 @@
             }
 
             sectionDetailsContent.innerHTML = '';
-            if (selectedSection && selectedSection.properties) {
-                for (const key in selectedSection.properties) {
-                    if (['height','width','webThickness','flangeThickness','radius'].includes(key)) continue;
-                    const prop = selectedSection.properties[key];
-                    const p = document.createElement('p');
-                    p.textContent = `${key}: ${prop.value} ${getUnitText(prop.unit)}`;
-                    sectionDetailsContent.appendChild(p);
+            if (selectedSection) {
+                if (selectedSection.geometry) {
+                    for (const key in selectedSection.geometry) {
+                        const geomProp = selectedSection.geometry[key];
+                        const p = document.createElement('p');
+                        p.textContent = `${key}: ${geomProp.value} ${getUnitText(geomProp.unit)}`;
+                        sectionDetailsContent.appendChild(p);
+                    }
+                }
+                if (selectedSection.properties) {
+                    for (const key in selectedSection.properties) {
+                        const prop = selectedSection.properties[key];
+                        const p = document.createElement('p');
+                        p.textContent = `${key}: ${prop.value} ${getUnitText(prop.unit)}`;
+                        sectionDetailsContent.appendChild(p);
+                    }
                 }
             }
         }
