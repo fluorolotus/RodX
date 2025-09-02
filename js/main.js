@@ -1,4 +1,4 @@
-        function getModelLoads() {
+function getModelLoads() {
             return [
                 ...nodalLoads.map(l => ({
                     id: l.id,
@@ -22,24 +22,34 @@
                     endPosition: l.endPosition
                 }))
             ];
-        }
+}
+
+function ensureElasticSupport(nodeId) {
+    let support = elasticSupports.find(es => es.nodeId === nodeId);
+    if (!support) {
+        support = { nodeId: nodeId, kx: 0, ky: 0, kr: 0 };
+        elasticSupports.push(support);
+    }
+    return support;
+}
 
         function getModelData() {
-            return {
-                units: {
-                    length: currentUnit,
-                    force: currentForceUnit,
-                    temperature: currentTemperatureUnit,
-                    time: currentTimeUnit
-                },
-                nodes: nodes,
-                elements: lines,
-                supports: restrictions,
-                materials: modelMaterials,
-                sections: modelSections,
-                loads: getModelLoads()
-            };
-        }
+    return {
+        units: {
+            length: currentUnit,
+            force: currentForceUnit,
+            temperature: currentTemperatureUnit,
+            time: currentTimeUnit
+        },
+        nodes: nodes,
+        elements: lines,
+        supports: restrictions,
+        elasticSupports: elasticSupports,
+        materials: modelMaterials,
+        sections: modelSections,
+        loads: getModelLoads()
+    };
+}
 
         function saveModel() {
             const modelData = getModelData();
@@ -70,6 +80,8 @@
                     betaAngle: rest.betaAngle !== undefined ? rest.betaAngle : 0
                 }));
                 restrictions = modelData.supports || modelData.restrictions || [];
+                elasticSupports = modelData.elasticSupports || [];
+                nodes.forEach(n => ensureElasticSupport(n.nodeId));
                 nodalLoads = [];
                 elementLoads = [];
                 if (modelData.loads) {
@@ -1813,8 +1825,9 @@
 							// Ничего не выделено/не наполовину, клик по пустому месту: создаем новый узел (ВАША ИСХОДНАЯ ЛОГИКА)
 							const placeX = snapToGrid ? mouse.snappedX : mouse.worldX; 
 							const placeY = snapToGrid ? mouse.snappedY : mouse.worldY;
-							const newNode = { nodeId: nextNodeId++, x: placeX, y: placeY }; 
-							nodes.push(newNode); 
+                                                        const newNode = { nodeId: nextNodeId++, x: placeX, y: placeY };
+                                                        nodes.push(newNode);
+                                                        ensureElasticSupport(newNode.nodeId);
 							console.log(`Узел ${newNode.nodeId} создан по координатам (${newNode.x.toFixed(3)}, ${newNode.y.toFixed(3)}).`);
 							
 							// После создания узла, выделения быть не должно
@@ -1999,10 +2012,11 @@
         function handleDeleteNode() {
             if (contextMenuTarget && contextMenuTarget.type === 'node') {
                 const nodeIdToDelete = contextMenuTarget.element.nodeId; 
-                nodes = nodes.filter(node => node.nodeId !== nodeIdToDelete); 
+                nodes = nodes.filter(node => node.nodeId !== nodeIdToDelete);
                 lines = lines.filter(line => line.nodeId1 !== nodeIdToDelete && line.nodeId2 !== nodeIdToDelete);
                 restrictions = restrictions.filter(res => res.nodeId !== nodeIdToDelete);
-				nodalLoads = nodalLoads.filter(load => load.targetId !== nodeIdToDelete);
+                elasticSupports = elasticSupports.filter(es => es.nodeId !== nodeIdToDelete);
+                nodalLoads = nodalLoads.filter(load => load.targetId !== nodeIdToDelete);
 
                 if (firstNodeForLine && firstNodeForLine.nodeId === nodeIdToDelete) firstNodeForLine = null; 
                 if (selectedNode && selectedNode.nodeId === nodeIdToDelete) selectedNode = null; 
@@ -2047,6 +2061,7 @@
                     y: nodeToCopy.y + (axis === 'y' ? dist * i : 0)
                 };
                 nodes.push(newNode);
+                ensureElasticSupport(newNode.nodeId);
             }
             closeCopyNodeModal();
             updatePropertiesPanel();
@@ -2066,8 +2081,9 @@
             nodes = [];
             lines = [];
             restrictions = [];
+            elasticSupports = [];
             nodalLoads = [];
-			elementLoads = [];
+            elementLoads = [];
             nextNodeId = 1;
             nextElemId = 1;
             nextLoadId = 1;
@@ -2123,6 +2139,9 @@
                 if (!currentRestriction) {
                     currentRestriction = { dx: 0, dy: 0, dr: 0, type: "none" };
                 }
+                const currentElastic = ensureElasticSupport(selectedNode.nodeId);
+                const currentKUnit = currentForceDisplayUnit + '/' + currentLengthDisplayUnit;
+                const currentRotKUnit = currentMomentDisplayUnit;
 
                 nodePropertiesContent.innerHTML = `
                     <h4 class="text-gray-700 mb-2">Node properties ${selectedNode.nodeId}</h4>
@@ -2143,14 +2162,20 @@
                                 <div class="checkbox-group">
                                     <input type="checkbox" id="restrictX" ${currentRestriction.dx === 1 ? 'checked' : ''}>
                                     <label for="restrictX">dx</label>
+                                    <input type="number" id="kxInput" placeholder="kx" value="${currentElastic.kx}" ${currentRestriction.dx === 1 ? 'disabled' : ''} class="elastic-input">
+                                    <span id="kxUnitDisplay" class="k-unit">${currentKUnit}</span>
                                 </div>
                                 <div class="checkbox-group">
                                     <input type="checkbox" id="restrictY" ${currentRestriction.dy === 1 ? 'checked' : ''}>
                                     <label for="restrictY">dy</label>
+                                    <input type="number" id="kyInput" placeholder="ky" value="${currentElastic.ky}" ${currentRestriction.dy === 1 ? 'disabled' : ''} class="elastic-input">
+                                    <span id="kyUnitDisplay" class="k-unit">${currentKUnit}</span>
                                 </div>
                                 <div class="checkbox-group">
                                     <input type="checkbox" id="restrictR" ${currentRestriction.dr === 1 ? 'checked' : ''}>
                                     <label for="restrictR">dr</label>
+                                    <input type="number" id="krInput" placeholder="kr" value="${currentElastic.kr}" ${currentRestriction.dr === 1 ? 'disabled' : ''} class="elastic-input">
+                                    <span id="krUnitDisplay" class="k-unit">${currentRotKUnit}</span>
                                 </div>
                             </div>
                         </div>
@@ -2186,6 +2211,9 @@
                 const restrictXCheckbox = document.getElementById('restrictX');
                 const restrictYCheckbox = document.getElementById('restrictY');
                 const restrictRCheckbox = document.getElementById('restrictR');
+                const kxInput = document.getElementById('kxInput');
+                const kyInput = document.getElementById('kyInput');
+                const krInput = document.getElementById('krInput');
                 const restrictionIconsCol1 = document.getElementById('restrictionIconsCol1');
                 const restrictionIconsCol2 = document.getElementById('restrictionIconsCol2');
 
@@ -2216,7 +2244,15 @@
                     }
                 });
 
+                const syncElasticInputs = () => {
+                    kxInput.disabled = restrictXCheckbox.checked;
+                    kyInput.disabled = restrictYCheckbox.checked;
+                    krInput.disabled = restrictRCheckbox.checked;
+                };
+                syncElasticInputs();
+
                 const updateRestriction = () => {
+                    syncElasticInputs();
                     let updated = false;
                     restrictions = restrictions.filter(r => {
                         if (r.nodeId === selectedNode.nodeId) {
@@ -2246,6 +2282,32 @@
                 restrictXCheckbox.addEventListener('change', updateRestriction);
                 restrictYCheckbox.addEventListener('change', updateRestriction);
                 restrictRCheckbox.addEventListener('change', updateRestriction);
+
+                const sanitizeNumberInput = (input) => {
+                    input.addEventListener('input', (e) => {
+                        e.target.value = e.target.value.replace(/[^0-9.]/g, '');
+                    });
+                };
+
+                sanitizeNumberInput(kxInput);
+                sanitizeNumberInput(kyInput);
+                sanitizeNumberInput(krInput);
+
+                kxInput.addEventListener('blur', () => {
+                    const value = parseFloat(kxInput.value);
+                    const es = ensureElasticSupport(selectedNode.nodeId);
+                    es.kx = isNaN(value) ? 0 : value;
+                });
+                kyInput.addEventListener('blur', () => {
+                    const value = parseFloat(kyInput.value);
+                    const es = ensureElasticSupport(selectedNode.nodeId);
+                    es.ky = isNaN(value) ? 0 : value;
+                });
+                krInput.addEventListener('blur', () => {
+                    const value = parseFloat(krInput.value);
+                    const es = ensureElasticSupport(selectedNode.nodeId);
+                    es.kr = isNaN(value) ? 0 : value;
+                });
 
                 const renderRestrictionIcons = () => {
                     restrictionIconsCol1.innerHTML = '';
@@ -2761,12 +2823,13 @@
                         const newNodeX = node1.x + dx * ratio;
                         const newNodeY = node1.y + dy * ratio;
 
-                        const newNode = { 
-                            nodeId: nextNodeId++, 
-                            x: newNodeX, 
-                            y: newNodeY 
+                        const newNode = {
+                            nodeId: nextNodeId++,
+                            x: newNodeX,
+                            y: newNodeY
                         };
                         newNodes.push(newNode);
+                        ensureElasticSupport(newNode.nodeId);
                         console.log(`Добавлен новый узел ${newNode.nodeId} по координатам (${newNode.x.toFixed(3)}, ${newNode.y.toFixed(3)})`);
                     }
 

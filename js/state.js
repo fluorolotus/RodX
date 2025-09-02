@@ -1,8 +1,9 @@
         // Application State
         let nodes = [];
-        let lines = [];
-        let restrictions = [];
-        let nextNodeId = 1;
+let lines = [];
+let restrictions = [];
+let elasticSupports = [];
+let nextNodeId = 1;
         let nextElemId = 1;
                 let nodalLoads = [];
         let nextLoadId = 1;
