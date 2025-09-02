@@ -1173,8 +1173,8 @@ function removeElasticSupportIfZero(es) {
 
             const baseSpringSize = (restrictionIconSizeWorld * 0.5) / currentScale;
             const kSpringSize = baseSpringSize * 2;
-            const krSpringSize = baseSpringSize * 3;
-            const lineWidth = 0.5 / currentScale;
+            const krSpringSize = baseSpringSize * 3 * 1.5; // increase rotational spring size
+            const lineWidth = 0.75 / currentScale; // thicker spring lines
             const nodeRadius = 2 / currentScale;
 
             ctx.save();
@@ -1184,7 +1184,7 @@ function removeElasticSupportIfZero(es) {
 
             if (elastic.kx > 0) {
                 const amp = kSpringSize / 3;
-                const y = -nodeRadius - amp - (restrictionIconOffsetWorld / currentScale) - (10 / currentScale);
+                const y = nodeRadius + amp + (restrictionIconOffsetWorld / currentScale) + (10 / currentScale); // draw above node
                 ctx.beginPath();
                 const segments = 5;
                 const step = kSpringSize / segments;
@@ -1199,13 +1199,13 @@ function removeElasticSupportIfZero(es) {
 
             if (elastic.ky > 0) {
                 const amp = kSpringSize / 3;
-                const yStart = nodeRadius + amp + (restrictionIconOffsetWorld / currentScale) + (20 / currentScale);
+                const yStart = -nodeRadius - amp - (restrictionIconOffsetWorld / currentScale) - (20 / currentScale); // draw below node
                 ctx.beginPath();
                 const segments = 5;
                 const step = kSpringSize / segments;
                 ctx.moveTo(amp, yStart);
                 for (let i = 1; i <= segments; i++) {
-                    const y = yStart + step * i;
+                    const y = yStart - step * i;
                     const x = i % 2 === 1 ? -amp : amp;
                     ctx.lineTo(x, y);
                 }
