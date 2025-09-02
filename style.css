@@ -439,6 +439,52 @@
     gap: 10px;
 }
 
+.connector-row {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.connector-input {
+    width: 60px;
+    height: 23px;
+    padding-left: 3px;
+    padding-right: 3px;
+    border-radius: 4px;
+    background-color: #FFFFFF;
+    border: 0.5px solid #000000;
+    font-size: 14px;
+    line-height: 15px;
+}
+
+.connector-input:disabled {
+    background-color: #E5E5E5;
+    color: #555555;
+}
+
+.connector-checkbox {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    margin-right: 3px;
+    border: 0.5px solid #000000;
+    background-color: #FFFFFF;
+    position: relative;
+}
+
+.connector-checkbox:checked::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 9px;
+    height: 9px;
+    background-color: #529774;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+}
+
         /* Стили для тултипа и контекстного меню */
         .tooltip {
             position: absolute;

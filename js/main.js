@@ -46,6 +46,7 @@ function removeElasticSupportIfZero(es) {
         elements: lines,
         supports: restrictions,
         elasticSupports: elasticSupports.filter(es => es.kx !== 0 || es.ky !== 0 || es.kr !== 0),
+        connectors: connectors,
         materials: modelMaterials,
         sections: modelSections,
         loads: getModelLoads()
@@ -82,6 +83,7 @@ function removeElasticSupportIfZero(es) {
                 }));
                 restrictions = modelData.supports || modelData.restrictions || [];
                 elasticSupports = (modelData.elasticSupports || []).filter(es => es.kx !== 0 || es.ky !== 0 || es.kr !== 0);
+                connectors = modelData.connectors || [];
                 nodalLoads = [];
                 elementLoads = [];
                 if (modelData.loads) {
@@ -1817,6 +1819,9 @@ function removeElasticSupportIfZero(es) {
             deleteLineItem.addEventListener('click', handleDeleteLine);
             copyNodeItem.addEventListener('click', openCopyNodeModal);
             applyCopyNodeBtn.addEventListener('click', applyCopyNode);
+            connectorsItem.addEventListener('click', openConnectorsModal);
+            closeConnectorsModalBtn.addEventListener('click', closeConnectorsModal);
+            applyConnectorsBtn.addEventListener('click', closeConnectorsModal);
             copyNodeModal.addEventListener('click', (e) => {
                 if (e.target === copyNodeModal) {
                     closeCopyNodeModal();
@@ -2052,6 +2057,7 @@ function removeElasticSupportIfZero(es) {
                 deleteNodeItem.style.display = contextMenuTarget.type === 'node' ? 'block' : 'none';
                 deleteLineItem.style.display = contextMenuTarget.type === 'line' ? 'block' : 'none';
                 copyNodeItem.style.display = contextMenuTarget.type === 'node' ? 'block' : 'none';
+                connectorsItem.style.display = contextMenuTarget.type === 'node' ? 'block' : 'none';
                 customContextMenu.style.left = `${e.clientX}px`;
                 customContextMenu.style.top = `${e.clientY}px`;
                 customContextMenu.classList.remove('hidden');
@@ -2126,9 +2132,10 @@ function removeElasticSupportIfZero(es) {
 
         function handleDeleteNode() {
             if (contextMenuTarget && contextMenuTarget.type === 'node') {
-                const nodeIdToDelete = contextMenuTarget.element.nodeId; 
+                const nodeIdToDelete = contextMenuTarget.element.nodeId;
                 nodes = nodes.filter(node => node.nodeId !== nodeIdToDelete);
                 lines = lines.filter(line => line.nodeId1 !== nodeIdToDelete && line.nodeId2 !== nodeIdToDelete);
+                connectors = connectors.filter(c => c.nodeId !== nodeIdToDelete && lines.some(l => l.elemId === c.elemId));
                 restrictions = restrictions.filter(res => res.nodeId !== nodeIdToDelete);
                 elasticSupports = elasticSupports.filter(es => es.nodeId !== nodeIdToDelete);
                 nodalLoads = nodalLoads.filter(load => load.targetId !== nodeIdToDelete);
@@ -2144,6 +2151,7 @@ function removeElasticSupportIfZero(es) {
         function handleDeleteLine() {
              if (contextMenuTarget && contextMenuTarget.type === 'line') {
                 lines = lines.filter(line => line.elemId !== contextMenuTarget.element.elemId);
+                connectors = connectors.filter(c => c.elemId !== contextMenuTarget.element.elemId);
                 hideContextMenu();
                 draw();
             }
@@ -2182,6 +2190,77 @@ function removeElasticSupportIfZero(es) {
             draw();
         }
 
+        function openConnectorsModal() {
+            if (!contextMenuTarget || contextMenuTarget.type !== 'node') return;
+            const node = contextMenuTarget.element;
+            connectorsContent.innerHTML = '';
+            const connectedLines = lines.filter(l => l.nodeId1 === node.nodeId || l.nodeId2 === node.nodeId);
+            connectedLines.forEach(line => {
+                const row = document.createElement('div');
+                row.className = 'connector-row';
+                const label = document.createElement('span');
+                label.textContent = line.elemId;
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.className = 'connector-input';
+                input.addEventListener('input', () => {
+                    input.value = input.value.replace(/[^0-9.]/g, '');
+                });
+                const existing = connectors.find(c => c.nodeId === node.nodeId && c.elemId === line.elemId);
+                if (existing) {
+                    input.value = existing.stiffness.rkr;
+                } else {
+                    input.disabled = true;
+                }
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.className = 'connector-checkbox';
+                checkbox.checked = !existing;
+                const checkboxLabel = document.createElement('label');
+                checkboxLabel.textContent = 'My';
+                checkbox.addEventListener('change', () => {
+                    if (checkbox.checked) {
+                        input.disabled = true;
+                        connectors = connectors.filter(c => !(c.nodeId === node.nodeId && c.elemId === line.elemId));
+                    } else {
+                        input.disabled = false;
+                        const val = parseFloat(input.value);
+                        if (!isNaN(val)) {
+                            updateConnector(node.nodeId, line.elemId, val);
+                        }
+                    }
+                });
+                input.addEventListener('blur', () => {
+                    if (!checkbox.checked) {
+                        const val = parseFloat(input.value);
+                        if (!isNaN(val)) {
+                            updateConnector(node.nodeId, line.elemId, val);
+                        }
+                    }
+                });
+                row.appendChild(label);
+                row.appendChild(input);
+                row.appendChild(checkbox);
+                row.appendChild(checkboxLabel);
+                connectorsContent.appendChild(row);
+            });
+            connectorsModal.classList.remove('hidden');
+            hideContextMenu();
+        }
+
+        function closeConnectorsModal() {
+            connectorsModal.classList.add('hidden');
+        }
+
+        function updateConnector(nodeId, elemId, rkr) {
+            const existing = connectors.find(c => c.nodeId === nodeId && c.elemId === elemId);
+            if (existing) {
+                existing.stiffness.rkr = rkr;
+            } else {
+                connectors.push({ nodeId, elemId, stiffness: { rkx: 1, rky: 1, rkr } });
+            }
+        }
+
         function selectAllElements() {
             selectedElements = lines.map(line => ({ type: 'line', element: line }));
             selectedNode = null;
@@ -2196,6 +2275,7 @@ function removeElasticSupportIfZero(es) {
             lines = [];
             restrictions = [];
             elasticSupports = [];
+            connectors = [];
             nodalLoads = [];
             elementLoads = [];
             nextNodeId = 1;

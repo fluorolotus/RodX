@@ -281,6 +281,16 @@
         </div>
     </div>
 
+    <div id="connectorsModal" class="fixed inset-0 bg-gray-600 bg-opacity-75 flex items-center justify-center hidden z-50">
+        <div class="bg-white p-2 rounded shadow-md relative">
+            <button id="closeConnectorsModal" class="modal-close absolute top-1 right-1">&times;</button>
+            <div id="connectorsContent" class="flex flex-col gap-1"></div>
+            <div class="flex justify-end mt-2">
+                <button id="applyConnectorsBtn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded">Apply</button>
+            </div>
+        </div>
+    </div>
+
     <div id="clearAllModal" class="fixed inset-0 bg-gray-600 bg-opacity-75 flex items-center justify-center hidden z-50">
         <div class="clear-modal-content">
             <button id="closeClearAllModal" class="modal-close">&times;</button>
@@ -344,6 +354,7 @@
         <div id="deleteNodeItem" class="context-menu-item">Delete node</div>
         <div id="deleteLineItem" class="context-menu-item">Delete rod</div>
         <div id="copyNodeItem" class="context-menu-item">Copy node</div>
+        <div id="connectorsItem" class="context-menu-item">Connectors</div>
     </div>
     <div id="tooltip" class="tooltip hidden"></div>
     <div id="cursorTooltip" class="tooltip hidden"></div>
