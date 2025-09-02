@@ -1171,7 +1171,9 @@ function removeElasticSupportIfZero(es) {
         function drawElasticSprings(ctx, nodeX, nodeY, currentScale, elastic) {
             if (elastic.kx <= 0 && elastic.ky <= 0 && elastic.kr <= 0) return;
 
-            const springSize = (restrictionIconSizeWorld * 0.5) / currentScale;
+            const baseSpringSize = (restrictionIconSizeWorld * 0.5) / currentScale;
+            const kSpringSize = baseSpringSize * 2;
+            const krSpringSize = baseSpringSize * 3;
             const lineWidth = 0.5 / currentScale;
             const nodeRadius = 2 / currentScale;
 
@@ -1181,31 +1183,37 @@ function removeElasticSupportIfZero(es) {
             ctx.lineWidth = lineWidth;
 
             if (elastic.kx > 0) {
-                const amp = springSize / 3;
-                const y = nodeRadius + amp + (restrictionIconOffsetWorld / currentScale);
+                const amp = kSpringSize / 3;
+                const y = -nodeRadius - amp - (restrictionIconOffsetWorld / currentScale) - (10 / currentScale);
                 ctx.beginPath();
-                ctx.moveTo(-springSize / 2, y + amp);
-                ctx.lineTo(-springSize / 4, y - amp);
-                ctx.lineTo(0, y + amp);
-                ctx.lineTo(springSize / 4, y - amp);
-                ctx.lineTo(springSize / 2, y + amp);
+                const segments = 5;
+                const step = kSpringSize / segments;
+                ctx.moveTo(-kSpringSize / 2, y + amp);
+                for (let i = 1; i <= segments; i++) {
+                    const x = -kSpringSize / 2 + step * i;
+                    const yOffset = i % 2 === 1 ? -amp : amp;
+                    ctx.lineTo(x, y + yOffset);
+                }
                 ctx.stroke();
             }
 
             if (elastic.ky > 0) {
-                const amp = springSize / 3;
-                const yStart = -nodeRadius - amp - (restrictionIconOffsetWorld / currentScale);
+                const amp = kSpringSize / 3;
+                const yStart = nodeRadius + amp + (restrictionIconOffsetWorld / currentScale) + (20 / currentScale);
                 ctx.beginPath();
+                const segments = 5;
+                const step = kSpringSize / segments;
                 ctx.moveTo(amp, yStart);
-                ctx.lineTo(-amp, yStart - springSize / 4);
-                ctx.lineTo(amp, yStart - springSize / 2);
-                ctx.lineTo(-amp, yStart - (3 * springSize) / 4);
-                ctx.lineTo(amp, yStart - springSize);
+                for (let i = 1; i <= segments; i++) {
+                    const y = yStart + step * i;
+                    const x = i % 2 === 1 ? -amp : amp;
+                    ctx.lineTo(x, y);
+                }
                 ctx.stroke();
             }
 
             if (elastic.kr > 0) {
-                const maxRadius = springSize / 2;
+                const maxRadius = krSpringSize / 2;
                 const turns = 2;
                 const steps = 40;
                 ctx.beginPath();
