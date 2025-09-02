@@ -517,6 +517,7 @@ function removeElasticSupportIfZero(es) {
             if (showReactions) {
             drawReactions();
             }
+            drawConnectors();
 
 
             ctx.restore(); // Восстанавливаем исходную матрицу трансформации
@@ -1524,6 +1525,38 @@ function removeElasticSupportIfZero(es) {
                        });
                }
 
+        function drawConnectors() {
+            connectorIconPositions.length = 0;
+            const radiusWorld = connectorIconSizeWorld / 2 / scale;
+            const offsetWorld = connectorIconOffsetWorld / scale;
+            connectors.forEach(conn => {
+                const line = lines.find(l => l.elemId === conn.elemId);
+                const node = nodes.find(n => n.nodeId === conn.nodeId);
+                if (!line || !node) return;
+                const otherNodeId = line.nodeId1 === node.nodeId ? line.nodeId2 : line.nodeId1;
+                const otherNode = nodes.find(n => n.nodeId === otherNodeId);
+                if (!otherNode) return;
+                const dx = otherNode.x - node.x;
+                const dy = otherNode.y - node.y;
+                const len = Math.sqrt(dx * dx + dy * dy);
+                if (len === 0) return;
+                const cx = node.x + (dx / len) * offsetWorld;
+                const cy = node.y + (dy / len) * offsetWorld;
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(cx, cy, radiusWorld, 0, 2 * Math.PI);
+                ctx.lineWidth = 1 / scale;
+                ctx.strokeStyle = '#6279B8';
+                if (conn.stiffness && conn.stiffness.rkr > 0) {
+                    ctx.fillStyle = '#6279B8';
+                    ctx.fill();
+                }
+                ctx.stroke();
+                ctx.restore();
+                connectorIconPositions.push({ x: cx, y: cy, radius: radiusWorld, rkr: conn.stiffness.rkr });
+            });
+        }
+
         function drawCrosshair() {
             let drawAtX_screen, drawAtY_screen;
             if (snapToGrid) {
@@ -1988,11 +2021,16 @@ function removeElasticSupportIfZero(es) {
                 lastPanX = e.clientX;
                 lastPanY = e.clientY;
             } else {
-                hoveredBetaIconLine = findBetaIconAt(mouse.worldX, mouse.worldY);
-                if (hoveredBetaIconLine) {
-                    hoveredElement = { type: 'line', element: hoveredBetaIconLine };
+                hoveredConnector = findConnectorAt(mouse.worldX, mouse.worldY);
+                if (hoveredConnector) {
+                    hoveredElement = { type: 'connector', element: hoveredConnector };
                 } else {
-                    hoveredElement = findElementAt(mouse.worldX, mouse.worldY);
+                    hoveredBetaIconLine = findBetaIconAt(mouse.worldX, mouse.worldY);
+                    if (hoveredBetaIconLine) {
+                        hoveredElement = { type: 'line', element: hoveredBetaIconLine };
+                    } else {
+                        hoveredElement = findElementAt(mouse.worldX, mouse.worldY);
+                    }
                 }
             }
             draw();
@@ -2117,6 +2155,17 @@ function removeElasticSupportIfZero(es) {
                 if (worldX_currentUnit >= info.x - half && worldX_currentUnit <= info.x + half &&
                     worldY_currentUnit >= info.y - half && worldY_currentUnit <= info.y + half) {
                     return lines.find(l => l.elemId === parseInt(id));
+                }
+            }
+            return null;
+        }
+
+        function findConnectorAt(worldX_currentUnit, worldY_currentUnit) {
+            for (const info of connectorIconPositions) {
+                const dx = worldX_currentUnit - info.x;
+                const dy = worldY_currentUnit - info.y;
+                if (Math.sqrt(dx * dx + dy * dy) <= info.radius) {
+                    return info;
                 }
             }
             return null;
@@ -3974,7 +4023,7 @@ function removeElasticSupportIfZero(es) {
                     const restriction = restrictions.find(res => res.nodeId === node.nodeId);
                     let restrictionInfo = '';
                     if (restriction) {
-                        const typeKey = Object.keys(restrictionTypes).find(key => 
+                        const typeKey = Object.keys(restrictionTypes).find(key =>
                             restrictionTypes[key].dx === restriction.dx &&
                             restrictionTypes[key].dy === restriction.dy &&
                             restrictionTypes[key].dr === restriction.dr
@@ -3986,13 +4035,16 @@ function removeElasticSupportIfZero(es) {
                         }
                     }
 
-                    content = `Node ${node.nodeId}\nX: ${node.x.toFixed(3)} ${currentUnit}\nY: ${node.y.toFixed(3)} ${currentUnit}${restrictionInfo}`; 
+                    content = `Node ${node.nodeId}\nX: ${node.x.toFixed(3)} ${currentUnit}\nY: ${node.y.toFixed(3)} ${currentUnit}${restrictionInfo}`;
+                } else if (hoveredElement.type === 'connector') {
+                    const conn = hoveredElement.element;
+                    content = `Stiffness: ${conn.rkr}`;
                 } else if (hoveredElement.type === 'line') {
                     const line = hoveredElement.element;
-                    const n1 = nodes.find(n => n.nodeId === line.nodeId1); 
-                    const n2 = nodes.find(n => n.nodeId === line.nodeId2); 
-                    if (n1 && n2) { 
-                        const dx = n2.x - n1.x; 
+                    const n1 = nodes.find(n => n.nodeId === line.nodeId1);
+                    const n2 = nodes.find(n => n.nodeId === line.nodeId2);
+                    if (n1 && n2) {
+                        const dx = n2.x - n1.x;
                         const dy = n2.y - n1.y; 
                         const length = Math.sqrt(dx**2 + dy**2); 
                         content = `Rod ${line.elemId}\Length: ${length.toFixed(3)} ${currentUnit}`; 
