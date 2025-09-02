@@ -4428,6 +4428,7 @@ let sectionsModal;
 
             const materialsMenuItem = document.getElementById('materialsMenuItem');
             const sectionsMenuItem = document.getElementById('sectionsMenuItem');
+            const loadCasesMenu = document.getElementById('loadCasesMenu');
             const selectAllMenu = document.getElementById('selectAllMenu');
             const clearAllMenu = document.getElementById('clearAllMenu');
             const visibilityNodesMenuItem = document.getElementById('visibilityNodesMenuItem');
@@ -4505,6 +4506,11 @@ let sectionsModal;
             }
             if (sectionsMenuItem) {
                 sectionsMenuItem.addEventListener('click', toggleSectionsModal);
+            }
+            if (loadCasesMenu) {
+                loadCasesMenu.addEventListener('click', () => {
+                    console.log('Load Cases menu clicked');
+                });
             }
             if (selectAllMenu) {
                 selectAllMenu.addEventListener('click', selectAllElements);
