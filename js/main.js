@@ -24,13 +24,14 @@ function getModelLoads() {
             ];
 }
 
-function ensureElasticSupport(nodeId) {
-    let support = elasticSupports.find(es => es.nodeId === nodeId);
-    if (!support) {
-        support = { nodeId: nodeId, kx: 0, ky: 0, kr: 0 };
-        elasticSupports.push(support);
+function getElasticSupport(nodeId) {
+    return elasticSupports.find(es => es.nodeId === nodeId);
+}
+
+function removeElasticSupportIfZero(es) {
+    if (es && es.kx === 0 && es.ky === 0 && es.kr === 0) {
+        elasticSupports = elasticSupports.filter(item => item !== es);
     }
-    return support;
 }
 
         function getModelData() {
@@ -44,7 +45,7 @@ function ensureElasticSupport(nodeId) {
         nodes: nodes,
         elements: lines,
         supports: restrictions,
-        elasticSupports: elasticSupports,
+        elasticSupports: elasticSupports.filter(es => es.kx !== 0 || es.ky !== 0 || es.kr !== 0),
         materials: modelMaterials,
         sections: modelSections,
         loads: getModelLoads()
@@ -80,8 +81,7 @@ function ensureElasticSupport(nodeId) {
                     betaAngle: rest.betaAngle !== undefined ? rest.betaAngle : 0
                 }));
                 restrictions = modelData.supports || modelData.restrictions || [];
-                elasticSupports = modelData.elasticSupports || [];
-                nodes.forEach(n => ensureElasticSupport(n.nodeId));
+                elasticSupports = (modelData.elasticSupports || []).filter(es => es.kx !== 0 || es.ky !== 0 || es.kr !== 0);
                 nodalLoads = [];
                 elementLoads = [];
                 if (modelData.loads) {
@@ -438,8 +438,30 @@ function ensureElasticSupport(nodeId) {
 
             const valueInNewtonsPerMeter = (value * forceUnitConversions[fromForceUnit]) / lengthUnitConversions[fromLengthUnit];
             const convertedValue = valueInNewtonsPerMeter / (forceUnitConversions[toForceUnit] / lengthUnitConversions[toLengthUnit]);
-            
+
             return convertedValue;
+        }
+
+        function convertLinearStiffness(value, fromForceUnit, fromLengthUnit, toForceUnit, toLengthUnit) {
+            if (!forceUnitConversions[fromForceUnit] || !forceUnitConversions[toForceUnit] ||
+                !lengthUnitConversions[fromLengthUnit] || !lengthUnitConversions[toLengthUnit]) {
+                console.warn(`Неизвестные единицы для конвертации жесткости: ${fromForceUnit}/${fromLengthUnit} -> ${toForceUnit}/${toLengthUnit}`);
+                return value;
+            }
+
+            const valueInBase = (value * forceUnitConversions[fromForceUnit]) / lengthUnitConversions[fromLengthUnit];
+            return valueInBase / (forceUnitConversions[toForceUnit] / lengthUnitConversions[toLengthUnit]);
+        }
+
+        function convertRotationalStiffness(value, fromForceUnit, fromLengthUnit, toForceUnit, toLengthUnit) {
+            if (!forceUnitConversions[fromForceUnit] || !forceUnitConversions[toForceUnit] ||
+                !lengthUnitConversions[fromLengthUnit] || !lengthUnitConversions[toLengthUnit]) {
+                console.warn(`Неизвестные единицы для конвертации угловой жесткости: ${fromForceUnit}*${fromLengthUnit} -> ${toForceUnit}*${toLengthUnit}`);
+                return value;
+            }
+
+            const valueInBase = value * forceUnitConversions[fromForceUnit] * lengthUnitConversions[fromLengthUnit];
+            return valueInBase / (forceUnitConversions[toForceUnit] * lengthUnitConversions[toLengthUnit]);
         }
 
         // Вспомогательная функция для получения текста единицы измерения
@@ -1630,8 +1652,14 @@ function ensureElasticSupport(nodeId) {
 
                     load.startValue = convertDistributedForce(load.startValue, storedForceUnit, storedLengthUnit, storedForceUnit, newUnit);
                     load.endValue = convertDistributedForce(load.endValue, storedForceUnit, storedLengthUnit, storedForceUnit, newUnit);
-                    
+
                     load.unit = `${storedForceUnit}/${newUnit}`;
+                });
+
+                elasticSupports.forEach(es => {
+                    if (es.kx !== 0) es.kx = convertLinearStiffness(es.kx, currentForceUnit, oldUnit, currentForceUnit, newUnit);
+                    if (es.ky !== 0) es.ky = convertLinearStiffness(es.ky, currentForceUnit, oldUnit, currentForceUnit, newUnit);
+                    if (es.kr !== 0) es.kr = convertRotationalStiffness(es.kr, currentForceUnit, oldUnit, currentForceUnit, newUnit);
                 });
 
                 scale = scale * (lengthUnitConversions[newUnit] / lengthUnitConversions[oldUnit]);
@@ -1654,8 +1682,8 @@ function ensureElasticSupport(nodeId) {
 
                 updatePropertiesPanel();
                 draw();
-				
-				updateForceUnitDisplay();
+
+                                updateForceUnitDisplay();
                 updateUnitPairsSelect();
             });
 
@@ -1682,12 +1710,21 @@ function ensureElasticSupport(nodeId) {
 
                     load.startValue = convertDistributedForce(load.startValue, storedForceUnit, storedLengthUnit, newForceUnit, storedLengthUnit);
                     load.endValue = convertDistributedForce(load.endValue, storedForceUnit, storedLengthUnit, newForceUnit, storedLengthUnit);
-                    
+
                     load.unit = `${newForceUnit}/${storedLengthUnit}`;
                 });
 
-                updateForceUnitDisplay(); 
-				updateUnitPairsSelect();
+                elasticSupports.forEach(es => {
+                    if (es.kx !== 0) es.kx = convertLinearStiffness(es.kx, oldForceUnit, currentUnit, newForceUnit, currentUnit);
+                    if (es.ky !== 0) es.ky = convertLinearStiffness(es.ky, oldForceUnit, currentUnit, newForceUnit, currentUnit);
+                    if (es.kr !== 0) es.kr = convertRotationalStiffness(es.kr, oldForceUnit, currentUnit, newForceUnit, currentUnit);
+                });
+
+                updatePropertiesPanel();
+                draw();
+                updateForceUnitDisplay();
+                                updateUnitPairsSelect();
+                currentForceUnit = newForceUnit;
             });
 
 			// НОВОЕ: Слушатель событий для изменения наборов единиц
@@ -1699,11 +1736,11 @@ function ensureElasticSupport(nodeId) {
                     const targetUnits = unitPairConversions[selectedPairKey];
                     
                     unitsSelect.value = targetUnits.length;
-                    unitsSelect.dispatchEvent(new Event('change')); 
+                    unitsSelect.dispatchEvent(new Event('change'));
 
+                    forceUnitsSelect.dataset.previousValue = forceUnitsSelect.value;
                     forceUnitsSelect.value = targetUnits.force;
-                    forceUnitsSelect.dataset.previousValue = targetUnits.force; 
-                    forceUnitsSelect.dispatchEvent(new Event('change')); 
+                    forceUnitsSelect.dispatchEvent(new Event('change'));
                 }
             });
 
@@ -1837,8 +1874,7 @@ function ensureElasticSupport(nodeId) {
 							const placeY = snapToGrid ? mouse.snappedY : mouse.worldY;
                                                         const newNode = { nodeId: nextNodeId++, x: placeX, y: placeY };
                                                         nodes.push(newNode);
-                                                        ensureElasticSupport(newNode.nodeId);
-							console.log(`Узел ${newNode.nodeId} создан по координатам (${newNode.x.toFixed(3)}, ${newNode.y.toFixed(3)}).`);
+                                                        console.log(`Узел ${newNode.nodeId} создан по координатам (${newNode.x.toFixed(3)}, ${newNode.y.toFixed(3)}).`);
 							
 							// После создания узла, выделения быть не должно
 							selectedNode = null; 
@@ -2071,7 +2107,6 @@ function ensureElasticSupport(nodeId) {
                     y: nodeToCopy.y + (axis === 'y' ? dist * i : 0)
                 };
                 nodes.push(newNode);
-                ensureElasticSupport(newNode.nodeId);
             }
             closeCopyNodeModal();
             updatePropertiesPanel();
@@ -2149,9 +2184,9 @@ function ensureElasticSupport(nodeId) {
                 if (!currentRestriction) {
                     currentRestriction = { dx: 0, dy: 0, dr: 0, type: "none" };
                 }
-                const currentElastic = ensureElasticSupport(selectedNode.nodeId);
+                const currentElastic = getElasticSupport(selectedNode.nodeId) || { kx: 0, ky: 0, kr: 0 };
                 const currentKUnit = currentForceDisplayUnit + '/' + currentLengthDisplayUnit;
-                const currentRotKUnit = currentMomentDisplayUnit;
+                const currentRotKUnit = currentMomentDisplayUnit + '/rad';
 
                 nodePropertiesContent.innerHTML = `
                     <h4 class="text-gray-700 mb-2">Node properties ${selectedNode.nodeId}</h4>
@@ -2263,10 +2298,11 @@ function ensureElasticSupport(nodeId) {
 
                 const updateRestriction = () => {
                     syncElasticInputs();
-                    const es = ensureElasticSupport(selectedNode.nodeId);
-                    if (restrictXCheckbox.checked) { kxInput.value = ''; es.kx = 0; }
-                    if (restrictYCheckbox.checked) { kyInput.value = ''; es.ky = 0; }
-                    if (restrictRCheckbox.checked) { krInput.value = ''; es.kr = 0; }
+                    const es = getElasticSupport(selectedNode.nodeId);
+                    if (restrictXCheckbox.checked) { kxInput.value = ''; if (es) es.kx = 0; }
+                    if (restrictYCheckbox.checked) { kyInput.value = ''; if (es) es.ky = 0; }
+                    if (restrictRCheckbox.checked) { krInput.value = ''; if (es) es.kr = 0; }
+                    removeElasticSupportIfZero(es);
 
                     let updated = false;
                     restrictions = restrictions.filter(r => {
@@ -2310,20 +2346,47 @@ function ensureElasticSupport(nodeId) {
 
                 kxInput.addEventListener('blur', () => {
                     const value = parseFloat(kxInput.value);
-                    const es = ensureElasticSupport(selectedNode.nodeId);
-                    es.kx = isNaN(value) ? 0 : value;
+                    let es = getElasticSupport(selectedNode.nodeId);
+                    if (!isNaN(value) && value !== 0) {
+                        if (!es) {
+                            es = { nodeId: selectedNode.nodeId, kx: 0, ky: 0, kr: 0 };
+                            elasticSupports.push(es);
+                        }
+                        es.kx = value;
+                    } else if (es) {
+                        es.kx = 0;
+                        removeElasticSupportIfZero(es);
+                    }
                     renderRestrictionIcons();
                 });
                 kyInput.addEventListener('blur', () => {
                     const value = parseFloat(kyInput.value);
-                    const es = ensureElasticSupport(selectedNode.nodeId);
-                    es.ky = isNaN(value) ? 0 : value;
+                    let es = getElasticSupport(selectedNode.nodeId);
+                    if (!isNaN(value) && value !== 0) {
+                        if (!es) {
+                            es = { nodeId: selectedNode.nodeId, kx: 0, ky: 0, kr: 0 };
+                            elasticSupports.push(es);
+                        }
+                        es.ky = value;
+                    } else if (es) {
+                        es.ky = 0;
+                        removeElasticSupportIfZero(es);
+                    }
                     renderRestrictionIcons();
                 });
                 krInput.addEventListener('blur', () => {
                     const value = parseFloat(krInput.value);
-                    const es = ensureElasticSupport(selectedNode.nodeId);
-                    es.kr = isNaN(value) ? 0 : value;
+                    let es = getElasticSupport(selectedNode.nodeId);
+                    if (!isNaN(value) && value !== 0) {
+                        if (!es) {
+                            es = { nodeId: selectedNode.nodeId, kx: 0, ky: 0, kr: 0 };
+                            elasticSupports.push(es);
+                        }
+                        es.kr = value;
+                    } else if (es) {
+                        es.kr = 0;
+                        removeElasticSupportIfZero(es);
+                    }
                     renderRestrictionIcons();
                 });
 
@@ -2865,7 +2928,6 @@ function ensureElasticSupport(nodeId) {
                             y: newNodeY
                         };
                         newNodes.push(newNode);
-                        ensureElasticSupport(newNode.nodeId);
                         console.log(`Добавлен новый узел ${newNode.nodeId} по координатам (${newNode.x.toFixed(3)}, ${newNode.y.toFixed(3)})`);
                     }
 
