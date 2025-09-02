@@ -60,10 +60,15 @@ let nextNodeId = 1;
 
         const betaIconPositions = {};
         let hoveredBetaIconLine = null;
-        
+
+        const connectorIconSizeWorld = 10;
+        const connectorIconOffsetWorld = 10;
+        const connectorIconPositions = [];
+        let hoveredConnector = null;
+
         // Коэффициенты конвертации единиц длины (базовая единица: метры 'm')
-        const lengthUnitConversions = { 
-            'm': 1,    
+        const lengthUnitConversions = {
+            'm': 1,
             'cm': 0.01,
             'mm': 0.001,
             'in': 0.0254,
