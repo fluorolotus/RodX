@@ -8,8 +8,14 @@ let nextNodeId = 1;
         let nextElemId = 1;
                 let nodalLoads = [];
         let nextLoadId = 1;
-                let elementLoads = [];
-        let nextElementLoadId = 1;
+let elementLoads = [];
+let nextElementLoadId = 1;
+
+// Load cases
+let loadCases = [
+    { id: 1, name: 'LC0 - Default Case', loads: [] }
+];
+let nextLoadCaseId = 2;
 		
                 let selectedElements = [];
 

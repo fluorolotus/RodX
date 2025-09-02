@@ -882,6 +882,15 @@
     color: #000000;
 }
 
+#loadCasesModal .modal-close {
+    background: none;
+    border: none;
+    font-size: 14px;
+    font-weight: 300;
+    cursor: pointer;
+    color: #000000;
+}
+
 #materialsModal #materialSelectionBlock {
     flex: 0 0 150px;
     width: 150px;

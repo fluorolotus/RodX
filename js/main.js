@@ -49,7 +49,8 @@ function removeElasticSupportIfZero(es) {
         connectors: connectors,
         materials: modelMaterials,
         sections: modelSections,
-        loads: getModelLoads()
+        loads: getModelLoads(),
+        loadCases: loadCases
     };
 }
 
@@ -145,6 +146,16 @@ function removeElasticSupportIfZero(es) {
                         endPosition: l.endPosition
                     }));
                 }
+
+                loadCases = modelData.loadCases || [{ id: 1, name: 'LC0 - Default Case', loads: [] }];
+                if (!modelData.loadCases) {
+                    const allIds = [
+                        ...nodalLoads.map(l => l.id),
+                        ...elementLoads.map(l => l.id)
+                    ];
+                    loadCases[0].loads = allIds;
+                }
+                nextLoadCaseId = loadCases.length > 0 ? Math.max(...loadCases.map(lc => lc.id)) + 1 : 2;
 				
 				// НОВОЕ: Загружаем материалы модели
                 modelMaterials = modelData.materials || [];
@@ -206,7 +217,7 @@ function removeElasticSupportIfZero(es) {
             }
         }
 
-        async function loadResults(jsonFileContent) {
+async function loadResults(jsonFileContent) {
             try {
                 const data = JSON.parse(jsonFileContent);
                 resultsData = data.results || data;
@@ -219,10 +230,156 @@ function removeElasticSupportIfZero(es) {
                 console.error("Ошибка при загрузке результатов:", error);
             }
         }
-		
-		function toggleMaterialsModal() {
-			materialsModal.classList.toggle('hidden');
-		}
+
+// --- Load Cases Helpers ---
+function addLoadToCase(loadId, caseId = 1) {
+    const lc = loadCases.find(c => c.id === caseId);
+    if (lc && !lc.loads.includes(loadId)) {
+        lc.loads.push(loadId);
+        if (loadCasesModal && !loadCasesModal.classList.contains('hidden')) {
+            renderLoadCasesModal();
+        }
+    }
+}
+
+function removeLoadFromCases(loadId) {
+    loadCases.forEach(lc => {
+        lc.loads = lc.loads.filter(id => id !== loadId);
+    });
+    if (loadCasesModal && !loadCasesModal.classList.contains('hidden')) {
+        renderLoadCasesModal();
+    }
+}
+
+function pruneLoadCases() {
+    const existingIds = new Set([...nodalLoads.map(l => l.id), ...elementLoads.map(l => l.id)]);
+    loadCases.forEach(lc => {
+        lc.loads = lc.loads.filter(id => existingIds.has(id));
+    });
+    if (loadCasesModal && !loadCasesModal.classList.contains('hidden')) {
+        renderLoadCasesModal();
+    }
+}
+
+function addLoadCase() {
+    loadCases.push({ id: nextLoadCaseId++, name: `LC${loadCases.length} - New Case`, loads: [] });
+}
+
+function deleteLoadCase(id) {
+    const index = loadCases.findIndex(c => c.id === id);
+    if (index > 0) {
+        const removed = loadCases.splice(index, 1)[0];
+        removed.loads.forEach(lid => {
+            if (!loadCases[0].loads.includes(lid)) loadCases[0].loads.push(lid);
+        });
+    }
+}
+
+function moveLoadToCase(loadId, fromCaseId, toCaseId) {
+    if (fromCaseId === toCaseId) return;
+    const from = loadCases.find(c => c.id === fromCaseId);
+    const to = loadCases.find(c => c.id === toCaseId);
+    if (!from || !to) return;
+    from.loads = from.loads.filter(id => id !== loadId);
+    if (!to.loads.includes(loadId)) to.loads.push(loadId);
+}
+
+function getLoadById(id) {
+    let load = nodalLoads.find(l => l.id === id);
+    if (load) return { ...load, scope: 'node' };
+    load = elementLoads.find(l => l.id === id);
+    if (load) return { ...load, scope: 'element' };
+    return null;
+}
+
+function formatLoad(load) {
+    if (load.scope === 'node') {
+        const units = load.type === 'moment' ? `${load.unit}${load.lengthUnit}` : load.unit;
+        const type = load.type === 'point_force' ? 'force' : load.type;
+        return `${load.id}: ${load.scope} ${load.targetId} ${type} ${load.component.toUpperCase()} ${load.value} ${units}`;
+    } else {
+        return `${load.id}: ${load.scope} ${load.targetElemId} ${load.type} ${load.component.toUpperCase()} ${load.startValue} ${load.unit}`;
+    }
+}
+
+function renderLoadCasesModal() {
+    if (!loadCasesModal) return;
+    const list = document.getElementById('loadCaseList');
+    const details = document.getElementById('loadCaseDetails');
+    if (!list || !details) return;
+    list.innerHTML = '';
+    details.innerHTML = '';
+
+    loadCases.forEach(lc => {
+        const li = document.createElement('li');
+        li.className = 'flex items-center mb-1';
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.value = lc.name;
+        input.className = 'flex-grow border p-1 mr-1';
+        input.addEventListener('input', e => {
+            lc.name = e.target.value;
+            const title = document.querySelector(`#loadCaseBlock-${lc.id} .load-case-title`);
+            if (title) title.textContent = lc.name;
+        });
+        li.appendChild(input);
+        if (lc.id !== 1) {
+            const del = document.createElement('button');
+            del.textContent = '×';
+            del.className = 'text-red-500 ml-1';
+            del.addEventListener('click', () => {
+                deleteLoadCase(lc.id);
+                renderLoadCasesModal();
+            });
+            li.appendChild(del);
+        }
+        list.appendChild(li);
+
+        const block = document.createElement('div');
+        block.id = `loadCaseBlock-${lc.id}`;
+        block.className = 'mb-4 p-2 border rounded';
+        const title = document.createElement('h3');
+        title.className = 'load-case-title font-semibold mb-2';
+        title.textContent = lc.name;
+        block.appendChild(title);
+        block.addEventListener('dragover', e => e.preventDefault());
+        block.addEventListener('drop', e => {
+            e.preventDefault();
+            if (draggedLoadId !== null) {
+                moveLoadToCase(draggedLoadId, draggedFromCaseId, lc.id);
+                renderLoadCasesModal();
+            }
+        });
+
+        lc.loads.forEach(loadId => {
+            const load = getLoadById(loadId);
+            if (!load) return;
+            const item = document.createElement('div');
+            item.className = 'border p-1 mb-1 cursor-move';
+            item.draggable = true;
+            item.addEventListener('dragstart', () => {
+                draggedLoadId = loadId;
+                draggedFromCaseId = lc.id;
+            });
+            item.textContent = formatLoad(load);
+            block.appendChild(item);
+        });
+
+        details.appendChild(block);
+    });
+}
+
+function toggleLoadCasesModal() {
+    if (!loadCasesModal) return;
+    loadCasesModal.classList.toggle('hidden');
+    if (!loadCasesModal.classList.contains('hidden')) {
+        renderLoadCasesModal();
+    }
+}
+
+                function toggleMaterialsModal() {
+                        materialsModal.classList.toggle('hidden');
+                }
 
         function init() {
             addEventListeners();
@@ -2188,6 +2345,7 @@ function removeElasticSupportIfZero(es) {
                 restrictions = restrictions.filter(res => res.nodeId !== nodeIdToDelete);
                 elasticSupports = elasticSupports.filter(es => es.nodeId !== nodeIdToDelete);
                 nodalLoads = nodalLoads.filter(load => load.targetId !== nodeIdToDelete);
+                pruneLoadCases();
 
                 if (firstNodeForLine && firstNodeForLine.nodeId === nodeIdToDelete) firstNodeForLine = null; 
                 if (selectedNode && selectedNode.nodeId === nodeIdToDelete) selectedNode = null; 
@@ -2201,6 +2359,8 @@ function removeElasticSupportIfZero(es) {
              if (contextMenuTarget && contextMenuTarget.type === 'line') {
                 lines = lines.filter(line => line.elemId !== contextMenuTarget.element.elemId);
                 connectors = connectors.filter(c => c.elemId !== contextMenuTarget.element.elemId);
+                elementLoads = elementLoads.filter(load => load.targetElemId !== contextMenuTarget.element.elemId);
+                pruneLoadCases();
                 hideContextMenu();
                 draw();
             }
@@ -2327,10 +2487,12 @@ function removeElasticSupportIfZero(es) {
             connectors = [];
             nodalLoads = [];
             elementLoads = [];
+            loadCases = [{ id: 1, name: 'LC0 - Default Case', loads: [] }];
+            nextLoadCaseId = 2;
             nextNodeId = 1;
             nextElemId = 1;
             nextLoadId = 1;
-			nextElementLoadId = 1;
+                        nextElementLoadId = 1;
             selectedNode = null;
             firstNodeForLine = null;
             selectedElement = null;
@@ -2707,6 +2869,7 @@ function removeElasticSupportIfZero(es) {
                             button.addEventListener('click', (e) => {
                                 const loadIdToDelete = parseInt(e.target.dataset.loadId);
                                 nodalLoads = nodalLoads.filter(load => load.id !== loadIdToDelete);
+                                removeLoadFromCases(loadIdToDelete);
                                 renderNodalLoads();
                                 draw();
                             });
@@ -2719,14 +2882,16 @@ function removeElasticSupportIfZero(es) {
                 addForceXBtn.addEventListener('click', () => {
                     const value = parseFloat(addForceXInput.value);
                     if (!isNaN(value)) {
+                        const id = nextLoadId++;
                         nodalLoads.push({
-                            id: nextLoadId++,
+                            id: id,
                             type: 'point_force',
                             targetId: selectedNode.nodeId,
                             component: 'x',
                             value: value,
                             unit: forceUnitsSelect.value
                         });
+                        addLoadToCase(id);
                         addForceXInput.value = '';
                         renderNodalLoads();
                         draw();
@@ -2736,14 +2901,16 @@ function removeElasticSupportIfZero(es) {
                 addForceYBtn.addEventListener('click', () => {
                     const value = parseFloat(addForceYInput.value);
                     if (!isNaN(value)) {
+                        const id = nextLoadId++;
                         nodalLoads.push({
-                            id: nextLoadId++,
+                            id: id,
                             type: 'point_force',
                             targetId: selectedNode.nodeId,
                             component: 'y',
                             value: value,
                             unit: forceUnitsSelect.value
                         });
+                        addLoadToCase(id);
                         addForceYInput.value = '';
                         renderNodalLoads();
                         draw();
@@ -2753,8 +2920,9 @@ function removeElasticSupportIfZero(es) {
                 addMomentBtn.addEventListener('click', () => {
                     const value = parseFloat(addMomentInput.value);
                     if (!isNaN(value)) {
+                        const id = nextLoadId++;
                         nodalLoads.push({
-                            id: nextLoadId++,
+                            id: id,
                             type: 'moment',
                             targetId: selectedNode.nodeId,
                             component: 'r',
@@ -2762,6 +2930,7 @@ function removeElasticSupportIfZero(es) {
                             unit: forceUnitsSelect.value,
                             lengthUnit: unitsSelect.value
                         });
+                        addLoadToCase(id);
                         addMomentInput.value = '';
                         renderNodalLoads();
                         draw();
@@ -2950,6 +3119,7 @@ function removeElasticSupportIfZero(es) {
                             button.addEventListener('click', (e) => {
                                 const loadIdToDelete = parseInt(e.target.dataset.loadId);
                                 elementLoads = elementLoads.filter(load => load.id !== loadIdToDelete);
+                                removeLoadFromCases(loadIdToDelete);
                                 renderElementLoads();
                                 draw();
                             });
@@ -2962,17 +3132,19 @@ function removeElasticSupportIfZero(es) {
                 addDistributedForceXBtn.addEventListener('click', () => {
                     const value = parseFloat(addDistributedForceXInput.value);
                     if (!isNaN(value)) {
+                        const id = nextElementLoadId++;
                         elementLoads.push({
-                            id: nextElementLoadId++,
+                            id: id,
                             targetElemId: selectedElement.elemId,
-                            type: 'uniform', 
+                            type: 'uniform',
                             component: 'x',
                             startValue: value,
                             endValue: value,
                             unit: `${forceUnitsSelect.value}/${unitsSelect.value}`,
-                            startPosition: 0, 
-                            endPosition: 1 
+                            startPosition: 0,
+                            endPosition: 1
                         });
+                        addLoadToCase(id);
                         addDistributedForceXInput.value = '';
                         renderElementLoads();
                         draw();
@@ -2982,17 +3154,19 @@ function removeElasticSupportIfZero(es) {
                 addDistributedForceYBtn.addEventListener('click', () => {
                     const value = parseFloat(addDistributedForceYInput.value);
                     if (!isNaN(value)) {
+                        const id = nextElementLoadId++;
                         elementLoads.push({
-                            id: nextElementLoadId++,
+                            id: id,
                             targetElemId: selectedElement.elemId,
                             type: 'uniform',
                             component: 'y',
                             startValue: value,
                             endValue: value,
                             unit: `${forceUnitsSelect.value}/${unitsSelect.value}`,
-                            startPosition: 0, 
-                            endPosition: 1 
+                            startPosition: 0,
+                            endPosition: 1
                         });
+                        addLoadToCase(id);
                         addDistributedForceYInput.value = '';
                         renderElementLoads();
                         draw();
@@ -3107,6 +3281,7 @@ function removeElasticSupportIfZero(es) {
                     console.log(`Удален стержень с ID: ${originalLine.elemId}`);
 
                     elementLoads = elementLoads.filter(load => load.targetElemId === originalLine.elemId);
+                    pruneLoadCases();
                     console.log(`Удалены равномерно-распределенные нагрузки для стержня ${originalLine.elemId}`);
 
                     const newNodes = [];
@@ -3315,14 +3490,15 @@ function removeElasticSupportIfZero(es) {
                 const multiLoadYInput = document.getElementById('multiDistributedForceY');
                 const multiLoadYBtn = document.getElementById('multiDistributedForceYBtn');
 
-                if (multiLoadXBtn && multiLoadXInput) {
+                        if (multiLoadXBtn && multiLoadXInput) {
                     multiLoadXBtn.addEventListener('click', () => {
                         const value = parseFloat(multiLoadXInput.value);
                         if (!isNaN(value)) {
                             selectedElements.forEach(sel => {
                                 if (sel.type === 'line') {
+                                    const id = nextElementLoadId++;
                                     elementLoads.push({
-                                        id: nextElementLoadId++,
+                                        id: id,
                                         targetElemId: sel.element.elemId,
                                         type: 'uniform',
                                         component: 'x',
@@ -3332,6 +3508,7 @@ function removeElasticSupportIfZero(es) {
                                         startPosition: 0,
                                         endPosition: 1
                                     });
+                                    addLoadToCase(id);
                                 }
                             });
                             multiLoadXInput.value = '';
@@ -3347,8 +3524,9 @@ function removeElasticSupportIfZero(es) {
                         if (!isNaN(value)) {
                             selectedElements.forEach(sel => {
                                 if (sel.type === 'line') {
+                                    const id = nextElementLoadId++;
                                     elementLoads.push({
-                                        id: nextElementLoadId++,
+                                        id: id,
                                         targetElemId: sel.element.elemId,
                                         type: 'uniform',
                                         component: 'y',
@@ -3358,6 +3536,7 @@ function removeElasticSupportIfZero(es) {
                                         startPosition: 0,
                                         endPosition: 1
                                     });
+                                    addLoadToCase(id);
                                 }
                             });
                             multiLoadYInput.value = '';
@@ -4376,6 +4555,9 @@ let userSectionNameInput;
 let sectionDetailsContent;
 let materialsModal;
 let sectionsModal;
+let loadCasesModal;
+let draggedLoadId = null;
+let draggedFromCaseId = null;
 
         Object.defineProperties(window, {
             nodes: { get: () => nodes },
@@ -4429,6 +4611,10 @@ let sectionsModal;
             const materialsMenuItem = document.getElementById('materialsMenuItem');
             const sectionsMenuItem = document.getElementById('sectionsMenuItem');
             const loadCasesMenu = document.getElementById('loadCasesMenu');
+            loadCasesModal = document.getElementById('loadCasesModal');
+            const closeLoadCasesModalBtn = document.getElementById('closeLoadCasesModal');
+            const closeLoadCasesModalBottom = document.getElementById('closeLoadCasesModalBottom');
+            const addLoadCaseBtn = document.getElementById('addLoadCaseBtn');
             const selectAllMenu = document.getElementById('selectAllMenu');
             const clearAllMenu = document.getElementById('clearAllMenu');
             const visibilityNodesMenuItem = document.getElementById('visibilityNodesMenuItem');
@@ -4508,8 +4694,25 @@ let sectionsModal;
                 sectionsMenuItem.addEventListener('click', toggleSectionsModal);
             }
             if (loadCasesMenu) {
-                loadCasesMenu.addEventListener('click', () => {
-                    console.log('Load Cases menu clicked');
+                loadCasesMenu.addEventListener('click', toggleLoadCasesModal);
+            }
+            if (closeLoadCasesModalBtn) {
+                closeLoadCasesModalBtn.addEventListener('click', toggleLoadCasesModal);
+            }
+            if (closeLoadCasesModalBottom) {
+                closeLoadCasesModalBottom.addEventListener('click', toggleLoadCasesModal);
+            }
+            if (addLoadCaseBtn) {
+                addLoadCaseBtn.addEventListener('click', () => {
+                    addLoadCase();
+                    renderLoadCasesModal();
+                });
+            }
+            if (loadCasesModal) {
+                loadCasesModal.addEventListener('click', (e) => {
+                    if (e.target === loadCasesModal) {
+                        toggleLoadCasesModal();
+                    }
                 });
             }
             if (selectAllMenu) {
