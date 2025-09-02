@@ -745,6 +745,9 @@ function ensureElasticSupport(nodeId) {
                     iconToDraw = 'rolled-y';
                 }
 
+                // Draw elastic springs behind the restriction icon
+                drawElasticSprings(ctx, node.x, node.y, scale, elastic);
+
                 if (iconToDraw) {
                     drawRestrictionIcon(ctx, node.x, node.y, scale, iconToDraw);
                 }
@@ -1142,6 +1145,64 @@ function ensureElasticSupport(nodeId) {
         // ===============================================
         const restrictionIconSizeWorld = 15;
         const restrictionIconOffsetWorld = 2;
+
+        function drawElasticSprings(ctx, nodeX, nodeY, currentScale, elastic) {
+            if (elastic.kx <= 0 && elastic.ky <= 0 && elastic.kr <= 0) return;
+
+            const springSize = (restrictionIconSizeWorld * 0.5) / currentScale;
+            const lineWidth = 0.5 / currentScale;
+            const nodeRadius = 2 / currentScale;
+
+            ctx.save();
+            ctx.translate(nodeX, nodeY);
+            ctx.strokeStyle = '#6279B8';
+            ctx.lineWidth = lineWidth;
+
+            if (elastic.kx > 0) {
+                const amp = springSize / 3;
+                const y = nodeRadius + amp + (restrictionIconOffsetWorld / currentScale);
+                ctx.beginPath();
+                ctx.moveTo(-springSize / 2, y + amp);
+                ctx.lineTo(-springSize / 4, y - amp);
+                ctx.lineTo(0, y + amp);
+                ctx.lineTo(springSize / 4, y - amp);
+                ctx.lineTo(springSize / 2, y + amp);
+                ctx.stroke();
+            }
+
+            if (elastic.ky > 0) {
+                const amp = springSize / 3;
+                const yStart = -nodeRadius - amp - (restrictionIconOffsetWorld / currentScale);
+                ctx.beginPath();
+                ctx.moveTo(amp, yStart);
+                ctx.lineTo(-amp, yStart - springSize / 4);
+                ctx.lineTo(amp, yStart - springSize / 2);
+                ctx.lineTo(-amp, yStart - (3 * springSize) / 4);
+                ctx.lineTo(amp, yStart - springSize);
+                ctx.stroke();
+            }
+
+            if (elastic.kr > 0) {
+                const maxRadius = springSize / 2;
+                const turns = 2;
+                const steps = 40;
+                ctx.beginPath();
+                for (let i = 0; i <= steps; i++) {
+                    const t = (turns * 2 * Math.PI) * (i / steps);
+                    const r = (maxRadius / (turns * 2 * Math.PI)) * t;
+                    const x = r * Math.cos(t);
+                    const y = r * Math.sin(t);
+                    if (i === 0) {
+                        ctx.moveTo(x, y);
+                    } else {
+                        ctx.lineTo(x, y);
+                    }
+                }
+                ctx.stroke();
+            }
+
+            ctx.restore();
+        }
 
         function drawRestrictionIcon(ctx, nodeX, nodeY, currentScale, iconType) {
             ctx.save();
