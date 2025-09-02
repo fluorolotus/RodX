@@ -722,21 +722,31 @@ function ensureElasticSupport(nodeId) {
         // Функция для рисования ВСЕХ иконок закреплений на Canvas
         // ===============================================
         function drawRestrictions() {
-            restrictions.forEach(restriction => {
-                const node = nodes.find(n => n.nodeId === restriction.nodeId);
-                if (node) {
-                    let iconToDraw = null;
-                    for (const typeKey in restrictionTypes) {
-                        const type = restrictionTypes[typeKey];
-                        if (type.icon && type.dx === restriction.dx && type.dy === restriction.dy && type.dr === restriction.dr) {
-                            iconToDraw = typeKey;
-                            break;
-                        }
-                    }
+            nodes.forEach(node => {
+                const restriction = restrictions.find(r => r.nodeId === node.nodeId) || { dx: 0, dy: 0, dr: 0 };
+                const elastic = elasticSupports.find(es => es.nodeId === node.nodeId) || { kx: 0, ky: 0, kr: 0 };
 
-                    if (iconToDraw) {
-                        drawRestrictionIcon(ctx, node.x, node.y, scale, iconToDraw);
-                    }
+                const dxEffective = restriction.dx === 1 || elastic.kx > 0;
+                const dyEffective = restriction.dy === 1 || elastic.ky > 0;
+                const drEffective = restriction.dr === 1 || elastic.kr > 0;
+
+                let iconToDraw = null;
+                if (dxEffective && dyEffective && drEffective) {
+                    iconToDraw = 'fixed';
+                } else if (!dxEffective && dyEffective && drEffective) {
+                    iconToDraw = 'sleeve-x';
+                } else if (dxEffective && !dyEffective && drEffective) {
+                    iconToDraw = 'sleeve-y';
+                } else if (dxEffective && dyEffective && !drEffective) {
+                    iconToDraw = 'pinned';
+                } else if (!dxEffective && dyEffective && !drEffective) {
+                    iconToDraw = 'rolled-x';
+                } else if (dxEffective && !dyEffective && !drEffective) {
+                    iconToDraw = 'rolled-y';
+                }
+
+                if (iconToDraw) {
+                    drawRestrictionIcon(ctx, node.x, node.y, scale, iconToDraw);
                 }
             });
         }
@@ -2253,6 +2263,11 @@ function ensureElasticSupport(nodeId) {
 
                 const updateRestriction = () => {
                     syncElasticInputs();
+                    const es = ensureElasticSupport(selectedNode.nodeId);
+                    if (restrictXCheckbox.checked) { kxInput.value = ''; es.kx = 0; }
+                    if (restrictYCheckbox.checked) { kyInput.value = ''; es.ky = 0; }
+                    if (restrictRCheckbox.checked) { krInput.value = ''; es.kr = 0; }
+
                     let updated = false;
                     restrictions = restrictions.filter(r => {
                         if (r.nodeId === selectedNode.nodeId) {
@@ -2337,8 +2352,6 @@ function ensureElasticSupport(nodeId) {
                         activeTypeKey = 'rolled-x';
                     } else if (dxEffective && !dyEffective && !drEffective) {
                         activeTypeKey = 'rolled-y';
-                    } else if (!dxEffective && !dyEffective && drEffective) {
-                        activeTypeKey = 'fixed';
                     }
 
                     const buttons = [];
