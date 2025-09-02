@@ -2162,19 +2162,19 @@ function ensureElasticSupport(nodeId) {
                                 <div class="checkbox-group">
                                     <input type="checkbox" id="restrictX" ${currentRestriction.dx === 1 ? 'checked' : ''}>
                                     <label for="restrictX">dx</label>
-                                    <input type="number" id="kxInput" placeholder="kx" value="${currentElastic.kx}" ${currentRestriction.dx === 1 ? 'disabled' : ''} class="elastic-input">
+                                    <input type="number" id="kxInput" placeholder="kx" value="${currentElastic.kx || ''}" ${currentRestriction.dx === 1 ? 'disabled' : ''} class="elastic-input">
                                     <span id="kxUnitDisplay" class="k-unit">${currentKUnit}</span>
                                 </div>
                                 <div class="checkbox-group">
                                     <input type="checkbox" id="restrictY" ${currentRestriction.dy === 1 ? 'checked' : ''}>
                                     <label for="restrictY">dy</label>
-                                    <input type="number" id="kyInput" placeholder="ky" value="${currentElastic.ky}" ${currentRestriction.dy === 1 ? 'disabled' : ''} class="elastic-input">
+                                    <input type="number" id="kyInput" placeholder="ky" value="${currentElastic.ky || ''}" ${currentRestriction.dy === 1 ? 'disabled' : ''} class="elastic-input">
                                     <span id="kyUnitDisplay" class="k-unit">${currentKUnit}</span>
                                 </div>
                                 <div class="checkbox-group">
                                     <input type="checkbox" id="restrictR" ${currentRestriction.dr === 1 ? 'checked' : ''}>
                                     <label for="restrictR">dr</label>
-                                    <input type="number" id="krInput" placeholder="kr" value="${currentElastic.kr}" ${currentRestriction.dr === 1 ? 'disabled' : ''} class="elastic-input">
+                                    <input type="number" id="krInput" placeholder="kr" value="${currentElastic.kr || ''}" ${currentRestriction.dr === 1 ? 'disabled' : ''} class="elastic-input">
                                     <span id="krUnitDisplay" class="k-unit">${currentRotKUnit}</span>
                                 </div>
                             </div>
@@ -2297,31 +2297,54 @@ function ensureElasticSupport(nodeId) {
                     const value = parseFloat(kxInput.value);
                     const es = ensureElasticSupport(selectedNode.nodeId);
                     es.kx = isNaN(value) ? 0 : value;
+                    renderRestrictionIcons();
                 });
                 kyInput.addEventListener('blur', () => {
                     const value = parseFloat(kyInput.value);
                     const es = ensureElasticSupport(selectedNode.nodeId);
                     es.ky = isNaN(value) ? 0 : value;
+                    renderRestrictionIcons();
                 });
                 krInput.addEventListener('blur', () => {
                     const value = parseFloat(krInput.value);
                     const es = ensureElasticSupport(selectedNode.nodeId);
                     es.kr = isNaN(value) ? 0 : value;
+                    renderRestrictionIcons();
                 });
 
                 const renderRestrictionIcons = () => {
                     restrictionIconsCol1.innerHTML = '';
                     restrictionIconsCol2.innerHTML = '';
 
-                    currentRestriction = restrictions.find(r => r.nodeId === selectedNode.nodeId);
-                    if (!currentRestriction) {
-                        currentRestriction = { dx: 0, dy: 0, dr: 0, type: "none" };
+                    const kxVal = parseFloat(kxInput.value);
+                    const kyVal = parseFloat(kyInput.value);
+                    const krVal = parseFloat(krInput.value);
+
+                    const dxEffective = restrictXCheckbox.checked || kxVal > 0;
+                    const dyEffective = restrictYCheckbox.checked || kyVal > 0;
+                    const drEffective = restrictRCheckbox.checked || krVal > 0;
+
+                    let activeTypeKey = 'none';
+                    if (dxEffective && dyEffective && drEffective) {
+                        activeTypeKey = 'fixed';
+                    } else if (!dxEffective && dyEffective && drEffective) {
+                        activeTypeKey = 'sleeve-x';
+                    } else if (dxEffective && !dyEffective && drEffective) {
+                        activeTypeKey = 'sleeve-y';
+                    } else if (dxEffective && dyEffective && !drEffective) {
+                        activeTypeKey = 'pinned';
+                    } else if (!dxEffective && dyEffective && !drEffective) {
+                        activeTypeKey = 'rolled-x';
+                    } else if (dxEffective && !dyEffective && !drEffective) {
+                        activeTypeKey = 'rolled-y';
+                    } else if (!dxEffective && !dyEffective && drEffective) {
+                        activeTypeKey = 'fixed';
                     }
 
                     const buttons = [];
 
                     const noRestrictionBtn = document.createElement('button');
-                    noRestrictionBtn.className = `restriction-icon-btn ${currentRestriction.dx === 0 && currentRestriction.dy === 0 && currentRestriction.dr === 0 ? 'active' : ''}`;
+                    noRestrictionBtn.className = `restriction-icon-btn ${activeTypeKey === 'none' ? 'active' : ''}`;
                     noRestrictionBtn.innerHTML = '<span class="no-restriction-text">Ø</span>';
                     noRestrictionBtn.title = 'No boundaries yet';
                     noRestrictionBtn.addEventListener('click', () => {
@@ -2337,7 +2360,7 @@ function ensureElasticSupport(nodeId) {
                         const type = restrictionTypes[typeKey];
                         if (type.icon) {
                             const btn = document.createElement('button');
-                            btn.className = `restriction-icon-btn ${currentRestriction.dx === type.dx && currentRestriction.dy === type.dy && currentRestriction.dr === type.dr ? 'active' : ''}`;
+                            btn.className = `restriction-icon-btn ${typeKey === activeTypeKey ? 'active' : ''}`;
                             btn.innerHTML = `<img src="icons/${type.icon}" alt="${type.label}" title="${type.label}">`;
                             btn.title = type.label;
                             btn.addEventListener('click', () => {
