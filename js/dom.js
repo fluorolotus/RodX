@@ -34,6 +34,11 @@
         const copyCountInput = document.getElementById('copyCountInput');
         const copyDistanceInput = document.getElementById('copyDistanceInput');
         const applyCopyNodeBtn = document.getElementById('applyCopyNodeBtn');
+        const connectorsItem = document.getElementById('connectorsItem');
+        const connectorsModal = document.getElementById('connectorsModal');
+        const connectorsContent = document.getElementById('connectorsContent');
+        const closeConnectorsModalBtn = document.getElementById('closeConnectorsModal');
+        const applyConnectorsBtn = document.getElementById('applyConnectorsBtn');
         
         // Элементы propertiesPanel
 const propertiesPanel = document.getElementById('propertiesPanel');

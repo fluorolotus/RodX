@@ -3,6 +3,7 @@
 let lines = [];
 let restrictions = [];
 let elasticSupports = [];
+let connectors = [];
 let nextNodeId = 1;
         let nextElemId = 1;
                 let nodalLoads = [];
