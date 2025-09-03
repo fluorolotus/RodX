@@ -5,6 +5,10 @@
     "temperature": "C",
     "time": "s"
   },
+  "gravity": {
+    "g": 9.81,
+    "direction": [0, 0, -1]
+  },
   "nodes": [
     {
       "nodeId": 1,
