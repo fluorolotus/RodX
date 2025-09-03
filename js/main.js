@@ -1935,6 +1935,19 @@ function toggleLoadCasesModal() {
                     if (es.kr !== 0) es.kr = convertRotationalStiffness(es.kr, currentForceUnit, oldUnit, currentForceUnit, newUnit);
                 });
 
+                // Convert connector rotational stiffness values to the new length unit
+                connectors.forEach(conn => {
+                    if (conn.stiffness && conn.stiffness.rkr !== undefined) {
+                        conn.stiffness.rkr = convertRotationalStiffness(
+                            conn.stiffness.rkr,
+                            currentForceUnit,
+                            oldUnit,
+                            currentForceUnit,
+                            newUnit
+                        );
+                    }
+                });
+
                 scale = scale * (lengthUnitConversions[newUnit] / lengthUnitConversions[oldUnit]);
                 currentUnit = newUnit;
 				
@@ -1991,6 +2004,19 @@ function toggleLoadCasesModal() {
                     if (es.kx !== 0) es.kx = convertLinearStiffness(es.kx, oldForceUnit, currentUnit, newForceUnit, currentUnit);
                     if (es.ky !== 0) es.ky = convertLinearStiffness(es.ky, oldForceUnit, currentUnit, newForceUnit, currentUnit);
                     if (es.kr !== 0) es.kr = convertRotationalStiffness(es.kr, oldForceUnit, currentUnit, newForceUnit, currentUnit);
+                });
+
+                // Convert connector rotational stiffness values to the new force unit
+                connectors.forEach(conn => {
+                    if (conn.stiffness && conn.stiffness.rkr !== undefined) {
+                        conn.stiffness.rkr = convertRotationalStiffness(
+                            conn.stiffness.rkr,
+                            oldForceUnit,
+                            currentUnit,
+                            newForceUnit,
+                            currentUnit
+                        );
+                    }
                 });
 
                 updatePropertiesPanel();
@@ -4229,7 +4255,7 @@ function toggleLoadCasesModal() {
                     content = `Node ${node.nodeId}\nX: ${node.x.toFixed(3)} ${currentUnit}\nY: ${node.y.toFixed(3)} ${currentUnit}${restrictionInfo}`;
                 } else if (hoveredElement.type === 'connector') {
                     const conn = hoveredElement.element;
-                    content = `Stiffness: ${conn.rkr}`;
+                    content = `Stiffness: ${conn.rkr} ${currentForceUnit}*${currentUnit}/rad`;
                 } else if (hoveredElement.type === 'line') {
                     const line = hoveredElement.element;
                     const n1 = nodes.find(n => n.nodeId === line.nodeId1);
