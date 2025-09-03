@@ -77,6 +77,49 @@ function removeElasticSupportIfZero(es) {
             try {
                 const modelData = JSON.parse(jsonFileContent);
 
+                // Очищаем текущую модель перед изменением единиц
+                nodes = [];
+                lines = [];
+                restrictions = [];
+                elasticSupports = [];
+                connectors = [];
+                nodalLoads = [];
+                elementLoads = [];
+
+                // Сначала применяем единицы измерения из файла
+                if (modelData.units) {
+                    const loadedLengthUnit = modelData.units.length;
+                    const loadedForceUnit = modelData.units.force;
+                    const loadedTemperatureUnit = modelData.units.temperature || 'C';
+                    const loadedTimeUnit = modelData.units.time || 's';
+
+                    currentTemperatureUnit = loadedTemperatureUnit;
+                    currentTimeUnit = loadedTimeUnit;
+
+                    if (unitsSelect.value !== loadedLengthUnit) {
+                        unitsSelect.value = loadedLengthUnit;
+                        unitsSelect.dispatchEvent(new Event('change'));
+                    } else {
+                        currentUnit = loadedLengthUnit;
+                        updateUnitPairsSelect();
+                        updateForceUnitDisplay();
+                    }
+
+                    if (forceUnitsSelect.value !== loadedForceUnit) {
+                        forceUnitsSelect.value = loadedForceUnit;
+                        forceUnitsSelect.dataset.previousValue = loadedForceUnit;
+                        forceUnitsSelect.dispatchEvent(new Event('change'));
+                    } else {
+                        currentForceUnit = loadedForceUnit;
+                        updateUnitPairsSelect();
+                        updateForceUnitDisplay();
+                    }
+                } else {
+                    currentTemperatureUnit = 'C';
+                    currentTimeUnit = 's';
+                }
+
+                // Теперь загружаем данные модели в соответствующих единицах
                 nodes = modelData.nodes || [];
                 lines = (modelData.elements || []).map(({ loads, ...rest }) => ({
                     ...rest,
@@ -87,8 +130,7 @@ function removeElasticSupportIfZero(es) {
                 elasticSupports = (modelData.elasticSupports || []).filter(es => es.kx !== 0 || es.ky !== 0 || es.kr !== 0);
                 connectors = modelData.connectors || [];
                 gravity = modelData.gravity || { g: 9.81, direction: [0, 0, -1] };
-                nodalLoads = [];
-                elementLoads = [];
+
                 if (modelData.loads) {
                     modelData.loads.forEach(load => {
                         if (load.scope === 'node') {
@@ -158,45 +200,12 @@ function removeElasticSupportIfZero(es) {
                     loadCases[0].loads = allIds;
                 }
                 nextLoadCaseId = loadCases.length > 0 ? Math.max(...loadCases.map(lc => lc.id)) + 1 : 2;
-				
-				// НОВОЕ: Загружаем материалы модели
+
+                // НОВОЕ: Загружаем материалы модели
                 modelMaterials = modelData.materials || [];
                 renderModelMaterialsList();
                 modelSections = modelData.sections || [];
                 renderModelSectionsList();
-
-                if (modelData.units) {
-                    const loadedLengthUnit = modelData.units.length;
-                    const loadedForceUnit = modelData.units.force;
-                    const loadedTemperatureUnit = modelData.units.temperature || 'C';
-                    const loadedTimeUnit = modelData.units.time || 's';
-
-                    currentTemperatureUnit = loadedTemperatureUnit;
-                    currentTimeUnit = loadedTimeUnit;
-
-                    if (unitsSelect.value !== loadedLengthUnit) {
-                        unitsSelect.value = loadedLengthUnit;
-                        unitsSelect.dispatchEvent(new Event('change'));
-                    } else {
-                        currentUnit = loadedLengthUnit;
-                        updateUnitPairsSelect();
-                        updateForceUnitDisplay();
-                    }
-
-                    if (forceUnitsSelect.value !== loadedForceUnit) {
-                        forceUnitsSelect.value = loadedForceUnit;
-                        forceUnitsSelect.dataset.previousValue = loadedForceUnit;
-                        forceUnitsSelect.dispatchEvent(new Event('change'));
-                    } else {
-                        currentForceUnit = loadedForceUnit;
-                        updateUnitPairsSelect();
-                        updateForceUnitDisplay();
-                    }
-
-                } else {
-                    currentTemperatureUnit = 'C';
-                    currentTimeUnit = 's';
-                }
 
                 nextNodeId = nodes.length > 0 ? Math.max(...nodes.map(n => n.nodeId)) + 1 : 1;
                 nextElemId = lines.length > 0 ? Math.max(...lines.map(l => l.elemId)) + 1 : 1;
@@ -207,10 +216,8 @@ function removeElasticSupportIfZero(es) {
                 selectedElement = null;
                 firstNodeForLine = null;
 
-                if ((modelData.units && unitsSelect.value === modelData.units.length && forceUnitsSelect.value === modelData.units.force) || !modelData.units) {
-                    updatePropertiesPanel();
-                    draw();
-                }
+                updatePropertiesPanel();
+                draw();
 
                 console.log("Модель успешно загружена.");
             } catch (error) {
