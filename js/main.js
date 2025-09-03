@@ -138,10 +138,13 @@ function removeElasticSupportIfZero(es) {
                             let unit = load.units;
                             let lengthUnit = null;
                             if (type === 'moment') {
-                                const match = load.units.match(/^([a-zA-Z]+)([a-zA-Z]+)$/);
-                                if (match) {
-                                    unit = match[1];
-                                    lengthUnit = match[2];
+                                const knownLengthUnits = Object.keys(lengthUnitConversions);
+                                for (const lu of knownLengthUnits) {
+                                    if (unit.endsWith(lu)) {
+                                        lengthUnit = lu;
+                                        unit = unit.slice(0, -lu.length);
+                                        break;
+                                    }
                                 }
                             }
                             const nodalLoad = {
