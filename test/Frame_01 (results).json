@@ -4,6 +4,10 @@
       "force": "kN",
       "length": "m"
     },
+    "gravity": {
+      "g": 9.81,
+      "direction": [0, 0, -1]
+    },
     "rods": [
       {
         "elemId": 1,

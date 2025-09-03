@@ -48,6 +48,10 @@ let nextLoadCaseId = 2;
         let currentForceUnit = forceUnitsSelect.value;
         let currentTemperatureUnit = 'C';
         let currentTimeUnit = 's';
+        let gravity = {
+            g: 9.81,
+            direction: [0, 0, -1]
+        };
 
         // === Beta Angle Icons ===
         const betaAngleIconSizeWorld = 20; // icon size in pixels

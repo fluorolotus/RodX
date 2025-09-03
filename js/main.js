@@ -42,6 +42,7 @@ function removeElasticSupportIfZero(es) {
             temperature: currentTemperatureUnit,
             time: currentTimeUnit
         },
+        gravity: gravity,
         nodes: nodes,
         elements: lines,
         supports: restrictions,
@@ -85,6 +86,7 @@ function removeElasticSupportIfZero(es) {
                 restrictions = modelData.supports || modelData.restrictions || [];
                 elasticSupports = (modelData.elasticSupports || []).filter(es => es.kx !== 0 || es.ky !== 0 || es.kr !== 0);
                 connectors = modelData.connectors || [];
+                gravity = modelData.gravity || { g: 9.81, direction: [0, 0, -1] };
                 nodalLoads = [];
                 elementLoads = [];
                 if (modelData.loads) {
