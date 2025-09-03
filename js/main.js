@@ -73,6 +73,34 @@ function removeElasticSupportIfZero(es) {
             console.log("Модель сохранена в model.json");
         }
 
+        let pyodideInstance = null;
+
+        async function exportModelToInp() {
+            const modelData = getModelData();
+            if (!pyodideInstance) {
+                pyodideInstance = await loadPyodide({indexURL: "https://cdn.jsdelivr.net/pyodide/v0.24.1/full/"});
+                const scriptText = await (await fetch('py/json_to_inp.py')).text();
+                await pyodideInstance.runPythonAsync(scriptText);
+            }
+            pyodideInstance.globals.set('model_json', JSON.stringify(modelData));
+            await pyodideInstance.runPythonAsync(`
+import json
+from json_to_inp import InpWriter
+data = json.loads(model_json)
+out_str = "\n".join(InpWriter(data).build())
+`);
+            const result = pyodideInstance.globals.get('out_str');
+            const blob = new Blob([result], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'beam.inp';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
                 async function loadModel(jsonFileContent) {
             try {
                 const modelData = JSON.parse(jsonFileContent);
@@ -1798,6 +1826,10 @@ function toggleLoadCasesModal() {
 
             if (exportMenuItem) {
                 exportMenuItem.addEventListener('click', saveModel);
+            }
+
+            if (exportToInpMenuItem) {
+                exportToInpMenuItem.addEventListener('click', exportModelToInp);
             }
 
             if (shareMenu) {
