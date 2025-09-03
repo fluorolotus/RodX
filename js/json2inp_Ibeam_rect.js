@@ -164,7 +164,8 @@ function convertJsonToInp(model){
   }
 
   // Steps by loadCases
-  const loadById = loadByIdGlobal = loadById; // alias
+  // Alias to expose loads mapping if needed elsewhere without redeclaration issues
+  const loadByIdGlobal = loadById;
   for(const lc of (model.loadCases||[])){
     out.push(`*STEP, NLGEOM=NO`);
     out.push(`*STATIC`);
