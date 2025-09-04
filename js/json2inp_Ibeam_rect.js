@@ -2,6 +2,8 @@
 // Convert model JSON → CalculiX .inp (B31). I-beam is composed as 3 RECT sections with OFFSETS.
 // Units normalized to mm–N–s–K. Supports β-rotation (about local axis 1) for each element.
 
+(function (global) {
+
 const conv = {
   length(x, u="mm"){u=u.toLowerCase();
     if(u==="mm")return x; if(u==="m"||u==="meter"||u==="meters")return x*1000;
@@ -197,8 +199,12 @@ function convertJsonToInp(model){
   return out.join("\n")+"\n";
 }
 
-// Exports for Node:
-// module.exports = { convertJsonToInp, iBeamToRECTs };
+if (typeof module !== "undefined" && module.exports) {
+  module.exports = { convertJsonToInp, iBeamToRECTs };
+} else {
+  global.convertJsonToInp = convertJsonToInp;
+  global.iBeamToRECTs = iBeamToRECTs;
+}
 
 /*
 Usage:
@@ -207,3 +213,5 @@ const data = JSON.parse(readFileSync("beam_kN_m.json","utf8"));
 const inp  = convertJsonToInp(data);
 writeFileSync("model.inp", inp, "utf8");
 */
+
+})(typeof window !== "undefined" ? window : globalThis);
