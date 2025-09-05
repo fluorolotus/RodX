@@ -78,8 +78,13 @@ function convertJsonToInp(model){
   }
 
   // *ELEMENT
+  const elements = model.elements || [];
+  const hasTruss = elements.some(e => (e.structuralType || 'beam').toLowerCase() === 'truss');
+  if (hasTruss) {
+    out.push('*USER ELEMENT, TYPE=U1, NODES=2, INTEGRATION POINTS=2, MAXDOF=2');
+  }
   const elGroups = {};
-  for (const e of (model.elements || [])) {
+  for (const e of elements) {
     const key = `${e.sectionId}_${e.materialId}`;
     const stype = (e.structuralType || 'beam').toLowerCase();
     ((elGroups[key] ||= {})[stype] ||= []).push(e);
