@@ -83,6 +83,8 @@ function convertJsonToInp(model){
 
   // *ELEMENT
   const elements = model.elements || [];
+  const sectionMap = {};
+  for (const s of (model.sections || [])) sectionMap[s.id] = s;
   const groups = [];
   const gmap = {};
   let hasTruss = false;
@@ -90,19 +92,31 @@ function convertJsonToInp(model){
     const st = (e.structuralType || 'beam').toLowerCase();
     if (st === 'truss') hasTruss = true;
     const key = `${e.sectionId}_${e.materialId}_${st}`;
+
+    // resolve section properties if element doesn't directly specify them
+    const sec = sectionMap[e.sectionId] || {};
+    const sprops = sec.properties || {};
+
+    const A_u  = (e.A  && e.A.unit)  || sprops.area?.unit               || (LEN_U + "^2");
+    const Iy_u = (e.Iy && e.Iy.unit) || sprops.momentOfInertiaY?.unit || (LEN_U + "^4");
+    const Iz_u = (e.Iz && e.Iz.unit) || sprops.momentOfInertiaZ?.unit || (LEN_U + "^4");
+
+    const A_v  = e.A?.value  ?? sprops.area?.value               ?? 0;
+    const Iy_v = e.Iy?.value ?? sprops.momentOfInertiaY?.value ?? 0;
+    const Iz_v = e.Iz?.value ?? sprops.momentOfInertiaZ?.value ?? 0;
+
+    const A  = (A_u.toLowerCase()  === "mm^2") ? +A_v  : conv.area(A_v,  A_u);
+    const Iy = (Iy_u.toLowerCase() === "mm^4") ? +Iy_v : conv.inertia(Iy_v, Iy_u);
+    const Iz = (Iz_u.toLowerCase() === "mm^4") ? +Iz_v : conv.inertia(Iz_v, Iz_u);
+
     let g = gmap[key];
     if (!g) {
-      // element properties may already be in mm-N-s-K system. If units
-      // match, avoid an unnecessary conversion to keep original values.
-      const A_u  = (e.A && e.A.unit)  || (LEN_U + "^2");
-      const Iy_u = (e.Iy && e.Iy.unit) || (LEN_U + "^4");
-      const Iz_u = (e.Iz && e.Iz.unit) || (LEN_U + "^4");
-
-      const A  = (e.A  && A_u.toLowerCase()  === "mm^2") ? +e.A.value  : conv.area(e.A?.value||0,  A_u);
-      const Iy = (e.Iy && Iy_u.toLowerCase() === "mm^4") ? +e.Iy.value : conv.inertia(e.Iy?.value||0, Iy_u);
-      const Iz = (e.Iz && Iz_u.toLowerCase() === "mm^4") ? +e.Iz.value : conv.inertia(e.Iz?.value||0, Iz_u);
       g = gmap[key] = { name: key, st, material: e.materialId, A, Iy, Iz, elems: [] };
       groups.push(g);
+    } else {
+      if (!g.A && A) g.A = A;
+      if (!g.Iy && Iy) g.Iy = Iy;
+      if (!g.Iz && Iz) g.Iz = Iz;
     }
     g.elems.push(e);
   }
