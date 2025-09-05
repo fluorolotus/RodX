@@ -79,14 +79,21 @@ function convertJsonToInp(model){
 
   // *ELEMENT
   const elGroups = {};
-  for(const e of (model.elements||[])){
+  for (const e of (model.elements || [])) {
     const key = `${e.sectionId}_${e.materialId}`;
-    (elGroups[key] ||= []).push(e);
+    const stype = (e.structuralType || 'beam').toLowerCase();
+    ((elGroups[key] ||= {})[stype] ||= []).push(e);
   }
-  for(const key of Object.keys(elGroups)){
-    out.push(`*ELEMENT, TYPE=B31, ELSET=${key}`);
-    for(const e of elGroups[key]){
-      out.push(`${+e.elemId}, ${+e.nodeId1}, ${+e.nodeId2}`);
+  for (const key of Object.keys(elGroups)) {
+    const byType = elGroups[key];
+    for (const st of Object.keys(byType)) {
+      let etype = 'U1';
+      if (st === 'truss') etype = 'T3D2';
+      else if (st !== 'beam') etype = 'U1';
+      out.push(`*ELEMENT, TYPE=${etype}, ELSET=${key}`);
+      for (const e of byType[st]) {
+        out.push(`${+e.elemId}, ${+e.nodeId1}, ${+e.nodeId2}`);
+      }
     }
   }
 
