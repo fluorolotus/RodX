@@ -102,6 +102,22 @@ function convertJsonToInp(model){
     }
   }
 
+  // *MATERIAL
+  for (const m of (model.materials || [])) {
+    const p = m.properties || {};
+    const em = p.elasticModulus || {};
+    const pr = p.poissonRatio || {};
+    const de = p.density || {};
+    const E   = conv.E(+em.value, em.unit || 'MPa');
+    const nu  = +pr.value;
+    const rho = conv.rho(+de.value, de.unit || 'kg/m^3');
+    out.push(`*MATERIAL, NAME=${JSON.stringify(m.id)}`);
+    out.push('*ELASTIC');
+    out.push(`${fmt(E)}, ${fmt(nu)}`);
+    out.push('*DENSITY');
+    out.push(fmt(rho));
+  }
+
   return out.join("\n")+"\n";
 }
 
