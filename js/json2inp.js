@@ -92,9 +92,15 @@ function convertJsonToInp(model){
     const key = `${e.sectionId}_${e.materialId}_${st}`;
     let g = gmap[key];
     if (!g) {
-      const A  = conv.area(e.A?.value||0,  (e.A&&e.A.unit)  || (LEN_U+"^2"));
-      const Iy = conv.inertia(e.Iy?.value||0, (e.Iy&&e.Iy.unit)|| (LEN_U+"^4"));
-      const Iz = conv.inertia(e.Iz?.value||0, (e.Iz&&e.Iz.unit)|| (LEN_U+"^4"));
+      // element properties may already be in mm-N-s-K system. If units
+      // match, avoid an unnecessary conversion to keep original values.
+      const A_u  = (e.A && e.A.unit)  || (LEN_U + "^2");
+      const Iy_u = (e.Iy && e.Iy.unit) || (LEN_U + "^4");
+      const Iz_u = (e.Iz && e.Iz.unit) || (LEN_U + "^4");
+
+      const A  = (e.A  && A_u.toLowerCase()  === "mm^2") ? +e.A.value  : conv.area(e.A?.value||0,  A_u);
+      const Iy = (e.Iy && Iy_u.toLowerCase() === "mm^4") ? +e.Iy.value : conv.inertia(e.Iy?.value||0, Iy_u);
+      const Iz = (e.Iz && Iz_u.toLowerCase() === "mm^4") ? +e.Iz.value : conv.inertia(e.Iz?.value||0, Iz_u);
       g = gmap[key] = { name: key, st, material: e.materialId, A, Iy, Iz, elems: [] };
       groups.push(g);
     }
