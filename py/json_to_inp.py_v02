@@ -536,6 +536,8 @@ def convert(model: dict) -> str:
 
     # элементы
     elements = model.get("elements", [])
+    if any((e.get("structuralType", "beam").lower() == "truss") for e in elements):
+        iw.w("*USER ELEMENT, TYPE=U1, NODES=2, INTEGRATION POINTS=2, MAXDOF=2")
     for e in elements:
         sec = secs_by_id[e["sectionId"]]
         mat = mats_by_id[e["materialId"]]

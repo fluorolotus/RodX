@@ -134,8 +134,11 @@ class InpWriter:
             L.append(f"{nid}, {fmt(x)}, {fmt(y)}, 0")
 
         # Elements (B31)
+        elems = self.m.get("elements", [])
+        if any((e.get("structuralType", "beam").lower() == "truss") for e in elems):
+            L += ["*USER ELEMENT, TYPE=U1, NODES=2, INTEGRATION POINTS=2, MAXDOF=2"]
         L += ["*ELEMENT, TYPE=B31"]
-        for e in self.m.get("elements", []):
+        for e in elems:
             L.append(f"{int(e['elemId'])}, {int(e['nodeId1'])}, {int(e['nodeId2'])}")
 
         # Global sets
