@@ -24,6 +24,10 @@ const conv = {
   q(x,u="N/mm"){u=u.toLowerCase();
     if(u==="n/mm")return x; if(u==="n/m")return x/1000; if(u==="kn/m")return (x*1000)/1000;
     if(u==="lbf/in")return (x*4.4482216153)/25.4; throw Error("q "+u);},
+  area(x,u="mm^2"){u=u.toLowerCase(); const lu=u.replace(/\^?2$/,'').replace(/2$/,'');
+    return x*Math.pow(conv.length(1,lu),2);},
+  inertia(x,u="mm^4"){u=u.toLowerCase(); const lu=u.replace(/\^?4$/,'').replace(/4$/,'');
+    return x*Math.pow(conv.length(1,lu),4);},
   kT(k,fu,lu){return conv.force(1,fu)/conv.length(1,lu)*k;},
   kR(k,fu,lu){return conv.force(1,fu)*conv.length(1,lu)*k;}
 };
@@ -79,26 +83,33 @@ function convertJsonToInp(model){
 
   // *ELEMENT
   const elements = model.elements || [];
-  const hasTruss = elements.some(e => (e.structuralType || 'beam').toLowerCase() === 'truss');
+  const groups = [];
+  const gmap = {};
+  let hasTruss = false;
+  for (const e of elements) {
+    const st = (e.structuralType || 'beam').toLowerCase();
+    if (st === 'truss') hasTruss = true;
+    const key = `${e.sectionId}_${e.materialId}_${st}`;
+    let g = gmap[key];
+    if (!g) {
+      const A  = conv.area(e.A?.value||0,  (e.A&&e.A.unit)  || (LEN_U+"^2"));
+      const Iy = conv.inertia(e.Iy?.value||0, (e.Iy&&e.Iy.unit)|| (LEN_U+"^4"));
+      const Iz = conv.inertia(e.Iz?.value||0, (e.Iz&&e.Iz.unit)|| (LEN_U+"^4"));
+      g = gmap[key] = { name: key, st, material: e.materialId, A, Iy, Iz, elems: [] };
+      groups.push(g);
+    }
+    g.elems.push(e);
+  }
   if (hasTruss) {
     out.push('*USER ELEMENT, TYPE=U1, NODES=2, INTEGRATION POINTS=2, MAXDOF=2');
   }
-  const elGroups = {};
-  for (const e of elements) {
-    const key = `${e.sectionId}_${e.materialId}`;
-    const stype = (e.structuralType || 'beam').toLowerCase();
-    ((elGroups[key] ||= {})[stype] ||= []).push(e);
-  }
-  for (const key of Object.keys(elGroups)) {
-    const byType = elGroups[key];
-    for (const st of Object.keys(byType)) {
-      let etype = 'U1';
-      if (st === 'truss') etype = 'T3D2';
-      else if (st !== 'beam') etype = 'U1';
-      out.push(`*ELEMENT, TYPE=${etype}, ELSET=${key}`);
-      for (const e of byType[st]) {
-        out.push(`${+e.elemId}, ${+e.nodeId1}, ${+e.nodeId2}`);
-      }
+  for (const g of groups) {
+    let etype = 'U1';
+    if (g.st === 'truss') etype = 'T3D2';
+    else if (g.st !== 'beam') etype = 'U1';
+    out.push(`*ELEMENT, TYPE=${etype}, ELSET=${g.name}`);
+    for (const e of g.elems) {
+      out.push(`${+e.elemId}, ${+e.nodeId1}, ${+e.nodeId2}`);
     }
   }
 
@@ -116,6 +127,21 @@ function convertJsonToInp(model){
     out.push(`${fmt(E)}, ${fmt(nu)}`);
     out.push('*DENSITY');
     out.push(fmt(rho));
+  }
+
+  // *ELSET blocks
+  let esCnt = 1;
+  for (const g of groups) {
+    out.push(`*ELSET, ELSET=${JSON.stringify(g.name)}`);
+    out.push(String(esCnt++));
+    if (g.st === 'beam') {
+      out.push(`*BEAM SECTION, ELSET=${JSON.stringify(g.name)}, MATERIAL=${JSON.stringify(g.material)}, SECTION=GENERAL`);
+      out.push(`${fmt(g.A)}, ${fmt(g.Iy)}, 0.0, ${fmt(g.Iz)}, 10000`);
+      out.push('0, 0, -1');
+    } else if (g.st === 'truss') {
+      out.push(`*SOLID SECTION, ELSET=${JSON.stringify(g.name)}, MATERIAL=${JSON.stringify(g.material)}`);
+      out.push(fmt(g.A));
+    }
   }
 
   return out.join("\n")+"\n";
