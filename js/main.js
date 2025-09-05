@@ -142,6 +142,7 @@ function removeElasticSupportIfZero(es) {
                 nodes = modelData.nodes || [];
                 lines = (modelData.elements || []).map(({ loads, ...rest }) => ({
                     ...rest,
+                    structuralType: rest.structuralType !== undefined ? rest.structuralType : 'beam',
                     sectionId: rest.sectionId !== undefined ? rest.sectionId : null,
                     betaAngle: rest.betaAngle !== undefined ? rest.betaAngle : 0
                 }));
@@ -3139,6 +3140,17 @@ function toggleLoadCasesModal() {
                             <button id="splitElementBtn">Split</button>
                         </div>
                     </div>
+                    <div class="property-group">
+                        <h4 class="text-gray-700 mb-2">Member type</h4>
+                        <div class="flex items-center gap-2 mb-2">
+                            <select id="structuralTypeSelect" class="flex-grow">
+                                <option value="beam">beam</option>
+                                <option value="truss">truss</option>
+                            </select>
+                            <button id="applyStructuralTypeBtn">Apply</button>
+                        </div>
+                        <p class="text-xs text-gray-700 font-light">Assigned type: <span id="assignedStructuralTypeDisplay">${selectedElement.structuralType || 'beam'}</span></p>
+                    </div>
                 `;
 
                 const elementLoadsList = document.getElementById('elementLoadsList');
@@ -3146,6 +3158,21 @@ function toggleLoadCasesModal() {
                 const addDistributedForceXBtn = document.getElementById('addDistributedForceXBtn');
                 const addDistributedForceYInput = document.getElementById('addDistributedForceY');
                 const addDistributedForceYBtn = document.getElementById('addDistributedForceYBtn');
+
+                const structuralTypeSelect = document.getElementById('structuralTypeSelect');
+                const applyStructuralTypeBtn = document.getElementById('applyStructuralTypeBtn');
+
+                if (structuralTypeSelect) {
+                    structuralTypeSelect.value = selectedElement.structuralType || 'beam';
+                }
+
+                if (applyStructuralTypeBtn && structuralTypeSelect) {
+                    applyStructuralTypeBtn.addEventListener('click', () => {
+                        selectedElement.structuralType = structuralTypeSelect.value;
+                        updatePropertiesPanel();
+                        draw();
+                    });
+                }
 
                 const renderElementLoads = () => {
                     elementLoadsList.innerHTML = '';
@@ -3440,6 +3467,10 @@ function toggleLoadCasesModal() {
                 const uniqueAngles = new Set(selectedElements.map(sel => sel.element.betaAngle !== undefined ? sel.element.betaAngle : 0));
                 const betaAngleDisplay = uniqueAngles.size === 1 ? Array.from(uniqueAngles)[0] : 'various';
 
+                const structuralTypes = selectedElements.map(sel => sel.element.structuralType !== undefined ? sel.element.structuralType : 'beam');
+                const uniqueStructuralTypes = new Set(structuralTypes);
+                const assignedStructuralType = uniqueStructuralTypes.size === 1 ? Array.from(uniqueStructuralTypes)[0] : 'various';
+
                 const currentForceDisplayUnit = forceUnitsSelect.value;
                 const currentLengthDisplayUnit = unitsSelect.value;
                 const currentDistributedForceUnit = `${currentForceDisplayUnit}/${currentLengthDisplayUnit}`;
@@ -3489,6 +3520,17 @@ function toggleLoadCasesModal() {
                             <span id="currentDistributedForceUnitDisplay_multi_qY" class="ml-2">${currentDistributedForceUnit}</span>
                             <button id="multiDistributedForceYBtn">Add qY</button>
                         </div>
+                    </div>
+                    <div class="property-group">
+                        <h4 class="text-gray-700 mb-2">Member type</h4>
+                        <div class="flex items-center gap-2 mb-2">
+                            <select id="multiStructuralTypeSelect" class="flex-grow">
+                                <option value="beam">beam</option>
+                                <option value="truss">truss</option>
+                            </select>
+                            <button id="applyStructuralTypeToSelectedBtn">Apply</button>
+                        </div>
+                        <p class="text-xs text-gray-700 font-light">Assigned type: <span id="multiAssignedStructuralTypeDisplay">${assignedStructuralType}</span></p>
                     </div>
                 `;
 
@@ -3550,6 +3592,26 @@ function toggleLoadCasesModal() {
                 const multiLoadXBtn = document.getElementById('multiDistributedForceXBtn');
                 const multiLoadYInput = document.getElementById('multiDistributedForceY');
                 const multiLoadYBtn = document.getElementById('multiDistributedForceYBtn');
+
+                const multiStructuralTypeSelect = document.getElementById('multiStructuralTypeSelect');
+                const applyStructuralTypeToSelectedBtn = document.getElementById('applyStructuralTypeToSelectedBtn');
+
+                if (multiStructuralTypeSelect && uniqueStructuralTypes.size === 1) {
+                    multiStructuralTypeSelect.value = Array.from(uniqueStructuralTypes)[0];
+                }
+
+                if (applyStructuralTypeToSelectedBtn && multiStructuralTypeSelect) {
+                    applyStructuralTypeToSelectedBtn.addEventListener('click', () => {
+                        const type = multiStructuralTypeSelect.value;
+                        selectedElements.forEach(sel => {
+                            if (sel.type === 'line') {
+                                sel.element.structuralType = type;
+                            }
+                        });
+                        updatePropertiesPanel();
+                        draw();
+                    });
+                }
 
                         if (multiLoadXBtn && multiLoadXInput) {
                     multiLoadXBtn.addEventListener('click', () => {
