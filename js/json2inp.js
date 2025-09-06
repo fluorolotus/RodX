@@ -176,6 +176,11 @@ function convertJsonToInp(model){
     }
   }
 
+  if (elements.length) {
+    out.push('*ELSET, ELSET=Eall');
+    out.push(elements.map(e => +e.elemId).join(', '));
+  }
+
   return out.join("\n")+"\n";
 }
 
