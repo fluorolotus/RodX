@@ -49,7 +49,7 @@ let nextLoadCaseId = 2;
         let currentTemperatureUnit = 'C';
         let currentTimeUnit = 's';
         let gravity = {
-            g: 9.81,
+            g: 9810,
             direction: [0, 0, -1]
         };
 
