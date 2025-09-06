@@ -34,7 +34,7 @@
     "properties": {
       "A": {
         "value": 6.16,
-        "unit": "mm^2"
+        "unit": "cm^2"
       },
       "Iy": {
         "value": 22.8,
@@ -135,7 +135,7 @@
     "properties": {
       "A": {
         "value": 7.51,
-        "unit": "mm^2"
+        "unit": "cm^2"
       },
       "Iy": {
         "value": 48.6,
@@ -236,7 +236,7 @@
     "properties": {
       "A": {
         "value": 8.98,
-        "unit": "mm^2"
+        "unit": "cm^2"
       },
       "Iy": {
         "value": 89.4,
@@ -337,7 +337,7 @@
     "properties": {
       "A": {
         "value": 10.9,
-        "unit": "mm^2"
+        "unit": "cm^2"
       },
       "Iy": {
         "value": 174.0,
@@ -438,7 +438,7 @@
     "properties": {
       "A": {
         "value": 13.3,
-        "unit": "mm^2"
+        "unit": "cm^2"
       },
       "Iy": {
         "value": 304.0,
@@ -539,7 +539,7 @@
     "properties": {
       "A": {
         "value": 15.6,
-        "unit": "mm^2"
+        "unit": "cm^2"
       },
       "Iy": {
         "value": 491.0,
@@ -640,7 +640,7 @@
     "properties": {
       "A": {
         "value": 18.1,
-        "unit": "mm^2"
+        "unit": "cm^2"
       },
       "Iy": {
         "value": 747.0,
@@ -741,7 +741,7 @@
     "properties": {
       "A": {
         "value": 19.5,
-        "unit": "mm^2"
+        "unit": "cm^2"
       },
       "Iy": {
         "value": 823.0,
@@ -842,7 +842,7 @@
     "properties": {
       "A": {
         "value": 20.7,
-        "unit": "mm^2"
+        "unit": "cm^2"
       },
       "Iy": {
         "value": 1090.0,
@@ -943,7 +943,7 @@
     "properties": {
       "A": {
         "value": 22.2,
-        "unit": "mm^2"
+        "unit": "cm^2"
       },
       "Iy": {
         "value": 1190.0,
@@ -1044,7 +1044,7 @@
     "properties": {
       "A": {
         "value": 23.4,
-        "unit": "mm^2"
+        "unit": "cm^2"
       },
       "Iy": {
         "value": 1520.0,
@@ -1145,7 +1145,7 @@
     "properties": {
       "A": {
         "value": 26.7,
-        "unit": "mm^2"
+        "unit": "cm^2"
       },
       "Iy": {
         "value": 2110.0,
@@ -1246,7 +1246,7 @@
     "properties": {
       "A": {
         "value": 30.6,
-        "unit": "mm^2"
+        "unit": "cm^2"
       },
       "Iy": {
         "value": 2900.0,
@@ -1347,7 +1347,7 @@
     "properties": {
       "A": {
         "value": 35.2,
-        "unit": "mm^2"
+        "unit": "cm^2"
       },
       "Iy": {
         "value": 4160.0,
@@ -1448,7 +1448,7 @@
     "properties": {
       "A": {
         "value": 40.5,
-        "unit": "mm^2"
+        "unit": "cm^2"
       },
       "Iy": {
         "value": 5810.0,
@@ -1549,7 +1549,7 @@
     "properties": {
       "A": {
         "value": 46.5,
-        "unit": "mm^2"
+        "unit": "cm^2"
       },
       "Iy": {
         "value": 7980.0,
@@ -1650,7 +1650,7 @@
     "properties": {
       "A": {
         "value": 53.4,
-        "unit": "mm^2"
+        "unit": "cm^2"
       },
       "Iy": {
         "value": 10820.0,
@@ -1751,7 +1751,7 @@
     "properties": {
       "A": {
         "value": 61.5,
-        "unit": "mm^2"
+        "unit": "cm^2"
       },
       "Iy": {
         "value": 15220.0,
