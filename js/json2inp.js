@@ -126,29 +126,7 @@ function convertJsonToInp(model){
     out.push('*ELASTIC');
     out.push(`${fmt(E)}, ${fmt(nu)}`);
     out.push('*DENSITY');
-    out.push(fmt(rho));
-  }
-
-  // raw areas of all elements
-  const areas = (model.elements || [])
-    .map(e => e.A && e.A.value)
-    .filter(v => v !== undefined)
-    .join(',');
-  if (areas) out.push(areas);
-
-  // *ELSET blocks
-  let esCnt = 1;
-  for (const g of groups) {
-    out.push(`*ELSET, ELSET=${JSON.stringify(g.name)}`);
-    out.push(String(esCnt++));
-    if (g.st === 'beam') {
-      out.push(`*BEAM SECTION, ELSET=${JSON.stringify(g.name)}, MATERIAL=${JSON.stringify(g.material)}, SECTION=GENERAL`);
-      out.push(`${fmt(g.A)}, ${fmt(g.Iy)}, 0.0, ${fmt(g.Iz)}, 10000`);
-      out.push('0, 0, -1');
-    } else if (g.st === 'truss') {
-      out.push(`*SOLID SECTION, ELSET=${JSON.stringify(g.name)}, MATERIAL=${JSON.stringify(g.material)}`);
-      out.push(fmt(g.A));
-    }
+  out.push(fmt(rho));
   }
 
   return out.join("\n")+"\n";
