@@ -92,10 +92,7 @@ function convertJsonToInp(model){
     const key = `${e.sectionId}_${e.materialId}_${st}`;
     let g = gmap[key];
     if (!g) {
-      const A  = conv.area(e.A?.value||0,  (e.A&&e.A.unit)  || (LEN_U+"^2"));
-      const Iy = conv.inertia(e.Iy?.value||0, (e.Iy&&e.Iy.unit)|| (LEN_U+"^4"));
-      const Iz = conv.inertia(e.Iz?.value||0, (e.Iz&&e.Iz.unit)|| (LEN_U+"^4"));
-      g = gmap[key] = { name: key, st, material: e.materialId, A, Iy, Iz, elems: [] };
+      g = gmap[key] = { name: key, st, material: e.materialId, sectionId: e.sectionId, elems: [] };
       groups.push(g);
     }
     g.elems.push(e);
@@ -127,6 +124,30 @@ function convertJsonToInp(model){
     out.push(`${fmt(E)}, ${fmt(nu)}`);
     out.push('*DENSITY');
   out.push(fmt(rho));
+  }
+
+  // Sections for beams and trusses
+  const secMap = {};
+  for (const s of (model.sections || [])) secMap[s.id] = s;
+  let elsetIdx = 0;
+  for (const g of groups) {
+    const sec = secMap[g.sectionId] || {};
+    const props = sec.properties || {};
+    const A = conv.area(props.A?.value || 0, props.A?.unit || (LEN_U+"^2"));
+    if (g.st === 'beam') {
+      const Iy = conv.inertia(props.Iy?.value || 0, props.Iy?.unit || (LEN_U+"^4"));
+      const Iz = conv.inertia(props.Iz?.value || 0, props.Iz?.unit || (LEN_U+"^4"));
+      out.push(`*ELSET, ELSET=${g.sectionId}_${g.material}`);
+      out.push(`${++elsetIdx}`);
+      out.push(`*BEAM SECTION, ELSET=${g.name}, MATERIAL=${g.material}, SECTION=GENERAL`);
+      out.push(`${A.toFixed(4)}, ${Iy.toFixed(4)}, 0.0, ${Iz.toFixed(4)}, 10000`);
+      out.push('0, 0, -1');
+    } else if (g.st === 'truss') {
+      out.push(`*ELSET, ELSET=${g.name}`);
+      out.push(`${++elsetIdx}`);
+      out.push(`*SOLID SECTION, ELSET=${g.name}, MATERIAL=${g.material}`);
+      out.push(`${A.toFixed(4)}`);
+    }
   }
 
   return out.join("\n")+"\n";
