@@ -129,6 +129,20 @@ function convertJsonToInp(model){
   out.push(fmt(rho));
   }
 
+  // Section areas (no unit conversion)
+  const sections = model.sections || [];
+  let wroteSec = false;
+  for (const s of sections) {
+    const A = s?.properties?.A?.value;
+    if (A !== undefined) {
+      if (!wroteSec) {
+        out.push('*SECTIONS');
+        wroteSec = true;
+      }
+      out.push(`${JSON.stringify(s.id)}, ${A}`);
+    }
+  }
+
   return out.join("\n")+"\n";
 }
 
