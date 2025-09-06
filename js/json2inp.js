@@ -117,6 +117,25 @@ function convertJsonToInp(model){
     }
   }
 
+  // *BOUNDARY
+  out.push('*BOUNDARY');
+  out.push('Nall, 3, 5');
+  for (const s of (model.supports || [])) {
+    const n = +s.nodeId;
+    if (+s.dx === 1) {
+      out.push('*BOUNDARY');
+      out.push(`${n}, 1, 1`);
+    }
+    if (+s.dy === 1) {
+      out.push('*BOUNDARY');
+      out.push(`${n}, 2, 2`);
+    }
+    if (+s.dr === 1) {
+      out.push('*BOUNDARY');
+      out.push(`${n}, 6, 6`);
+    }
+  }
+
   // *MATERIAL
   for (const m of (model.materials || [])) {
     const p = m.properties || {};
