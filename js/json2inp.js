@@ -133,13 +133,20 @@ function convertJsonToInp(model){
   const sections = model.sections || [];
   let wroteSec = false;
   for (const s of sections) {
-    const A = s?.properties?.A?.value;
-    if (A !== undefined) {
+    const props = s?.properties || {};
+    const A  = props?.A?.value;
+    const Iy = props?.Iy?.value;
+    const Iz = props?.Iz?.value;
+    if (A !== undefined || Iy !== undefined || Iz !== undefined) {
       if (!wroteSec) {
         out.push('*SECTIONS');
         wroteSec = true;
       }
-      out.push(`${JSON.stringify(s.id)}, ${A}`);
+      const fields = [JSON.stringify(s.id)];
+      if (A  !== undefined) fields.push(A);
+      if (Iy !== undefined) fields.push(Iy);
+      if (Iz !== undefined) fields.push(Iz);
+      out.push(fields.join(', '));
     }
   }
 
