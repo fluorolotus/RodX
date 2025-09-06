@@ -1,5 +1,5 @@
 function getModelLoads() {
-            return [
+            const loads = [
                 ...nodalLoads.map(l => ({
                     id: l.id,
                     scope: 'node',
@@ -22,6 +22,8 @@ function getModelLoads() {
                     endPosition: l.endPosition
                 }))
             ];
+            if (selfWeightLoad) loads.push(selfWeightLoad);
+            return loads;
 }
 
 function getElasticSupport(nodeId) {
@@ -150,6 +152,7 @@ function removeElasticSupportIfZero(es) {
                 elasticSupports = (modelData.elasticSupports || []).filter(es => es.kx !== 0 || es.ky !== 0 || es.kr !== 0);
                 connectors = modelData.connectors || [];
                 gravity = modelData.gravity || { g: 9810, direction: [0, 0, -1] };
+                selfWeightLoad = null;
 
                 if (modelData.loads) {
                     modelData.loads.forEach(load => {
@@ -189,6 +192,8 @@ function removeElasticSupportIfZero(es) {
                                 startPosition: load.startPosition,
                                 endPosition: load.endPosition
                             });
+                        } else if (load.type === 'gravity') {
+                            selfWeightLoad = { id: load.id, type: 'gravity', g: load.g, direction: load.direction };
                         }
                     });
                 } else {
@@ -220,6 +225,7 @@ function removeElasticSupportIfZero(es) {
                         ...nodalLoads.map(l => l.id),
                         ...elementLoads.map(l => l.id)
                     ];
+                    if (selfWeightLoad) allIds.push(selfWeightLoad.id);
                     loadCases[0].loads = allIds;
                 }
                 nextLoadCaseId = loadCases.length > 0 ? Math.max(...loadCases.map(lc => lc.id)) + 1 : 2;
@@ -232,7 +238,11 @@ function removeElasticSupportIfZero(es) {
 
                 nextNodeId = nodes.length > 0 ? Math.max(...nodes.map(n => n.nodeId)) + 1 : 1;
                 nextElemId = lines.length > 0 ? Math.max(...lines.map(l => l.elemId)) + 1 : 1;
-                nextLoadId = nodalLoads.length > 0 ? Math.max(...nodalLoads.map(l => l.id)) + 1 : 1;
+                nextLoadId = Math.max(
+                    nodalLoads.length > 0 ? Math.max(...nodalLoads.map(l => l.id)) : 0,
+                    elementLoads.length > 0 ? Math.max(...elementLoads.map(l => l.id)) : 0,
+                    selfWeightLoad ? selfWeightLoad.id : 0
+                ) + 1;
                 nextElementLoadId = elementLoads.length > 0 ? Math.max(...elementLoads.map(l => l.id)) + 1 : 1;
 
                 selectedNode = null;
@@ -283,8 +293,24 @@ function removeLoadFromCases(loadId) {
     }
 }
 
+function setSelfWeight(enabled) {
+    if (enabled) {
+        if (!selfWeightLoad) {
+            const id = nextLoadId++;
+            selfWeightLoad = { id: id, type: 'gravity', g: gravity.g, direction: gravity.direction };
+            addLoadToCase(id);
+        }
+    } else {
+        if (selfWeightLoad) {
+            removeLoadFromCases(selfWeightLoad.id);
+            selfWeightLoad = null;
+        }
+    }
+}
+
 function pruneLoadCases() {
     const existingIds = new Set([...nodalLoads.map(l => l.id), ...elementLoads.map(l => l.id)]);
+    if (selfWeightLoad) existingIds.add(selfWeightLoad.id);
     loadCases.forEach(lc => {
         lc.loads = lc.loads.filter(id => existingIds.has(id));
     });
@@ -321,11 +347,14 @@ function getLoadById(id) {
     if (load) return { ...load, scope: 'node' };
     load = elementLoads.find(l => l.id === id);
     if (load) return { ...load, scope: 'element' };
+    if (selfWeightLoad && selfWeightLoad.id === id) return selfWeightLoad;
     return null;
 }
 
 function formatLoad(load) {
-    if (load.scope === 'node') {
+    if (load.type === 'gravity') {
+        return `${load.id}: Self Weight`;
+    } else if (load.scope === 'node') {
         const units = load.type === 'moment' ? `${load.unit}${load.lengthUnit}` : load.unit;
         const type = load.type === 'point_force' ? 'force' : load.type;
         return `${load.id}: ${load.scope} ${load.targetId} ${type} ${load.component.toUpperCase()} ${load.value} ${units}`;
@@ -341,6 +370,8 @@ function renderLoadCasesModal() {
     if (!list || !details) return;
     list.innerHTML = '';
     details.innerHTML = '';
+    const swcb = document.getElementById('selfWeightCheckbox');
+    if (swcb) swcb.checked = !!selfWeightLoad;
 
     loadCases.forEach(lc => {
         const li = document.createElement('li');
@@ -4738,6 +4769,7 @@ let draggedFromCaseId = null;
             const closeLoadCasesModalBtn = document.getElementById('closeLoadCasesModal');
             const closeLoadCasesModalBottom = document.getElementById('closeLoadCasesModalBottom');
             const addLoadCaseBtn = document.getElementById('addLoadCaseBtn');
+            const selfWeightCheckbox = document.getElementById('selfWeightCheckbox');
             const selectAllMenu = document.getElementById('selectAllMenu');
             const clearAllMenu = document.getElementById('clearAllMenu');
             const visibilityNodesMenuItem = document.getElementById('visibilityNodesMenuItem');
@@ -4829,6 +4861,12 @@ let draggedFromCaseId = null;
                 addLoadCaseBtn.addEventListener('click', () => {
                     addLoadCase();
                     renderLoadCasesModal();
+                });
+            }
+            if (selfWeightCheckbox) {
+                selfWeightCheckbox.checked = !!selfWeightLoad;
+                selfWeightCheckbox.addEventListener('change', (e) => {
+                    setSelfWeight(e.target.checked);
                 });
             }
             if (loadCasesModal) {

@@ -16,6 +16,7 @@ let loadCases = [
     { id: 1, name: 'LC0 - Default Case', loads: [] }
 ];
 let nextLoadCaseId = 2;
+let selfWeightLoad = null;
 		
                 let selectedElements = [];
 
