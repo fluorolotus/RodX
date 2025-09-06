@@ -129,6 +129,13 @@ function convertJsonToInp(model){
     out.push(fmt(rho));
   }
 
+  // raw areas of all elements
+  const areas = (model.elements || [])
+    .map(e => e.A && e.A.value)
+    .filter(v => v !== undefined)
+    .join(',');
+  if (areas) out.push(areas);
+
   // *ELSET blocks
   let esCnt = 1;
   for (const g of groups) {
