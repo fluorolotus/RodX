@@ -21,9 +21,13 @@ const conv = {
   mom(x,u="N*mm"){u=u.toLowerCase();
     if(u==="n*mm"||u==="nmm"||u==="n-mm")return x; if(u==="n*m"||u==="nm")return x*1000;
     if(u==="kn*m"||u==="knm")return x*1e6; throw Error("M "+u);},
-  q(x,u="N/mm"){u=u.toLowerCase();
-    if(u==="n/mm")return x; if(u==="n/m")return x/1000; if(u==="kn/m")return (x*1000)/1000;
-    if(u==="lbf/in")return (x*4.4482216153)/25.4; throw Error("q "+u);},
+  q(x, u="N/mm") {
+    u = u.toLowerCase().replace(/\s+/g, "");
+    const parts = u.split("/");
+    if (parts.length !== 2) throw Error("q " + u);
+    const [fu, lu] = parts;
+    return conv.force(x, fu) / conv.length(1, lu);
+  },
   area(x,u="mm^2"){u=u.toLowerCase(); const lu=u.replace(/\^?2$/,'').replace(/2$/,'');
     return x*Math.pow(conv.length(1,lu),2);},
   inertia(x,u="mm^4"){u=u.toLowerCase(); const lu=u.replace(/\^?4$/,'').replace(/4$/,'');
