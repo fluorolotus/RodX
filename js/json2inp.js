@@ -182,6 +182,62 @@ function convertJsonToInp(model){
     }
   }
 
+  // *STEP blocks for load cases
+  const loadMap = {};
+  for (const l of (model.loads || [])) loadMap[l.id] = l;
+  for (const lc of (model.loadCases || [])) {
+    out.push('*STEP');
+    out.push('*STATIC');
+    out.push('');
+    const lcLoads = lc.loads || [];
+    const nodeLines = [];
+    const elemLines = [];
+    let hasGrav = false;
+    for (const lid of lcLoads) {
+      const L = loadMap[lid];
+      if (!L) continue;
+      const scope = (L.scope || '').toLowerCase();
+      if (scope === 'node') {
+        const dofMap = { x: 1, y: 2, r: 6 };
+        const dof = dofMap[(L.component || '').toLowerCase()];
+        if (!dof) continue;
+        let mag = +L.value;
+        if (dof === 6) mag = conv.mom(mag, L.units || 'N*mm');
+        else mag = conv.force(mag, L.units || 'N');
+        nodeLines.push(`${+L.targetId}, ${dof}, ${fmt(mag)}`);
+      } else if (scope === 'element') {
+        const pMap = { x: 'P1', y: 'P2' };
+        const pn = pMap[(L.component || '').toLowerCase()];
+        if (!pn) continue;
+        const val = L.value ?? L.startValue ?? 0;
+        const mag = conv.q(+val, L.units || 'N/mm');
+        elemLines.push(`${+L.targetId}, ${pn}, ${fmt(mag)}`);
+      } else if (scope === 'gravity' || scope === 'global') {
+        hasGrav = true;
+      }
+    }
+    if (nodeLines.length) {
+      out.push('*CLOAD, OP=NEW');
+      out.push(...nodeLines);
+    }
+    if (elemLines.length) {
+      out.push('*DLOAD, OP=NEW');
+      out.push(...elemLines);
+    }
+    if (hasGrav) {
+      out.push('*DLOAD');
+      out.push('Eall, GRAV, 9810., 0., -1., 0.');
+    }
+    out.push('');
+    out.push('*EL PRINT, ELSET=Eall');
+    out.push('S');
+    out.push('*NODE PRINT, NSET=RF');
+    out.push('RF');
+    out.push('*NODE PRINT, NSET=Nall');
+    out.push('U');
+    out.push('*END STEP');
+  }
+
   return out.join("\n")+"\n";
 }
 
