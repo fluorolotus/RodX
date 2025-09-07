@@ -192,8 +192,8 @@ function removeElasticSupportIfZero(es) {
                                 startPosition: load.startPosition,
                                 endPosition: load.endPosition
                             });
-                        } else if (load.type === 'gravity') {
-                            selfWeightLoad = { id: load.id, type: 'gravity', g: load.g, direction: load.direction };
+                        } else if (load.scope === 'gravity') {
+                            selfWeightLoad = { id: load.id, scope: 'gravity', g: load.g, direction: load.direction };
                         }
                     });
                 } else {
@@ -297,7 +297,7 @@ function setSelfWeight(enabled) {
     if (enabled) {
         if (!selfWeightLoad) {
             const id = nextLoadId++;
-            selfWeightLoad = { id: id, type: 'gravity', g: gravity.g, direction: gravity.direction };
+            selfWeightLoad = { id: id, scope: 'gravity', g: gravity.g, direction: gravity.direction };
             addLoadToCase(id);
         }
     } else {
@@ -352,7 +352,7 @@ function getLoadById(id) {
 }
 
 function formatLoad(load) {
-    if (load.type === 'gravity') {
+    if (load.scope === 'gravity') {
         return `${load.id}: Self Weight`;
     } else if (load.scope === 'node') {
         const units = load.type === 'moment' ? `${load.unit}${load.lengthUnit}` : load.unit;
