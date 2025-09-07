@@ -88,8 +88,14 @@ function convertJsonToInp(model){
     out.push(supportNodes.join(", "));
   }
 
-  // *ELEMENT
+  // *ELSET with all elements
   const elements = model.elements || [];
+  if (elements.length) {
+    out.push('*ELSET, ELSET=Eall');
+    out.push(elements.map(e => +e.elemId).join(', '));
+  }
+
+  // *ELEMENT
   const groups = [];
   const gmap = {};
   let hasTruss = false;
@@ -174,11 +180,6 @@ function convertJsonToInp(model){
       out.push(`*SOLID SECTION, ELSET=${g.name}, MATERIAL=${g.material}`);
       out.push(`${A.toFixed(4)}`);
     }
-  }
-
-  if (elements.length) {
-    out.push('*ELSET, ELSET=Eall');
-    out.push(elements.map(e => +e.elemId).join(', '));
   }
 
   return out.join("\n")+"\n";
