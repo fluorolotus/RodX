@@ -133,15 +133,12 @@ function convertJsonToInp(model){
   for (const s of (model.supports || [])) {
     const n = +s.nodeId;
     if (+s.dx === 1) {
-      out.push('*BOUNDARY');
       out.push(`${n}, 1, 1`);
     }
     if (+s.dy === 1) {
-      out.push('*BOUNDARY');
       out.push(`${n}, 2, 2`);
     }
     if (+s.dr === 1) {
-      out.push('*BOUNDARY');
       out.push(`${n}, 6, 6`);
     }
   }
@@ -155,7 +152,7 @@ function convertJsonToInp(model){
     const E   = conv.E(+em.value, em.unit || 'MPa');
     const nu  = +pr.value;
     const rho = conv.rho(+de.value, de.unit || 'kg/m^3');
-    out.push(`*MATERIAL, NAME=${JSON.stringify(m.id)}`);
+    out.push(`*MATERIAL, NAME=${m.id}`);
     out.push('*ELASTIC');
     out.push(`${fmt(E)}, ${fmt(nu)}`);
     out.push('*DENSITY');
@@ -176,7 +173,7 @@ function convertJsonToInp(model){
       out.push(`*ELSET, ELSET=${g.sectionId}_${g.material}`);
       out.push(`${++elsetIdx}`);
       out.push(`*BEAM SECTION, ELSET=${g.name}, MATERIAL=${g.material}, SECTION=GENERAL`);
-      out.push(`${A.toFixed(4)}, ${Iy.toFixed(4)}, 0.0, ${Iz.toFixed(4)}, 10000`);
+      out.push(`${A.toFixed(4)}, ${Iz.toFixed(4)}, 0.0, ${Iy.toFixed(4)}, 10000`);
       out.push('0, 0, -1');
     } else if (g.st === 'truss') {
       out.push(`*ELSET, ELSET=${g.name}`);
