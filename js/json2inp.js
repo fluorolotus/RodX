@@ -102,10 +102,10 @@ function convertJsonToInp(model){
   // *ELEMENT
   const groups = [];
   const gmap = {};
-  let hasTruss = false;
+  let hasBeam = false;
   for (const e of elements) {
     const st = (e.structuralType || 'beam').toLowerCase();
-    if (st === 'truss') hasTruss = true;
+    if (st === 'beam') hasBeam = true;
     const key = `${e.sectionId}_${e.materialId}_${st}`;
     let g = gmap[key];
     if (!g) {
@@ -122,8 +122,8 @@ function convertJsonToInp(model){
     name: g.name,
     nodeId: g.elems.map(e => +e.elemId),
   }));
-  if (hasTruss) {
-    out.push('*USER ELEMENT, TYPE=U1, NODES=2, INTEGRATION POINTS=2, MAXDOF=2');
+  if (hasBeam) {
+    out.push('*USER ELEMENT, TYPE=U1, NODES=2, INTEGRATION POINTS=2, MAXDOF=6');
   }
   for (const g of groups) {
     let etype = 'U1';
