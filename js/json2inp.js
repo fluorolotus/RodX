@@ -114,14 +114,17 @@ function convertJsonToInp(model){
     }
     g.elems.push(e);
   }
-  const elsets = groups.map((g, i) => ({
-    elsetId: i + 1,
-    sectionId: g.sectionId,
-    materialId: g.material,
-    structuralType: g.st,
-    name: g.name,
-    nodeId: g.elems.map(e => +e.elemId),
-  }));
+  const elsets = groups.map((g, i) => {
+    const name = `EL${String(i + 1).padStart(2, '0')}`;
+    g.elset = name;
+    return {
+      name,
+      sectionId: g.sectionId,
+      materialId: g.material,
+      structuralType: g.st,
+      elemIds: g.elems.map(e => +e.elemId),
+    };
+  });
   if (hasBeam) {
     out.push('*USER ELEMENT, TYPE=U1, NODES=2, INTEGRATION POINTS=2, MAXDOF=6');
   }
@@ -129,7 +132,7 @@ function convertJsonToInp(model){
     let etype = 'U1';
     if (g.st === 'truss') etype = 'T3D2';
     else if (g.st !== 'beam') etype = 'U1';
-    out.push(`*ELEMENT, TYPE=${etype}, ELSET=${g.name}`);
+    out.push(`*ELEMENT, TYPE=${etype}`);
     for (const e of g.elems) {
       out.push(`${+e.elemId}, ${+e.nodeId1}, ${+e.nodeId2}`);
     }
@@ -169,8 +172,9 @@ function convertJsonToInp(model){
 
   // *ELSET blocks for section/material/type
   for (const es of elsets) {
+    out.push(`**${es.name}: ${es.sectionId}, ${es.materialId}, ${es.structuralType}`);
     out.push(`*ELSET, ELSET=${es.name}`);
-    out.push(es.nodeId.join(', '));
+    out.push(es.elemIds.join(', '));
   }
 
   // Sections for beams and trusses
@@ -183,11 +187,11 @@ function convertJsonToInp(model){
     if (g.st === 'beam') {
       const Iy = conv.inertia(props.Iy?.value || 0, props.Iy?.unit || (LEN_U+"^4"));
       const Iz = conv.inertia(props.Iz?.value || 0, props.Iz?.unit || (LEN_U+"^4"));
-      out.push(`*BEAM SECTION, ELSET=${g.name}, MATERIAL=${g.material}, SECTION=GENERAL`);
+      out.push(`*BEAM SECTION, ELSET=${g.elset}, MATERIAL=${g.material}, SECTION=GENERAL`);
       out.push(`${A.toFixed(4)}, ${Iz.toFixed(4)}, 0.0, ${Iy.toFixed(4)}, 10000`);
       out.push('0, 0, -1');
     } else if (g.st === 'truss') {
-      out.push(`*SOLID SECTION, ELSET=${g.name}, MATERIAL=${g.material}`);
+      out.push(`*SOLID SECTION, ELSET=${g.elset}, MATERIAL=${g.material}`);
       out.push(`${A.toFixed(4)}`);
     }
   }
