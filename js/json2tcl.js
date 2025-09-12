@@ -9,7 +9,7 @@ function convertJsonToTcl(model) {
   out.push("set dataDir Data");
   out.push("file mkdir $dataDir");
   out.push("");
-  out.push("#--------------------Nodes--------------------");
+  out.push("# --------------------Nodes--------------------");
   for (const n of (model.nodes || [])) {
     const id = n.nodeId;
     const x = Number(n.x).toFixed(3);
