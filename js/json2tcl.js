@@ -19,11 +19,11 @@ function convertJsonToTcl(model) {
   out.push("");
   out.push("# -------------------- Supports --------------------");
   for (const s of (model.supports || [])) {
-    const nodeId = s.nodeId;
+    const nodeId = Number(s.nodeId);
     const dx = Number(s.dx);
     const dy = Number(s.dy);
     const dr = Number(s.dr);
-    out.push(`fix \"${nodeId}\" \"${dx}\" \"${dy}\" \"${dr}\"`);
+    out.push(`fix ${nodeId} ${dx} ${dy} ${dr}`);
   }
   out.push("");
   return out.join("\n");
