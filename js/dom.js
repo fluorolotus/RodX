@@ -15,7 +15,7 @@
         const fileInput = document.getElementById('fileInput');
         const importMenuItem = document.getElementById('importMenuItem');
         const exportMenuItem = document.getElementById('exportMenuItem');
-        const importTclMenuItem = document.getElementById('importTclMenuItem');
+        const exportTclMenuItem = document.getElementById('exportTclMenuItem');
         const shareMenu = document.getElementById('shareMenu');
         const analyzeMenu = document.getElementById('analyzeMenu');
         const resultsMyMenuItem = document.getElementById('resultsMyMenuItem');
