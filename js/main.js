@@ -76,8 +76,8 @@ function removeElasticSupportIfZero(es) {
         }
 
 
-        function importToTcl() {
-            import('./js/json2tcl.js')
+        function exportToTcl() {
+            import('./json2tcl.js')
                 .then(module => {
                     const modelData = getModelData();
                     const converter = module.convertJsonToTcl || window.convertJsonToTcl;
@@ -1857,8 +1857,8 @@ function toggleLoadCasesModal() {
                 exportMenuItem.addEventListener('click', saveModel);
             }
 
-            if (importTclMenuItem) {
-                importTclMenuItem.addEventListener('click', importToTcl);
+            if (exportTclMenuItem) {
+                exportTclMenuItem.addEventListener('click', exportToTcl);
             }
 
             if (shareMenu) {
