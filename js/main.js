@@ -78,11 +78,25 @@ function removeElasticSupportIfZero(es) {
 
         function importToTcl() {
             import('./js/json2tcl.js')
-                .then(() => {
-                    console.log('json2tcl executed');
+                .then(module => {
+                    const modelData = getModelData();
+                    const converter = module.convertJsonToTcl || window.convertJsonToTcl;
+                    if (typeof converter !== 'function') {
+                        throw new Error('convertJsonToTcl is not available');
+                    }
+                    const tclString = converter(modelData);
+                    const blob = new Blob([tclString], { type: 'text/plain' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'model.tcl';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
                 })
                 .catch(err => {
-                    console.error('Failed to import TCL:', err);
+                    console.error('Failed to export to TCL:', err);
                 });
         }
 
