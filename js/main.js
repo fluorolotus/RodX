@@ -75,23 +75,15 @@ function removeElasticSupportIfZero(es) {
             console.log("Модель сохранена в model.json");
         }
 
-        function exportToInp() {
-            const modelData = getModelData();
-            try {
-                const inpString = convertJsonToInp(modelData);
-                const blob = new Blob([inpString], { type: 'text/plain' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'model.inp';
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-                console.log('Model exported to model.inp');
-            } catch (err) {
-                console.error('Failed to export INP:', err);
-            }
+
+        function importToTcl() {
+            import('./js/json2tcl.js')
+                .then(() => {
+                    console.log('json2tcl executed');
+                })
+                .catch(err => {
+                    console.error('Failed to import TCL:', err);
+                });
         }
 
                 async function loadModel(jsonFileContent) {
@@ -1851,8 +1843,8 @@ function toggleLoadCasesModal() {
                 exportMenuItem.addEventListener('click', saveModel);
             }
 
-            if (exportInpMenuItem) {
-                exportInpMenuItem.addEventListener('click', exportToInp);
+            if (importTclMenuItem) {
+                importTclMenuItem.addEventListener('click', importToTcl);
             }
 
             if (shareMenu) {
