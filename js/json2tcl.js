@@ -17,6 +17,15 @@ function convertJsonToTcl(model) {
     out.push(`node ${id} ${x} ${y}`);
   }
   out.push("");
+  out.push("# -------------------- Supports --------------------");
+  for (const s of (model.supports || [])) {
+    const nodeId = Number(s.nodeId);
+    const dx = Number(s.dx);
+    const dy = Number(s.dy);
+    const dr = Number(s.dr);
+    out.push(`fix ${nodeId} ${dx} ${dy} ${dr}`);
+  }
+  out.push("");
   return out.join("\n");
 }
 
