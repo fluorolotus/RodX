@@ -5,18 +5,18 @@
 
 function convertJsonToTcl(model) {
   const out = [];
-  out.push("# -------------------- Units: mm, N, sec, K --------------------");
-  out.push("# -------------------- Remove existing model --------------------");
+  out.push("# -------------------- Units: mm, N, sec, K ---------------------------------------");
+  out.push("# -------------------- Remove existing model --------------------------------------");
   out.push("wipe");
   out.push("");
   out.push("# -------------------- Create ModelBuilder (2D and 3 DOF/node) --------------------");
   out.push("model BasicBuilder -ndm 2 -ndf 3");
   out.push("");
-  out.push("# -------------------- Сreate folder for results --------------------");
+  out.push("# -------------------- Сreate folder for results ----------------------------------");
   out.push("set dataDir Data");
   out.push("file mkdir $dataDir");
   out.push("");
-  out.push("# --------------------Nodes--------------------");
+  out.push("# -------------------- Nodes ------------------------------------------------------");
   for (const n of (model.nodes || [])) {
     const id = n.nodeId;
     const x = Number(n.x).toFixed(3);
@@ -24,7 +24,7 @@ function convertJsonToTcl(model) {
     out.push(`node ${id} ${x} ${y}`);
   }
   out.push("");
-  out.push("# -------------------- Supports --------------------");
+  out.push("# -------------------- Supports ---------------------------------------------------");
   for (const s of (model.supports || [])) {
     const nodeId = Number(s.nodeId);
     const dx = Number(s.dx);
