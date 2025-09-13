@@ -34,15 +34,7 @@
     "properties": {
       "A": {
         "value": 6.16,
-        "unit": "mm^2"
-      },
-      "Iy": {
-        "value": 22.8,
-        "unit": "cm^4"
-      },
-      "Iz": {
-        "value": 5.61,
-        "unit": "cm^4"
+        "unit": "cm^2"
       },
       "J": {
         "value": 0,
@@ -51,6 +43,14 @@
       "unitWeight": {
         "value": 4.84,
         "unit": "kg/m"
+      },
+      "I11": {
+        "value": 22.8,
+        "unit": "cm^4"
+      },
+      "I22": {
+        "value": 5.61,
+        "unit": "cm^4"
       }
     },
     "extra": {
@@ -135,15 +135,7 @@
     "properties": {
       "A": {
         "value": 7.51,
-        "unit": "mm^2"
-      },
-      "Iy": {
-        "value": 48.6,
-        "unit": "cm^4"
-      },
-      "Iz": {
-        "value": 8.7,
-        "unit": "cm^4"
+        "unit": "cm^2"
       },
       "J": {
         "value": 0,
@@ -152,6 +144,14 @@
       "unitWeight": {
         "value": 5.9,
         "unit": "kg/m"
+      },
+      "I11": {
+        "value": 48.6,
+        "unit": "cm^4"
+      },
+      "I22": {
+        "value": 8.7,
+        "unit": "cm^4"
       }
     },
     "extra": {
@@ -236,15 +236,7 @@
     "properties": {
       "A": {
         "value": 8.98,
-        "unit": "mm^2"
-      },
-      "Iy": {
-        "value": 89.4,
-        "unit": "cm^4"
-      },
-      "Iz": {
-        "value": 12.8,
-        "unit": "cm^4"
+        "unit": "cm^2"
       },
       "J": {
         "value": 0,
@@ -253,6 +245,14 @@
       "unitWeight": {
         "value": 7.05,
         "unit": "kg/m"
+      },
+      "I11": {
+        "value": 89.4,
+        "unit": "cm^4"
+      },
+      "I22": {
+        "value": 12.8,
+        "unit": "cm^4"
       }
     },
     "extra": {
@@ -337,15 +337,7 @@
     "properties": {
       "A": {
         "value": 10.9,
-        "unit": "mm^2"
-      },
-      "Iy": {
-        "value": 174.0,
-        "unit": "cm^4"
-      },
-      "Iz": {
-        "value": 20.4,
-        "unit": "cm^4"
+        "unit": "cm^2"
       },
       "J": {
         "value": 0,
@@ -354,6 +346,14 @@
       "unitWeight": {
         "value": 8.59,
         "unit": "kg/m"
+      },
+      "I11": {
+        "value": 174.0,
+        "unit": "cm^4"
+      },
+      "I22": {
+        "value": 20.4,
+        "unit": "cm^4"
       }
     },
     "extra": {
@@ -438,15 +438,7 @@
     "properties": {
       "A": {
         "value": 13.3,
-        "unit": "mm^2"
-      },
-      "Iy": {
-        "value": 304.0,
-        "unit": "cm^4"
-      },
-      "Iz": {
-        "value": 31.2,
-        "unit": "cm^4"
+        "unit": "cm^2"
       },
       "J": {
         "value": 0,
@@ -455,6 +447,14 @@
       "unitWeight": {
         "value": 10.4,
         "unit": "kg/m"
+      },
+      "I11": {
+        "value": 304.0,
+        "unit": "cm^4"
+      },
+      "I22": {
+        "value": 31.2,
+        "unit": "cm^4"
       }
     },
     "extra": {
@@ -539,15 +539,7 @@
     "properties": {
       "A": {
         "value": 15.6,
-        "unit": "mm^2"
-      },
-      "Iy": {
-        "value": 491.0,
-        "unit": "cm^4"
-      },
-      "Iz": {
-        "value": 45.4,
-        "unit": "cm^4"
+        "unit": "cm^2"
       },
       "J": {
         "value": 0,
@@ -556,6 +548,14 @@
       "unitWeight": {
         "value": 12.3,
         "unit": "kg/m"
+      },
+      "I11": {
+        "value": 491.0,
+        "unit": "cm^4"
+      },
+      "I22": {
+        "value": 45.4,
+        "unit": "cm^4"
       }
     },
     "extra": {
@@ -640,15 +640,7 @@
     "properties": {
       "A": {
         "value": 18.1,
-        "unit": "mm^2"
-      },
-      "Iy": {
-        "value": 747.0,
-        "unit": "cm^4"
-      },
-      "Iz": {
-        "value": 63.3,
-        "unit": "cm^4"
+        "unit": "cm^2"
       },
       "J": {
         "value": 0,
@@ -657,6 +649,14 @@
       "unitWeight": {
         "value": 14.2,
         "unit": "kg/m"
+      },
+      "I11": {
+        "value": 747.0,
+        "unit": "cm^4"
+      },
+      "I22": {
+        "value": 63.3,
+        "unit": "cm^4"
       }
     },
     "extra": {
@@ -741,15 +741,7 @@
     "properties": {
       "A": {
         "value": 19.5,
-        "unit": "mm^2"
-      },
-      "Iy": {
-        "value": 823.0,
-        "unit": "cm^4"
-      },
-      "Iz": {
-        "value": 78.8,
-        "unit": "cm^4"
+        "unit": "cm^2"
       },
       "J": {
         "value": 0,
@@ -758,6 +750,14 @@
       "unitWeight": {
         "value": 15.3,
         "unit": "kg/m"
+      },
+      "I11": {
+        "value": 823.0,
+        "unit": "cm^4"
+      },
+      "I22": {
+        "value": 78.8,
+        "unit": "cm^4"
       }
     },
     "extra": {
@@ -842,15 +842,7 @@
     "properties": {
       "A": {
         "value": 20.7,
-        "unit": "mm^2"
-      },
-      "Iy": {
-        "value": 1090.0,
-        "unit": "cm^4"
-      },
-      "Iz": {
-        "value": 86.0,
-        "unit": "cm^4"
+        "unit": "cm^2"
       },
       "J": {
         "value": 0,
@@ -859,6 +851,14 @@
       "unitWeight": {
         "value": 16.3,
         "unit": "kg/m"
+      },
+      "I11": {
+        "value": 1090.0,
+        "unit": "cm^4"
+      },
+      "I22": {
+        "value": 86.0,
+        "unit": "cm^4"
       }
     },
     "extra": {
@@ -943,15 +943,7 @@
     "properties": {
       "A": {
         "value": 22.2,
-        "unit": "mm^2"
-      },
-      "Iy": {
-        "value": 1190.0,
-        "unit": "cm^4"
-      },
-      "Iz": {
-        "value": 105.0,
-        "unit": "cm^4"
+        "unit": "cm^2"
       },
       "J": {
         "value": 0,
@@ -960,6 +952,14 @@
       "unitWeight": {
         "value": 17.4,
         "unit": "kg/m"
+      },
+      "I11": {
+        "value": 1190.0,
+        "unit": "cm^4"
+      },
+      "I22": {
+        "value": 105.0,
+        "unit": "cm^4"
       }
     },
     "extra": {
@@ -1044,15 +1044,7 @@
     "properties": {
       "A": {
         "value": 23.4,
-        "unit": "mm^2"
-      },
-      "Iy": {
-        "value": 1520.0,
-        "unit": "cm^4"
-      },
-      "Iz": {
-        "value": 113.0,
-        "unit": "cm^4"
+        "unit": "cm^2"
       },
       "J": {
         "value": 0,
@@ -1061,6 +1053,14 @@
       "unitWeight": {
         "value": 18.4,
         "unit": "kg/m"
+      },
+      "I11": {
+        "value": 1520.0,
+        "unit": "cm^4"
+      },
+      "I22": {
+        "value": 113.0,
+        "unit": "cm^4"
       }
     },
     "extra": {
@@ -1145,15 +1145,7 @@
     "properties": {
       "A": {
         "value": 26.7,
-        "unit": "mm^2"
-      },
-      "Iy": {
-        "value": 2110.0,
-        "unit": "cm^4"
-      },
-      "Iz": {
-        "value": 151.0,
-        "unit": "cm^4"
+        "unit": "cm^2"
       },
       "J": {
         "value": 0,
@@ -1162,6 +1154,14 @@
       "unitWeight": {
         "value": 21.0,
         "unit": "kg/m"
+      },
+      "I11": {
+        "value": 2110.0,
+        "unit": "cm^4"
+      },
+      "I22": {
+        "value": 151.0,
+        "unit": "cm^4"
       }
     },
     "extra": {
@@ -1246,15 +1246,7 @@
     "properties": {
       "A": {
         "value": 30.6,
-        "unit": "mm^2"
-      },
-      "Iy": {
-        "value": 2900.0,
-        "unit": "cm^4"
-      },
-      "Iz": {
-        "value": 208.0,
-        "unit": "cm^4"
+        "unit": "cm^2"
       },
       "J": {
         "value": 0,
@@ -1263,6 +1255,14 @@
       "unitWeight": {
         "value": 24.0,
         "unit": "kg/m"
+      },
+      "I11": {
+        "value": 2900.0,
+        "unit": "cm^4"
+      },
+      "I22": {
+        "value": 208.0,
+        "unit": "cm^4"
       }
     },
     "extra": {
@@ -1347,15 +1347,7 @@
     "properties": {
       "A": {
         "value": 35.2,
-        "unit": "mm^2"
-      },
-      "Iy": {
-        "value": 4160.0,
-        "unit": "cm^4"
-      },
-      "Iz": {
-        "value": 262.0,
-        "unit": "cm^4"
+        "unit": "cm^2"
       },
       "J": {
         "value": 0,
@@ -1364,6 +1356,14 @@
       "unitWeight": {
         "value": 27.7,
         "unit": "kg/m"
+      },
+      "I11": {
+        "value": 4160.0,
+        "unit": "cm^4"
+      },
+      "I22": {
+        "value": 262.0,
+        "unit": "cm^4"
       }
     },
     "extra": {
@@ -1448,15 +1448,7 @@
     "properties": {
       "A": {
         "value": 40.5,
-        "unit": "mm^2"
-      },
-      "Iy": {
-        "value": 5810.0,
-        "unit": "cm^4"
-      },
-      "Iz": {
-        "value": 327.0,
-        "unit": "cm^4"
+        "unit": "cm^2"
       },
       "J": {
         "value": 0,
@@ -1465,6 +1457,14 @@
       "unitWeight": {
         "value": 31.8,
         "unit": "kg/m"
+      },
+      "I11": {
+        "value": 5810.0,
+        "unit": "cm^4"
+      },
+      "I22": {
+        "value": 327.0,
+        "unit": "cm^4"
       }
     },
     "extra": {
@@ -1549,15 +1549,7 @@
     "properties": {
       "A": {
         "value": 46.5,
-        "unit": "mm^2"
-      },
-      "Iy": {
-        "value": 7980.0,
-        "unit": "cm^4"
-      },
-      "Iz": {
-        "value": 410.0,
-        "unit": "cm^4"
+        "unit": "cm^2"
       },
       "J": {
         "value": 0,
@@ -1566,6 +1558,14 @@
       "unitWeight": {
         "value": 36.5,
         "unit": "kg/m"
+      },
+      "I11": {
+        "value": 7980.0,
+        "unit": "cm^4"
+      },
+      "I22": {
+        "value": 410.0,
+        "unit": "cm^4"
       }
     },
     "extra": {
@@ -1650,15 +1650,7 @@
     "properties": {
       "A": {
         "value": 53.4,
-        "unit": "mm^2"
-      },
-      "Iy": {
-        "value": 10820.0,
-        "unit": "cm^4"
-      },
-      "Iz": {
-        "value": 513.0,
-        "unit": "cm^4"
+        "unit": "cm^2"
       },
       "J": {
         "value": 0,
@@ -1667,6 +1659,14 @@
       "unitWeight": {
         "value": 41.9,
         "unit": "kg/m"
+      },
+      "I11": {
+        "value": 10820.0,
+        "unit": "cm^4"
+      },
+      "I22": {
+        "value": 513.0,
+        "unit": "cm^4"
       }
     },
     "extra": {
@@ -1751,15 +1751,7 @@
     "properties": {
       "A": {
         "value": 61.5,
-        "unit": "mm^2"
-      },
-      "Iy": {
-        "value": 15220.0,
-        "unit": "cm^4"
-      },
-      "Iz": {
-        "value": 642.0,
-        "unit": "cm^4"
+        "unit": "cm^2"
       },
       "J": {
         "value": 0,
@@ -1768,6 +1760,14 @@
       "unitWeight": {
         "value": 48.3,
         "unit": "kg/m"
+      },
+      "I11": {
+        "value": 15220.0,
+        "unit": "cm^4"
+      },
+      "I22": {
+        "value": 642.0,
+        "unit": "cm^4"
       }
     },
     "extra": {

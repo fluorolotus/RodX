@@ -32,14 +32,6 @@
         "value": 764,
         "unit": "mm^2"
       },
-      "Iy": {
-        "value": 801400,
-        "unit": "mm^4"
-      },
-      "Iz": {
-        "value": 84890.0,
-        "unit": "mm^4"
-      },
       "J": {
         "value": 6727,
         "unit": "mm^4"
@@ -47,6 +39,14 @@
       "unitWeight": {
         "value": 6.0,
         "unit": "kg/m"
+      },
+      "I11": {
+        "value": 801400,
+        "unit": "mm^4"
+      },
+      "I22": {
+        "value": 84890.0,
+        "unit": "mm^4"
       }
     },
     "extra": {
@@ -129,14 +129,6 @@
         "value": 1032,
         "unit": "mm^2"
       },
-      "Iy": {
-        "value": 1710000,
-        "unit": "mm^4"
-      },
-      "Iz": {
-        "value": 159200.0,
-        "unit": "mm^4"
-      },
       "J": {
         "value": 11530,
         "unit": "mm^4"
@@ -144,6 +136,14 @@
       "unitWeight": {
         "value": 8.1,
         "unit": "kg/m"
+      },
+      "I11": {
+        "value": 1710000,
+        "unit": "mm^4"
+      },
+      "I22": {
+        "value": 159200.0,
+        "unit": "mm^4"
       }
     },
     "extra": {
@@ -226,14 +226,6 @@
         "value": 1321,
         "unit": "mm^2"
       },
-      "Iy": {
-        "value": 3178000,
-        "unit": "mm^4"
-      },
-      "Iz": {
-        "value": 276700.0,
-        "unit": "mm^4"
-      },
       "J": {
         "value": 16890,
         "unit": "mm^4"
@@ -241,6 +233,14 @@
       "unitWeight": {
         "value": 10.4,
         "unit": "kg/m"
+      },
+      "I11": {
+        "value": 3178000,
+        "unit": "mm^4"
+      },
+      "I22": {
+        "value": 276700.0,
+        "unit": "mm^4"
       }
     },
     "extra": {
@@ -323,14 +323,6 @@
         "value": 1643,
         "unit": "mm^2"
       },
-      "Iy": {
-        "value": 5412000,
-        "unit": "mm^4"
-      },
-      "Iz": {
-        "value": 449200.0,
-        "unit": "mm^4"
-      },
       "J": {
         "value": 24010,
         "unit": "mm^4"
@@ -338,6 +330,14 @@
       "unitWeight": {
         "value": 12.9,
         "unit": "kg/m"
+      },
+      "I11": {
+        "value": 5412000,
+        "unit": "mm^4"
+      },
+      "I22": {
+        "value": 449200.0,
+        "unit": "mm^4"
       }
     },
     "extra": {
@@ -420,14 +420,6 @@
         "value": 2009,
         "unit": "mm^2"
       },
-      "Iy": {
-        "value": 8693000,
-        "unit": "mm^4"
-      },
-      "Iz": {
-        "value": 683100.0,
-        "unit": "mm^4"
-      },
       "J": {
         "value": 35300,
         "unit": "mm^4"
@@ -435,6 +427,14 @@
       "unitWeight": {
         "value": 15.8,
         "unit": "kg/m"
+      },
+      "I11": {
+        "value": 8693000,
+        "unit": "mm^4"
+      },
+      "I22": {
+        "value": 683100.0,
+        "unit": "mm^4"
       }
     },
     "extra": {
@@ -517,14 +517,6 @@
         "value": 2395,
         "unit": "mm^2"
       },
-      "Iy": {
-        "value": 13170000,
-        "unit": "mm^4"
-      },
-      "Iz": {
-        "value": 1008999.9999999999,
-        "unit": "mm^4"
-      },
       "J": {
         "value": 47230,
         "unit": "mm^4"
@@ -532,6 +524,14 @@
       "unitWeight": {
         "value": 18.8,
         "unit": "kg/m"
+      },
+      "I11": {
+        "value": 13170000,
+        "unit": "mm^4"
+      },
+      "I22": {
+        "value": 1008999.9999999999,
+        "unit": "mm^4"
       }
     },
     "extra": {
@@ -614,14 +614,6 @@
         "value": 2848,
         "unit": "mm^2"
       },
-      "Iy": {
-        "value": 19430000,
-        "unit": "mm^4"
-      },
-      "Iz": {
-        "value": 1424000.0,
-        "unit": "mm^4"
-      },
       "J": {
         "value": 68460,
         "unit": "mm^4"
@@ -629,6 +621,14 @@
       "unitWeight": {
         "value": 22.4,
         "unit": "kg/m"
+      },
+      "I11": {
+        "value": 19430000,
+        "unit": "mm^4"
+      },
+      "I22": {
+        "value": 1424000.0,
+        "unit": "mm^4"
       }
     },
     "extra": {
@@ -711,14 +711,6 @@
         "value": 3337,
         "unit": "mm^2"
       },
-      "Iy": {
-        "value": 27720000,
-        "unit": "mm^4"
-      },
-      "Iz": {
-        "value": 2049000.0,
-        "unit": "mm^4"
-      },
       "J": {
         "value": 89820,
         "unit": "mm^4"
@@ -726,6 +718,14 @@
       "unitWeight": {
         "value": 26.2,
         "unit": "kg/m"
+      },
+      "I11": {
+        "value": 27720000,
+        "unit": "mm^4"
+      },
+      "I22": {
+        "value": 2049000.0,
+        "unit": "mm^4"
       }
     },
     "extra": {
@@ -808,14 +808,6 @@
         "value": 3912,
         "unit": "mm^2"
       },
-      "Iy": {
-        "value": 38920000,
-        "unit": "mm^4"
-      },
-      "Iz": {
-        "value": 2836000.0,
-        "unit": "mm^4"
-      },
       "J": {
         "value": 127400,
         "unit": "mm^4"
@@ -823,6 +815,14 @@
       "unitWeight": {
         "value": 30.7,
         "unit": "kg/m"
+      },
+      "I11": {
+        "value": 38920000,
+        "unit": "mm^4"
+      },
+      "I22": {
+        "value": 2836000.0,
+        "unit": "mm^4"
       }
     },
     "extra": {
@@ -905,14 +905,6 @@
         "value": 4595,
         "unit": "mm^2"
       },
-      "Iy": {
-        "value": 57900000,
-        "unit": "mm^4"
-      },
-      "Iz": {
-        "value": 4199000.0,
-        "unit": "mm^4"
-      },
       "J": {
         "value": 157100,
         "unit": "mm^4"
@@ -920,6 +912,14 @@
       "unitWeight": {
         "value": 36.1,
         "unit": "kg/m"
+      },
+      "I11": {
+        "value": 57900000,
+        "unit": "mm^4"
+      },
+      "I22": {
+        "value": 4199000.0,
+        "unit": "mm^4"
       }
     },
     "extra": {
@@ -1002,14 +1002,6 @@
         "value": 5381,
         "unit": "mm^2"
       },
-      "Iy": {
-        "value": 83560000,
-        "unit": "mm^4"
-      },
-      "Iz": {
-        "value": 6038000.0,
-        "unit": "mm^4"
-      },
       "J": {
         "value": 197500,
         "unit": "mm^4"
@@ -1017,6 +1009,14 @@
       "unitWeight": {
         "value": 42.2,
         "unit": "kg/m"
+      },
+      "I11": {
+        "value": 83560000,
+        "unit": "mm^4"
+      },
+      "I22": {
+        "value": 6038000.0,
+        "unit": "mm^4"
       }
     },
     "extra": {
@@ -1099,14 +1099,6 @@
         "value": 6261,
         "unit": "mm^2"
       },
-      "Iy": {
-        "value": 117700000,
-        "unit": "mm^4"
-      },
-      "Iz": {
-        "value": 7881000.0,
-        "unit": "mm^4"
-      },
       "J": {
         "value": 275900,
         "unit": "mm^4"
@@ -1114,6 +1106,14 @@
       "unitWeight": {
         "value": 49.1,
         "unit": "kg/m"
+      },
+      "I11": {
+        "value": 117700000,
+        "unit": "mm^4"
+      },
+      "I22": {
+        "value": 7881000.0,
+        "unit": "mm^4"
       }
     },
     "extra": {
@@ -1196,14 +1196,6 @@
         "value": 7273,
         "unit": "mm^2"
       },
-      "Iy": {
-        "value": 162700000,
-        "unit": "mm^4"
-      },
-      "Iz": {
-        "value": 10430000.0,
-        "unit": "mm^4"
-      },
       "J": {
         "value": 370800,
         "unit": "mm^4"
@@ -1211,6 +1203,14 @@
       "unitWeight": {
         "value": 57.1,
         "unit": "kg/m"
+      },
+      "I11": {
+        "value": 162700000,
+        "unit": "mm^4"
+      },
+      "I22": {
+        "value": 10430000.0,
+        "unit": "mm^4"
       }
     },
     "extra": {
@@ -1293,14 +1293,6 @@
         "value": 8446,
         "unit": "mm^2"
       },
-      "Iy": {
-        "value": 231300000,
-        "unit": "mm^4"
-      },
-      "Iz": {
-        "value": 13180000.0,
-        "unit": "mm^4"
-      },
       "J": {
         "value": 504100,
         "unit": "mm^4"
@@ -1308,6 +1300,14 @@
       "unitWeight": {
         "value": 66.3,
         "unit": "kg/m"
+      },
+      "I11": {
+        "value": 231300000,
+        "unit": "mm^4"
+      },
+      "I22": {
+        "value": 13180000.0,
+        "unit": "mm^4"
       }
     },
     "extra": {
@@ -1390,14 +1390,6 @@
         "value": 9882,
         "unit": "mm^2"
       },
-      "Iy": {
-        "value": 337400000,
-        "unit": "mm^4"
-      },
-      "Iz": {
-        "value": 16760000.000000002,
-        "unit": "mm^4"
-      },
       "J": {
         "value": 660500,
         "unit": "mm^4"
@@ -1405,6 +1397,14 @@
       "unitWeight": {
         "value": 77.6,
         "unit": "kg/m"
+      },
+      "I11": {
+        "value": 337400000,
+        "unit": "mm^4"
+      },
+      "I22": {
+        "value": 16760000.000000002,
+        "unit": "mm^4"
       }
     },
     "extra": {
@@ -1487,14 +1487,6 @@
         "value": 11552,
         "unit": "mm^2"
       },
-      "Iy": {
-        "value": 482000000,
-        "unit": "mm^4"
-      },
-      "Iz": {
-        "value": 21420000.0,
-        "unit": "mm^4"
-      },
       "J": {
         "value": 886200,
         "unit": "mm^4"
@@ -1502,6 +1494,14 @@
       "unitWeight": {
         "value": 90.7,
         "unit": "kg/m"
+      },
+      "I11": {
+        "value": 482000000,
+        "unit": "mm^4"
+      },
+      "I22": {
+        "value": 21420000.0,
+        "unit": "mm^4"
       }
     },
     "extra": {
@@ -1584,14 +1584,6 @@
         "value": 13442,
         "unit": "mm^2"
       },
-      "Iy": {
-        "value": 671200000,
-        "unit": "mm^4"
-      },
-      "Iz": {
-        "value": 26680000.0,
-        "unit": "mm^4"
-      },
       "J": {
         "value": 1217000,
         "unit": "mm^4"
@@ -1599,6 +1591,14 @@
       "unitWeight": {
         "value": 105.5,
         "unit": "kg/m"
+      },
+      "I11": {
+        "value": 671200000,
+        "unit": "mm^4"
+      },
+      "I22": {
+        "value": 26680000.0,
+        "unit": "mm^4"
       }
     },
     "extra": {
@@ -1681,14 +1681,6 @@
         "value": 15598,
         "unit": "mm^2"
       },
-      "Iy": {
-        "value": 920800000,
-        "unit": "mm^4"
-      },
-      "Iz": {
-        "value": 33870000.0,
-        "unit": "mm^4"
-      },
       "J": {
         "value": 1646000,
         "unit": "mm^4"
@@ -1696,6 +1688,14 @@
       "unitWeight": {
         "value": 122.4,
         "unit": "kg/m"
+      },
+      "I11": {
+        "value": 920800000,
+        "unit": "mm^4"
+      },
+      "I22": {
+        "value": 33870000.0,
+        "unit": "mm^4"
       }
     },
     "extra": {
