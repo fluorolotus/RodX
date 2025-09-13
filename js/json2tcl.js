@@ -5,7 +5,14 @@
 
 function convertJsonToTcl(model) {
   const out = [];
+  out.push("# -------------------- Units: mm, N, sec, K --------------------");
+  out.push("# -------------------- Remove existing model --------------------");
+  out.push("wipe");
+  out.push("");
+  out.push("# -------------------- Create ModelBuilder (2D and 3 DOF/node) --------------------");
   out.push("model BasicBuilder -ndm 2 -ndf 3");
+  out.push("");
+  out.push("# -------------------- Сreate folder for results --------------------");
   out.push("set dataDir Data");
   out.push("file mkdir $dataDir");
   out.push("");
