@@ -19,7 +19,7 @@ function convertJsonToTcl(model) {
   const units = model.units || {};
   const LEN_U = units.length || "mm";
   const out = [];
-  out.push("# -------------------- Units: mm-N-sec-K ---------------------------------------");
+  out.push("# -------------------- Units: mm-N-sec-K ------------------------------------------");
   out.push("# -------------------- Remove existing model --------------------------------------");
   out.push("wipe");
   out.push("");
