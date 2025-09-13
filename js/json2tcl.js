@@ -13,6 +13,26 @@ const conv = {
     if (u === "ft" || u === "feet") return x * 304.8;
     throw Error("len " + u);
   },
+  E(x, u = "MPa") {
+    u = String(u).toLowerCase();
+    if (u === "pa") return x / 1e6;
+    if (u === "mpa") return x;
+    if (u === "gpa") return x * 1e3;
+    if (u === "psi") return x * 0.00689475729;
+    if (u === "ksi") return x * 6.89475729;
+    if (u === "msi") return x * 6894.75729;
+    throw Error("E " + u);
+  },
+  area(x, u = "mm^2") {
+    u = String(u).toLowerCase();
+    const lu = u.replace(/\^?2$/, "").replace(/2$/, "");
+    return x * Math.pow(conv.length(1, lu), 2);
+  },
+  inertia(x, u = "mm^4") {
+    u = String(u).toLowerCase();
+    const lu = u.replace(/\^?4$/, "").replace(/4$/, "");
+    return x * Math.pow(conv.length(1, lu), 4);
+  },
 };
 
 function convertJsonToTcl(model) {
@@ -47,6 +67,41 @@ function convertJsonToTcl(model) {
     out.push(`fix ${nodeId} ${dx} ${dy} ${dr}`);
   }
   out.push("");
+
+  // -------------------- Sections ---------------------------------------------------
+  const materialMap = {};
+  for (const m of (model.materials || [])) materialMap[m.id] = m;
+  const sectionMap = {};
+  for (const s of (model.sections || [])) sectionMap[s.id] = s;
+
+  const sectionCombos = [];
+  const comboMap = {};
+  for (const e of (model.elements || [])) {
+    const mat = materialMap[e.materialId] || {};
+    const sec = sectionMap[e.sectionId] || {};
+    const em = mat.properties?.elasticModulus || {};
+    const E = conv.E(Number(em.value), em.unit || "MPa");
+    const ap = sec.properties?.A || {};
+    const A = conv.area(Number(ap.value), ap.unit || (LEN_U + "^2"));
+    const beta = ((Number(e.betaAngle) % 360) + 360) % 360;
+    const ip = beta === 90 || beta === 270 ? sec.properties?.I22 : sec.properties?.I11;
+    const I = conv.inertia(Number(ip?.value), ip?.unit || (LEN_U + "^4"));
+    if (Number.isNaN(E) || Number.isNaN(A) || Number.isNaN(I)) continue;
+    const key = `${E}|${A}|${I}`;
+    if (!comboMap[key]) {
+      comboMap[key] = { id: sectionCombos.length + 1, E, A, I };
+      sectionCombos.push(comboMap[key]);
+    }
+  }
+
+  if (sectionCombos.length) {
+    out.push("# -------------------- Sections ---------------------------------------------------");
+    for (const s of sectionCombos) {
+      out.push(`section Elastic ${s.id} ${s.E.toFixed(3)} ${s.A.toFixed(3)} ${s.I.toFixed(3)}`);
+    }
+    out.push("");
+  }
+
   return out.join("\n");
 }
 
