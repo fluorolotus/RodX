@@ -95,7 +95,7 @@ function convertJsonToTcl(model) {
   }
 
   if (sectionCombos.length) {
-    out.push("# -------------------- Sections | section Elastic # E A I -----------------------");
+    out.push("# -------------------- Sections | section Elastic # E A I -------------------------");
     for (const s of sectionCombos) {
       out.push(`section Elastic ${s.id} ${s.E.toFixed(3)} ${s.A.toFixed(3)} ${s.I.toFixed(3)}`);
     }
