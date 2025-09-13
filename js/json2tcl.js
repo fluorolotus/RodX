@@ -19,6 +19,8 @@ const conv = {
     if (u === "mpa") return x;
     if (u === "gpa") return x * 1e3;
     if (u === "psi") return x * 0.00689475729;
+    if (u === "ksi") return x * 6.89475729;
+    if (u === "msi") return x * 6894.75729;
     throw Error("E " + u);
   },
   area(x, u = "mm^2") {
