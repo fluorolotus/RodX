@@ -44,6 +44,37 @@ const conv = {
       return (x * 4.4482216152605) / Math.pow(304.8, 3);
     throw Error("rho " + u);
   },
+  force(x, u = "N") {
+    u = String(u).toLowerCase();
+    if (u === "n") return x;
+    if (u === "kn") return x * 1e3;
+    if (u === "mn") return x * 1e6;
+    if (u === "lbf") return x * 4.4482216153;
+    if (u === "kip" || u === "kips") return x * 4.4482216153 * 1e3;
+    if (u === "kg" || u === "kgf") return x * 9.80665;
+    if (u === "t" || u === "tf" || u === "ton" || u === "tonne" || u === "tons")
+      return x * 9.80665 * 1e3;
+    throw Error("force " + u);
+  },
+  mom(x, u = "N*mm") {
+    u = String(u).toLowerCase().replace(/\s+/g, "");
+    const clean = u.replace(/[\*-]/g, "");
+    const lenUnits = ["mm", "cm", "m", "in", "ft"];
+    for (const lu of lenUnits) {
+      if (clean.endsWith(lu)) {
+        const fu = clean.slice(0, clean.length - lu.length);
+        if (fu) return conv.force(x, fu) * conv.length(1, lu);
+      }
+    }
+    throw Error("M " + u);
+  },
+  q(x, u = "N/mm") {
+    u = String(u).toLowerCase().replace(/\s+/g, "");
+    const parts = u.split("/");
+    if (parts.length !== 2) throw Error("q " + u);
+    const [fu, lu] = parts;
+    return conv.force(x, fu) / conv.length(1, lu);
+  },
 };
 
 function convertJsonToTcl(model) {
@@ -87,6 +118,7 @@ function convertJsonToTcl(model) {
 
   const sectionCombos = [];
   const comboMap = {};
+  const elemSectionMap = {};
   for (const e of (model.elements || [])) {
     const mat = materialMap[e.materialId] || {};
     const sec = sectionMap[e.sectionId] || {};
@@ -105,6 +137,8 @@ function convertJsonToTcl(model) {
       comboMap[key] = { id: sectionCombos.length + 1, E, A, I, w: rho * A };
       sectionCombos.push(comboMap[key]);
     }
+    const combo = comboMap[key];
+    elemSectionMap[e.elemId] = combo.id;
   }
 
   if (sectionCombos.length) {
@@ -122,6 +156,59 @@ function convertJsonToTcl(model) {
   out.push("set transfTag 1");
   out.push("geomTransf Linear $transfTag");
   out.push("");
+
+  // -------------------- Loads ------------------------------------------------------
+  const loadMap = {};
+  for (const l of (model.loads || [])) loadMap[l.id] = l;
+  for (const lc of (model.loadCases || [])) {
+    const caseId = lc.id;
+    const caseName = lc.name || "";
+    out.push(`# -------------------- Load Case ${caseName} ---`);
+    out.push(`timeSeries Linear ${caseId}`);
+    out.push(`pattern Plain ${caseId} ${caseId} {`);
+
+    const nodeLoads = {};
+    const elemLoads = {};
+    const gravElems = [];
+    for (const lid of (lc.loads || [])) {
+      const L = loadMap[lid];
+      if (!L) continue;
+      const scope = String(L.scope || "").toLowerCase();
+      if (scope === "node") {
+        const node = Number(L.targetId);
+        const entry = nodeLoads[node] || { FX: 0, FY: 0, M: 0 };
+        const comp = String(L.component || "").toLowerCase();
+        if (comp === "x") entry.FX += conv.force(Number(L.value), L.units || "N");
+        else if (comp === "y") entry.FY += conv.force(Number(L.value), L.units || "N");
+        else if (comp === "r") entry.M += conv.mom(Number(L.value), L.units || "N*mm");
+        nodeLoads[node] = entry;
+      } else if (scope === "element") {
+        const elem = Number(L.targetId);
+        const entry = elemLoads[elem] || { wX: 0, wY: 0 };
+        const comp = String(L.component || "").toLowerCase();
+        if (comp === "x") entry.wX += conv.q(Number(L.value), L.units || "N/mm");
+        else if (comp === "y") entry.wY += conv.q(Number(L.value), L.units || "N/mm");
+        elemLoads[elem] = entry;
+      } else if (scope === "gravity") {
+        const elem = Number(L.targetId);
+        gravElems.push(elem);
+      }
+    }
+
+    for (const [node, l] of Object.entries(nodeLoads)) {
+      out.push(`    load ${node} ${l.FX.toFixed(5)} ${l.FY.toFixed(5)} ${l.M.toFixed(5)}`);
+    }
+    for (const [elem, l] of Object.entries(elemLoads)) {
+      out.push(`    eleLoad -ele ${elem} -type -beamUniform ${l.wY.toFixed(5)} ${l.wX.toFixed(5)}`);
+    }
+    for (const elem of gravElems) {
+      const sid = elemSectionMap[elem];
+      if (sid) out.push(`    eleLoad -ele ${elem} -type -beamUniform -$w${sid}`);
+    }
+
+    out.push("}");
+    out.push("");
+  }
 
   return out.join("\n");
 }
