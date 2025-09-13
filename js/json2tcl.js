@@ -33,6 +33,17 @@ const conv = {
     const lu = u.replace(/\^?4$/, "").replace(/4$/, "");
     return x * Math.pow(conv.length(1, lu), 4);
   },
+  rho(x, u = "kg/m^3") {
+    u = String(u).toLowerCase().replace(/\s+/g, "");
+    const g = 9.80665; // gravitational acceleration m/s^2
+    if (u === "kg/m^3" || u === "kg/m3") return (x * g) / 1e9; // N/mm^3
+    if (u === "t/m^3" || u === "t/m3") return (x * 1000 * g) / 1e9;
+    if (u === "n/mm^3" || u === "n/mm3") return x;
+    if (u === "kn/m^3" || u === "kn/m3") return (x * 1000) / 1e9;
+    if (u === "lbf/ft^3" || u === "lbf/ft3")
+      return (x * 4.4482216152605) / Math.pow(304.8, 3);
+    throw Error("rho " + u);
+  },
 };
 
 function convertJsonToTcl(model) {
@@ -83,13 +94,15 @@ function convertJsonToTcl(model) {
     const E = conv.E(Number(em.value), em.unit || "MPa");
     const ap = sec.properties?.A || {};
     const A = conv.area(Number(ap.value), ap.unit || (LEN_U + "^2"));
+    const dp = mat.properties?.density || {};
+    const rho = conv.rho(Number(dp.value), dp.unit || "kg/m^3");
     const beta = ((Number(e.betaAngle) % 360) + 360) % 360;
     const ip = beta === 90 || beta === 270 ? sec.properties?.I22 : sec.properties?.I11;
     const I = conv.inertia(Number(ip?.value), ip?.unit || (LEN_U + "^4"));
-    if (Number.isNaN(E) || Number.isNaN(A) || Number.isNaN(I)) continue;
-    const key = `${E}|${A}|${I}`;
+    if (Number.isNaN(E) || Number.isNaN(A) || Number.isNaN(I) || Number.isNaN(rho)) continue;
+    const key = `${E}|${A}|${I}|${rho}`;
     if (!comboMap[key]) {
-      comboMap[key] = { id: sectionCombos.length + 1, E, A, I };
+      comboMap[key] = { id: sectionCombos.length + 1, E, A, I, w: rho * A };
       sectionCombos.push(comboMap[key]);
     }
   }
@@ -98,6 +111,9 @@ function convertJsonToTcl(model) {
     out.push("# -------------------- Sections | section Elastic # E A I -------------------------");
     for (const s of sectionCombos) {
       out.push(`section Elastic ${s.id} ${s.E.toFixed(3)} ${s.A.toFixed(3)} ${s.I.toFixed(3)}`);
+    }
+    for (const s of sectionCombos) {
+      out.push(`set w${s.id} ${s.w.toFixed(3)} # --- linear weight for section ${s.id}`);
     }
     out.push("");
   }
