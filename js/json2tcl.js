@@ -50,7 +50,7 @@ function convertJsonToTcl(model) {
   out.push("set dataDir Data");
   out.push("file mkdir $dataDir");
   out.push("");
-  out.push("# -------------------- Nodes ------------------------------------------------------");
+  out.push("# -------------------- Nodes | # X Y ----------------------------------------------");
   for (const n of (model.nodes || [])) {
     const id = n.nodeId;
     const x = conv.length(Number(n.x), LEN_U).toFixed(3);
@@ -58,7 +58,7 @@ function convertJsonToTcl(model) {
     out.push(`node ${id} ${x} ${y}`);
   }
   out.push("");
-  out.push("# -------------------- Supports ---------------------------------------------------");
+  out.push("# -------------------- Supports | fix # dx dy dr ----------------------------------");
   for (const s of (model.supports || [])) {
     const nodeId = Number(s.nodeId);
     const dx = Number(s.dx);
@@ -95,7 +95,7 @@ function convertJsonToTcl(model) {
   }
 
   if (sectionCombos.length) {
-    out.push("# -------------------- Sections ---------------------------------------------------");
+    out.push("# -------------------- Sections | section Elastic # E A I -----------------------");
     for (const s of sectionCombos) {
       out.push(`section Elastic ${s.id} ${s.E.toFixed(3)} ${s.A.toFixed(3)} ${s.I.toFixed(3)}`);
     }
