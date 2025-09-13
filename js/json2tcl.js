@@ -113,7 +113,7 @@ function convertJsonToTcl(model) {
       out.push(`section Elastic ${s.id} ${s.E.toFixed(3)} ${s.A.toFixed(3)} ${s.I.toFixed(3)}`);
     }
     for (const s of sectionCombos) {
-      out.push(`set w${s.id} ${s.w.toFixed(3)} # --- linear weight for section ${s.id}`);
+      out.push(`set w${s.id} ${s.w.toFixed(5)}; # --- linear weight for section ${s.id}`);
     }
     out.push("");
   }
