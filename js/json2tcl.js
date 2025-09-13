@@ -102,6 +102,11 @@ function convertJsonToTcl(model) {
     out.push("");
   }
 
+  out.push("# -------------------- Geometric transformation -----------------------------------");
+  out.push("set transfTag 1");
+  out.push("geomTransf Linear $transfTag");
+  out.push("");
+
   return out.join("\n");
 }
 
