@@ -3,9 +3,23 @@
 
 (function (global) {
 
+const conv = {
+  length(x, u = "mm") {
+    u = String(u).toLowerCase();
+    if (u === "mm") return x;
+    if (u === "m" || u === "meter" || u === "meters") return x * 1000;
+    if (u === "cm") return x * 10;
+    if (u === "in" || u === "inch" || u === "inches") return x * 25.4;
+    if (u === "ft" || u === "feet") return x * 304.8;
+    throw Error("len " + u);
+  },
+};
+
 function convertJsonToTcl(model) {
+  const units = model.units || {};
+  const LEN_U = units.length || "mm";
   const out = [];
-  out.push("# -------------------- Units: mm, N, sec, K ---------------------------------------");
+  out.push("# -------------------- Units: mm-N-sec-K ---------------------------------------");
   out.push("# -------------------- Remove existing model --------------------------------------");
   out.push("wipe");
   out.push("");
@@ -19,8 +33,8 @@ function convertJsonToTcl(model) {
   out.push("# -------------------- Nodes ------------------------------------------------------");
   for (const n of (model.nodes || [])) {
     const id = n.nodeId;
-    const x = Number(n.x).toFixed(3);
-    const y = Number(n.y).toFixed(3);
+    const x = conv.length(Number(n.x), LEN_U).toFixed(3);
+    const y = conv.length(Number(n.y), LEN_U).toFixed(3);
     out.push(`node ${id} ${x} ${y}`);
   }
   out.push("");
